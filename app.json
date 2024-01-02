@@ -8,25 +8,27 @@
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#FCFCFC"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.rogansdev.RogansApp",
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/adaptiveIcon.png",
+        "backgroundColor": "#FCFCFC"
       },
       "package": "com.rogansdev.RogansApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "scheme": "rogansya",
     "extra": {
       "eas": {
         "projectId": "bd8d9d9a-7119-481a-a757-ec044f47da53"
