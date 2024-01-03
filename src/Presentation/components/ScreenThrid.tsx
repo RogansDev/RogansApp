@@ -18,7 +18,7 @@ const ScreenThrid = ({text}: Props) => {
     
   return (
     <TouchableOpacity
-       onPress={() => navigation.navigate("Home")}
+       onPress={() => navigation.navigate("Login")}
        style={styles.roundedBottom}
     >
       <Text style={styles.textBottom}>

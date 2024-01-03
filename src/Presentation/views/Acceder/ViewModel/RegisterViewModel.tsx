@@ -2,75 +2,78 @@ import React, { useEffect, useState } from 'react'
 import { ApiRogans } from '../../../../Data/source/remote/api/ApiRogans';
 import { RegisterAuthUseCases } from '../../../../Domain/useCases/auth/RegisterAuth';
 import { err } from 'react-native-svg/lib/typescript/xml';
+import useRegisterFirebase from '../../../../hooks/useRegisterFirebase';
 const RegisterViewModel = () => {
 
- const [ errorMessage, setErrorMessage ] = useState('');
+   const { handleRegister } = useRegisterFirebase();
 
- const [ values, setValues ] = useState({
-    name: '',
-    lastname: '',
-    email: '',
-    document: '',
-    phone: '',
-    password: '',
-    ConfirmPassword: '',
-    birthdate: '',
- });
+   const [errorMessage, setErrorMessage] = useState('');
 
- const onChange = (property: string, value: any) => {
-    setValues({...values, [property]: value })
- }
+   const [values, setValues] = useState({
+      name: '',
+      lastname: '',
+      email: '',
+      document: '',
+      phone: '',
+      password: '',
+      ConfirmPassword: '',
+      birthdate: '',
+   });
 
- const register = async () => {
-   if(isValidForm()){
-      const response = await RegisterAuthUseCases(values)
-      console.log('RESULT', + JSON.stringify(response));   
+   const onChange = (property: string, value: any) => {
+      setValues({ ...values, [property]: value })
    }
- }
 
-//  valida si los campos estan vacios // y si las contraseñas no son iguales
- const isValidForm = (): boolean => {
-      if(values.name === '') {
+   const register = async () => {
+      if (isValidForm()) {
+         handleRegister(values)  
+
+      }
+   }
+
+   //  valida si los campos estan vacios // y si las contraseñas no son iguales
+   const isValidForm = (): boolean => {
+      if (values.name === '') {
          setErrorMessage('Ingresa ru nombre')
          return false;
       }
-       if(values.lastname === '') {
+      if (values.lastname === '') {
          setErrorMessage('Ingresa tu apellido')
          return false;
       }
-       if(values.email === '') {
+      if (values.email === '') {
          setErrorMessage('Ingresa tu correo')
          return false;
       }
-       if(values.document === '') {
+      if (values.document === '') {
          setErrorMessage('Ingresa tu cedula')
          return false;
       }
-       if(values.phone === '') {
+      if (values.phone === '') {
          setErrorMessage('Ingresa tu numero')
          return false;
       }
-       if(values.password === '') {
+      if (values.password === '') {
          setErrorMessage('Ingresa tu contraseña')
          return false;
       }
-       if(values.ConfirmPassword === '') {
+      if (values.ConfirmPassword === '') {
          setErrorMessage('Ingresa tu confirmacion de la contraseña')
          return false;
       }
-       if(values.name === '') {
+      if (values.name === '') {
          setErrorMessage('Ingresa tu fecha de nacimiento')
          return false;
       }
-      if(values.password !== values.ConfirmPassword) {
+      if (values.password !== values.ConfirmPassword) {
          setErrorMessage('Las contraseñas no coiciden')
-          return false;
+         return false;
       }
 
       return true;
- }
+   }
 
-  return {...values, onChange, register, errorMessage}
+   return { ...values, onChange, register, errorMessage }
 }
 
 export default RegisterViewModel;

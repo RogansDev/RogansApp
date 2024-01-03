@@ -24,6 +24,19 @@ npm install --save react-calendly
 
 
 Para instalar la dependecia expo-font usar:
+16. npm i @react-native-async-storage/async-storage para almacenamiento local
+17. para todo lo relacionado a firebase 
+npm i firebase 
+npm i @react-native-firebase/app
+npm i @react-native-firebase/auth
+npm i @react-native-firebase/database
+npm i @react-native-firebase/firestore
+npm i @react-native-firebase/storage
+
+18. guia para hacer el login en firebase 
+https://www.youtube.com/watch?v=z-WsYu8n1vQ
+
+
 
 
 <code>expo install expo-font</code>

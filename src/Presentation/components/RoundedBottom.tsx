@@ -27,7 +27,10 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       backgroundColor: MyColors.buttonColor,
       justifyContent: 'center',
-      borderRadius: 15,
+      borderRadius: 15,      
+      borderWidth: 5,  // Ancho del borde
+      borderColor: 'black',  // Color del borde
+      marginTop:15
     },
     contentNext: {
       display: 'flex',
