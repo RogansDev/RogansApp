@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,10 +14,12 @@ import Checkbox from "expo-checkbox";
 import Icons from "../../theme/Icons";
 import CustomTextInput from "../../components/CustomTextInput";
 import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
+import { useSelector } from 'react-redux'
 
 const Login = () => {
   const { email, password, onChange } = UseViewModel();
   const {handleLogin} = useRegisterFirebase();
+  let state = useSelector((state : any) => state)
 
   const {
     LogoBlack,
@@ -36,6 +38,11 @@ const Login = () => {
   const handleCheckBoxChange = () => {
     setIsChecked(!isChecked);
   };
+
+  useEffect(() => {
+    console.log('En app ', JSON.stringify(state, null, 6));
+  }, [])
+  
 
   const handleAcceptTerms = () => {
     if (isChecked) {
