@@ -6,6 +6,12 @@ import PublicScreen from './PublicScreen';
 
 const Navigation = () => {
 
+
+    // const value = await AsyncStorage.getItem('my-key');
+    // if (value !== null) {
+    //   // value previously stored
+    // } para leer la persistencia local
+
     let state = useSelector((state) => state)
     console.log('navigation', state)
 

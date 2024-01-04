@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamsList } from '../../App';
 import { Alert } from 'react-native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const useRegisterFirebase = () => {
@@ -49,6 +49,9 @@ const useRegisterFirebase = () => {
 
                         addDoc(collection(db, "users"), dataToCreate).
                             then(() => {
+
+                                // AsyncStorage.setItem('mail', props.email);
+                                // AsyncStorage.setItem('pass',  props.password);
 
                                 navigation.navigate("Login")
                                 Alert.alert('Cargado correctamente!')
