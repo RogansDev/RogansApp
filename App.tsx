@@ -13,7 +13,6 @@ import SecondScreen from "./src/Presentation/views/ContainerHome/SecondScreen";
 import ThirdScreen from "./src/Presentation/views/ContainerHome/ThirdScreen";
 import Home from "./src/Presentation/views/Home/Home";
 import Register from './src/Presentation/views/Acceder/Register';
-import Loading from "./src/Presentation/views/loading/Loading";
 import Acceder from "./src/Presentation/views/Acceder/Acceder";
 import Login from "./src/Presentation/views/Acceder/Login";
 import ConsultationList from "./src/Presentation/views/Consultas/ConsultationList";
@@ -64,37 +63,6 @@ export type RootStackParamsList = {
 const Stack = createNativeStackNavigator<RootStackParamsList>();
 
 const App = () => {
-  const navigationRef:any = useRef();
-  const [deferredNavigation, setDeferredNavigation] = useState(null);
-  const [prueba, setPrueba] = useState('');
-
-  useEffect(() => {
-    const getInitialURL = async () => {
-      const url = await Linking.getInitialURL();
-      if (url && url === 'rogansya://exitoso') {
-        setPrueba('Exitoso');
-      }
-    };
-
-    const handleOpenURL = (event) => {
-      const url = event.url;
-      if (url === 'rogansya://exitoso') {
-        setPrueba('Exitoso');
-      }
-    };
-
-    // Agregar el event listener
-    const urlEventListener = Linking.addEventListener('url', handleOpenURL);
-
-    getInitialURL();
-
-    // Remover el event listener al desmontar el componente
-    return () => {
-      urlEventListener.remove();
-    };
-  }, []);
-  
-
   const [isAppReady, setAppReady] = useState(false);
 
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -118,15 +86,7 @@ const App = () => {
 
   return (
     <AppContextProvider>
-      <NavigationContainer
-        ref={navigationRef}
-        onReady={() => {
-          if (deferredNavigation) {
-            navigationRef.current?.navigate(deferredNavigation.routeName);
-            setDeferredNavigation(null);
-          }
-        }}
-      >
+      <NavigationContainer>
       <StatusBar style="dark" />
         <Stack.Navigator >
 

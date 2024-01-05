@@ -55,6 +55,8 @@ import Email from "../../../assets/sms.svg";
 import UpdatePassword from '../../../assets/icons/password-check.svg';
 import ArrowGreen from '../../../assets/icons/arrow-green.svg';
 import Headphone from '../../../assets/icons/headphone.svg'
+import Camara from '../../../assets/icons/camera.svg'
+import Editar2Icon from '../../../assets/icons/editar-2.svg'
 
 const Icons = {
   LogoWhite,
@@ -114,6 +116,8 @@ const Icons = {
   EditarIcon,
   ArrowGreen,
   Headphone,
+  Camara,
+  Editar2Icon,
 };
 
 export default Icons;

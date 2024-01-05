@@ -29,11 +29,11 @@ const Home = () => {
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Bienvenido</Text>
+            <Text style={styles.title}>Hola Juanito</Text>
           </View>
-          {/*<TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate("Perfil")}>
+          <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate("Perfil")}>
             <UserIcon width={27} height={27}/>
-  </TouchableOpacity>*/}
+          </TouchableOpacity>
         </View>
             {/* ICONOS DE HEADER */}
             <View style={styles.containerRoundedBtn}>

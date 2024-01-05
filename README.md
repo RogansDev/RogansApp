@@ -53,3 +53,11 @@ o
 
 <code><Text style={{fontFamily: MyFont.regular}}>Continuar</Text></code>
 
+<h1>Comandos Expo:</h1>
+
+<h3>Iniciar Expo</h3>
+<code>npx expo start</code>
+
+
+<h3>Crear Build (en APK)</h3>
+<code>eas build -p android --profile production</code>
