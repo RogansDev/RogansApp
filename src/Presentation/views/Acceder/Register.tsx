@@ -23,6 +23,7 @@ import RoundedBottom from "../../components/RoundedBottom";
 
 const Register = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
+  
 
   const {
     name,
@@ -160,7 +161,7 @@ const Register = () => {
               </View>
             </View>
             {/* boton de registro */}
-            <RoundedBottom title="registrarse" onPress={() => register() }/>
+            <RoundedBottom title="REGISTRARME" onPress={() => handleRegister() }/>
           </View>
         </View> 
     </ScrollView>

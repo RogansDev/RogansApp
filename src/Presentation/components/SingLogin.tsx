@@ -1,31 +1,22 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Image} from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import { MyColors, MyFont } from '../theme/AppTheme';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamsList } from '../../../App';
 import Icons from '../theme/Icons';
 
 interface Props {
     text: string,
+    onPress: () => void;
 }
-
-const SingLogin = () => {
-
-  const { SendIcon } = Icons
-
-  const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+const SingLogin: React.FC<Props> = ({ text, onPress }) => {
+  const { SendIcon } = Icons;
 
 
   return (
-    <TouchableOpacity
-      style={styles.roundedBottom}
-      onPress={() => navigation.navigate("Home")}
-    >
-       <View style={styles.flexBttom}>
-          <Text style={styles.textBottom}>Ingresar </Text>
-          <SendIcon width={20} height={20}  />
-       </View>
+    <TouchableOpacity style={styles.roundedBottom} onPress={onPress}>
+      <View style={styles.flexBttom}>
+        <Text style={styles.textBottom}>{text}</Text>
+        <SendIcon width={20} height={20} />
+      </View>
     </TouchableOpacity>
   )
 };

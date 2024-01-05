@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  StyleSheet,
-  Image,
-  TextInput,
-  TouchableOpacity,
+  StyleSheet
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -16,9 +13,11 @@ import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Checkbox from "expo-checkbox";
 import Icons from "../../theme/Icons";
 import CustomTextInput from "../../components/CustomTextInput";
+import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
 
 const Login = () => {
   const { email, password, onChange } = UseViewModel();
+  const {handleLogin} = useRegisterFirebase();
 
   const {
     LogoBlack,
@@ -27,7 +26,7 @@ const Login = () => {
     Facebook,
     Apple,
     UpdatePassword,
-    SendIcon,
+    Arrow,
   } = Icons;
 
   const [isChecked, setIsChecked] = useState(false);
@@ -91,7 +90,10 @@ const Login = () => {
           </View>
         </View>
         <View style={{ marginTop: 20 }}>
-          <SingLogin />
+        <SingLogin
+          text="Ingresar"
+          onPress={() => handleLogin(email, password)}
+        />
         </View>
         <View style={styles.containerUpdate}>
           <UpdatePassword width={30} height={24} />
@@ -106,6 +108,14 @@ const Login = () => {
           <View>
             <LineGray />
           </View>
+        </View>
+        <View style={styles.containerUpdate}>
+          <Arrow width={30} height={24} color={'black'} />
+          <Text
+            style={styles.textUpdate}
+            onPress={() => navigation.navigate("Register")}>
+            Registrarme
+          </Text>
         </View>
         <View style={styles.loginAuthe}>
           <Google width={30} height={30} />
