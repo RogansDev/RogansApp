@@ -34,7 +34,7 @@ const Acceder = () => {
             <Apple width={30} height={30} />
           </View>
         </View>
-        <View style={styles.invitadoPerfil}>
+        {/* <View style={styles.invitadoPerfil}>
           <View style={styles.contendInvitado}>
             <Invitado width={20} height={20} />
             <Text
@@ -44,7 +44,7 @@ const Acceder = () => {
               Ingresa como invitado
             </Text>
           </View>
-        </View>
+        </View> */}
       </View>
     </View>
   );

@@ -12,9 +12,10 @@ import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 import Icons from "../../theme/Icons";
+import { RootParamListPublic } from "../../../navigation/PublicScreen";
 
 export const FIrstScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootParamListPublic>>();
 
   const { Arrow } = Icons;
 
@@ -38,7 +39,7 @@ export const FIrstScreen = () => {
         </Text>
         <TouchableOpacity
           style={styles.bottom}
-          onPress={() => navigation.navigate("Martin")}
+          onPress={() => navigation.navigate("second")}
         >
           <View style={styles.contentNext}>
             <Text style={styles.textBoton}>Siguiente</Text>
@@ -49,7 +50,7 @@ export const FIrstScreen = () => {
           <Text style={styles.selectFirst}></Text>
           <Text
             style={styles.selectSecond}
-            onPress={() => navigation.navigate("Martin")}
+            onPress={() => navigation.navigate("second")}
           ></Text>
           <Text style={styles.selectThird}></Text>
         </View>
@@ -155,3 +156,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
+
+export default FIrstScreen;
