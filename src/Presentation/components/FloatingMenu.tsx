@@ -4,8 +4,6 @@ import { Linking } from 'react-native';
 import { MyColors, MyFont } from '../theme/AppTheme';
 import { useNavigation } from '@react-navigation/native';
 import useCurrentRoute from '../../hooks/useCurrentRoute';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamsList } from '../../../App';
 import Icons from '../theme/Icons';
 import UChatWebView from './UChatWebView';
 
@@ -15,7 +13,7 @@ const FloatingMenu = () => {
   const [chatVisible, seChatVisible] = useState(false);
 
   const currentRoute = useCurrentRoute();
-  const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+  const navigation = useNavigation();
 
   const isActive = (routeName: string) => {
     return currentRoute === routeName;
@@ -29,8 +27,8 @@ const FloatingMenu = () => {
         visible={chatVisible}
         onRequestClose={() => seChatVisible(!chatVisible)}
       >
-      <View style={styles.uchatContainer}>
-          <TouchableOpacity onPress={() => seChatVisible(!chatVisible)} style={{position: 'absolute', top: 12, left: 15,}}>
+        <View style={styles.uchatContainer}>
+          <TouchableOpacity onPress={() => seChatVisible(!chatVisible)} style={{ position: 'absolute', top: 12, left: 15, }}>
             <CloseIcon width={16} height={16} />
           </TouchableOpacity>
           <UChatWebView />
@@ -40,28 +38,28 @@ const FloatingMenu = () => {
 
       <View style={styles.menuContainer}>
         <View style={styles.menu}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Home")}
-              style={isActive('Home') ? styles.activeMenuItem : styles.menuItem}>
-              {isActive('Home') ? <InicioBlack style={styles.menuIcon} width={20} height={20}/> : <InicioIcon style={styles.menuIcon} width={20} height={20}/>}
-              <Text style={styles.menuText}>Inicio</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Servicios")}
-              style={isActive('Servicios') ? styles.activeMenuItem : styles.menuItem}>
-              {isActive('Servicios') ? <ServiciosBlack style={styles.menuIcon} width={20} height={20}/> : <ServiciosIcon style={styles.menuIcon} width={20} height={20}/>}
-              <Text style={styles.menuText}>Servicios</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("MiAgenda")}
-              style={isActive('MiAgenda') ? styles.activeMenuItem : styles.menuItem}>
-              {isActive('MiAgenda') ? <MiAgendaBlack style={styles.menuIcon} width={20} height={20}/> : <MiAgendaIcon style={styles.menuIcon} width={20} height={20}/>}
-              <Text style={styles.menuText}>Mi agenda</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => seChatVisible(!chatVisible)} style={styles.menuItem}>
-              <Headphone style={styles.menuIcon} width={20} height={20}/>
-              <Text style={styles.menuText}>Comunícate</Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Home")}
+            style={isActive('Home') ? styles.activeMenuItem : styles.menuItem}>
+            {isActive('Home') ? <InicioBlack style={styles.menuIcon} width={20} height={20} /> : <InicioIcon style={styles.menuIcon} width={20} height={20} />}
+            <Text style={styles.menuText}>Inicio</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Servicios")}
+            style={isActive('Servicios') ? styles.activeMenuItem : styles.menuItem}>
+            {isActive('Servicios') ? <ServiciosBlack style={styles.menuIcon} width={20} height={20} /> : <ServiciosIcon style={styles.menuIcon} width={20} height={20} />}
+            <Text style={styles.menuText}>Servicios</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("MiAgenda")}
+            style={isActive('MiAgenda') ? styles.activeMenuItem : styles.menuItem}>
+            {isActive('MiAgenda') ? <MiAgendaBlack style={styles.menuIcon} width={20} height={20} /> : <MiAgendaIcon style={styles.menuIcon} width={20} height={20} />}
+            <Text style={styles.menuText}>Mi agenda</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => seChatVisible(!chatVisible)} style={styles.menuItem}>
+            <Headphone style={styles.menuIcon} width={20} height={20} />
+            <Text style={styles.menuText}>Comunícate</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </>

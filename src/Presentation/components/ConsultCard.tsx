@@ -1,19 +1,17 @@
-import React, { Key } from 'react';
+import React, { Key, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView, ImageSourcePropType } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamsList } from '../../../App';
 import { MyFont } from "../theme/AppTheme";
 import Icons from '../theme/Icons';
-import { useAppContext } from '../../../AppContext';
 
-const ConsultCard = ({cards}: any) => {
+
+const ConsultCard = ({ cards }: any) => {
 
   const { AgendarIcon } = Icons;
-  
-  const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
 
-  const { selectedCard, setSelectedCard } = useAppContext();
+  const navigation = useNavigation();
+
+  const [selectedCard, setSelectedCard] = useState();
 
   const handleSelectCard = async (card: any) => {
     setSelectedCard(card)
@@ -23,18 +21,18 @@ const ConsultCard = ({cards}: any) => {
   return (
     <ScrollView horizontal style={styles.cardContainer} showsHorizontalScrollIndicator={false}>
       {cards.map((card: {
-        id: Key | null | undefined; category?: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; image: ImageSourcePropType; title: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; 
+        id: Key | null | undefined; category?: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; image: ImageSourcePropType; title: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined;
       }) => (
         <View key={card.id} style={styles.card}>
           <View style={styles.overlay} />
           <Image source={card.image} style={styles.cardImage} />
           <Text style={styles.cardText}>{card.title}</Text>
-          <TouchableOpacity 
-             onPress={() => handleSelectCard(card)}
-              style={styles.agendarBtn}
+          <TouchableOpacity
+            onPress={() => handleSelectCard(card)}
+            style={styles.agendarBtn}
           >
             <Text style={styles.textAgendarBtn}>Agendar cita</Text>
-            <AgendarIcon style={styles.iconAgendarBtn} width={16} height={16}/>
+            <AgendarIcon style={styles.iconAgendarBtn} width={16} height={16} />
           </TouchableOpacity>
         </View>
       ))}

@@ -1,20 +1,20 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, ScrollView, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { MyColors, MyFont } from "../../../../src/Presentation/theme/AppTheme";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamsList } from "../../../../App";
+
 import FloatingMenu from "../../../Presentation/components/FloatingMenu";
 import Icons from "../../../Presentation/theme/Icons";
 import { consultCards } from '../Servicios/ServicesData';
-import { useAppContext } from '../../../../AppContext';
+
 
 const Cosultationlist = () => {
   const { CalendarEditIcon } = Icons;
 
-  const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+  const navigation = useNavigation();
 
-  const { selectedCard, setSelectedCard } = useAppContext();
+  const [selectedCard, setSelectedCard] = useState();
 
   const handleSelectCard = async (card: any) => {
     setSelectedCard(card)
@@ -35,17 +35,17 @@ const Cosultationlist = () => {
                   <Text style={styles.consultationTitle}>{item.title}</Text>
                 </View>
                 <View>
-                <TouchableOpacity
-                  onPress={() => handleSelectCard(item)}
-                  style={styles.agendarBtn}
-                >
-                  <CalendarEditIcon
-                    style={styles.iconAgendarBtn}
-                    width={16}
-                    height={16}
-                  />
-                  <Text style={styles.textAgendarBtn}>Agendar</Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => handleSelectCard(item)}
+                    style={styles.agendarBtn}
+                  >
+                    <CalendarEditIcon
+                      style={styles.iconAgendarBtn}
+                      width={16}
+                      height={16}
+                    />
+                    <Text style={styles.textAgendarBtn}>Agendar</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>

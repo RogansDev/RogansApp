@@ -1,19 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamsList } from '../../../../App';
 import { MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../../Presentation/theme/Icons';
 import { agendarCita } from '../../../../agendarCitaService';
-import { useAppContext } from '../../../../AppContext';
+
 
 const PendingPage = () => {
-    const { horaAgendada, fecha, virtualPresecial, selectedCard }: any = useAppContext();
+    const { horaAgendada, fecha, virtualPresecial, selectedCard }: any = useState();
 
     const { TickCircleIcon, TickCircleWhiteicon } = Icons;
-    
-    const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+
+    const navigation = useNavigation();
 
     return (
         <View style={styles.container}>

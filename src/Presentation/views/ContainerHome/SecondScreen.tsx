@@ -1,14 +1,14 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { useNavigation } from "@react-navigation/native"; 
-import { StackNavigationProp } from "@react-navigation/stack"; 
-import { RootStackParamsList } from "../../../../App";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from "../../theme/Icons";
 
 const SecondScreen = () => {
 
-  const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+  const navigation = useNavigation();
 
   const { Arrow } = Icons
   return (
@@ -20,30 +20,30 @@ const SecondScreen = () => {
       <View style={styles.form}>
         <Text style={styles.titleform}>Salud a tu alcance</Text>
         <Text style={styles.parraForm}>
-           <Text style={styles.textColor}>Programa citas médicas en línea,</Text> realiza 
-           <Text style={styles.textColor}> consultas </Text>virtuales
-           <Text style={styles.textColor}> con especialistas,</Text> compra 
-           <Text style={styles.textColor}> productos para tus tratamientos.</Text>
+          <Text style={styles.textColor}>Programa citas médicas en línea,</Text> realiza
+          <Text style={styles.textColor}> consultas </Text>virtuales
+          <Text style={styles.textColor}> con especialistas,</Text> compra
+          <Text style={styles.textColor}> productos para tus tratamientos.</Text>
         </Text>
-        <TouchableOpacity 
-             style={styles.botom}
-             onPress={() => navigation.navigate("Regresar")}
-          >
-            <View style={styles.contentBoton}>
-                <Text style={styles.textBoton}>Siguiente</Text>
-                <Arrow width={20} height={20} style={styles.icon}/>
-            </View>
+        <TouchableOpacity
+          style={styles.botom}
+          onPress={() => navigation.navigate("Regresar")}
+        >
+          <View style={styles.contentBoton}>
+            <Text style={styles.textBoton}>Siguiente</Text>
+            <Arrow width={20} height={20} style={styles.icon} />
+          </View>
         </TouchableOpacity>
         <View style={styles.contentItems}>
-           <Text 
-             style={styles.selectSecond}
-             onPress={() => navigation.navigate("FIrstScreen")}
-           ></Text>
-           <Text style={styles.selectFirst}></Text>
-           <Text 
-              style={styles.selectThird}
-              onPress={() => navigation.navigate("Regresar")}
-            ></Text>
+          <Text
+            style={styles.selectSecond}
+            onPress={() => navigation.navigate("FIrstScreen")}
+          ></Text>
+          <Text style={styles.selectFirst}></Text>
+          <Text
+            style={styles.selectThird}
+            onPress={() => navigation.navigate("Regresar")}
+          ></Text>
         </View>
       </View>
     </View>

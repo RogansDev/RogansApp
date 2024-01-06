@@ -3,8 +3,6 @@ import React, { useState, useEffect } from "react";
 import { View, ScrollView, Text, TouchableOpacity, Modal, StyleSheet } from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamsList } from '../../../../App';
 import FloatingMenu from '../../../Presentation/components/FloatingMenu';
 import ConsultCard from '../../../Presentation/components/ConsultCard';
 import ProcedureCard from '../../../Presentation/components/ProcedureCard';
@@ -21,7 +19,7 @@ interface EventType {
 const Home = () => {
   const { UserIcon, ProcedimientoIcon, ConsultasIcon, AgendaIcon, Arrow, CloseIcon } = Icons;
 
-  const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -35,50 +33,50 @@ const Home = () => {
             <UserIcon width={27} height={27}/>
   </TouchableOpacity>*/}
         </View>
-            {/* ICONOS DE HEADER */}
-            <View style={styles.containerRoundedBtn}>
-              <TouchableOpacity onPress={() => navigation.navigate("ListaDeProcedimientos")} style={styles.roundedBtn}>
-                  <ProcedimientoIcon style={styles.iconRoundedBtn} width={24} height={24}/>
-                  <Text style={styles.textRoundedBtn}>
-                    Procedimientos
-                  </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("ListaDeConsultas")} style={styles.roundedBtn}>
-                  <ConsultasIcon style={styles.iconRoundedBtn} width={24} height={24}/>
-                  <Text style={styles.textRoundedBtn}>
-                    Consultas
-                  </Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("MiAgenda")} style={styles.roundedBtn}>
-                  <AgendaIcon style={styles.iconRoundedBtn} width={24} height={24}/>
-                  <Text style={styles.textRoundedBtn}>
-                    Mi Agenda
-                  </Text>
-              </TouchableOpacity>
-            </View>
-            {/* texto de consultas y botton de mas consultas */}
-            <View style={styles.section}>
-                <Text style={styles.titleSection}>Consultas{"\n"}para ti</Text>
-                <ButtonConsultationList />
-            </View>
-            {/* cards de consultas capilares */}
-            <View style={{marginBottom: 50}}>
-              <ConsultCard cards={consultCards} />
-            </View>
-            <View style={styles.section}>
-                <Text style={styles.titleSection}>Procedimientos{"\n"}para ti</Text>
-                <ButtonProcedureList />
-            </View>
-            <View style={{marginBottom: 30}}>
-              <ProcedureCard cards={procedureCards} />
-            </View>
-            <View style={{marginBottom: 110, alignItems: 'center',}}>
-              <TouchableOpacity onPress={() => WebBrowser.openBrowserAsync('https://rogansya.com/rogans-app/legal/')} style={{flexDirection: 'row', alignItems: 'center', gap: 8,}}>
-                <Text style={{fontFamily: MyFont.medium, fontSize: 16,}}>Términos y condiciones</Text>
-                <Arrow width={16} height={16} />
-              </TouchableOpacity>
-            </View>
-        </ScrollView>
+        {/* ICONOS DE HEADER */}
+        <View style={styles.containerRoundedBtn}>
+          <TouchableOpacity onPress={() => navigation.navigate("ListaDeProcedimientos")} style={styles.roundedBtn}>
+            <ProcedimientoIcon style={styles.iconRoundedBtn} width={24} height={24} />
+            <Text style={styles.textRoundedBtn}>
+              Procedimientos
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("ListaDeConsultas")} style={styles.roundedBtn}>
+            <ConsultasIcon style={styles.iconRoundedBtn} width={24} height={24} />
+            <Text style={styles.textRoundedBtn}>
+              Consultas
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("MiAgenda")} style={styles.roundedBtn}>
+            <AgendaIcon style={styles.iconRoundedBtn} width={24} height={24} />
+            <Text style={styles.textRoundedBtn}>
+              Mi Agenda
+            </Text>
+          </TouchableOpacity>
+        </View>
+        {/* texto de consultas y botton de mas consultas */}
+        <View style={styles.section}>
+          <Text style={styles.titleSection}>Consultas{"\n"}para ti</Text>
+          <ButtonConsultationList />
+        </View>
+        {/* cards de consultas capilares */}
+        <View style={{ marginBottom: 50 }}>
+          <ConsultCard cards={consultCards} />
+        </View>
+        <View style={styles.section}>
+          <Text style={styles.titleSection}>Procedimientos{"\n"}para ti</Text>
+          <ButtonProcedureList />
+        </View>
+        <View style={{ marginBottom: 30 }}>
+          <ProcedureCard cards={procedureCards} />
+        </View>
+        <View style={{ marginBottom: 110, alignItems: 'center', }}>
+          <TouchableOpacity onPress={() => WebBrowser.openBrowserAsync('https://rogansya.com/rogans-app/legal/')} style={{ flexDirection: 'row', alignItems: 'center', gap: 8, }}>
+            <Text style={{ fontFamily: MyFont.medium, fontSize: 16, }}>Términos y condiciones</Text>
+            <Arrow width={16} height={16} />
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -105,7 +103,7 @@ const styles = StyleSheet.create({
     fontFamily: MyFont.bold,
   },
   iconContainer: {
-    position:'relative',
+    position: 'relative',
     marginLeft: 16,
     overflow: 'hidden',
   },

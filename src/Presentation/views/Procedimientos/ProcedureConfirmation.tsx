@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamsList } from '../../../../App';
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../../Presentation/theme/Icons';
 
 const ProcedureConfirmation = () => {
     const { NextIcon, CalendarIcon, ProfileIcon, ClockIcon, CardsIcon, CalendarWhiteIcon } = Icons;
 
-    const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+    const navigation = useNavigation();
 
     const procedureContent = {
         image: require('../../../../assets/botox2.png'),
@@ -23,7 +21,7 @@ const ProcedureConfirmation = () => {
 
     const toggleAccordion = () => {
         setExpanded(!isExpanded);
-    };   
+    };
 
     return (
         <View style={styles.container}>
@@ -31,70 +29,70 @@ const ProcedureConfirmation = () => {
                 <Text style={styles.title}>Confirmar procedimiento</Text>
                 <View style={styles.twoCols}>
                     <Image source={procedureContent.image} style={styles.image} />
-                    <View style={{flexDirection: 'column'}}>
+                    <View style={{ flexDirection: 'column' }}>
                         <Text style={styles.title2}>{procedureContent.titleProcedimiento}</Text>
                     </View>
                 </View>
                 <View style={styles.textContainer}>
                     <TouchableOpacity style={styles.info}>
                         <View>
-                            <CalendarIcon style={styles.iconInfo} width={18} height={18}/>
+                            <CalendarIcon style={styles.iconInfo} width={18} height={18} />
                             <Text style={styles.titleInfo}>Fecha consulta</Text>
                         </View>
-                        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <View>
                                 <Text style={styles.textInfo}>xx/xx/xxxx</Text>
                                 <Text style={styles.textInfo}>hh:hh mm</Text>
                             </View>
-                            <NextIcon style={{marginLeft: 16}} width={24} height={24}/>
+                            <NextIcon style={{ marginLeft: 16 }} width={24} height={24} />
                         </View>
                     </TouchableOpacity>
                     <View style={styles.info}>
                         <View>
-                            <ProfileIcon style={styles.iconInfo} width={18} height={18}/>
+                            <ProfileIcon style={styles.iconInfo} width={18} height={18} />
                             <Text style={styles.titleInfo}>Especialista</Text>
                         </View>
-                        <View style={{flex: 0}}>
+                        <View style={{ flex: 0 }}>
                             <Text style={styles.textInfo}>Dr. Pepito Perez</Text>
                         </View>
                     </View>
                     <View style={styles.info}>
                         <View>
-                            <ClockIcon style={styles.iconInfo} width={18} height={18}/>
+                            <ClockIcon style={styles.iconInfo} width={18} height={18} />
                             <Text style={styles.titleInfo}>Duración</Text>
                         </View>
-                        <View style={{flex: 0}}>
+                        <View style={{ flex: 0 }}>
                             <Text style={styles.textInfo}>15 - 30 Mins</Text>
                         </View>
                     </View>
                     <TouchableOpacity style={styles.info}>
                         <View>
-                            <CardsIcon style={styles.iconInfo} width={18} height={18}/>
+                            <CardsIcon style={styles.iconInfo} width={18} height={18} />
                             <Text style={styles.titleInfo}>Costo</Text>
                         </View>
-                        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <View>
                                 <Text style={styles.textInfo}>${procedureContent.price}</Text>
                             </View>
-                            <NextIcon style={{marginLeft: 16}} width={24} height={24}/>
+                            <NextIcon style={{ marginLeft: 16 }} width={24} height={24} />
                         </View>
                     </TouchableOpacity>
 
-                    <View style={[styles.info, {marginTop: 60}]}>
+                    <View style={[styles.info, { marginTop: 60 }]}>
                         <View>
-                            <Text style={[styles.titleInfo, {marginBottom: 13}]}>Subtotal</Text>
+                            <Text style={[styles.titleInfo, { marginBottom: 13 }]}>Subtotal</Text>
                             <Text style={styles.titleInfo}>IVA</Text>
                         </View>
-                        <View style={{flex: 0, alignItems: 'flex-end',}}>
-                            <Text style={[styles.textInfo, {marginBottom: 13}]}>${procedureContent.price}</Text>
+                        <View style={{ flex: 0, alignItems: 'flex-end', }}>
+                            <Text style={[styles.textInfo, { marginBottom: 13 }]}>${procedureContent.price}</Text>
                             <Text style={styles.textInfo}>${procedureContent.iva}</Text>
                         </View>
                     </View>
-                    <View style={[styles.info, {borderBottomWidth: 0}]}>
+                    <View style={[styles.info, { borderBottomWidth: 0 }]}>
                         <View>
                             <Text style={styles.titleTotal}>Total</Text>
                         </View>
-                        <View style={{flex: 0, alignItems: 'flex-end',}}>
+                        <View style={{ flex: 0, alignItems: 'flex-end', }}>
                             <Text style={styles.textTotal}>${procedureContent.price}</Text>
                         </View>
                     </View>
@@ -118,7 +116,7 @@ const ProcedureConfirmation = () => {
                         </View>
                         <TouchableOpacity onPress={() => navigation.navigate("Confirmado")} style={styles.agendarBtn}>
                             <Text style={styles.textAgendarBtn}>Agendar</Text>
-                            <CalendarWhiteIcon style={styles.iconAgendarBtn} width={16} height={16}/>
+                            <CalendarWhiteIcon style={styles.iconAgendarBtn} width={16} height={16} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -129,9 +127,9 @@ const ProcedureConfirmation = () => {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#FCFCFC',
-      position: "relative",
+        flex: 1,
+        backgroundColor: '#FCFCFC',
+        position: "relative",
     },
     scrollContainer: {
         position: "relative",
@@ -220,7 +218,7 @@ const styles = StyleSheet.create({
         elevation: 10,
         // Sombras para iOS
         shadowColor: '#F0F0F0',
-        shadowOffset: { width: 4, height: 1},
+        shadowOffset: { width: 4, height: 1 },
         shadowOpacity: 1,
         shadowRadius: 10,
     },

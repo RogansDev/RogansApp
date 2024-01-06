@@ -10,11 +10,11 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamsList } from "../../../../App";
+
 import Icons from "../../theme/Icons";
 
 export const FIrstScreen = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+  const navigation = useNavigation();
 
   const { Arrow } = Icons;
 
@@ -36,9 +36,9 @@ export const FIrstScreen = () => {
           </Text>{" "}
           para tus necesidades.
         </Text>
-        <TouchableOpacity 
-           style={styles.bottom}
-           onPress={() => navigation.navigate("Martin")}
+        <TouchableOpacity
+          style={styles.bottom}
+          onPress={() => navigation.navigate("Martin")}
         >
           <View style={styles.contentNext}>
             <Text style={styles.textBoton}>Siguiente</Text>

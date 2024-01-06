@@ -17,7 +17,7 @@ const useRegisterFirebase = () => {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app)
 
-    const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+    const navigation = useNavigation();
     const [error, setError] = useState("");
 
     const handleRegister = async (props: any) => {
@@ -128,9 +128,10 @@ const useRegisterFirebase = () => {
                             console.log(JSON.stringify(selectedProfile, null, 6))
                             navigation.navigate("Home")
 
-                        } else { 
+                        } else {
                             console.log('usuario no existe .', selectedProfile)
-                            Alert.alert('usuario no existe!'); }
+                            Alert.alert('usuario no existe!');
+                        }
 
                     } catch (error) {
                         setError(error.message);

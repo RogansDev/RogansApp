@@ -8,7 +8,11 @@ function PrivateScreen() {
     return (
 
         <Stack.Navigator>
+            
             <Stack.Screen name="Home" component={Home} options={{ title: '', headerShown: false }} />
+
+            {/* aqui agregar las pantallas privadas  */}
+
         </Stack.Navigator>
 
     );

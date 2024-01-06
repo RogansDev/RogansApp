@@ -4,7 +4,7 @@ import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import ScreenThrid from "../../../Presentation/components/ScreenThrid";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamsList } from "../../../../App";
+
 const ThirdScreen = () => {
 
   const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>()
