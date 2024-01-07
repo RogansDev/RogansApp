@@ -33,10 +33,7 @@ const useRegisterFirebase = () => {
             createUserWithEmailAndPassword(auth, props.email, props.password)
                 .then((userCredential) => {
                     const userId = userCredential.user.uid;
-                    console.log(userId)
                     try {
-
-
                         const dataToCreate = {
                             user_id: userId,
                             email: props.email,
@@ -52,10 +49,7 @@ const useRegisterFirebase = () => {
                         addDoc(collection(db, "users"), dataToCreate).
                             then(() => {
 
-                                // AsyncStorage.setItem('mail', props.email);
-                                // AsyncStorage.setItem('pass',  props.password);
-
-                                navigation.navigate("Login")
+                                navigation.navigate('Login')
                                 Alert.alert('Cargado correctamente!')
                             }).catch((error) => {
                                 console.log(error)
@@ -95,12 +89,11 @@ const useRegisterFirebase = () => {
 
     const handleLogin = async (email: any, password: any) => {
 
+        console.log(`email ${email} y pass ${password}`)
+
         try {
             await signInWithEmailAndPassword(auth, email, password)
                 .then(async (userCredential) => {
-
-                    console.log(userCredential.user.uid)
-
 
                     try {
                         const profileQuery = query(
@@ -123,19 +116,18 @@ const useRegisterFirebase = () => {
                                 id: selectedProfile.user_id,
                                 email: selectedProfile.email,
                                 role: selectedProfile.role,
-                                urlphoto:selectedProfile.urlphoto,
-                                document:selectedProfile.document,
-                                name:selectedProfile.name,
-                                lastname:selectedProfile.lastname,
-                                phone:selectedProfile.phone,
-                                birthdate:selectedProfile.birthdate,
-                                logged:true
+                                urlphoto: selectedProfile.urlphoto,
+                                document: selectedProfile.document,
+                                name: selectedProfile.name,
+                                lastname: selectedProfile.lastname,
+                                phone: selectedProfile.phone,
+                                birthdate: selectedProfile.birthdate,
+                                logged: true
                             }
-                            console.log('mi user es ', JSON.stringify(selectedProfile, null, 6))
-                            // localStorage.setItem("zxcasd", email);
-                            // localStorage.setItem("qwefgh", password);
-                            distpach(setUserInfo(user))
-                            
+                           
+                            AsyncStorage.setItem('@xqtes', JSON.stringify(email));
+                            AsyncStorage.setItem('@asdqwe', JSON.stringify(password));
+                            distpach(setUserInfo(user));
 
                         } else {
                             console.log('usuario no existe .', selectedProfile)
@@ -145,19 +137,22 @@ const useRegisterFirebase = () => {
                     } catch (error) {
                         setError(error.message);
                         console.log("err", error)
+                        console.log("err aqui", error.message)
                         Alert.alert('Ocurrio un error!');
                     }
 
 
                 })
                 .catch((error) => {
-                    console.log("err", error)
+                    console.log("error", error)
+                    console.log("error", error.message)
                     setError(error.message);
                     Alert.alert('Ocurrio un error!');
                 })
 
         } catch (error) {
-            console.log("err", error)
+            console.log("errerer", error)
+            console.log("errerer", error.message)
             setError(error.message);
             Alert.alert('Ocurrio un error!');
 

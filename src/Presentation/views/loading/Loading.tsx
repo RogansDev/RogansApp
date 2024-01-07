@@ -17,7 +17,7 @@ const Loading = () => {
     if (loadingScreen) {
         return (
             <View style={styles.container}>
-              <ActivityIndicator size="large" color="#fff"/>
+              <ActivityIndicator size="large" color="red"/>
               <Text style={styles.text}>Cargando...</Text>
             </View>
         );
