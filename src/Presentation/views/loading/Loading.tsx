@@ -45,3 +45,28 @@ const styles = StyleSheet.create({
     }
 })
 export default Loading;
+
+// const { logged } = useSelector((state: any) => state.user);
+//     const { handleLogin } = useRegisterFirebase();
+
+//     useEffect(() => {
+
+//         const obtenerDatos = async () => {
+//             try {
+//                 const poiñlk = await AsyncStorage.getItem('@xqtes');
+//                 const mnbjhg = await AsyncStorage.getItem('@asdqwe');
+
+//                 console.log('email', poiñlk);
+//                 console.log('pass', mnbjhg)
+
+//                 if (!logged && poiñlk !== null && mnbjhg !== null) {
+//                     handleLogin(poiñlk, mnbjhg);
+//                 }
+//                 setLoadingScreen(false);
+//             } catch (error) {
+//                 console.error('Error al obtener datos de AsyncStorage:', error);
+//             }
+//         };
+
+//         obtenerDatos();
+//     }, []);
