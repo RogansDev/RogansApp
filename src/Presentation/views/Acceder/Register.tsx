@@ -20,6 +20,7 @@ import Checkbox from "expo-checkbox";
 import UseViewModel from "./ViewModel/RegisterViewModel";
 import CustomTextInput from "../../components/CustomTextInput";
 import RoundedBottom from "../../components/RoundedBottom";
+import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
 
 const Register = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -38,6 +39,8 @@ const Register = () => {
     register,
     errorMessage,
   } = UseViewModel();
+
+  const { loading } = useRegisterFirebase();
 
   // verifica que todos los campos esten para llenos si no vota un error 
   useEffect(() => {
@@ -161,7 +164,10 @@ const Register = () => {
               </View>
             </View>
             {/* boton de registro */}
-            <RoundedBottom title="REGISTRARME" onPress={() => handleRegister() }/>
+            {loading ?
+            <RoundedBottom title="Cargando..." />           
+          :
+            <RoundedBottom title="REGISTRARME" onPress={() => handleRegister() }/>}
           </View>
         </View> 
     </ScrollView>
