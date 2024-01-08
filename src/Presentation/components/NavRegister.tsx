@@ -3,14 +3,14 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { MyColors, MyFont } from "../theme/AppTheme";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamsList } from "../../../App";
 import Register from '../../../assets/icons/clickregister.svg'
+import { RootParamList } from "../../utils/RootParamList";
 
 
 
 const NavRegister = () => {
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
   return (
     <TouchableOpacity

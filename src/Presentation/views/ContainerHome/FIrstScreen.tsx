@@ -10,12 +10,11 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { StackNavigationProp } from "@react-navigation/stack";
-
 import Icons from "../../theme/Icons";
-import { RootParamListPublic } from "../../../navigation/PublicScreen";
+import { RootParamList } from "../../../utils/RootParamList";
 
 export const FIrstScreen = () => {
-  const navigation = useNavigation<StackNavigationProp<RootParamListPublic>>();
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
   const { Arrow } = Icons;
 

@@ -4,12 +4,12 @@ import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import ScreenThrid from "../../../Presentation/components/ScreenThrid";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootParamListPublic } from "../../../navigation/PublicScreen";
 import Icons from "../../theme/Icons";
+import { RootParamList } from "../../../utils/RootParamList";
 
 const ThirdScreen = () => {
 
-  const navigation = useNavigation<StackNavigationProp<RootParamListPublic>>();
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
   const { Arrow } = Icons;
 

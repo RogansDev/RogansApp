@@ -2,14 +2,14 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from "../../theme/Icons";
-import { RootParamListPublic } from "../../../navigation/PublicScreen";
+import { RootParamList } from "../../../utils/RootParamList";
+
 
 const SecondScreen = () => {
 
-  const navigation = useNavigation<StackNavigationProp<RootParamListPublic>>();
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
   const { Arrow } = Icons;
 

@@ -12,8 +12,14 @@ import Checkbox from "expo-checkbox";
 import Icons from "../../theme/Icons";
 import CustomTextInput from "../../components/CustomTextInput";
 import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootParamList } from "../../../utils/RootParamList";
 
 const Login = () => {
+
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
+
+
   const { email, password, onChange } = UseViewModel();
   const { handleLogin } = useRegisterFirebase();
   
@@ -30,13 +36,9 @@ const Login = () => {
 
   const [isChecked, setIsChecked] = useState(false);
 
-  const navigation = useNavigation();
-
   const handleCheckBoxChange = () => {
     setIsChecked(!isChecked);
   };
-
- 
 
   const handleAcceptTerms = () => {
     if (isChecked) {
@@ -93,7 +95,7 @@ const Login = () => {
         <View style={{ marginTop: 20 }}>
           <SingLogin
             text="Ingresar"
-            onPress={() => handleLogin(email, password)}
+            onPress={() => navigation.navigate("Home")}
           />
         </View>
         <View style={styles.containerUpdate}>

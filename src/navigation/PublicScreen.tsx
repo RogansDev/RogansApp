@@ -10,21 +10,22 @@ import { MyColors } from '../Presentation/theme/AppTheme';
 import ConfirmationKey from '../Presentation/views/Acceder/ConfirmationKey';
 import ModalVerifitCode from '../Presentation/components/ModalVerifitCode';
 import UpdatePass from '../Presentation/views/Acceder/UpdatePass';
+import { RootParamList } from '../utils/RootParamList';
 
 
-export type RootParamListPublic = {
-    Login: undefined,
-    UpdateKey: undefined,
-    ModalVerifitCode: undefined,
-    ConfirmationKey: undefined,
-    Register: undefined,
-    thirdPage: undefined,
-    second: undefined,
-    first: undefined,
-    acceder: undefined,
-}
+// export type RootParamListPublic = {
+//     Login: undefined,
+//     UpdateKey: undefined,
+//     ModalVerifitCode: undefined,
+//     ConfirmationKey: undefined,
+//     Register: undefined,
+//     thirdPage: undefined,
+//     second: undefined,
+//     first: undefined,
+//     acceder: undefined,
+// }
 
-const Stack = createNativeStackNavigator<RootParamListPublic>();
+const Stack = createNativeStackNavigator<RootParamList>();
 
 
 

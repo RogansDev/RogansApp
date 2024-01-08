@@ -17,25 +17,10 @@ import ConsultationList from "../Presentation/views/Consultas/ConsultationList";
 import DeniedPage from "../Presentation/views/Consultas/DeniedPage";
 import ProcedureList from "../Presentation/views/Procedimientos/ProceduresList";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { RootParamList } from "../utils/RootParamList";
 
-export type RootParamListPrivate = {
-  ListaDeConsultas: undefined;
-  ListaDeProcedimientos: undefined;
-  DescripcionConsultas: undefined;
-  DescripcionProcedimientos: undefined;
-  ConfirmacionConsulta: undefined;
-  ConfirmacionProcedimiento: undefined;
-  Confirmado: undefined;
-  Rechazado: undefined;
-  Pendiente: undefined;
-  MiAgenda: undefined;
-  EditarCita: undefined;
-  CitaCancelada: undefined;
-  Servicios: undefined;
-  Perfil: undefined;
-};
 
-const Stack = createNativeStackNavigator<RootParamListPrivate>();
+const Stack = createNativeStackNavigator<RootParamList>();
 
 function PrivateScreen() {
   return (
