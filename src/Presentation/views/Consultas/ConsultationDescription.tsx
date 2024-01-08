@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, ScrollView, Text, Image, TouchableOpacity, Modal, Linking, StyleSheet, TextInput } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import MiCalendario from '../../components/MiCalendario';
 import PopUpError from '../../components/PopUpError';
-
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { useNavigation } from '@react-navigation/native';
 import Icons from '../../../Presentation/theme/Icons';
 import { agendarCita } from '../../../../agendarCitaService';
 import { WebView } from 'react-native-webview';
+import { setCalendaryInfo } from '../../../state/CalendarySlice';
+
 
 interface MiCalendarioHandles {
     toggleModal: () => void;
@@ -19,25 +21,25 @@ interface PopUpErrorHandles {
 
 const ConsultationDescription = () => {
     const { CalendarAddIcon, ArrowDownIcon, ArrowWhiteIcon, CloseIcon } = Icons;
+    const dispatch = useDispatch();
+    const selectedCard = useSelector( (state : any) => state.calendary.selectedCard);
+    const user = useSelector( (state : any) => state.user)
 
-    const {
-        fecha,
-        setFecha,
-        horaAgendada,
-        setHoraAgendada,
-        virtualPresecial,
-        setVirtualPresecial,
-        selectedCard,
-        setSelectedCard,
-        nombreUsuario,
-        setNombreUsuario,
-        correoUsuario,
-        setCorreoUsuario,
-        cedulaUsuario,
-        setCedulaUsuario,
-        telUsuario,
-        setTelUsuario,
-    }: any = useState();
+    const [fecha, setFecha] = useState(useSelector( (state : any) => state.calendary.fecha));
+    const [horaAgendada, setHoraAgendada] = useState(useSelector( (state : any) => state.calendary.horaAgendada));
+    const [virtualPresecial, setVirtualPresecial] = useState(useSelector( (state : any) => state.calendary.virtualPresecial));
+    const nombreUsuario =  user.name;
+    const correoUsuario = user.email;
+    const cedulaUsuario = user.document;
+    const telUsuario = user.phone;
+
+    const handleDateChange = (newDate) => {
+        // Actualiza el estado local
+        setFecha(newDate);
+
+        // Actualiza el estado global
+        dispatch(setCalendaryInfo({ ...state.calendary, fecha: newDate }));
+    };
 
     const navigation = useNavigation();
 
@@ -50,7 +52,6 @@ const ConsultationDescription = () => {
     const [urlFinal, setUrlFinal] = useState('');
 
     useEffect(() => {
-        setFecha('');
         setHoraAgendada('');
         setVirtualPresecial('');
     }, []);
@@ -62,17 +63,6 @@ const ConsultationDescription = () => {
             setVirtualPresecial('Presencial');
         }
     }, [selectedValue]);
-
-    const consultationContent = {
-        image: require('../../../../assets/implante2.png'),
-        title: 'Trasplante capilar',
-        oldPrice: '$80.000',
-        description:
-            "En Rogans entendemos lo desafiante que puede ser lidiar con la pérdida de cabello y sus efectos en la autoestima y la confianza. Te ofrecemos un enfoque integral y experto para abordar la alopecia y ayudarlo a recuperar su cabello y su confianza.",
-        duracion_cita: "30 minutos",
-        precio: "50000",
-        category: 'Capilar',
-    };
 
     const calendarioRef = useRef<MiCalendarioHandles>(null);
 
@@ -297,94 +287,8 @@ const ConsultationDescription = () => {
                                 </View>
                             </View>
                         </Modal>
-
-                        <Modal
-                            transparent={true}
-                            visible={modalVisible2}
-                            onRequestClose={() => setModalVisible2(false)}
-                        >
-                            <View style={styles.modalContainer}>
-                                <View style={styles.modalContent}>
-                                    <TouchableOpacity onPress={() => setModalVisible2(false)} style={{ position: 'absolute', top: 20, left: 20, }}>
-                                        <CloseIcon width={16} height={16} />
-                                    </TouchableOpacity>
-
-                                    <View>
-                                        <TouchableOpacity onPress={() => { setTipoDeDoc("CC"), setModalVisible2(false) }} style={{ paddingVertical: 2, marginVertical: 8, }}>
-                                            <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>CC</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => { setTipoDeDoc("CE"), setModalVisible2(false) }} style={{ paddingVertical: 2, marginVertical: 8, }}>
-                                            <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>CE</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => { setTipoDeDoc("NI"), setModalVisible2(false) }} style={{ paddingVertical: 2, marginVertical: 8, }}>
-                                            <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>NI (Nit)</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => { setTipoDeDoc("PB"), setModalVisible2(false) }} style={{ paddingVertical: 2, marginVertical: 8, }}>
-                                            <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>PB (Pasaporte)</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => { setTipoDeDoc("RC"), setModalVisible2(false) }} style={{ paddingVertical: 2, marginVertical: 8, }}>
-                                            <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>RC (Registro civil)</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </View>
-                        </Modal>
-                        {citaAgendada ? (
-                            <>
-                                <Text style={styles.title2}>Deja tus datos personales</Text>
-                                <View>
-                                    <View>
-                                        <View style={styles.titleModalButton}>
-                                            <Text style={styles.text1TitleModalButton}>Nombre usuario </Text>
-                                            <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
-                                        </View>
-                                        <View style={styles.modalButton}>
-                                            <TextInput style={styles.textInput} value={nombreUsuario} onChangeText={(texto) => setNombreUsuario(texto)}></TextInput>
-                                        </View>
-                                    </View>
-                                    <View>
-                                        <View style={styles.titleModalButton}>
-                                            <Text style={styles.text1TitleModalButton}>Correo </Text>
-                                            <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
-                                        </View>
-                                        <View style={styles.modalButton}>
-                                            <TextInput style={styles.textInput} value={correoUsuario} onChangeText={(texto) => setCorreoUsuario(texto)}></TextInput>
-                                        </View>
-                                    </View>
-                                    <View>
-                                        <View style={styles.titleModalButton}>
-                                            <Text style={styles.text1TitleModalButton}>Teléfono </Text>
-                                            <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
-                                        </View>
-                                        <View style={styles.modalButton}>
-                                            <TextInput style={styles.textInput} value={telUsuario} onChangeText={(texto) => setTelUsuario(texto)}></TextInput>
-                                        </View>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', gap: 8 }}>
-                                        <View style={{ width: 135, }}>
-                                            <View style={styles.titleModalButton}>
-                                                <Text style={styles.text1TitleModalButton}>Tipo de doc. </Text>
-                                            </View>
-                                            <TouchableOpacity onPress={() => setModalVisible2(true)} style={styles.modalButton}>
-                                                <Text style={styles.textModalButton}>{tipoDeDoc ? tipoDeDoc : 'CC'}</Text>
-                                                <ArrowDownIcon style={styles.imageModalButton} width={16} height={16} />
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={{ flex: 1, }}>
-                                            <View style={styles.titleModalButton}>
-                                                <Text style={styles.text1TitleModalButton}>Documento </Text>
-                                                <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
-                                            </View>
-                                            <View style={styles.modalButton}>
-                                                <TextInput style={styles.textInput} value={cedulaUsuario} onChangeText={(texto) => setCedulaUsuario(texto)}></TextInput>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </View>
-                            </>
-                        ) : (
-                            <>
-                                <MiCalendario ref={calendarioRef} onAbrirPopUpError={abrirPopUpError} />
+                        
+                        <MiCalendario ref={calendarioRef} onAbrirPopUpError={abrirPopUpError} />
                                 <Text style={styles.title2}>Agenda tu consulta</Text>
                                 <View>
                                     <View style={styles.titleModalButton}>
@@ -406,8 +310,6 @@ const ConsultationDescription = () => {
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                            </>
-                        )}
 
                         <TouchableOpacity onPress={verificarDatos} style={styles.button}>
                             <Text style={styles.textButtom}>Continuar</Text>

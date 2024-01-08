@@ -25,11 +25,11 @@ const ThirdScreen = () => {
         <Text style={styles.titleform}>Bienvenido a Rogans</Text>
         <Text style={styles.parraForm}>
           <Text style={styles.parraText}>Con Rogans, puedes acceder a </Text>
-          servicios médicos en línea y obtener tratamientos personalizados  <Text style={styles.parraText}>para tus necesidades.</Text>
+          servicios médicos en línea y obtener tratamientos personalizados <Text style={styles.parraText}>para tus necesidades.</Text>
         </Text>
         <TouchableOpacity
           style={styles.botom}
-          onPress={() => navigation.navigate("acceder")}
+          onPress={() => navigation.navigate("Login")}
         >
           <View style={styles.contentBoton}>
             <Text style={styles.textBoton}>Comencemos</Text>

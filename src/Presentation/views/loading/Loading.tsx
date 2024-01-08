@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ActivityIndicator, StyleSheet, View, Image, Text } from "react-native";
 import ThirdScreen from "../ContainerHome/ThirdScreen";
+import { fetchFonts } from '../../theme/AppTheme';
+
 
 const Loading = () => {
 
@@ -8,6 +10,7 @@ const Loading = () => {
 
     useEffect(() => {
         const loadData = async () => {
+            await fetchFonts();
             await new Promise((resolve) => setTimeout(resolve, 3000));
             setLoadingScreen(false);
         };
@@ -24,9 +27,7 @@ const Loading = () => {
     }
 
     return (
-        <View style={styles.container}>
-            <ThirdScreen />
-        </View>
+        <ThirdScreen />
     )
 }
 

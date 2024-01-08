@@ -3,19 +3,23 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView, ImageSourc
 import { useNavigation } from '@react-navigation/native';
 import { MyFont } from "../theme/AppTheme";
 import Icons from '../theme/Icons';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { setCalendaryInfo } from '../../state/CalendarySlice';
 
 const ConsultCard = ({ cards }: any) => {
-
   const { AgendarIcon } = Icons;
-
+  const dispatch = useDispatch();
+  const calendaryState = useSelector(state => state.calendary);
   const navigation = useNavigation();
 
-  const [selectedCard, setSelectedCard] = useState();
-
   const handleSelectCard = async (card: any) => {
-    setSelectedCard(card)
+    dispatch(setCalendaryInfo({
+      ...calendaryState,
+      selectedCard: card
+    }));
     navigation.navigate('DescripcionConsultas');
+
+    console.log(calendaryState.selectedCard);
   };
 
   return (

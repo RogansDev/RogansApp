@@ -23,6 +23,8 @@ const Home = () => {
   const navigation = useNavigation();
   const state = useSelector( (state : any) => state)
 
+  const userName = state.user.name;
+
   useEffect(() => {
 
     console.log('home', JSON.stringify(state, null, 5))
@@ -36,7 +38,7 @@ const Home = () => {
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Hola Juanito</Text>
+            <Text style={styles.title}>Hola {userName}</Text>
           </View>
           <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate("Perfil")}>
             <UserIcon width={27} height={27}/>

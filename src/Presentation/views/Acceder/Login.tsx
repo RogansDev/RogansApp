@@ -16,10 +16,6 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
 
 const Login = () => {
-
-  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
-
-
   const { email, password, onChange } = UseViewModel();
   const { handleLogin } = useRegisterFirebase();
   
@@ -36,9 +32,13 @@ const Login = () => {
 
   const [isChecked, setIsChecked] = useState(false);
 
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
+
   const handleCheckBoxChange = () => {
     setIsChecked(!isChecked);
   };
+
+ 
 
   const handleAcceptTerms = () => {
     if (isChecked) {
@@ -95,7 +95,7 @@ const Login = () => {
         <View style={{ marginTop: 20 }}>
           <SingLogin
             text="Ingresar"
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => handleLogin(email, password)}
           />
         </View>
         <View style={styles.containerUpdate}>
