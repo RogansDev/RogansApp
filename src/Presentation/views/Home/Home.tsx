@@ -36,7 +36,7 @@ const Home = () => {
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Bienvenido</Text>
+            <Text style={styles.title}>Bienvenido {state.user.name.toUpperCase()}, {state.user.name.toUpperCase()}</Text>
           </View>
           {/*<TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate("Perfil")}>
             <UserIcon width={27} height={27}/>

@@ -29,7 +29,7 @@ const ThirdScreen = () => {
         </Text>
         <TouchableOpacity
           style={styles.botom}
-          onPress={() => navigation.navigate("acceder")}
+          onPress={() => navigation.navigate("Login")}
         >
           <View style={styles.contentBoton}>
             <Text style={styles.textBoton}>Comencemos</Text>

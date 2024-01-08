@@ -23,11 +23,7 @@ const Loading = () => {
         );
     }
 
-    return (
-        <View style={styles.container}>
-            <ThirdScreen />
-        </View>
-    )
+    return (<ThirdScreen />)
 }
 
 
