@@ -3,6 +3,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from '../Presentation/views/Acceder/Login';
 import Register from '../Presentation/views/Acceder/Register';
 import ThirdScreen from '../Presentation/views/ContainerHome/ThirdScreen';
+import ModalVerifitCode from '../Presentation/components/ModalVerifitCode';
+import { MyColors } from '../Presentation/theme/AppTheme';
+import ConfirmationKey from '../Presentation/views/Acceder/ConfirmationKey';
+import UpdatePass from '../Presentation/views/Acceder/UpdatePass';
+import SecondScreen from '../Presentation/views/ContainerHome/SecondScreen';
 
 const Stack = createNativeStackNavigator();
 
