@@ -2,15 +2,18 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from "../../theme/Icons";
+import { RootParamList } from "../../../utils/RootParamList";
+
 
 const SecondScreen = () => {
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
-  const { Arrow } = Icons
+  const { Arrow } = Icons;
+
+  
   return (
     <View style={styles.container}>
       <Image
@@ -27,7 +30,7 @@ const SecondScreen = () => {
         </Text>
         <TouchableOpacity
           style={styles.botom}
-          onPress={() => navigation.navigate("Regresar")}
+          onPress={() => navigation.navigate("thirdPage")}
         >
           <View style={styles.contentBoton}>
             <Text style={styles.textBoton}>Siguiente</Text>
@@ -37,12 +40,12 @@ const SecondScreen = () => {
         <View style={styles.contentItems}>
           <Text
             style={styles.selectSecond}
-            onPress={() => navigation.navigate("FIrstScreen")}
+            onPress={() => navigation.navigate("first")}
           ></Text>
           <Text style={styles.selectFirst}></Text>
           <Text
             style={styles.selectThird}
-            onPress={() => navigation.navigate("Regresar")}
+            onPress={() => navigation.navigate("thirdPage")}
           ></Text>
         </View>
       </View>

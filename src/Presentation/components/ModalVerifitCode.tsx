@@ -10,7 +10,6 @@ import {
 import { MyColors } from "../theme/AppTheme";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamsList } from "../../../App";
 import CodeUpdateKeys from "./CodeUpdateKeys";
 import Icons from "../theme/Icons";
 

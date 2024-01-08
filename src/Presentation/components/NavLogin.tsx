@@ -3,12 +3,12 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { MyColors, MyFont } from '../theme/AppTheme';
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamsList } from "../../../App";
 import Login from '../../../assets/icons/loginIniciar.svg'
+import { RootParamList } from '../../utils/RootParamList';
 
 const NavLogin = () => {
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
   return (
     <TouchableOpacity

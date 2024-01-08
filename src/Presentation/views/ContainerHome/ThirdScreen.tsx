@@ -1,13 +1,17 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import ScreenThrid from "../../../Presentation/components/ScreenThrid";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import Icons from "../../theme/Icons";
+import { RootParamList } from "../../../utils/RootParamList";
 
 const ThirdScreen = () => {
 
-  const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>()
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
+
+  const { Arrow } = Icons;
 
 
   return (
@@ -23,10 +27,26 @@ const ThirdScreen = () => {
           <Text style={styles.parraText}>Con Rogans, puedes acceder a </Text>
           servicios médicos en línea y obtener tratamientos personalizados  <Text style={styles.parraText}>para tus necesidades.</Text>
         </Text>
-        <View style={{ marginTop: 20, marginBottom: 30, }}>
-          <ScreenThrid text="¡Comencemos!" />
+        <TouchableOpacity
+          style={styles.botom}
+          onPress={() => navigation.navigate("acceder")}
+        >
+          <View style={styles.contentBoton}>
+            <Text style={styles.textBoton}>Comencemos</Text>
+            <Arrow width={20} height={20} style={styles.icon} />
+          </View>
+        </TouchableOpacity>
+        <View style={styles.contentItems}>
+          <Text
+            style={styles.selectSecond}
+            onPress={() => navigation.navigate("first")}
+          ></Text>
+          <Text style={styles.selectFirst}></Text>
+          <Text
+            style={styles.selectThird}
+            onPress={() => navigation.navigate("thirdPage")}
+          ></Text>
         </View>
-
       </View>
     </View>
   );
@@ -74,6 +94,32 @@ const styles = StyleSheet.create({
   parraText: {
     color: 'white',
     fontFamily: MyFont.regular,
+  },
+  botom: {
+    width: 340,
+    height: 50,
+    backgroundColor: MyColors.base,
+    justifyContent: "center",
+    borderRadius: 15,
+    marginTop: 20,
+    left: 2,
+  },
+  contentBoton: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignSelf: "center",
+    gap: 3,
+  },
+  textBoton: {
+    color: MyColors.black,
+    fontFamily: MyFont.regular,
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  icon: {
+    left: 10,
+    top: 6,
   },
   contentItems: {
     display: "flex",
