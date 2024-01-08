@@ -5,8 +5,6 @@ import {
   StyleSheet
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamsList } from "../../../../App";
 import SingLogin from "../../../Presentation/components/SingLogin";
 import UseViewModel from "./ViewModel/LoginViewModel";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
@@ -17,7 +15,8 @@ import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
 
 const Login = () => {
   const { email, password, onChange } = UseViewModel();
-  const {handleLogin} = useRegisterFirebase();
+  const { handleLogin } = useRegisterFirebase();
+  
 
   const {
     LogoBlack,
@@ -31,11 +30,13 @@ const Login = () => {
 
   const [isChecked, setIsChecked] = useState(false);
 
-  const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+  const navigation = useNavigation();
 
   const handleCheckBoxChange = () => {
     setIsChecked(!isChecked);
   };
+
+ 
 
   const handleAcceptTerms = () => {
     if (isChecked) {
@@ -64,13 +65,13 @@ const Login = () => {
           property="email"
         />
         {/* Input de contraseña */}
-        <CustomTextInput 
-           title="Contraseña"
-           placeholder="Ingresa tu contraseña"
-           value={password}
-           onChangeText={onChange}
-           keyboardType="default"
-           property="password"
+        <CustomTextInput
+          title="Contraseña"
+          placeholder="Ingresa tu contraseña"
+          value={password}
+          onChangeText={onChange}
+          keyboardType="default"
+          property="password"
         />
         {/* input acepto terminos */}
         <View style={styles.Accept}>
@@ -90,10 +91,10 @@ const Login = () => {
           </View>
         </View>
         <View style={{ marginTop: 20 }}>
-        <SingLogin
-          text="Ingresar"
-          onPress={() => handleLogin(email, password)}
-        />
+          <SingLogin
+            text="Ingresar"
+            onPress={() => handleLogin(email, password)}
+          />
         </View>
         <View style={styles.containerUpdate}>
           <UpdatePassword width={30} height={24} />

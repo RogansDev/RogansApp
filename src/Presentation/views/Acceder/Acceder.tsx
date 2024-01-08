@@ -4,14 +4,13 @@ import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import NavLogin from "../../../Presentation/components/NavLogin";
 import NavRegister from "../../../Presentation/components/NavRegister";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamsList } from "../../../../App";
+
 import Icons from "../../../Presentation/theme/Icons";
 
 const Acceder = () => {
   const { LogoWhite, LineaWhite, Facebook, Google, Apple, Invitado } = Icons;
 
-  const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -27,7 +26,7 @@ const Acceder = () => {
         </View>
         <View style={styles.contentColum}>
           <View>
-            <LineaWhite width={20} height={20} fill="white"/>
+            <LineaWhite width={20} height={20} fill="white" />
           </View>
           <View style={styles.redesSociales}>
             <Facebook width={30} height={30} />
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
   background: {
     width: "100%",
     height: "100%",
-    
+
   },
   contend: {
     width: "100%",

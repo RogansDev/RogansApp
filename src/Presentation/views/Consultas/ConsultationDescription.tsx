@@ -2,11 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, ScrollView, Text, Image, TouchableOpacity, Modal, Linking, StyleSheet, TextInput } from 'react-native';
 import MiCalendario from '../../components/MiCalendario';
 import PopUpError from '../../components/PopUpError';
-import { useAppContext } from '../../../../AppContext';
+
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamsList } from '../../../../App';
 import Icons from '../../../Presentation/theme/Icons';
 import { agendarCita } from '../../../../agendarCitaService';
 import { WebView } from 'react-native-webview';
@@ -20,9 +18,9 @@ interface PopUpErrorHandles {
 }
 
 const ConsultationDescription = () => {
-    const { CalendarAddIcon, ArrowDownIcon, ArrowWhiteIcon,  CloseIcon } = Icons;
+    const { CalendarAddIcon, ArrowDownIcon, ArrowWhiteIcon, CloseIcon } = Icons;
 
-    const { 
+    const {
         fecha,
         setFecha,
         horaAgendada,
@@ -39,9 +37,9 @@ const ConsultationDescription = () => {
         setCedulaUsuario,
         telUsuario,
         setTelUsuario,
-    }: any = useAppContext();
+    }: any = useState();
 
-    const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+    const navigation = useNavigation();
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
@@ -49,13 +47,13 @@ const ConsultationDescription = () => {
     const [selectedValue, setSelectedValue] = useState<string | null>(null);
     const [tipoDeDoc, setTipoDeDoc] = useState<string | null>(null);
     const [citaAgendada, setCitaAgendada] = useState(false);
-    const [urlFinal ,setUrlFinal] = useState('');
-    
+    const [urlFinal, setUrlFinal] = useState('');
+
     useEffect(() => {
         setFecha('');
         setHoraAgendada('');
         setVirtualPresecial('');
-    }, []); 
+    }, []);
 
     useEffect(() => {
         if (selectedValue === 'Virtual') {
@@ -63,8 +61,8 @@ const ConsultationDescription = () => {
         } else if (selectedValue === 'Presencial') {
             setVirtualPresecial('Presencial');
         }
-    }, [selectedValue]); 
-    
+    }, [selectedValue]);
+
     const consultationContent = {
         image: require('../../../../assets/implante2.png'),
         title: 'Trasplante capilar',
@@ -80,68 +78,68 @@ const ConsultationDescription = () => {
 
     const abrirCalendario = () => {
         if (calendarioRef.current) {
-          calendarioRef.current.toggleModal();
+            calendarioRef.current.toggleModal();
         }
-      };
+    };
 
     const PopUpErrorRef = useRef<PopUpErrorHandles>(null);
 
-    const abrirPopUpError = (mensaje: string) => {        
+    const abrirPopUpError = (mensaje: string) => {
         if (PopUpErrorRef.current) {
             PopUpErrorRef.current.togglePopUpError(mensaje);
-          }
+        }
     };
 
     const iniciarProcesoDePago = () => {
         const generarReferenceCode = () => {
-          const ahora = new Date();
-          // Generar un número aleatorio y convertirlo a string en base 36
-          const randomId = Math.random().toString(36).substr(2, 9);
-        
-          // Formatear la fecha y hora en un string y combinarlo con el identificador único
-          const referenceCode = `rogans_${ahora.toISOString()}_${randomId}`;
-        
-          return referenceCode;
+            const ahora = new Date();
+            // Generar un número aleatorio y convertirlo a string en base 36
+            const randomId = Math.random().toString(36).substr(2, 9);
+
+            // Formatear la fecha y hora en un string y combinarlo con el identificador único
+            const referenceCode = `rogans_${ahora.toISOString()}_${randomId}`;
+
+            return referenceCode;
         };
-        
+
         const uniqueReferenceCode = generarReferenceCode();
-      
+
         interface DatosTransaccion {
-          description: string;
-          referenceCode: string
-          amount: string;
-          tax: string;
-          taxReturnBase: string;
-          currency: string;
-          buyerEmail: string;
-          fechaAgendada: string;
-          horaAgendada: string;
-          modalidad: string | null;
-          duracion_cita: string,
+            description: string;
+            referenceCode: string
+            amount: string;
+            tax: string;
+            taxReturnBase: string;
+            currency: string;
+            buyerEmail: string;
+            fechaAgendada: string;
+            horaAgendada: string;
+            modalidad: string | null;
+            duracion_cita: string,
         }
-      
-        const datosTransaccion : DatosTransaccion = {
-          description: selectedCard.title,
-          referenceCode: uniqueReferenceCode,
-          amount: selectedCard.precio_cita,
-          tax: "0",
-          taxReturnBase: "0",
-          currency: "COP",
-          buyerEmail: correoUsuario,
-          fechaAgendada: fecha,
-          horaAgendada: horaAgendada,
-          modalidad: selectedValue,
-          duracion_cita: selectedCard.duracion_cita,
-        };        
-        
+
+        const datosTransaccion: DatosTransaccion = {
+            description: selectedCard.title,
+            referenceCode: uniqueReferenceCode,
+            amount: selectedCard.precio_cita,
+            tax: "0",
+            taxReturnBase: "0",
+            currency: "COP",
+            buyerEmail: correoUsuario,
+            fechaAgendada: fecha,
+            horaAgendada: horaAgendada,
+            modalidad: selectedValue,
+            duracion_cita: selectedCard.duracion_cita,
+        };
+
         const queryString = Object.entries(datosTransaccion)
-        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
-        .join('&');
-      
+            .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+            .join('&');
+
         setUrlFinal(`https://rogansya.com/pagos/?${queryString}`);
         setPagoVisible(true);
     };
-    
+
     const agendarHandler = async () => {
         const fechaActual = new Date();
         const fechaFormateada = fechaActual.toISOString().split('.')[0] + "Z";
@@ -152,16 +150,16 @@ const ConsultationDescription = () => {
             let hora24 = ampm === 'PM' ? parseInt(hora, 10) + 12 : parseInt(hora, 10);
             if (hora24 === 24) hora24 = 12;
             if (hora24 === 12 && ampm === 'AM') hora24 = 0;
-          
+
             const fechaHora = new Date(`${fecha} ${hora24}:${minutos}:00`);
-          
+
             fechaHora.setHours(fechaHora.getHours());
-          
+
             return fechaHora.toISOString().replace('.000', '');
         }
-    
+
         const fechaAgendadaFormateada = convertirFechaYHora(fecha, horaAgendada);
-    
+
         const datosCita = {
             "fecha_que_agendo": fechaFormateada,
             "nombre": nombreUsuario + "/&" + cedulaUsuario,
@@ -174,12 +172,12 @@ const ConsultationDescription = () => {
             "status": "Pendiente",
             "valor": selectedCard.precio_cita
         };
-    
+
         try {
             const respuesta = await agendarCita(datosCita);
             if (respuesta.mensaje === "Cita agendada") {
                 console.log("Cita agendada");
-                
+
             } else {
                 console.log("Error al agendar cita:", respuesta);
                 // Manejar la respuesta no exitosa aquí
@@ -205,7 +203,7 @@ const ConsultationDescription = () => {
             if (nombreUsuario == '' || correoUsuario == '' || cedulaUsuario == '' || telUsuario == '') {
                 abrirPopUpError('Rellena todos los campos');
             } else {
-                if(selectedCard.precio_cita === 'Gratis') {
+                if (selectedCard.precio_cita === 'Gratis') {
                     agendarHandler();
                     navigation.navigate("Confirmado");
                 } else {
@@ -218,16 +216,16 @@ const ConsultationDescription = () => {
 
     function formatearPrecio(numeroStr: any) {
         if (!/^\d+$/.test(numeroStr)) {
-          return numeroStr;
+            return numeroStr;
         }
-      
+
         let caracteres = numeroStr.split('');
         caracteres.reverse();
-      
+
         for (let i = 3; i < caracteres.length; i += 4) {
-          caracteres.splice(i, 0, '.');
+            caracteres.splice(i, 0, '.');
         }
-      
+
         return ('$' + caracteres.reverse().join(''));
     }
 
@@ -235,7 +233,7 @@ const ConsultationDescription = () => {
         const receivedMessage = event.nativeEvent.data;
 
         setPagoVisible(false);
-    
+
         if (receivedMessage === 'exitoso') {
             navigation.navigate("Confirmado");
         } else if (receivedMessage === 'rechazado') {
@@ -251,32 +249,32 @@ const ConsultationDescription = () => {
     }
 
     return (
-        <> 
+        <>
             <Modal
                 animationType="slide"
                 transparent={true}
                 visible={pagoVisible}
                 onRequestClose={() => setPagoVisible(!pagoVisible)}
             >
-            <View style={styles.pagoContainer}>
-                <TouchableOpacity onPress={pagoCancelado} style={{position: 'absolute', top: 12, left: 15,}}>
-                    <CloseIcon width={16} height={16} />
-                </TouchableOpacity>
-                <WebView style={{width: '100%', height: '100%',}}
-                    source={{ uri: urlFinal }}
-                    onMessage={handleMessage}
-                />
+                <View style={styles.pagoContainer}>
+                    <TouchableOpacity onPress={pagoCancelado} style={{ position: 'absolute', top: 12, left: 15, }}>
+                        <CloseIcon width={16} height={16} />
+                    </TouchableOpacity>
+                    <WebView style={{ width: '100%', height: '100%', }}
+                        source={{ uri: urlFinal }}
+                        onMessage={handleMessage}
+                    />
                 </View>
                 <TouchableOpacity onPress={pagoCancelado} style={styles.pagoOverlay} />
             </Modal>
             <View style={styles.container}>
-            <ScrollView style={styles.scrollContainer}>
-                <Image source={selectedCard.image} style={styles.image} />
-                <View style={styles.textContainer}>
-                    <Text style={styles.title}>{selectedCard.title}</Text>
-                    <Text style={styles.text}>Valor consulta</Text>
-                    <Text style={styles.price}>{formatearPrecio(selectedCard.precio_cita)}</Text>
-                    <Text style={styles.description}>{selectedCard.description}</Text>
+                <ScrollView style={styles.scrollContainer}>
+                    <Image source={selectedCard.image} style={styles.image} />
+                    <View style={styles.textContainer}>
+                        <Text style={styles.title}>{selectedCard.title}</Text>
+                        <Text style={styles.text}>Valor consulta</Text>
+                        <Text style={styles.price}>{formatearPrecio(selectedCard.precio_cita)}</Text>
+                        <Text style={styles.description}>{selectedCard.description}</Text>
                         <Modal
                             transparent={true}
                             visible={modalVisible}
@@ -284,16 +282,16 @@ const ConsultationDescription = () => {
                         >
                             <View style={styles.modalContainer}>
                                 <View style={styles.modalContent}>
-                                    <TouchableOpacity onPress={() => setModalVisible(false)} style={{position: 'absolute', top: 20, left: 20,}}>
+                                    <TouchableOpacity onPress={() => setModalVisible(false)} style={{ position: 'absolute', top: 20, left: 20, }}>
                                         <CloseIcon width={16} height={16} />
                                     </TouchableOpacity>
 
                                     <View>
-                                        <TouchableOpacity onPress={() => {setSelectedValue("Presencial"), setModalVisible(false)}} style={{paddingVertical: 2, marginVertical: 8,}}>
-                                            <Text style={{fontFamily: MyFont.regular, fontSize: 14}}>Presencial</Text>
+                                        <TouchableOpacity onPress={() => { setSelectedValue("Presencial"), setModalVisible(false) }} style={{ paddingVertical: 2, marginVertical: 8, }}>
+                                            <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>Presencial</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => {setSelectedValue("Virtual"), setModalVisible(false)}} style={{paddingVertical: 2, marginVertical: 8,}}>
-                                            <Text style={{fontFamily: MyFont.regular, fontSize: 14}}>Virtual</Text>
+                                        <TouchableOpacity onPress={() => { setSelectedValue("Virtual"), setModalVisible(false) }} style={{ paddingVertical: 2, marginVertical: 8, }}>
+                                            <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>Virtual</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
@@ -307,127 +305,127 @@ const ConsultationDescription = () => {
                         >
                             <View style={styles.modalContainer}>
                                 <View style={styles.modalContent}>
-                                    <TouchableOpacity onPress={() => setModalVisible2(false)} style={{position: 'absolute', top: 20, left: 20,}}>
+                                    <TouchableOpacity onPress={() => setModalVisible2(false)} style={{ position: 'absolute', top: 20, left: 20, }}>
                                         <CloseIcon width={16} height={16} />
                                     </TouchableOpacity>
 
                                     <View>
-                                        <TouchableOpacity onPress={() => {setTipoDeDoc("CC"), setModalVisible2(false)}} style={{paddingVertical: 2, marginVertical: 8,}}>
-                                            <Text style={{fontFamily: MyFont.regular, fontSize: 14}}>CC</Text>
+                                        <TouchableOpacity onPress={() => { setTipoDeDoc("CC"), setModalVisible2(false) }} style={{ paddingVertical: 2, marginVertical: 8, }}>
+                                            <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>CC</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => {setTipoDeDoc("CE"), setModalVisible2(false)}} style={{paddingVertical: 2, marginVertical: 8,}}>
-                                            <Text style={{fontFamily: MyFont.regular, fontSize: 14}}>CE</Text>
+                                        <TouchableOpacity onPress={() => { setTipoDeDoc("CE"), setModalVisible2(false) }} style={{ paddingVertical: 2, marginVertical: 8, }}>
+                                            <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>CE</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => {setTipoDeDoc("NI"), setModalVisible2(false)}} style={{paddingVertical: 2, marginVertical: 8,}}>
-                                            <Text style={{fontFamily: MyFont.regular, fontSize: 14}}>NI (Nit)</Text>
+                                        <TouchableOpacity onPress={() => { setTipoDeDoc("NI"), setModalVisible2(false) }} style={{ paddingVertical: 2, marginVertical: 8, }}>
+                                            <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>NI (Nit)</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => {setTipoDeDoc("PB"), setModalVisible2(false)}} style={{paddingVertical: 2, marginVertical: 8,}}>
-                                            <Text style={{fontFamily: MyFont.regular, fontSize: 14}}>PB (Pasaporte)</Text>
+                                        <TouchableOpacity onPress={() => { setTipoDeDoc("PB"), setModalVisible2(false) }} style={{ paddingVertical: 2, marginVertical: 8, }}>
+                                            <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>PB (Pasaporte)</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => {setTipoDeDoc("RC"), setModalVisible2(false)}} style={{paddingVertical: 2, marginVertical: 8,}}>
-                                            <Text style={{fontFamily: MyFont.regular, fontSize: 14}}>RC (Registro civil)</Text>
+                                        <TouchableOpacity onPress={() => { setTipoDeDoc("RC"), setModalVisible2(false) }} style={{ paddingVertical: 2, marginVertical: 8, }}>
+                                            <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>RC (Registro civil)</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
                             </View>
                         </Modal>
-                    {citaAgendada ? (
-                        <>
-                        <Text style={styles.title2}>Deja tus datos personales</Text>
-                        <View>
-                            <View>
-                                <View style={styles.titleModalButton}>
-                                    <Text style={styles.text1TitleModalButton}>Nombre usuario </Text>
-                                    <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
-                                </View>                      
-                                <View style={styles.modalButton}>
-                                    <TextInput style={styles.textInput} value={nombreUsuario} onChangeText={(texto) => setNombreUsuario(texto)}></TextInput>
-                                </View>
-                            </View>
-                            <View>
-                                <View style={styles.titleModalButton}>
-                                    <Text style={styles.text1TitleModalButton}>Correo </Text>
-                                    <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
-                                </View>                      
-                                <View style={styles.modalButton}>
-                                    <TextInput style={styles.textInput} value={correoUsuario} onChangeText={(texto) => setCorreoUsuario(texto)}></TextInput>
-                                </View>
-                            </View>
-                            <View>
-                                <View style={styles.titleModalButton}>
-                                    <Text style={styles.text1TitleModalButton}>Teléfono </Text>
-                                    <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
-                                </View>                      
-                                <View style={styles.modalButton}>
-                                    <TextInput style={styles.textInput} value={telUsuario} onChangeText={(texto) => setTelUsuario(texto)}></TextInput>
-                                </View>
-                            </View>
-                            <View style={{flexDirection: 'row', gap: 8}}>
-                                <View style={{width: 135,}}>
-                                    <View style={styles.titleModalButton}>
-                                        <Text style={styles.text1TitleModalButton}>Tipo de doc. </Text>
-                                    </View>                      
-                                    <TouchableOpacity onPress={() => setModalVisible2(true)} style={styles.modalButton}>
-                                        <Text style={styles.textModalButton}>{tipoDeDoc ? tipoDeDoc : 'CC'}</Text>
-                                        <ArrowDownIcon style={styles.imageModalButton} width={16} height={16} />
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={{flex: 1,}}>
-                                    <View style={styles.titleModalButton}>
-                                        <Text style={styles.text1TitleModalButton}>Documento </Text>
-                                        <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
-                                    </View>                      
-                                    <View style={styles.modalButton}>
-                                        <TextInput style={styles.textInput} value={cedulaUsuario} onChangeText={(texto) => setCedulaUsuario(texto)}></TextInput>
+                        {citaAgendada ? (
+                            <>
+                                <Text style={styles.title2}>Deja tus datos personales</Text>
+                                <View>
+                                    <View>
+                                        <View style={styles.titleModalButton}>
+                                            <Text style={styles.text1TitleModalButton}>Nombre usuario </Text>
+                                            <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
+                                        </View>
+                                        <View style={styles.modalButton}>
+                                            <TextInput style={styles.textInput} value={nombreUsuario} onChangeText={(texto) => setNombreUsuario(texto)}></TextInput>
+                                        </View>
+                                    </View>
+                                    <View>
+                                        <View style={styles.titleModalButton}>
+                                            <Text style={styles.text1TitleModalButton}>Correo </Text>
+                                            <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
+                                        </View>
+                                        <View style={styles.modalButton}>
+                                            <TextInput style={styles.textInput} value={correoUsuario} onChangeText={(texto) => setCorreoUsuario(texto)}></TextInput>
+                                        </View>
+                                    </View>
+                                    <View>
+                                        <View style={styles.titleModalButton}>
+                                            <Text style={styles.text1TitleModalButton}>Teléfono </Text>
+                                            <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
+                                        </View>
+                                        <View style={styles.modalButton}>
+                                            <TextInput style={styles.textInput} value={telUsuario} onChangeText={(texto) => setTelUsuario(texto)}></TextInput>
+                                        </View>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', gap: 8 }}>
+                                        <View style={{ width: 135, }}>
+                                            <View style={styles.titleModalButton}>
+                                                <Text style={styles.text1TitleModalButton}>Tipo de doc. </Text>
+                                            </View>
+                                            <TouchableOpacity onPress={() => setModalVisible2(true)} style={styles.modalButton}>
+                                                <Text style={styles.textModalButton}>{tipoDeDoc ? tipoDeDoc : 'CC'}</Text>
+                                                <ArrowDownIcon style={styles.imageModalButton} width={16} height={16} />
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View style={{ flex: 1, }}>
+                                            <View style={styles.titleModalButton}>
+                                                <Text style={styles.text1TitleModalButton}>Documento </Text>
+                                                <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
+                                            </View>
+                                            <View style={styles.modalButton}>
+                                                <TextInput style={styles.textInput} value={cedulaUsuario} onChangeText={(texto) => setCedulaUsuario(texto)}></TextInput>
+                                            </View>
+                                        </View>
                                     </View>
                                 </View>
-                            </View>
-                        </View>
-                        </>
-                    ) : (
-                        <>
-                        <MiCalendario ref={calendarioRef} onAbrirPopUpError={abrirPopUpError} />
-                        <Text style={styles.title2}>Agenda tu consulta</Text>
-                        <View>
-                            <View style={styles.titleModalButton}>
-                                <Text style={styles.text1TitleModalButton}>Tipo de consulta </Text>
-                                <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
-                            </View>                      
-                            <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.modalButton}>
-                                <Text style={styles.textModalButton}>{selectedValue ? selectedValue : 'Virtual o presencial'}</Text>
-                                <ArrowDownIcon style={styles.imageModalButton} width={16} height={16} />
-                            </TouchableOpacity>
-                            <View>
-                                <View style={styles.titleModalButton}>
-                                    <Text style={styles.text1TitleModalButton}>Fecha de consulta </Text>
-                                    <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
-                                </View>                      
-                                <TouchableOpacity onPress={abrirCalendario} style={styles.modalButton}>
-                                    <Text style={styles.textModalButton}>{fecha ? fecha + ' a las ' + horaAgendada : 'dd/mm/aaaa'}</Text>
-                                    <CalendarAddIcon style={styles.imageModalButton} width={16} height={16}/>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        </>
-                    )}
+                            </>
+                        ) : (
+                            <>
+                                <MiCalendario ref={calendarioRef} onAbrirPopUpError={abrirPopUpError} />
+                                <Text style={styles.title2}>Agenda tu consulta</Text>
+                                <View>
+                                    <View style={styles.titleModalButton}>
+                                        <Text style={styles.text1TitleModalButton}>Tipo de consulta </Text>
+                                        <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
+                                    </View>
+                                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.modalButton}>
+                                        <Text style={styles.textModalButton}>{selectedValue ? selectedValue : 'Virtual o presencial'}</Text>
+                                        <ArrowDownIcon style={styles.imageModalButton} width={16} height={16} />
+                                    </TouchableOpacity>
+                                    <View>
+                                        <View style={styles.titleModalButton}>
+                                            <Text style={styles.text1TitleModalButton}>Fecha de consulta </Text>
+                                            <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
+                                        </View>
+                                        <TouchableOpacity onPress={abrirCalendario} style={styles.modalButton}>
+                                            <Text style={styles.textModalButton}>{fecha ? fecha + ' a las ' + horaAgendada : 'dd/mm/aaaa'}</Text>
+                                            <CalendarAddIcon style={styles.imageModalButton} width={16} height={16} />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </>
+                        )}
 
-                    <TouchableOpacity onPress={verificarDatos} style={styles.button}>
-                        <Text style={styles.textButtom}>Continuar</Text>
-                        <ArrowWhiteIcon width={16} height={16} />
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
-        </View> 
-        <PopUpError ref={PopUpErrorRef} />
+                        <TouchableOpacity onPress={verificarDatos} style={styles.button}>
+                            <Text style={styles.textButtom}>Continuar</Text>
+                            <ArrowWhiteIcon width={16} height={16} />
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+            </View>
+            <PopUpError ref={PopUpErrorRef} />
         </>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#FCFCFC',
-      position: "relative",
+        flex: 1,
+        backgroundColor: '#FCFCFC',
+        position: "relative",
     },
     scrollContainer: {
         position: "relative",
@@ -439,7 +437,7 @@ const styles = StyleSheet.create({
         height: 350,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        
+
     },
     textContainer: {
         position: 'relative',
@@ -450,15 +448,15 @@ const styles = StyleSheet.create({
         height: 'auto',
         paddingHorizontal: 16,
         zIndex: 5,
-        borderTopLeftRadius: 20, 
-        borderTopRightRadius: 20, 
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
     },
     title: {
-      fontSize: 33,
-      fontFamily: MyFont.bold,
-      color: 'black',
-      marginTop: 50,
-      marginBottom: 6,
+        fontSize: 33,
+        fontFamily: MyFont.bold,
+        color: 'black',
+        marginTop: 50,
+        marginBottom: 6,
     },
     text: {
         marginTop: 8,

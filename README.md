@@ -36,7 +36,12 @@ npm i @react-native-firebase/storage
 18. guia para hacer el login en firebase 
 https://www.youtube.com/watch?v=z-WsYu8n1vQ
 
+19. redux y redux toolkit 
+npm i @reduxjs/toolkit
+npm i react-redux
 
+20. peristencia local
+npx expo install @react-native-async-storage/async-storage
 
 
 <code>expo install expo-font</code>

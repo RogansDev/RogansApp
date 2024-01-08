@@ -8,45 +8,45 @@ import Login from '../../../assets/icons/loginIniciar.svg'
 
 const NavLogin = () => {
 
-  const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
-  
+  const navigation = useNavigation();
+
   return (
     <TouchableOpacity
       style={styles.roundedBottom}
       onPress={() => navigation.navigate('Login')}
     >
-       <View style={styles.flexBttom}>
-          <Text style={styles.textBottom}>Iniciar sesion </Text>
-          <Login width={20} height={20}  />
-       </View>
+      <View style={styles.flexBttom}>
+        <Text style={styles.textBottom}>Iniciar sesion </Text>
+        <Login width={20} height={20} />
+      </View>
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
-    roundedBottom: {
-        width: 340,
-        height: 40,
-        alignItems: 'center',
-        backgroundColor: MyColors.buttonColor,
-        justifyContent: 'center',
-        borderRadius: 15,
-    }, 
-    flexBttom: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 10,
-    },
-    textBottom: {
-        color: 'black',
-        fontSize: 15,
-        fontFamily: MyFont.regular,
-    },
-    logoLogin: {
-        width: 20,
-        height: 20,
-    }
+  roundedBottom: {
+    width: 340,
+    height: 40,
+    alignItems: 'center',
+    backgroundColor: MyColors.buttonColor,
+    justifyContent: 'center',
+    borderRadius: 15,
+  },
+  flexBttom: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
+  },
+  textBottom: {
+    color: 'black',
+    fontSize: 15,
+    fontFamily: MyFont.regular,
+  },
+  logoLogin: {
+    width: 20,
+    height: 20,
+  }
 })
 export default NavLogin;

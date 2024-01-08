@@ -13,7 +13,7 @@ interface Props {
 const BottonOpenTwo = ({ text }: Props) => {
   const { Arrow } = Icons;
 
-  const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+  const navigation = useNavigation();
 
   return (
     <TouchableOpacity
@@ -24,7 +24,7 @@ const BottonOpenTwo = ({ text }: Props) => {
         <Text style={styles.textBottom}>
           {text}
         </Text>
-        <Arrow width={20} height={20}  style={styles.icon}/>
+        <Arrow width={20} height={20} style={styles.icon} />
       </View>
     </TouchableOpacity>
   );
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     left: 10,
-    top: 6, 
+    top: 6,
   },
 });
 

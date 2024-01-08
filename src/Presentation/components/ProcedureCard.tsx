@@ -1,15 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView, ImageSourcePropType } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamsList } from '../../../App';
 import { MyFont } from "../theme/AppTheme";
-import { useAppContext } from '../../../AppContext';
+
 import Icons from '../theme/Icons';
 
 const ConsultCard = ({ cards }: any) => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
-  const { selectedCard, setSelectedCard } = useAppContext();
+  const navigation = useNavigation();
+  const [selectedCard, setSelectedCard] = useState();
 
   const { CalendarAddIcon } = Icons;
 
@@ -19,18 +17,18 @@ const ConsultCard = ({ cards }: any) => {
   };
 
   function formatearPrecio(numeroStr: any) {
-      if (!/^\d+$/.test(numeroStr)) {
-        return numeroStr;
-      }
-    
-      let caracteres = numeroStr.split('');
-      caracteres.reverse();
-    
-      for (let i = 3; i < caracteres.length; i += 4) {
-        caracteres.splice(i, 0, '.');
-      }
-    
-      return ('$' + caracteres.reverse().join(''));
+    if (!/^\d+$/.test(numeroStr)) {
+      return numeroStr;
+    }
+
+    let caracteres = numeroStr.split('');
+    caracteres.reverse();
+
+    for (let i = 3; i < caracteres.length; i += 4) {
+      caracteres.splice(i, 0, '.');
+    }
+
+    return ('$' + caracteres.reverse().join(''));
   }
 
   return (

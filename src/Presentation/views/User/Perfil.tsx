@@ -1,8 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { View, ScrollView, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamsList } from '../../../../App';
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../../Presentation/theme/Icons';
 import PopUpCerrarSesion from '../../components/PopUpCerrarSesion';
@@ -84,9 +82,9 @@ const Perfil = () => {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#FCFCFC',
-      position: "relative",
+        flex: 1,
+        backgroundColor: '#FCFCFC',
+        position: "relative",
     },
     scrollContainer: {
         position: "relative",

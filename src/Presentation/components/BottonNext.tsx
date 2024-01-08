@@ -1,19 +1,17 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, Text, Image, View } from 'react-native' 
+import { TouchableOpacity, StyleSheet, Text, Image, View } from 'react-native'
 import { MyColors, MyFont } from '../theme/AppTheme';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamsList } from '../../../App';
 import Icons from "../theme/Icons";
 
 interface Props {
   text: string,
 }
 
-const BottonNext = ({text}: Props) => {
+const BottonNext = ({ text }: Props) => {
   const { Arrow } = Icons;
 
-  const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+  const navigation = useNavigation();
 
   return (
     <TouchableOpacity
@@ -24,7 +22,7 @@ const BottonNext = ({text}: Props) => {
         <Text style={styles.textBottom}>
           {text}
         </Text>
-        <Arrow width={20} height={20}  style={styles.icon}/>
+        <Arrow width={20} height={20} style={styles.icon} />
       </View>
     </TouchableOpacity>
   )
@@ -49,7 +47,7 @@ const styles = StyleSheet.create({
   icon: {
     left: 10,
     top: 6,
-    
+
   },
   textBottom: {
     color: 'black',

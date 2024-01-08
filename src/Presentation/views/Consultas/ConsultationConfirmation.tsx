@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, ScrollView, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useAppContext } from '../../../../AppContext';
+
 import { RootStackParamsList } from '../../../../App';
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../../Presentation/theme/Icons';
@@ -11,9 +11,9 @@ import { agendarCita } from '../../../../agendarCitaService';
 const ConsultationConfirmation = () => {
     const { VirtualIcon, NextIcon, CalendarIcon, ProfileIcon, ClockIcon, CardsIcon, CalendarWhiteIcon } = Icons;
 
-    const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+    const navigation = useNavigation();
 
-    const { horaAgendada, fecha, virtualPresecial }: any = useAppContext();
+    const { horaAgendada, fecha, virtualPresecial }: any = useState();
 
     const consultationContent = {
         image: require('../../../../assets/implante2.png'),
@@ -32,7 +32,7 @@ const ConsultationConfirmation = () => {
     const agendarBtnHandler = async () => {
         const fechaActual = new Date();
         const fechaFormateada = fechaActual.toISOString().split('.')[0] + "Z";;
-    
+
         const datosCita = {
             "fecha_que_agendo": fechaFormateada,
             "nombre": "Martin Montes/&123456780",
@@ -44,7 +44,7 @@ const ConsultationConfirmation = () => {
             "notas": virtualPresecial,
             "status": "Confirmado"
         };
-    
+
         try {
             const respuesta = await agendarCita(datosCita);
             if (respuesta.mensaje === "Cita agendada") {
@@ -58,7 +58,7 @@ const ConsultationConfirmation = () => {
             // Manejar el error de red aquí
         }
     };
-    
+
 
     function convertirFechaYHora(fecha: any, horaAgendada: any) {
         // Convertir a formato de 24 horas
@@ -66,15 +66,15 @@ const ConsultationConfirmation = () => {
         let hora24 = ampm === 'PM' ? parseInt(hora, 10) + 12 : parseInt(hora, 10);
         if (hora24 === 24) hora24 = 12;
         if (hora24 === 12 && ampm === 'AM') hora24 = 0;
-      
-        const fechaHora = new Date(`${fecha} ${hora24}:${minutos}:00`);
-      
-        fechaHora.setHours(fechaHora.getHours());
-      
-        return fechaHora.toISOString().replace('.000', '');
-      }
 
-      const fechaAgendadaFormateada = convertirFechaYHora(fecha, horaAgendada);
+        const fechaHora = new Date(`${fecha} ${hora24}:${minutos}:00`);
+
+        fechaHora.setHours(fechaHora.getHours());
+
+        return fechaHora.toISOString().replace('.000', '');
+    }
+
+    const fechaAgendadaFormateada = convertirFechaYHora(fecha, horaAgendada);
 
     return (
         <View style={styles.container}>
@@ -82,15 +82,15 @@ const ConsultationConfirmation = () => {
                 <Text style={styles.title}>Confirmar consulta</Text>
                 <View style={styles.twoCols}>
                     <Image source={consultationContent.image} style={styles.image} />
-                    <View style={{flexDirection: 'column'}}>
+                    <View style={{ flexDirection: 'column' }}>
                         <Text style={styles.title2}>{consultationContent.titleConsulta}</Text>
                         {virtualPresecial === 'Virtual' ? (
-                            <View style={{flexDirection: 'row'}}>
+                            <View style={{ flexDirection: 'row' }}>
                                 <VirtualIcon style={styles.imageConsultationType} width={18} height={18} />
                                 <Text style={styles.consultationType}>Virtual</Text>
                             </View>
                         ) : (
-                            <View style={{flexDirection: 'row'}}>
+                            <View style={{ flexDirection: 'row' }}>
                                 <ProfileIcon style={styles.imageConsultationType} width={18} height={18} />
                                 <Text style={styles.consultationType}>Presencial</Text>
                             </View>
@@ -101,11 +101,11 @@ const ConsultationConfirmation = () => {
                 <View style={styles.textContainer}>
                     <View style={styles.info}>
                         <View>
-                            <CalendarIcon style={styles.iconInfo} width={18} height={18}/>
+                            <CalendarIcon style={styles.iconInfo} width={18} height={18} />
                             <Text style={styles.titleInfo}>Fecha consulta</Text>
                         </View>
-                        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                            <View style={{alignItems: 'flex-end',}}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{ alignItems: 'flex-end', }}>
                                 <Text style={styles.textInfo}>{fecha}</Text>
                                 <Text style={styles.textInfo}>{horaAgendada}</Text>
                             </View>
@@ -113,19 +113,19 @@ const ConsultationConfirmation = () => {
                     </View>
                     <View style={styles.info}>
                         <View>
-                            <ClockIcon style={styles.iconInfo} width={18} height={18}/>
+                            <ClockIcon style={styles.iconInfo} width={18} height={18} />
                             <Text style={styles.titleInfo}>Duración</Text>
                         </View>
-                        <View style={{flex: 0}}>
+                        <View style={{ flex: 0 }}>
                             <Text style={styles.textInfo}>15 - 30 Mins</Text>
                         </View>
                     </View>
-                    <View style={[styles.info, {borderBottomWidth: 0}]}>
+                    <View style={[styles.info, { borderBottomWidth: 0 }]}>
                         <View>
-                            <CardsIcon style={styles.iconInfo} width={18} height={18}/>
+                            <CardsIcon style={styles.iconInfo} width={18} height={18} />
                             <Text style={styles.titleInfo}>Costo</Text>
                         </View>
-                        <View style={{flex: 0}}>
+                        <View style={{ flex: 0 }}>
                             <Text style={styles.textInfo}>Gratuito</Text>
                         </View>
                     </View>
@@ -149,7 +149,7 @@ const ConsultationConfirmation = () => {
                         </View>
                         <TouchableOpacity onPress={agendarBtnHandler} style={styles.agendarBtn}>
                             <Text style={styles.textAgendarBtn}>Agendar</Text>
-                            <CalendarWhiteIcon style={styles.iconAgendarBtn} width={16} height={16}/>
+                            <CalendarWhiteIcon style={styles.iconAgendarBtn} width={16} height={16} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -160,9 +160,9 @@ const ConsultationConfirmation = () => {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#FCFCFC',
-      position: "relative",
+        flex: 1,
+        backgroundColor: '#FCFCFC',
+        position: "relative",
     },
     scrollContainer: {
         position: "relative",
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
         elevation: 10,
         // Sombras para iOS
         shadowColor: '#F0F0F0',
-        shadowOffset: { width: 4, height: 1},
+        shadowOffset: { width: 4, height: 1 },
         shadowOpacity: 1,
         shadowRadius: 10,
     },

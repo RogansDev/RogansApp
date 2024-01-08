@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamsList } from '../../../../App';
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../../Presentation/theme/Icons';
 
 const EditarCita = () => {
     const { NextIcon, CalendarIcon, ProfileIcon, ClockIcon, CardsIcon, CloseIcon, TrashIcon, TickCircleWhiteicon } = Icons;
 
-    const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+    const navigation = useNavigation();
 
     const procedureContent = {
         image: require('../../../../assets/botox2.png'),
@@ -25,7 +23,7 @@ const EditarCita = () => {
 
     const toggleAccordion = () => {
         setExpanded(!isExpanded);
-    };   
+    };
 
     return (
         <View style={styles.container}>
@@ -35,8 +33,8 @@ const EditarCita = () => {
                 visible={modalVisible}
                 onRequestClose={() => setModalVisible(false)}
             >
-                <TouchableOpacity 
-                    style={styles.modalFade} 
+                <TouchableOpacity
+                    style={styles.modalFade}
                     onPress={() => setModalVisible(false)}
                     activeOpacity={1} // Esto asegura que el área transparente también responda al toque
                 >
@@ -44,22 +42,22 @@ const EditarCita = () => {
                         <View style={styles.modalContent}>
                             <View>
                                 <TouchableOpacity style={styles.cerrarBtn} onPress={() => setModalVisible(false)}>
-                                    <CloseIcon width={16} height={16}/>
+                                    <CloseIcon width={16} height={16} />
                                     <Text style={styles.textModal}>Cerrar</Text>
                                 </TouchableOpacity>
                             </View>
-                            <View style={{marginVertical: 40,}}>
-                                <Text style={[styles.titleModal, {textAlign: 'center',}]}>¿Estas seguro?</Text>
-                                <Text style={[styles.textModal, {textAlign: 'center',}]}>Cancelar tu cita puede ....</Text>
+                            <View style={{ marginVertical: 40, }}>
+                                <Text style={[styles.titleModal, { textAlign: 'center', }]}>¿Estas seguro?</Text>
+                                <Text style={[styles.textModal, { textAlign: 'center', }]}>Cancelar tu cita puede ....</Text>
                             </View>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: 8,}}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 8, }}>
                                 <TouchableOpacity style={styles.conservarBtn}>
-                                    <Text style={[styles.textModal, {color: 'white',}]}>No, conservar</Text>
-                                    <TickCircleWhiteicon width={16} height={16}/>
+                                    <Text style={[styles.textModal, { color: 'white', }]}>No, conservar</Text>
+                                    <TickCircleWhiteicon width={16} height={16} />
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.siCancelarBtn}>
                                     <Text style={styles.textModal}>Si, cancelar cita</Text>
-                                    <TrashIcon width={16} height={16}/>
+                                    <TrashIcon width={16} height={16} />
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -71,58 +69,58 @@ const EditarCita = () => {
                 <Text style={styles.title}>Editar cita</Text>
                 <View style={styles.twoCols}>
                     <Image source={procedureContent.image} style={styles.image} />
-                    <View style={{flexDirection: 'column'}}>
+                    <View style={{ flexDirection: 'column' }}>
                         <Text style={styles.title2}>{procedureContent.titleProcedimiento}</Text>
                     </View>
                 </View>
                 <View style={styles.textContainer}>
                     <TouchableOpacity style={styles.info}>
                         <View>
-                            <CalendarIcon style={styles.iconInfo} width={18} height={18}/>
+                            <CalendarIcon style={styles.iconInfo} width={18} height={18} />
                             <Text style={styles.titleInfo}>Fecha consulta</Text>
                         </View>
-                        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <View>
                                 <Text style={styles.textInfo}>xx/xx/xxxx</Text>
                                 <Text style={styles.textInfo}>hh:hh mm</Text>
                             </View>
-                            <NextIcon style={{marginLeft: 16}} width={24} height={24}/>
+                            <NextIcon style={{ marginLeft: 16 }} width={24} height={24} />
                         </View>
                     </TouchableOpacity>
                     <View style={styles.info}>
                         <View>
-                            <ProfileIcon style={styles.iconInfo} width={18} height={18}/>
+                            <ProfileIcon style={styles.iconInfo} width={18} height={18} />
                             <Text style={styles.titleInfo}>Especialista</Text>
                         </View>
-                        <View style={{flex: 0}}>
+                        <View style={{ flex: 0 }}>
                             <Text style={styles.textInfo}>Dr. Pepito Perez</Text>
                         </View>
                     </View>
                     <View style={styles.info}>
                         <View>
-                            <ClockIcon style={styles.iconInfo} width={18} height={18}/>
+                            <ClockIcon style={styles.iconInfo} width={18} height={18} />
                             <Text style={styles.titleInfo}>Duración</Text>
                         </View>
-                        <View style={{flex: 0}}>
+                        <View style={{ flex: 0 }}>
                             <Text style={styles.textInfo}>15 - 30 Mins</Text>
                         </View>
                     </View>
                     <TouchableOpacity style={styles.info}>
                         <View>
-                            <CardsIcon style={styles.iconInfo} width={18} height={18}/>
+                            <CardsIcon style={styles.iconInfo} width={18} height={18} />
                             <Text style={styles.titleInfo}>Costo</Text>
                         </View>
-                        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             <View>
                                 <Text style={styles.textInfo}>${procedureContent.price}</Text>
                             </View>
-                            <NextIcon style={{marginLeft: 16}} width={24} height={24}/>
+                            <NextIcon style={{ marginLeft: 16 }} width={24} height={24} />
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.cancelarBtn} onPress={() => setModalVisible(true)}>
-                            <TrashIcon width={16} height={16}/>
-                            <Text style={styles.titleInfo}>Cancelar la cita</Text>
+                        <TrashIcon width={16} height={16} />
+                        <Text style={styles.titleInfo}>Cancelar la cita</Text>
                     </TouchableOpacity>
 
                     <View style={styles.accordionItemContainer}>
@@ -139,7 +137,7 @@ const EditarCita = () => {
 
                     <TouchableOpacity onPress={() => navigation.navigate("CitaCancelada")} style={styles.guardarBtn}>
                         <Text style={styles.textGuardarBtn}>Guardar</Text>
-                        <TickCircleWhiteicon style={styles.iconGuardarBtn} width={16} height={16}/>
+                        <TickCircleWhiteicon style={styles.iconGuardarBtn} width={16} height={16} />
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -149,9 +147,9 @@ const EditarCita = () => {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#FCFCFC',
-      position: "relative",
+        flex: 1,
+        backgroundColor: '#FCFCFC',
+        position: "relative",
     },
     scrollContainer: {
         position: "relative",
@@ -231,7 +229,7 @@ const styles = StyleSheet.create({
         elevation: 10,
         // Sombras para iOS
         shadowColor: '#F0F0F0',
-        shadowOffset: { width: 4, height: 1},
+        shadowOffset: { width: 4, height: 1 },
         shadowOpacity: 1,
         shadowRadius: 10,
     },

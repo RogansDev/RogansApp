@@ -10,16 +10,16 @@ import Register from '../../../assets/icons/clickregister.svg'
 
 const NavRegister = () => {
 
-    const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+  const navigation = useNavigation();
 
   return (
-    <TouchableOpacity 
-       style={styles.roundedBottom}
-       onPress={() => navigation.navigate('Register')}
+    <TouchableOpacity
+      style={styles.roundedBottom}
+      onPress={() => navigation.navigate('Register')}
     >
       <View style={styles.flexBttom}>
         <Text style={styles.textBottom}>Registrate</Text>
-        <Register width={20} height={20}  />
+        <Register width={20} height={20} />
       </View>
     </TouchableOpacity>
   );

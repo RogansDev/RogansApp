@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, ScrollView, Text, TextInput, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamsList } from '../../../../App';
-import { useAppContext } from '../../../../AppContext';
+
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../../Presentation/theme/Icons';
 import FloatingMenu from '../../../Presentation/components/FloatingMenu';
@@ -12,13 +10,13 @@ import { es } from 'date-fns/locale/es';
 
 const obtenerCitas = async (cedula: any) => {
     try {
-      const response = await fetch(`https://rogansya.com/rogans-app/index.php?accion=obtenerPorCedula&cedula=${cedula}`);
-      const data = await response.json();
-      return data;
+        const response = await fetch(`https://rogansya.com/rogans-app/index.php?accion=obtenerPorCedula&cedula=${cedula}`);
+        const data = await response.json();
+        return data;
     } catch (error) {
-      console.error('Error al obtener citas:', error);
+        console.error('Error al obtener citas:', error);
     }
-  };
+};
 
 const capitalize = (str: any) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -39,7 +37,7 @@ const MiAgenda = () => {
     const [cancelacion, setCancelacion] = useState<string | null>(null);
     const [cedulaFiltro, setCedulaFiltro] = useState('');
 
-    const { cedulaUsuario }: any = useAppContext();
+    const { cedulaUsuario }: any = useState();
 
     interface Cita {
         nombre: string;
@@ -53,7 +51,7 @@ const MiAgenda = () => {
     const [cargando, setCargando] = useState(true);
     const [estadoBusqueda, setEstadoBusqueda] = useState(false);
 
-    const filtroCitas = () => {        
+    const filtroCitas = () => {
         setEstadoBusqueda(true);
         obtenerCitas(cedulaFiltro).then(data => {
             if (data && data.length > 0) {
@@ -69,11 +67,11 @@ const MiAgenda = () => {
 
     const { DollarIcon, ClockIcon, CloseIcon, TickCircleWhiteicon, TrashIcon, LupaIcon } = Icons;
 
-    const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+    const navigation = useNavigation();
 
     const cancelarCita = async (cedula: any, fecha: any) => {
         console.log(fecha);
-        
+
         try {
             const response = await fetch(`https://rogansya.com/rogans-app/index.php?accion=cancelar&cedula=${cedula}&fecha=${fecha}`);
             const data = await response.json();
@@ -89,19 +87,19 @@ const MiAgenda = () => {
 
     function formatearPrecio(numeroStr: any) {
         if (!/^\d+$/.test(numeroStr)) {
-          return numeroStr;
+            return numeroStr;
         }
-      
+
         let caracteres = numeroStr.split('');
         caracteres.reverse();
-      
+
         for (let i = 3; i < caracteres.length; i += 4) {
-          caracteres.splice(i, 0, '.');
+            caracteres.splice(i, 0, '.');
         }
-      
+
         return ('$' + caracteres.reverse().join(''));
     }
-    
+
     const citasNoCanceladas = citas.filter(cita => cita.status === 'Confirmado' || cita.status === 'Pendiente');
     const citasCanceladas = citas.filter(cita => cita.status === 'Cancelado' || cita.status === 'Finalizada');
 
@@ -110,7 +108,7 @@ const MiAgenda = () => {
             <FloatingMenu />
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.content}>
-                    <View style={{paddingHorizontal: 16,}}>
+                    <View style={{ paddingHorizontal: 16, }}>
                         <Text style={styles.title2}>Busca tus citas agendadas</Text>
                         <View style={styles.barraFiltro}>
                             <TextInput style={styles.textInput} placeholder='Escribe tu documento de identidad' value={cedulaFiltro} onChangeText={(texto) => setCedulaFiltro(texto)} onSubmitEditing={filtroCitas}></TextInput>
@@ -119,125 +117,125 @@ const MiAgenda = () => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <Text style={[styles.title, {marginTop: 30,}]}>Citas agendadas</Text>
+                    <Text style={[styles.title, { marginTop: 30, }]}>Citas agendadas</Text>
                     {(!estadoBusqueda && cargando) ? (
                         <>
-                            <Text style={{textAlign: 'center', padding: 15, fontFamily: MyFont.regular,}}>Realiza una busqueda para conocer tus citas</Text>
+                            <Text style={{ textAlign: 'center', padding: 15, fontFamily: MyFont.regular, }}>Realiza una busqueda para conocer tus citas</Text>
                         </>
                     ) : (estadoBusqueda && !cargando) ? (
                         <>
-                            <Text style={{textAlign: 'center', padding: 15, fontFamily: MyFont.regular,}}>
-                                
+                            <Text style={{ textAlign: 'center', padding: 15, fontFamily: MyFont.regular, }}>
+
                                 {cargando ? ('Realiza una busqueda para conocer tus citas') : ('Cargando...')}
                             </Text>
                         </>
                     ) : (
                         <>
-                        {cargando ? (
-                            <>
-                                <Text style={{textAlign: 'center', padding: 15, fontFamily: MyFont.regular,}}>Cargando...</Text>
-                            </>
-                        ) : (
-                            citasNoCanceladas.length > 0 ? (
-                                citasNoCanceladas.map((cita, index) => {                                    
-                                    const { diaSemana, numeroDia, mes, hora } = formatearFecha(cita.fecha);
-                                    return (
-                                        <View key={index} style={styles.cita}>
-                                            <View style={{alignItems: 'center', width: 80,}}>
-                                                <View style={{flexDirection: 'column', alignItems: 'center',}}>
-                                                    <Text style={styles.text}>{diaSemana}</Text>
-                                                    <Text style={styles.numeroDia}>{numeroDia}</Text>
-                                                    <Text style={styles.text}>{mes}</Text>
-                                                </View>
-                                            </View>
-                                            <View style={{flexDirection: 'column', alignItems: 'flex-start', flex: 1, marginLeft: 15, paddingRight: 15, gap: 2,}}>
-                                                <Text style={styles.titleCita}>{cita.evento_agendado}</Text>
-                                                <View style={{flexDirection: 'row', alignItems: 'center', gap: 5,}}>
-                                                    <ClockIcon width={14} height={14} />
-                                                    <Text style={styles.text}>{hora}</Text>
-                                                </View>
-                                                <View style={{flexDirection: 'row', alignItems: 'center', gap: 5,}}>
-                                                    <DollarIcon width={14} height={14} />
-                                                    <Text style={styles.text}>{formatearPrecio(cita.valor)}</Text>
-                                                </View>
-                                            </View>
-                                            <View style={{flexDirection: 'column', height: '100%', justifyContent: 'space-between', alignItems: 'flex-end', paddingVertical: 7}}>
-                                                <View>
-                                                    <Text style={[styles.text, {color: '#00D0B1'}]}>Agendada</Text>
-                                                </View>
-                                                <View>
-                                                    <TouchableOpacity style={styles.cancelarBtn} onPress={() => {setModalVisible(true), setCancelacion(cita.fecha)}}>
-                                                        <TrashIcon width={16} height={16}/>
-                                                        <Text style={styles.text}>Cancelar</Text>
-                                                    </TouchableOpacity>
-                                                </View>
-                                            </View>
-                                        </View>
-                                    )
-                                })
-                            ) : (
+                            {cargando ? (
                                 <>
-                                    <Text style={{textAlign: 'center', padding: 15, fontFamily: MyFont.regular,}}>No tienes citas agendadas</Text>
+                                    <Text style={{ textAlign: 'center', padding: 15, fontFamily: MyFont.regular, }}>Cargando...</Text>
                                 </>
-                            )
-                        )}
+                            ) : (
+                                citasNoCanceladas.length > 0 ? (
+                                    citasNoCanceladas.map((cita, index) => {
+                                        const { diaSemana, numeroDia, mes, hora } = formatearFecha(cita.fecha);
+                                        return (
+                                            <View key={index} style={styles.cita}>
+                                                <View style={{ alignItems: 'center', width: 80, }}>
+                                                    <View style={{ flexDirection: 'column', alignItems: 'center', }}>
+                                                        <Text style={styles.text}>{diaSemana}</Text>
+                                                        <Text style={styles.numeroDia}>{numeroDia}</Text>
+                                                        <Text style={styles.text}>{mes}</Text>
+                                                    </View>
+                                                </View>
+                                                <View style={{ flexDirection: 'column', alignItems: 'flex-start', flex: 1, marginLeft: 15, paddingRight: 15, gap: 2, }}>
+                                                    <Text style={styles.titleCita}>{cita.evento_agendado}</Text>
+                                                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, }}>
+                                                        <ClockIcon width={14} height={14} />
+                                                        <Text style={styles.text}>{hora}</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, }}>
+                                                        <DollarIcon width={14} height={14} />
+                                                        <Text style={styles.text}>{formatearPrecio(cita.valor)}</Text>
+                                                    </View>
+                                                </View>
+                                                <View style={{ flexDirection: 'column', height: '100%', justifyContent: 'space-between', alignItems: 'flex-end', paddingVertical: 7 }}>
+                                                    <View>
+                                                        <Text style={[styles.text, { color: '#00D0B1' }]}>Agendada</Text>
+                                                    </View>
+                                                    <View>
+                                                        <TouchableOpacity style={styles.cancelarBtn} onPress={() => { setModalVisible(true), setCancelacion(cita.fecha) }}>
+                                                            <TrashIcon width={16} height={16} />
+                                                            <Text style={styles.text}>Cancelar</Text>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                        )
+                                    })
+                                ) : (
+                                    <>
+                                        <Text style={{ textAlign: 'center', padding: 15, fontFamily: MyFont.regular, }}>No tienes citas agendadas</Text>
+                                    </>
+                                )
+                            )}
                         </>
                     )}
                 </View>
-                <View style={[styles.content, {marginBottom: 80,}]}>
+                <View style={[styles.content, { marginBottom: 80, }]}>
                     <Text style={styles.title}>Anteriores</Text>
                     {(!estadoBusqueda && cargando) ? (
                         <>
-                            <Text style={{textAlign: 'center', padding: 15, fontFamily: MyFont.regular,}}>Realiza una busqueda para conocer tus citas</Text>
+                            <Text style={{ textAlign: 'center', padding: 15, fontFamily: MyFont.regular, }}>Realiza una busqueda para conocer tus citas</Text>
                         </>
                     ) : (estadoBusqueda && !cargando) ? (
                         <>
-                            <Text style={{textAlign: 'center', padding: 15, fontFamily: MyFont.regular,}}>
-                                
+                            <Text style={{ textAlign: 'center', padding: 15, fontFamily: MyFont.regular, }}>
+
                                 {cargando ? ('Realiza una busqueda para conocer tus citas') : ('Cargando...')}
                             </Text>
                         </>
                     ) : (
                         <>
-                        {cargando ? (
-                            <>
-                                <Text style={{textAlign: 'center', padding: 15, fontFamily: MyFont.regular,}}>Cargando...</Text>
-                            </>
-                        ) : (
-                        citasCanceladas.length > 0 ? (
-                            citasCanceladas.map((cita, index) => {
-                                const { diaSemana, numeroDia, mes, hora } = formatearFecha(cita.fecha);
-                                
-                                return (
-                                    <View key={index} style={styles.cita}>
-                                        <View style={{alignItems: 'center', width: 80,}}>
-                                            <View style={{flexDirection: 'column', alignItems: 'center',}}>
-                                                <Text style={styles.text}>{diaSemana}</Text>
-                                                <Text style={styles.numeroDia}>{numeroDia}</Text>
-                                                <Text style={styles.text}>{mes}</Text>
+                            {cargando ? (
+                                <>
+                                    <Text style={{ textAlign: 'center', padding: 15, fontFamily: MyFont.regular, }}>Cargando...</Text>
+                                </>
+                            ) : (
+                                citasCanceladas.length > 0 ? (
+                                    citasCanceladas.map((cita, index) => {
+                                        const { diaSemana, numeroDia, mes, hora } = formatearFecha(cita.fecha);
+
+                                        return (
+                                            <View key={index} style={styles.cita}>
+                                                <View style={{ alignItems: 'center', width: 80, }}>
+                                                    <View style={{ flexDirection: 'column', alignItems: 'center', }}>
+                                                        <Text style={styles.text}>{diaSemana}</Text>
+                                                        <Text style={styles.numeroDia}>{numeroDia}</Text>
+                                                        <Text style={styles.text}>{mes}</Text>
+                                                    </View>
+                                                </View>
+                                                <View style={{ flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start', flex: 1, marginLeft: 15, paddingRight: 15, gap: 2, }}>
+                                                    <Text style={styles.titleCita}>{cita.evento_agendado}</Text>
+                                                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, }}>
+                                                        <ClockIcon width={14} height={14} />
+                                                        <Text style={styles.text}>{hora}</Text>
+                                                    </View>
+                                                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, }}>
+                                                        <DollarIcon width={14} height={14} />
+                                                        <Text style={styles.text}>{formatearPrecio(cita.valor)}</Text>
+                                                    </View>
+                                                </View>
+                                                <View style={{ height: '100%', alignItems: 'flex-end', paddingVertical: 7, }}>
+                                                    <Text style={[styles.text, { color: '#404040', }]}>{cita.status === 'Cancelado' ? 'Cancelada' : 'Finalizada'}</Text>
+                                                </View>
                                             </View>
-                                        </View>
-                                        <View style={{flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start', flex: 1, marginLeft: 15, paddingRight: 15, gap: 2,}}>
-                                            <Text style={styles.titleCita}>{cita.evento_agendado}</Text>
-                                            <View style={{flexDirection: 'row', alignItems: 'center', gap: 5,}}>
-                                                <ClockIcon width={14} height={14} />
-                                                <Text style={styles.text}>{hora}</Text>
-                                            </View>
-                                            <View style={{flexDirection: 'row', alignItems: 'center', gap: 5,}}>
-                                                <DollarIcon width={14} height={14} />
-                                                <Text style={styles.text}>{formatearPrecio(cita.valor)}</Text>
-                                            </View>
-                                        </View>
-                                        <View style={{height: '100%', alignItems: 'flex-end', paddingVertical: 7,}}>
-                                            <Text style={[styles.text, {color: '#404040',}]}>{cita.status === 'Cancelado' ? 'Cancelada': 'Finalizada'}</Text>
-                                        </View>
-                                    </View>
+                                        )
+                                    })
+                                ) : (
+                                    <Text style={{ textAlign: 'center', padding: 15, fontFamily: MyFont.regular, }}>No tienes citas anteriores</Text>
                                 )
-                            })
-                        ) : (
-                            <Text style={{textAlign: 'center', padding: 15, fontFamily: MyFont.regular,}}>No tienes citas anteriores</Text>
-                        )
-                        )}
+                            )}
                         </>
                     )}
                 </View>
@@ -249,8 +247,8 @@ const MiAgenda = () => {
                 visible={modalVisible}
                 onRequestClose={() => setModalVisible(false)}
             >
-                <TouchableOpacity 
-                    style={styles.modalFade} 
+                <TouchableOpacity
+                    style={styles.modalFade}
                     onPress={() => setModalVisible(false)}
                     activeOpacity={1} // Esto asegura que el área transparente también responda al toque
                 >
@@ -258,27 +256,27 @@ const MiAgenda = () => {
                         <View style={styles.modalContent}>
                             <View>
                                 <TouchableOpacity style={styles.cerrarBtn} onPress={() => setModalVisible(false)}>
-                                    <CloseIcon width={16} height={16}/>
+                                    <CloseIcon width={16} height={16} />
                                     <Text style={styles.textModal}>Cerrar</Text>
                                 </TouchableOpacity>
                             </View>
-                            <View style={{marginVertical: 40,}}>
-                                <Text style={[styles.titleModal, {textAlign: 'center',}]}>¿Estas seguro?</Text>
+                            <View style={{ marginVertical: 40, }}>
+                                <Text style={[styles.titleModal, { textAlign: 'center', }]}>¿Estas seguro?</Text>
                             </View>
-                            <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: 8,}}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 8, }}>
                                 <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.conservarBtn}>
-                                    <Text style={[styles.textModal, {color: 'white',}]}>No, conservar</Text>
-                                    <TickCircleWhiteicon width={16} height={16}/>
+                                    <Text style={[styles.textModal, { color: 'white', }]}>No, conservar</Text>
+                                    <TickCircleWhiteicon width={16} height={16} />
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.siCancelarBtn} onPress={() => {
                                     cancelarCita(cedulaFiltro, cancelacion).then(response => {
-                                            console.log(response);
-                                            setModalVisible(false);
-                                        });
-                                    }}
+                                        console.log(response);
+                                        setModalVisible(false);
+                                    });
+                                }}
                                 >
                                     <Text style={styles.textModal}>Si, cancelar cita</Text>
-                                    <TrashIcon width={16} height={16}/>
+                                    <TrashIcon width={16} height={16} />
                                 </TouchableOpacity>
                             </View>
                         </View>

@@ -1,29 +1,27 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamsList } from '../../../../App';
 import { MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../../Presentation/theme/Icons';
 import { agendarCita } from '../../../../agendarCitaService';
-import { useAppContext } from '../../../../AppContext';
+
 
 const ConfirmationPage = () => {
     const [botonActivo, setBotonActivo] = useState(false);
 
-    const { horaAgendada, fecha, virtualPresecial, selectedCard, cedulaUsuario }: any = useAppContext();
+    const { horaAgendada, fecha, virtualPresecial, selectedCard, cedulaUsuario }: any = useState();
 
     const { TickCircleIcon, TickCircleWhiteicon } = Icons;
-    
-    const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
 
-    const editarStatusHandler = async (cedula: any, fecha: any) => {        
+    const navigation = useNavigation();
+
+    const editarStatusHandler = async (cedula: any, fecha: any) => {
         try {
             const response = await fetch(`https://rogansya.com/rogans-app/index.php?accion=editarStatus&cedula=${cedula}&fecha=${fecha}`);
             const data = await response.json();
             if (data.mensaje === "Cita cancelada exitosamente") {
                 console.log("Estatus actualizado");
-                
+
             } else {
                 console.log("Error o cita no encontrada");
             }
@@ -39,17 +37,17 @@ const ConfirmationPage = () => {
         let hora24 = ampm === 'PM' ? parseInt(hora, 10) + 12 : parseInt(hora, 10);
         if (hora24 === 24) hora24 = 12;
         if (hora24 === 12 && ampm === 'AM') hora24 = 0;
-      
+
         const fechaHora = new Date(`${fecha} ${hora24}:${minutos}:00`);
-      
+
         fechaHora.setHours(fechaHora.getHours());
-      
+
         return fechaHora.toISOString().replace('.000', '');
-      }
+    }
 
-      const fechaAgendadaFormateada = convertirFechaYHora(fecha, horaAgendada);
+    const fechaAgendadaFormateada = convertirFechaYHora(fecha, horaAgendada);
 
-      useEffect(() => {
+    useEffect(() => {
         editarStatusHandler(cedulaUsuario, fechaAgendadaFormateada);
     }, []);
 
