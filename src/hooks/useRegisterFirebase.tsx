@@ -17,7 +17,7 @@ const useRegisterFirebase = () => {
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app)
 
-    const distpach = useDispatch()
+    const distpach = useDispatch();
 
     const navigation = useNavigation();
     const [error, setError] = useState("");
@@ -113,7 +113,7 @@ const useRegisterFirebase = () => {
                         if (selectedProfile) {
 
                             const user = {
-                                id: selectedProfile.user_id,
+                                user_id: selectedProfile.user_id,
                                 email: selectedProfile.email,
                                 role: selectedProfile.role,
                                 urlphoto: selectedProfile.urlphoto,
@@ -127,6 +127,7 @@ const useRegisterFirebase = () => {
                            
                             AsyncStorage.setItem('@xqtes', JSON.stringify(email));
                             AsyncStorage.setItem('@asdqwe', JSON.stringify(password));
+
                             distpach(setUserInfo(user));
 
                         } else {

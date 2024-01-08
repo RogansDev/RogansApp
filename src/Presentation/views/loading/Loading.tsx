@@ -26,9 +26,7 @@ const Loading = () => {
         );
     }
 
-    return (
-        <ThirdScreen />
-    )
+    return (<ThirdScreen />)
 }
 
 

@@ -5,8 +5,8 @@ import PrivateScreen from './PrivateScreen';
 import PublicScreen from './PublicScreen';
 
 const Navigation = () => {
-    const { logged } = useSelector((state: any) => state.user);
     
+    const { logged } = useSelector((state: any) => state.user);    
 
     return (
         <NavigationContainer>

@@ -95,7 +95,7 @@ const Login = () => {
         <View style={{ marginTop: 20 }}>
           <SingLogin
             text="Ingresar"
-            onPress={() => handleLogin(email, password)}
+            onPress={() => {handleLogin(email, password)}}
           />
         </View>
         <View style={styles.containerUpdate}>
