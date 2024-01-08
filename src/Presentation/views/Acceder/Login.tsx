@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import CustomTextInput from "../../components/CustomTextInput";
 import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = () => {
 
@@ -21,8 +22,8 @@ const Login = () => {
 
 
   const { email, password, onChange } = UseViewModel();
-  const { handleLogin } = useRegisterFirebase();
-  
+  const { handleLogin, loading } = useRegisterFirebase();
+
 
   const {
     LogoBlack,
@@ -49,6 +50,32 @@ const Login = () => {
       console.log("Debes aceptar las políticas antes de proceder.");
     }
   };
+
+  useEffect(() => {
+    const obtenerDatos = async () => {
+      try {
+        const poiñlk = await AsyncStorage.getItem('@xqtes');
+        const mnbjhg = await AsyncStorage.getItem('@asdqwe');
+
+        if (poiñlk !== null && mnbjhg !== null) {
+
+          // Eliminar comillas simples de los valores recuperados
+        const emailWithoutQuotes = poiñlk.replace(/['"]+/g, '');
+        const passwordWithoutQuotes = mnbjhg.replace(/['"]+/g, '');
+
+        // Actualizar el estado de email y password
+        onChange('email', emailWithoutQuotes);
+        onChange('password', passwordWithoutQuotes);
+          
+        }
+
+      } catch (error) {
+        console.error('Error al obtener datos de AsyncStorage:', error);
+      }
+    };
+
+    obtenerDatos();
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -93,10 +120,24 @@ const Login = () => {
           </View>
         </View>
         <View style={{ marginTop: 20 }}>
-          <SingLogin
-            text="Ingresar"
-            onPress={() => {handleLogin(email, password)}}
-          />
+          {loading ?
+            <Text style={{
+              backgroundColor: 'black',
+              color: 'white',
+              width: '100%',
+              padding: 6,
+              fontSize: 18,
+              borderRadius: 10,
+              textAlign: 'center',
+              overflow: 'hidden',
+            }}>
+              Cargando...
+            </Text>
+            :
+            <SingLogin
+              text="Ingresar"
+              onPress={() => { handleLogin(email, password) }}
+            />}
         </View>
         <View style={styles.containerUpdate}>
           <UpdatePassword width={30} height={24} />
@@ -222,6 +263,19 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     gap: 50,
     marginTop: 30,
+  },
+  contenedor: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'black',
+  },
+  texto: {
+    color: 'white',
+    fontSize: 20,
+    borderWidth: 2,
+    borderColor: 'white',
+    padding: 10,
   },
 });
 
