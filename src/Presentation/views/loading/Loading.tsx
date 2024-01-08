@@ -14,6 +14,7 @@ const Loading = () => {
     useEffect(() => {
         const obtenerDatos = async () => {
             try {
+                await fetchFonts();
                 const poiñlk = await AsyncStorage.getItem('@xqtes');
                 const mnbjhg = await AsyncStorage.getItem('@asdqwe');
 
