@@ -4,11 +4,13 @@ import { useNavigation } from '@react-navigation/native';
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../../Presentation/theme/Icons';
 import PopUpCerrarSesion from '../../components/PopUpCerrarSesion';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../../utils/RootParamList';
 
 const Perfil = () => {
     const { Forget, UserIcon, Camara, CloseIcon } = Icons;
 
-    const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+    const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
     const PopUpCerrarSesionRef = useRef(null);
 
@@ -57,7 +59,10 @@ const Perfil = () => {
                             </View>
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 40,}}>
-                            <TouchableOpacity style={{flexDirection: 'row', gap: 5,}}>
+                            <TouchableOpacity 
+                               style={{flexDirection: 'row', gap: 5,}} 
+                               onPress={() => navigation.navigate("PassUpdatekeyDash")}
+                            >
                                 <Forget width={16} height={16}/>
                                 <Text>
                                     Cambiar mi contraseña

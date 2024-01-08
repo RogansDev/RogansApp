@@ -9,6 +9,7 @@ export type RootParamList = {
   first: undefined;
   acceder: undefined;
   Home: undefined;
+  PassUpdatekeyDash: undefined,
   ListaDeConsultas: undefined;
   ListaDeProcedimientos: undefined;
   DescripcionConsultas: undefined;

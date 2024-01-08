@@ -1,21 +1,22 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MyColors, MyFont } from '../theme/AppTheme';
-
 import { useNavigation } from '@react-navigation/native';
 import Icons from '../theme/Icons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../utils/RootParamList';
 
 
 const UpdateKeys = () => {
 
   const { Eye } = Icons
 
-  const navigate = useNavigation<StackNavigationProp<RootStackParamsList>>();
+  const navigate = useNavigation<StackNavigationProp<RootParamList>>();
 
   return (
     <TouchableOpacity
       style={styles.bottomContainer}
-      onPress={() => navigate.navigate("ModalVerifitCode")}
+      onPress={() => navigate.navigate("ConfirmationKey")}
     >
       <View style={styles.contentText} >
         <Text style={styles.textClick}>

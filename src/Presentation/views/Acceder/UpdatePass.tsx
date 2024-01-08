@@ -15,7 +15,7 @@ const UpdatePass = () => {
            <LogoBlack width={140} height={100}/>
         </View>
         <View style={styles.form}>
-            <Text style={styles.title}>Actualizar contraseña</Text>
+            <Text style={styles.title}>Recuperacion contraseña</Text>
             <View style={{marginTop: 30,}}>
                 <View style={styles.inputContent}>
                    <Text style={styles.textTitleKey}>Contraseña</Text>

@@ -18,6 +18,7 @@ import DeniedPage from "../Presentation/views/Consultas/DeniedPage";
 import ProcedureList from "../Presentation/views/Procedimientos/ProceduresList";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../utils/RootParamList";
+import UpdatePasswordDash from "../Presentation/views/User/UpdatePasswordDash";
 
 
 const Stack = createNativeStackNavigator<RootParamList>();
@@ -30,7 +31,12 @@ function PrivateScreen() {
         component={Home}
         options={{ title: "", headerShown: false }}
       />
-
+      
+      <Stack.Screen 
+        name="PassUpdatekeyDash"
+        component={UpdatePasswordDash}
+        options={{ title: "", headerShown: false }}
+      />
       {/* aqui agregar las pantallas privadas  */}
       <Stack.Screen
         name="ListaDeConsultas"

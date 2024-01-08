@@ -7,14 +7,13 @@ import {
   StyleSheet,
   Modal,
 } from "react-native";
-import { MyColors } from "../theme/AppTheme";
+import { MyColors, MyFont } from "../theme/AppTheme";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import CodeUpdateKeys from "./CodeUpdateKeys";
 import Icons from "../theme/Icons";
 
 const ModalVerifitCode = () => {
-
   const { Phone, Email } = Icons;
   const inputRefs = Array(6)
     .fill(0)
@@ -101,14 +100,14 @@ const ModalVerifitCode = () => {
             {reenviarCodePressed && (
               <>
                 <View style={styles.expiredContent}>
-                    <Text style={styles.expiredText}>
-                    ¡Tiempo expirado! 
-                    </Text>
-                    <Text style={styles.expiredText}>Puedes reenviar el código.</Text>
+                  <Text style={styles.expiredText}>¡Tiempo expirado!</Text>
+                  <Text style={styles.expiredText}>
+                    Puedes reenviar el código.
+                  </Text>
                 </View>
                 <View style={styles.textContent}>
                   <Text>Ingresa el código de 6 dígitos que enviamos </Text>
-                  <Text>a tu número de celular</Text>
+                  <Text>a tu correo</Text>
                 </View>
                 <View style={styles.timerCode}>
                   <Text>Reenviar código en</Text>
@@ -130,21 +129,62 @@ const ModalVerifitCode = () => {
                       />
                     ))}
                 </View>
-                <View style={{marginTop: 100}}></View>
+                {/* para enviar codigo al correo */}
+                <View style={styles.optionsRed}>
+                  <TouchableOpacity
+                    style={styles.itemsCode}
+                    onPress={handleResendCode}
+                  >
+                    <Email />
+                    <Text
+                      style={[
+                        styles.resendCodeButton,
+                        reenviarCodePressed && styles.redText,
+                      ]}
+                    >
+                      Reenviar código al Correo
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ marginTop: 100 }}></View>
               </>
             )}
             {!reenviarCodePressed && (
               <>
+                <View style={{ marginTop: 10 }}>
+                  <View style={styles.inputContent}>
+                    <Text style={styles.textTitleKey}>Correo electronico</Text>
+                    <Text style={styles.textRequireCheck}>(Requrido)</Text>
+                  </View>
+                  <TextInput
+                    placeholder="Correo electronico"
+                    keyboardType="default"
+                    style={styles.textInputKey}
+                  />
+                </View>
+                {/* para enviar codigo al correo */}
+                <View style={styles.options}>
+                  <TouchableOpacity
+                    style={styles.itemsCode}
+                    onPress={handleResendCode}
+                  >
+                    <Email />
+                    <Text
+                      style={[
+                        styles.resendCodeButton,
+                        reenviarCodePressed && styles.redText,
+                      ]}
+                    >
+                      Reenviar código al Correo
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                {/* texto qur indica que son los digitos requeridos */}
                 <View style={styles.textContent}>
                   <Text>Ingresa el código de 6 dígitos que enviamos </Text>
-                  <Text>a tu número de celular</Text>
+                  <Text>a tu número correo</Text>
                 </View>
-                <View style={styles.timerCode}>
-                  <Text>Reenviar código en</Text>
-                  <Text>{`${minutes}:${
-                    seconds < 10 ? "0" : ""
-                  }${seconds}`}</Text>
-                </View>
+                {/* espacios para el codigo de verificacion */}
                 <View style={styles.writeCodeContent}>
                   {Array(6)
                     .fill(0)
@@ -159,41 +199,19 @@ const ModalVerifitCode = () => {
                       />
                     ))}
                 </View>
+                {/* texto de reenviar codigo */}
+                <View style={styles.timerCode}>
+                  <Text>Reenviar código en</Text>
+                  <Text>{`${minutes}:${
+                    seconds < 10 ? "0" : ""
+                  }${seconds}`}</Text>
+                </View>
+                {/* boton de verficar codigo */}
                 <View style={{ marginTop: 100 }}>
                   <CodeUpdateKeys />
                 </View>
               </>
             )}
-            <View style={styles.options}>
-              <TouchableOpacity
-                style={styles.itemsCode}
-                onPress={handleResendCode}
-              >
-                <Phone />
-                <Text
-                  style={[
-                    styles.resendCodeButton,
-                    reenviarCodePressed && styles.redText,
-                  ]}
-                >
-                  Reenviar código al Celular
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.itemsCode}
-                onPress={handleResendCode}
-              >
-                <Email />
-                <Text
-                  style={[
-                    styles.resendCodeButton,
-                    reenviarCodePressed && styles.redText,
-                  ]}
-                >
-                  Reenviar código al Correo
-                </Text>
-              </TouchableOpacity>
-            </View>
           </View>
         </View>
       </Modal>
@@ -228,7 +246,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    top: 40,
+    top: 60,
   },
   textInfo: {
     fontSize: 14,
@@ -239,7 +257,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     gap: 5,
-    top: 70,
+    top: 87,
   },
   writeCodeContent: {
     display: "flex",
@@ -262,7 +280,15 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
     gap: 20,
-    marginTop: 20,
+    marginTop: 2,
+  },
+  optionsRed: {
+    display: "flex",
+    flexDirection: "column",
+    alignSelf: "center",
+    justifyContent: "center",
+    gap: 20,
+    marginTop: 90,
   },
   itemsCode: {
     display: "flex",
@@ -276,7 +302,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignSelf: "center",
     justifyContent: "center",
-
   },
   expiredText: {
     display: "flex",
@@ -290,6 +315,37 @@ const styles = StyleSheet.create({
   },
   redText: {
     color: "red", // Cambia a rojo cuando se presiona el botón de reenviar
+  },
+  inputContent: {
+    flexDirection: "row",
+    position: "absolute",
+    top: 2,
+    left: 18,
+    padding: 2,
+    backgroundColor: MyColors.base,
+    zIndex: 10,
+  },
+  textTitleKey: {
+    fontSize: 11,
+    fontFamily: MyFont.regular,
+    color: "#404040",
+  },
+  textRequireCheck: {
+    fontSize: 10,
+    fontFamily: MyFont.regular,
+    color: "#C0C0C0",
+  },
+  textInputKey: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderWidth: 1,
+    borderColor: "#404040",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginVertical: 10,
+    color: "#C0C0C0",
   },
 });
 

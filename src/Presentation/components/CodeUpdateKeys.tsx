@@ -3,15 +3,17 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MyColors } from '../theme/AppTheme';
 import Verify from '../../../assets/verify.svg'
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../utils/RootParamList';
 
 const CodeUpdateKeys = () => {
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
   return (
     <TouchableOpacity
       style={styles.BottomRounded}
-      onPress={() => navigation.navigate("ConfirmationKey")}
+      onPress={() => navigation.navigate("UpdateKey")}
     >
       <View style={styles.contentBottom}>
         <Text style={styles.text}>

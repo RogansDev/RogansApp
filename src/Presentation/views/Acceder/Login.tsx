@@ -102,7 +102,7 @@ const Login = () => {
           <UpdatePassword width={30} height={24} />
           <Text
             style={styles.textUpdate}
-            onPress={() => navigation.navigate("UpdateKey")}
+            onPress={() => navigation.navigate("ModalVerifitCode")}
           >
             Olvide mi contraseña
           </Text>

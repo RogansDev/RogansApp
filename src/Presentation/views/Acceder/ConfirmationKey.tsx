@@ -3,10 +3,13 @@ import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity } from 'reac
 import { MyColors, MyFont } from '../../../Presentation/theme/AppTheme';
 import { useNavigation } from '@react-navigation/native';
 import Icons from '../../theme/Icons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../../utils/RootParamList';
 
 const ConfirmationKey = () => {
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<StackNavigationProp<RootParamList>>();
+    
     const { TickIconWhite, TickIcon } = Icons
 
     return (
