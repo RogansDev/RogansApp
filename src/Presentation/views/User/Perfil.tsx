@@ -4,9 +4,12 @@ import { useNavigation } from '@react-navigation/native';
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../../Presentation/theme/Icons';
 import PopUpCerrarSesion from '../../components/PopUpCerrarSesion';
+import { useSelector } from "react-redux";
 
 const Perfil = () => {
     const { Forget, UserIcon, Camara, CloseIcon } = Icons;
+    const state = useSelector( (state : any) => state);
+    const userData = state.user;
 
     const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
 
@@ -35,25 +38,25 @@ const Perfil = () => {
                         <View style={styles.info}>
                             <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 3,}}>
                                 <Text style={styles.subtitleInfo}>Nombre</Text>
-                                <Text style={styles.titleInfo}>Juanito Alimaña</Text>
+                                <Text style={styles.titleInfo}>{userData.name + ' ' + userData.lastname}</Text>
                             </View>
                         </View>
                         <View style={styles.info}>
                             <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 3,}}>
                                 <Text style={styles.subtitleInfo}>Documento de identidad</Text>
-                                <Text style={styles.titleInfo}>12345678910</Text>
+                                <Text style={styles.titleInfo}>{userData.document}</Text>
                             </View>
                         </View>
                         <View style={styles.info}>
                             <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 3,}}>
                                 <Text style={styles.subtitleInfo}>Teléfono</Text>
-                                <Text style={styles.titleInfo}>3123243245</Text>
+                                <Text style={styles.titleInfo}>{userData.phone}</Text>
                             </View>
                         </View>
                         <View style={styles.info}>
                             <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 3,}}>
                                 <Text style={styles.subtitleInfo}>Correo</Text>
-                                <Text style={styles.titleInfo}>rogans@gmail.com</Text>
+                                <Text style={styles.titleInfo}>{userData.email}</Text>
                             </View>
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 40,}}>
