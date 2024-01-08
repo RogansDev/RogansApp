@@ -6,10 +6,6 @@ const initialState = {
   horaAgendada: '',
   virtualPresecial: '',
   selectedCard: '',
-  nombreUsuario: '',
-  correoUsuario: '',
-  cedulaUsuario: '',
-  telUsuario: '',
 };
 
 const CalendarySlice = createSlice({
