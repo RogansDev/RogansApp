@@ -11,6 +11,7 @@ import Icons from '../../../Presentation/theme/Icons';
 import ButtonProcedureList from '../../components/BottomMasProcedimientos';
 import * as WebBrowser from 'expo-web-browser';
 import { consultCards, procedureCards } from '../Servicios/ServicesData';
+import { useSelector } from "react-redux";
 
 interface EventType {
   name: string;
@@ -20,6 +21,14 @@ const Home = () => {
   const { UserIcon, ProcedimientoIcon, ConsultasIcon, AgendaIcon, Arrow, CloseIcon } = Icons;
 
   const navigation = useNavigation();
+  const state = useSelector( (state : any) => state)
+
+  useEffect(() => {
+
+    console.log('home', JSON.stringify(state, null, 5))
+    
+  }, [])
+  
 
   return (
     <View style={styles.container}>

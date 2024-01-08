@@ -3,31 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from '../Presentation/views/Acceder/Login';
 import Register from '../Presentation/views/Acceder/Register';
 import ThirdScreen from '../Presentation/views/ContainerHome/ThirdScreen';
-import SecondScreen from '../Presentation/views/ContainerHome/SecondScreen';
-import  FIrstScreen  from '../Presentation/views/ContainerHome/FIrstScreen';
-import Acceder from '../Presentation/views/Acceder/Acceder';
-import { MyColors } from '../Presentation/theme/AppTheme';
-import ConfirmationKey from '../Presentation/views/Acceder/ConfirmationKey';
-import ModalVerifitCode from '../Presentation/components/ModalVerifitCode';
-import UpdatePass from '../Presentation/views/Acceder/UpdatePass';
-import { RootParamList } from '../utils/RootParamList';
 
-
-// export type RootParamListPublic = {
-//     Login: undefined,
-//     UpdateKey: undefined,
-//     ModalVerifitCode: undefined,
-//     ConfirmationKey: undefined,
-//     Register: undefined,
-//     thirdPage: undefined,
-//     second: undefined,
-//     first: undefined,
-//     acceder: undefined,
-// }
-
-const Stack = createNativeStackNavigator<RootParamList>();
-
-
+const Stack = createNativeStackNavigator();
 
 function PublicScreen() {
 
@@ -36,21 +13,9 @@ function PublicScreen() {
         <Stack.Navigator>
 
             {/* rutas publicas principales  */}
-            <Stack.Screen 
-               name="first" 
-               component={FIrstScreen}
-               options={{
-                 headerShown: false,
-               }}
-            />
-            <Stack.Screen 
-                name="acceder" 
-                component={Acceder}
-                options={{
-                    headerShown: false,
-                    headerTransparent: true,
-                  }}
-            />
+            <Stack.Screen name="Regresar" component={ThirdScreen} options={{ title: '', headerShown: false }} />
+            <Stack.Screen name="Login" component={Login} options={{ title: '', headerShown: false }} />
+            <Stack.Screen name="Register" component={Register} options={{ title: '' }} />
 
             {/* aqui agregar pantallas publicas */}
             <Stack.Screen 
