@@ -57,6 +57,7 @@ import ArrowGreen from '../../../assets/icons/arrow-green.svg';
 import Headphone from '../../../assets/icons/headphone.svg'
 import Camara from '../../../assets/icons/camera.svg'
 import Editar2Icon from '../../../assets/icons/editar-2.svg'
+import GalleryAdd from '../../../assets/icons/gallery-add.svg'
 
 const Icons = {
   LogoWhite,
@@ -118,6 +119,7 @@ const Icons = {
   Headphone,
   Camara,
   Editar2Icon,
+  GalleryAdd,
 };
 
 export default Icons;

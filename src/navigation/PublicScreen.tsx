@@ -23,8 +23,7 @@ function PublicScreen() {
             <Stack.Screen name="Regresar" component={ThirdScreen} options={{ title: '', headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ title: '', headerShown: false }} />
             <Stack.Screen name="Register" component={Register} options={{ title: '' }} />
-           
-          
+
             {/* aqui agregar pantallas publicas */}
 
 
