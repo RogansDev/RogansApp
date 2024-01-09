@@ -20,41 +20,44 @@ const UpdatePasswordDash = () => {
 
   return (
     <View style={styles.container}>
-    <View style={styles.logoContainer}>
-      <LogoBlack width={140} height={100} />
+    <View style={{marginTop: 30,}}>
+      <LogoBlack width={140} height={40} />
     </View>
     <View style={styles.form}>
-      <View style={{ marginTop: 30 }}>
+      <View style={{ marginTop: 20, marginBottom: 20, }}>
         <View style={styles.inputContent}>
           <Text style={styles.textTitleKey}>Contraseña</Text>
-          <Text style={styles.textRequireCheck}>(Requrido)</Text>
+          <Text style={styles.textRequireCheck}> (Requrido)</Text>
         </View>
         <TextInput
-          placeholder="contraseña anterior"
+          placeholder="Contraseña anterior"
           keyboardType="default"
+          autoCapitalize="none"
           style={styles.textInputKey}
         />
       </View>
-      <Text style={styles.title}>Recuperar contraseña</Text>
-      <View style={{ marginTop: 30 }}>
+      <Text style={styles.title}>Cambiar contraseña</Text>
+      <View style={{ marginTop: 20 }}>
         <View style={styles.inputContent}>
-          <Text style={styles.textTitleKey}>Contraseña</Text>
-          <Text style={styles.textRequireCheck}>(Requrido)</Text>
+          <Text style={styles.textTitleKey}>Contraseña nueva</Text>
+          <Text style={styles.textRequireCheck}> (Requrido)</Text>
         </View>
         <TextInput
-          placeholder="Nueva contraseña"
+          placeholder="Contraseña nueva"
           keyboardType="default"
+          autoCapitalize="none"
           style={styles.textInputKey}
         />
       </View>
       <View style={{ marginTop: 10 }}>
         <View style={styles.inputContent}>
           <Text style={styles.textTitleKey}>Confirmar Contraseña</Text>
-          <Text style={styles.textRequireCheck}>(Requrido)</Text>
+          <Text style={styles.textRequireCheck}> (Requrido)</Text>
         </View>
         <TextInput
-          placeholder="Confirma la contraseña"
+          placeholder="Confirmar contraseña"
           keyboardType="default"
+          autoCapitalize="none"
           style={styles.textInputKey}
         />
       </View>
@@ -62,10 +65,7 @@ const UpdatePasswordDash = () => {
         style={styles.bottomContainer}
       //   onPress={() => navigate.navigate("ConfirmationKey")}
       >
-        <View style={styles.contentText}>
-          <Text style={styles.textClick}>Recuperar contraseña</Text>
-          <Eye />
-        </View>
+        <Text style={styles.textClick}>Recuperar contraseña</Text>
       </TouchableOpacity>
       
     </View>
@@ -77,24 +77,16 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: MyColors.base,
-    },
-    logoContainer: {
-      position: "absolute",
-      alignSelf: "center",
-      top: "10%",
+      alignItems: 'center',
     },
     form: {
       width: "100%",
-      height: "100%",
-      position: "absolute",
-      top: 160,
       padding: 20,
     },
     title: {
-      display: "flex",
       alignSelf: "center",
-      fontSize: 25,
-      fontWeight: "bold",
+      fontSize: 20,
+      fontFamily: MyFont.medium,
     },
     inputContent: {
       flexDirection: "row",
@@ -116,6 +108,7 @@ const styles = StyleSheet.create({
       color: "#C0C0C0",
     },
     textInputKey: {
+      fontFamily: MyFont.regular,
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
@@ -125,14 +118,13 @@ const styles = StyleSheet.create({
       paddingVertical: 10,
       paddingHorizontal: 20,
       marginVertical: 10,
-      color: "#C0C0C0",
+      color: "black",
     },
     contentInfo: {
       display: "flex",
       flexDirection: "column",
       alignSelf: "center",
       justifyContent: "center",
-      marginTop: 30,
     },
     infoContact: {
       display: "flex",
@@ -147,7 +139,6 @@ const styles = StyleSheet.create({
       alignSelf: "center",
       justifyContent: "center",
       gap: 10,
-      marginTop: 40,
     },
     textMethod: {
       fontSize: 16,
@@ -156,23 +147,17 @@ const styles = StyleSheet.create({
     bottomContainer: {
       width: "100%",
       height: 45,
-      display: "flex",
-      alignSelf: "center",
+      flexDirection: 'row',
+      alignItems: "center",
       backgroundColor: MyColors.black,
       justifyContent: "center",
       borderRadius: 15,
-    },
-    contentText: {
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "center",
-      alignItems: "center",
-      gap: 10,
+      marginTop: 20,
     },
     textClick: {
       color: MyColors.base,
-      fontSize: 15,
-      fontFamily: MyFont.bold,
+      fontSize: 13,
+      fontFamily: MyFont.regular,
     }
   });
 

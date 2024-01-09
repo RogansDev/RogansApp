@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { MyColors, MyFont } from '../theme/AppTheme';
 import { Props } from 'react-calendly/typings/components/InlineWidget/InlineWidget';
+import Icons from "../theme/Icons";
 
 
 interface MyProps extends Props {
@@ -10,12 +11,15 @@ interface MyProps extends Props {
 }
 
 const RoundedBottom = ({title, onPress}: any) => {
+  const { SendIcon } = Icons;
+
   return (
     <TouchableOpacity  
        style={styles.roundedBottom}
        onPress={onPress}
     >
         <Text style={styles.textBottom}>{title}</Text>
+        <SendIcon width={16} height={16} />
     </TouchableOpacity>
   )
 };
@@ -24,12 +28,12 @@ const styles = StyleSheet.create({
     roundedBottom: {
       width: '100%',
       height: 50,
+      flexDirection: 'row',
+      gap: 8,
       alignItems: 'center',
-      backgroundColor: MyColors.buttonColor,
+      backgroundColor: 'black',
       justifyContent: 'center',
-      borderRadius: 15,      
-      borderWidth: 5,  // Ancho del borde
-      borderColor: 'black',  // Color del borde
+      borderRadius: 15,
       marginTop:15
     },
     contentNext: {
@@ -45,9 +49,9 @@ const styles = StyleSheet.create({
       
     },
     textBottom: {
-      color: 'black',
+      color: 'white',
       fontWeight: 'bold',
-      fontSize: 20,
+      fontSize: 13,
       fontFamily: MyFont.regular,
     }
   })

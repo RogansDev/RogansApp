@@ -3,13 +3,15 @@ import { ActivityIndicator, StyleSheet, View, Image, Text } from "react-native";
 import ThirdScreen from "../ContainerHome/ThirdScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../../utils/RootParamList';
 import { fetchFonts } from '../../theme/AppTheme';
 
 
 const Loading = () => {
 
     const [loadingScreen, setLoadingScreen] = useState(true);
-    const navigation = useNavigation();
+    const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
     useEffect(() => {
         const obtenerDatos = async () => {
@@ -39,8 +41,7 @@ const Loading = () => {
     if (loadingScreen) {
         return (
             <View style={styles.container}>
-                <ActivityIndicator size="large" color="red" />
-                <Text style={styles.text}>Cargando...</Text>
+                <ActivityIndicator size="large" color="#00D0B1" />
             </View>
         );
     }

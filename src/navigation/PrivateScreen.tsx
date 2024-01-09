@@ -4,6 +4,8 @@ import Home from "../Presentation/views/Home/Home";
 import CancelationConfirmation from "../Presentation/views/MiAgenda/CancelationConfirmation";
 import Servicios from "../Presentation/views/Servicios/Servicios";
 import { MyColors } from "../Presentation/theme/AppTheme";
+import CustomHeader from "../Presentation/components/CustomHeader";
+import CustomHeaderTransparent from "../Presentation/components/CustomHeaderTransparent";
 import Perfil from "../Presentation/views/User/Perfil";
 import EditarCita from "../Presentation/views/MiAgenda/EditarCita";
 import MiAgenda from "../Presentation/views/MiAgenda/MiAgenda";
@@ -35,80 +37,94 @@ function PrivateScreen() {
       <Stack.Screen 
         name="PassUpdatekeyDash"
         component={UpdatePasswordDash}
-        options={{ title: "", headerShown: false }}
+        options={({ route, navigation }) => ({
+          headerShown: true,
+          headerTransparent: false,
+          headerTitle: '',
+          headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+          headerTintColor: '#00D0B1',
+          headerTitleAlign: 'left',
+          headerShadowVisible: false,
+        })}
       />
       {/* aqui agregar las pantallas privadas  */}
       <Stack.Screen
         name="ListaDeConsultas"
         component={ConsultationList}
-        options={{
+        options={({ route, navigation }) => ({
           headerShown: true,
           headerTransparent: false,
-          headerTitle: "",
-          headerTintColor: MyColors.primary,
-          headerTitleAlign: "left",
+          headerTitle: '',
+          headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+          headerTintColor: '#00D0B1',
+          headerTitleAlign: 'left',
           headerShadowVisible: false,
-        }}
+        })}
       />
       <Stack.Screen
         name="ListaDeProcedimientos"
         component={ProcedureList}
-        options={{
+        options={({ route, navigation }) => ({
           headerShown: true,
           headerTransparent: false,
-          headerTitle: "",
-          headerTintColor: MyColors.primary,
-          headerTitleAlign: "left",
+          headerTitle: '',
+          headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+          headerTintColor: '#00D0B1',
+          headerTitleAlign: 'left',
           headerShadowVisible: false,
-        }}
+        })}
       />
       <Stack.Screen
         name="DescripcionConsultas"
         component={ConsultationDescription}
-        options={{
+        options={({ route, navigation }) => ({
           headerShown: true,
           headerTransparent: false,
-          headerTitle: "",
-          headerTintColor: MyColors.primary,
-          headerTitleAlign: "left",
+          headerTitle: '',
+          headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+          headerTintColor: '#00D0B1',
+          headerTitleAlign: 'left',
           headerShadowVisible: false,
-        }}
+        })}
       />
       <Stack.Screen
         name="DescripcionProcedimientos"
         component={ProcedureDescription}
-        options={{
+        options={({ route, navigation }) => ({
           headerShown: true,
           headerTransparent: false,
-          headerTitle: "",
-          headerTintColor: MyColors.primary,
-          headerTitleAlign: "left",
+          headerTitle: '',
+          headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+          headerTintColor: '#00D0B1',
+          headerTitleAlign: 'left',
           headerShadowVisible: false,
-        }}
+        })}
       />
       <Stack.Screen
         name="ConfirmacionConsulta"
         component={ConsultationConfirmation}
-        options={{
+        options={({ route, navigation }) => ({
           headerShown: true,
           headerTransparent: false,
-          headerTitle: "",
-          headerTintColor: MyColors.primary,
-          headerTitleAlign: "left",
+          headerTitle: '',
+          headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+          headerTintColor: '#00D0B1',
+          headerTitleAlign: 'left',
           headerShadowVisible: false,
-        }}
+        })}
       />
       <Stack.Screen
         name="ConfirmacionProcedimiento"
         component={ProcedureConfirmation}
-        options={{
+        options={({ route, navigation }) => ({
           headerShown: true,
           headerTransparent: false,
-          headerTitle: "",
-          headerTintColor: MyColors.primary,
-          headerTitleAlign: "left",
+          headerTitle: '',
+          headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+          headerTintColor: '#00D0B1',
+          headerTitleAlign: 'left',
           headerShadowVisible: false,
-        }}
+        })}
       />
       <Stack.Screen
         name="Confirmado"
@@ -134,32 +150,28 @@ function PrivateScreen() {
       <Stack.Screen
         name="MiAgenda"
         component={MiAgenda}
-        options={{
+        options={({ route, navigation }) => ({
           headerShown: true,
           headerTransparent: false,
-          headerTitle: "",
-          headerTintColor: MyColors.primary,
-          headerTitleAlign: "left",
-          headerStyle: {
-            backgroundColor: "#FCFCFC",
-          },
+          headerTitle: '',
+          headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+          headerTintColor: '#00D0B1',
+          headerTitleAlign: 'left',
           headerShadowVisible: false,
-        }}
+        })}
       />
       <Stack.Screen
         name="EditarCita"
         component={EditarCita}
-        options={{
+        options={({ route, navigation }) => ({
           headerShown: true,
           headerTransparent: false,
-          headerTitle: "",
-          headerTintColor: MyColors.primary,
-          headerTitleAlign: "left",
-          headerStyle: {
-            backgroundColor: "#FCFCFC",
-          },
+          headerTitle: '',
+          headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+          headerTintColor: '#00D0B1',
+          headerTitleAlign: 'left',
           headerShadowVisible: false,
-        }}
+        })}
       />
       <Stack.Screen
         name="CitaCancelada"
@@ -171,32 +183,28 @@ function PrivateScreen() {
       <Stack.Screen
         name="Servicios"
         component={Servicios}
-        options={{
+        options={({ route, navigation }) => ({
           headerShown: true,
           headerTransparent: false,
-          headerTitle: "",
-          headerTintColor: MyColors.primary,
-          headerTitleAlign: "left",
-          headerStyle: {
-            backgroundColor: "#FCFCFC",
-          },
+          headerTitle: '',
+          headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+          headerTintColor: '#00D0B1',
+          headerTitleAlign: 'left',
           headerShadowVisible: false,
-        }}
+        })}
       />
       <Stack.Screen
         name="Perfil"
         component={Perfil}
-        options={{
+        options={({ route, navigation }) => ({
           headerShown: true,
           headerTransparent: false,
-          headerTitle: "",
-          headerTintColor: MyColors.primary,
-          headerTitleAlign: "left",
-          headerStyle: {
-            backgroundColor: "#FCFCFC",
-          },
+          headerTitle: '',
+          headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+          headerTintColor: '#00D0B1',
+          headerTitleAlign: 'left',
           headerShadowVisible: false,
-        }}
+        })}
       />
     </Stack.Navigator>
   );

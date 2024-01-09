@@ -17,10 +17,8 @@ const SingLogin: React.FC<Props> = ({ text, onPress }) => {
 
   return (
     <TouchableOpacity style={styles.roundedBottom} onPress={onPress}>
-      <View style={styles.flexBttom}>
         <Text style={styles.textBottom}>{text}</Text>
-        <SendIcon width={20} height={20} />
-      </View>
+        <SendIcon width={16} height={16} />
     </TouchableOpacity>
   );
 };
@@ -29,22 +27,16 @@ const styles = StyleSheet.create({
   roundedBottom: {
     width: '100%',
     height: 45,
-    display: 'flex',
-    alignSelf: 'center',
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'center',
     backgroundColor: MyColors.black,
     justifyContent: 'center',
     borderRadius: 15,
   },
-  flexBttom: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 10,
-  },
   textBottom: {
     color: 'white',
-    fontSize: 15,
+    fontSize: 13,
     fontFamily: MyFont.regular,
   },
 });

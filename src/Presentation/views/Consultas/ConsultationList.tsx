@@ -1,9 +1,11 @@
 import React, {useState} from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { View, ScrollView, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { MyColors, MyFont } from "../../../../src/Presentation/theme/AppTheme";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../../utils/RootParamList';
+import { setCalendaryInfo } from '../../../state/CalendarySlice';
 import FloatingMenu from "../../../Presentation/components/FloatingMenu";
 import Icons from "../../../Presentation/theme/Icons";
 import { consultCards } from '../Servicios/ServicesData';
@@ -11,13 +13,15 @@ import { consultCards } from '../Servicios/ServicesData';
 
 const Cosultationlist = () => {
   const { CalendarEditIcon } = Icons;
-
-  const navigation = useNavigation();
-
-  const [selectedCard, setSelectedCard] = useState();
+  const dispatch = useDispatch();
+  const calendaryState = useSelector((state : any) => state.calendary);
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
   const handleSelectCard = async (card: any) => {
-    setSelectedCard(card)
+    dispatch(setCalendaryInfo({
+      ...calendaryState,
+      selectedCard: card
+    }));
     navigation.navigate('DescripcionConsultas');
   };
 

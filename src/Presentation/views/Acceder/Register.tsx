@@ -13,9 +13,6 @@ import {
 import Icons from "../../../Presentation/theme/Icons";
 import { Picker } from "@react-native-picker/picker";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
 import Checkbox from "expo-checkbox";
 import UseViewModel from "./ViewModel/RegisterViewModel";
 import CustomTextInput from "../../components/CustomTextInput";
@@ -25,7 +22,6 @@ import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
 const Register = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
   
-
   const {
     name,
     email,
@@ -77,7 +73,7 @@ const Register = () => {
             />
             {/* apellido */}
             <CustomTextInput
-              title="apellidos"
+              title="Apellidos"
               placeholder="Ingrese tu  apelido"
               keyboardType="default"
               value={lastname}
@@ -167,7 +163,7 @@ const Register = () => {
             {loading ?
             <RoundedBottom title="Cargando..." />           
           :
-            <RoundedBottom title="REGISTRARME" onPress={() => handleRegister() }/>}
+            <RoundedBottom title="Registrarme" onPress={() => handleRegister() }/>}
           </View>
         </View> 
     </ScrollView>

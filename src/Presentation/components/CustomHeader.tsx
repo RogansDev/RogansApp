@@ -2,13 +2,13 @@ import React from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { useNavigation, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamsList } from "../../../App";
+import { RootParamList } from '../../utils/RootParamList';
 import { MyFont } from '../theme/AppTheme';
 import Icons from "../theme/Icons";
 
 interface CustomHeaderProps {
-  route: RouteProp<RootStackParamsList, keyof RootStackParamsList>;
-  navigation: StackNavigationProp<RootStackParamsList, keyof RootStackParamsList>;
+  route: RouteProp<RootParamList, keyof RootParamList>;
+  navigation: StackNavigationProp<RootParamList, keyof RootParamList>;
 }
 
 const CustomHeader: React.FC<CustomHeaderProps> = ({ navigation }) => {

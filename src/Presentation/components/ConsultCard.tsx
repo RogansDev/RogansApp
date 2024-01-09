@@ -5,12 +5,14 @@ import { MyFont } from "../theme/AppTheme";
 import Icons from '../theme/Icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCalendaryInfo } from '../../state/CalendarySlice';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../utils/RootParamList';
 
 const ConsultCard = ({ cards }: any) => {
   const { AgendarIcon } = Icons;
   const dispatch = useDispatch();
-  const calendaryState = useSelector(state => state.calendary);
-  const navigation = useNavigation();
+  const calendaryState = useSelector((state : any) => state.calendary);
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
   const handleSelectCard = async (card: any) => {
     dispatch(setCalendaryInfo({
@@ -18,8 +20,6 @@ const ConsultCard = ({ cards }: any) => {
       selectedCard: card
     }));
     navigation.navigate('DescripcionConsultas');
-
-    console.log(calendaryState.selectedCard);
   };
 
   return (

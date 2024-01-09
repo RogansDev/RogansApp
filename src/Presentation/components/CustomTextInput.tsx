@@ -41,6 +41,7 @@ const CustomTextInput = ({
       value={value}
       secureTextEntry={false}
       onChangeText={(text) => onChangeText(property, text)}
+      autoCapitalize="none"
     />
   </View>
   )

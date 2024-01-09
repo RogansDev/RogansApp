@@ -8,8 +8,9 @@ import { useNavigation } from '@react-navigation/native';
 import Icons from '../../../Presentation/theme/Icons';
 import { agendarCita } from '../../../../agendarCitaService';
 import { WebView } from 'react-native-webview';
-import { setCalendaryInfo } from '../../../state/CalendarySlice';
-
+import { setCalendaryInfo, resetSpecificCalendaryInfo } from '../../../state/CalendarySlice';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../../utils/RootParamList';
 
 interface MiCalendarioHandles {
     toggleModal: () => void;
@@ -23,44 +24,47 @@ const ConsultationDescription = () => {
     const { CalendarAddIcon, ArrowDownIcon, ArrowWhiteIcon, CloseIcon } = Icons;
     const dispatch = useDispatch();
     const selectedCard = useSelector( (state : any) => state.calendary.selectedCard);
-    const user = useSelector( (state : any) => state.user)
+    const calendaryState = useSelector((state : any) => state.calendary);
+    const user = useSelector( (state : any) => state.user);
 
-    const [fecha, setFecha] = useState(useSelector( (state : any) => state.calendary.fecha));
-    const [horaAgendada, setHoraAgendada] = useState(useSelector( (state : any) => state.calendary.horaAgendada));
-    const [virtualPresecial, setVirtualPresecial] = useState(useSelector( (state : any) => state.calendary.virtualPresecial));
+    const fecha = useSelector( (state : any) => state.calendary.fecha);
+    const horaAgendada = useSelector( (state : any) => state.calendary.horaAgendada);
+    const virtualPresencial = useSelector( (state : any) => state.calendary.virtualPresencial);
     const nombreUsuario =  user.name;
     const correoUsuario = user.email;
     const cedulaUsuario = user.document;
     const telUsuario = user.phone;
 
-    const handleDateChange = (newDate) => {
-        // Actualiza el estado local
-        setFecha(newDate);
-
-        // Actualiza el estado global
-        dispatch(setCalendaryInfo({ ...state.calendary, fecha: newDate }));
+    const actualizarVirtualPresencial = (virtualOPresencial) => {
+        dispatch(setCalendaryInfo({
+          fecha: calendaryState.fecha,
+          horaAgendada: calendaryState.hora,
+          virtualPresencial: virtualOPresencial,
+          selectedCard: calendaryState.selectedCard,
+        }));
     };
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
     const [modalVisible, setModalVisible] = useState(false);
-    const [modalVisible2, setModalVisible2] = useState(false);
     const [pagoVisible, setPagoVisible] = useState(false);
     const [selectedValue, setSelectedValue] = useState<string | null>(null);
-    const [tipoDeDoc, setTipoDeDoc] = useState<string | null>(null);
     const [citaAgendada, setCitaAgendada] = useState(false);
     const [urlFinal, setUrlFinal] = useState('');
 
     useEffect(() => {
-        setHoraAgendada('');
-        setVirtualPresecial('');
+        dispatch(resetSpecificCalendaryInfo([
+            'fecha',
+            'horaAgendada',
+            'virtualPresencial'
+        ]));
     }, []);
 
     useEffect(() => {
         if (selectedValue === 'Virtual') {
-            setVirtualPresecial('Virtual');
+            actualizarVirtualPresencial('Virtual');
         } else if (selectedValue === 'Presencial') {
-            setVirtualPresecial('Presencial');
+            actualizarVirtualPresencial('Presencial');
         }
     }, [selectedValue]);
 
@@ -158,7 +162,7 @@ const ConsultationDescription = () => {
             "evento_agendado": selectedCard.title,
             "fecha": fechaAgendadaFormateada,
             "especialidad": selectedCard.title,
-            "notas": virtualPresecial,
+            "notas": selectedValue,
             "status": "Pendiente",
             "valor": selectedCard.precio_cita
         };
@@ -179,27 +183,19 @@ const ConsultationDescription = () => {
     };
 
     const verificarDatos = () => {
-        if (citaAgendada == false) {
-            if ((selectedValue == 'Virtual' || selectedValue == 'Presencial') && (fecha == '')) {
-                abrirPopUpError('Elige una hora y fecha');
-            } else if ((selectedValue == null) && (fecha != '')) {
-                abrirPopUpError('Elige si quieres tu cita presencial o virtual');
-            } else if ((selectedValue == null) && (fecha == '')) {
-                abrirPopUpError('Rellena los campos');
-            } else {
-                setCitaAgendada(true);
-            }
+        if ((selectedValue == 'Virtual' || selectedValue == 'Presencial') && (fecha == '')) {
+            abrirPopUpError('Elige una hora y fecha');
+        } else if ((selectedValue == null) && (fecha != '')) {
+            abrirPopUpError('Elige si quieres tu cita presencial o virtual');
+        } else if ((selectedValue == null) && (fecha == '')) {
+            abrirPopUpError('Rellena los campos');
         } else {
-            if (nombreUsuario == '' || correoUsuario == '' || cedulaUsuario == '' || telUsuario == '') {
-                abrirPopUpError('Rellena todos los campos');
+            if (selectedCard.precio_cita === 'Gratis') {
+                agendarHandler();
+                navigation.navigate("Confirmado");
             } else {
-                if (selectedCard.precio_cita === 'Gratis') {
-                    agendarHandler();
-                    navigation.navigate("Confirmado");
-                } else {
-                    agendarHandler();
-                    iniciarProcesoDePago();
-                }
+                agendarHandler();
+                iniciarProcesoDePago();
             }
         }
     }

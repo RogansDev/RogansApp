@@ -102,31 +102,16 @@ const Login = () => {
           keyboardType="default"
           property="password"
         />
-        {/* input acepto terminos */}
-        <View style={styles.Accept}>
-          <Checkbox
-            value={isChecked}
-            onValueChange={handleCheckBoxChange}
-            style={styles.checkbox}
-          />
-          <View style={styles.textAccept}>
-            <Text>Acepto los</Text>
-            <Text
-              style={{ textDecorationLine: "underline" }}
-              onPress={handleAcceptTerms}
-            >
-              términos y condiciones
-            </Text>
-          </View>
-        </View>
+        
         <View style={{ marginTop: 20 }}>
           {loading ?
             <Text style={{
               backgroundColor: 'black',
               color: 'white',
               width: '100%',
-              padding: 6,
-              fontSize: 18,
+              padding: 14,
+              fontSize: 13,
+              fontFamily: MyFont.regular,
               borderRadius: 10,
               textAlign: 'center',
               overflow: 'hidden',
