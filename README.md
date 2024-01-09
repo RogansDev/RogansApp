@@ -79,3 +79,9 @@ o
 
 <h3>Crear Build (en APK)</h3>
 <code>eas build -p android --profile production</code>
+
+<h1>Selector de imagenes</h1>
+
+Para seleccionar o tomar fotos o imagenes para la imagen de perfil del usuario.
+
+<code>npx expo install expo-image-picker</code>
