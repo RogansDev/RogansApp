@@ -46,19 +46,22 @@ const useFirebaseCode = () => {
             Alert.alert('Ocurrio un error!');
         }
     };
-    const handleReadCode = async (email: any, codigo: any) => {
+    const handleReadCode = async (codigo: any) => {
         console.log('mis datos son ....')
-        console.log(email)
         console.log(codigo)
 
         setLoading(true);
+        
+        const numericCode = parseInt(codigo);
         try {
             const codeQuery = query(
                 collection(db, "emailcodes"),
-                // where("email", "==", email),
-                where("codigo", "==", codigo)
+                where("codigo", "==", numericCode)
             );
             const querySnapshot = await getDocs(codeQuery);
+            console.log('Query snapshot:', querySnapshot.docs);
+            // Rest of your code...
+
             let selectedCode: any;
             querySnapshot.forEach((doc) => {
                 console.log(doc.data())
@@ -84,7 +87,7 @@ const useFirebaseCode = () => {
         }
     };
 
-    return {handleReadCode, handleSaveCode, error, setError, loading };
+    return { handleReadCode, handleSaveCode, error, setError, loading };
 };
 
 export default useFirebaseCode;

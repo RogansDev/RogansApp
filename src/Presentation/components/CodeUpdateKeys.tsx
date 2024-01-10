@@ -7,11 +7,11 @@ import useFirebaseCode from '../../hooks/useFirebaseCode';
 
 const CodeUpdateKeys = () => {
 
-  const {email, code} = useSelector((state:any)=>state.code)
+  const {code} = useSelector((state:any)=>state.code)
 
  const {handleReadCode,  loading } = useFirebaseCode();
 
-  const verifyCode = async() =>{ handleReadCode(code, email); }
+  const verifyCode = async() =>{ handleReadCode(code); }
 
   return (
     <TouchableOpacity
@@ -19,7 +19,7 @@ const CodeUpdateKeys = () => {
       onPress={() => { verifyCode()}}>
       <View style={styles.contentBottom}>
         <Text style={styles.text}>
-          {loading ? "Cargando...": "Verificar"} {email} {code}
+          {loading ? "Cargando...": "Verificar"}
         </Text>
         <Verify width="20" height="20" />
       </View>
