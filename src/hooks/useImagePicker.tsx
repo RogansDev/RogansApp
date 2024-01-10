@@ -1,8 +1,19 @@
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import { useSelector } from 'react-redux';
+
+const isValidImage = (uri) => {
+    // Verificar si la URL tiene una extensión de imagen válida
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'];
+    const lowerCaseUri = uri.toLowerCase();
+    return allowedExtensions.some(ext => lowerCaseUri.endsWith(ext));
+};
 
 const useImagePicker = () => {
-    const [image, setImage] = useState(null);
+    const { urlphoto } = useSelector((state: any) => state.user);
+
+    const [image, setImage] = useState(urlphoto);
+    const [imageName, setImageName] = useState("");
 
     const pickImage = async () => {
         // Pedir permisos para la galería
@@ -20,8 +31,12 @@ const useImagePicker = () => {
             quality: 1,
         });
 
-        if (!result.canceled) {
+        if (!result.canceled && isValidImage(result.assets[0].uri)) {
             setImage(result.assets[0].uri);
+            setImageName(`image_${Date.now()}.jpg`);
+        } else {
+            // Mostrar una alerta o realizar alguna acción si la imagen no es válida
+            alert('La imagen seleccionada no es válida. Por favor, elige una imagen JPEG, PNG, GIF, o BMP.');
         }
     };
 
@@ -40,12 +55,16 @@ const useImagePicker = () => {
             quality: 1,
         });
 
-        if (!result.canceled) {
+        if (!result.canceled && isValidImage(result.assets[0].uri)) {
             setImage(result.assets[0].uri);
+            setImageName(`image_${Date.now()}.jpg`);
+        } else {
+            // Mostrar una alerta o realizar alguna acción si la imagen no es válida
+            alert('La imagen capturada no es válida. Por favor, elige una imagen JPEG, PNG, GIF, o BMP.');
         }
     };
 
-    return { image, pickImage, takePhoto };
+    return { image, imageName, pickImage, takePhoto };
 };
 
 export default useImagePicker;

@@ -2,9 +2,6 @@ import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { MyColors, MyFont } from '../theme/AppTheme';
 import Icons from '../theme/Icons';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootParamList } from '../../utils/RootParamList';
 
 interface Props {
   text: string,
@@ -12,7 +9,6 @@ interface Props {
 }
 
 const SingLogin: React.FC<Props> = ({ text, onPress }) => {
-  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
   const { SendIcon } = Icons;
 
   return (

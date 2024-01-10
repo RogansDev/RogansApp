@@ -2,7 +2,6 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getDatabase } from "firebase/database";
-import { v4 } from 'uuid';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCeBPAFWtk1ZDSbIo-lPmUqHFWqthqSaiE",
@@ -30,7 +29,7 @@ export async function uploadFile(file : any, nameFile : string , folderName : st
 
     try {
 
-        const storageRef = ref(storage, `${folderName}/${v4()}${nameFile}`)
+        const storageRef = ref(storage, `${folderName}/${nameFile}`)
         await uploadBytes(storageRef, file)
         const url = await getDownloadURL(storageRef)
         console.log('aqui deberia estar la url', url)

@@ -43,6 +43,10 @@ npm i react-redux
 20. peristencia local
 npx expo install @react-native-async-storage/async-storage
 
+21. envio de email mediante una extension de firebase trigger email
+https://invertase.io/blog/send-email-extension
+https://www.youtube.com/watch?v=1nsnNLLnlrg&t=86s
+
 
 <code>expo install expo-font</code>
 

@@ -51,7 +51,7 @@ const useRegisterFirebase = () => {
                         addDoc(collection(db, "users"), dataToCreate).
                             then(() => {
                                 setLoading(false);
-                                navigation.navigate('Login')
+                                navigation.navigate('Login');
                                 Alert.alert('Cargado correctamente!')
                             }).catch((error) => {
                                 setLoading(false);
@@ -94,7 +94,8 @@ const useRegisterFirebase = () => {
 
     const handleLogin = async (email: any, password: any) => {
 
-        console.log(`email ${email} y pass ${password}`)
+        await AsyncStorage.setItem('xqtes', JSON.stringify(email));
+        await AsyncStorage.setItem('asdqwe', JSON.stringify(password));
         setLoading(true);
 
         try {
@@ -130,9 +131,8 @@ const useRegisterFirebase = () => {
                                 birthdate: selectedProfile.birthdate,
                                 logged: true
                             }
-                           
-                            AsyncStorage.setItem('@xqtes', JSON.stringify(email));
-                            AsyncStorage.setItem('@asdqwe', JSON.stringify(password));
+
+
                             distpach(setUserInfo(user));
                             setLoading(false);
 

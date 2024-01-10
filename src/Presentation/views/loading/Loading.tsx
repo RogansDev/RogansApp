@@ -17,9 +17,6 @@ const Loading = () => {
                 await fetchFonts();
                 const poiñlk = await AsyncStorage.getItem('@xqtes');
                 const mnbjhg = await AsyncStorage.getItem('@asdqwe');
-
-                console.log('email', poiñlk);
-                console.log('password', mnbjhg)
                 setLoadingScreen(false);
 
                 if (poiñlk !== null && mnbjhg !== null) {

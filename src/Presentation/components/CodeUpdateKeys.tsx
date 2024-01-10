@@ -2,22 +2,24 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MyColors } from '../theme/AppTheme';
 import Verify from '../../../assets/verify.svg'
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootParamList } from '../../utils/RootParamList';
+import { useSelector } from 'react-redux';
+import useFirebaseCode from '../../hooks/useFirebaseCode';
 
 const CodeUpdateKeys = () => {
 
-  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
+  const {email, code} = useSelector((state:any)=>state.code)
+
+ const {handleReadCode,  loading } = useFirebaseCode();
+
+  const verifyCode = async() =>{ handleReadCode(code, email); }
 
   return (
     <TouchableOpacity
       style={styles.BottomRounded}
-      onPress={() => navigation.navigate("UpdateKey")}
-    >
+      onPress={() => { verifyCode()}}>
       <View style={styles.contentBottom}>
         <Text style={styles.text}>
-          Verificar
+          {loading ? "Cargando...": "Verificar"} {email} {code}
         </Text>
         <Verify width="20" height="20" />
       </View>
