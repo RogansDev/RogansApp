@@ -8,8 +8,6 @@ import {
   Modal,
 } from "react-native";
 import { MyColors, MyFont } from "../theme/AppTheme";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import CodeUpdateKeys from "./CodeUpdateKeys";
 import Icons from "../theme/Icons";
 import useFirebaseCode from "../../hooks/useFirebaseCode";
@@ -20,11 +18,10 @@ import { setCodeInfo } from "../../state/CodeSlice";
 const ModalVerifitCode = () => {
 
   const dispatch = useDispatch();
-  const { email, code } = useSelector((state: any) => state.code);
 
-  const { handleSaveCode, error, setError, loading } = useFirebaseCode();
+  const { handleSaveCode, loading } = useFirebaseCode();
 
-  const { Phone, Email } = Icons;
+  const { Email } = Icons;
   const inputRefs = Array(6)
     .fill(0)
     .map(() => useRef<TextInput>(null));
@@ -379,7 +376,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     marginVertical: 10,
-    color: "#C0C0C0",
+    color: "#000000",
   },
 });
 

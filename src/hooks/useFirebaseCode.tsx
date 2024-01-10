@@ -59,15 +59,11 @@ const useFirebaseCode = () => {
                 where("codigo", "==", numericCode)
             );
             const querySnapshot = await getDocs(codeQuery);
-            console.log('Query snapshot:', querySnapshot.docs);
-            // Rest of your code...
-
             let selectedCode: any;
             querySnapshot.forEach((doc) => {
                 console.log(doc.data())
                 selectedCode = doc.data();
             });
-            // SI EXISTE EN FIRESTORE LO MUESTRA
             console.log('selected data', selectedCode)
 
             if (selectedCode) {
