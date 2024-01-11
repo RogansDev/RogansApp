@@ -3,8 +3,11 @@ import { SendEmailResetPassword, db } from '../firebase/index'
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import { Alert } from 'react-native';
 import { sendEmailCode } from './useEmail';
+import { useNavigation } from '@react-navigation/native';
+
 const useFirebaseCode = () => {
 
+    const navigation = useNavigation();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -78,8 +81,11 @@ const useFirebaseCode = () => {
 
             if (selectedCode) {
                 SendEmailResetPassword(mail)
-                Alert.alert(`se envio un email a ${mail} para cambiar la contraseña`);
+                const alertMessage = `Se envió un link a ${mail}`;
+                Alert.alert(alertMessage);
+                navigation.navigate('Login');
                 setLoading(false);
+
             } else {
                 setLoading(false);
                 console.log('codigo no existe .', selectedCode)
