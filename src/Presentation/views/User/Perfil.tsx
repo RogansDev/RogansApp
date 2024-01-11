@@ -20,7 +20,7 @@ const Perfil = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const { image, imageName, pickImage, takePhoto } = useImagePicker();
+    const { image, base64Image, pickImage, takePhoto } = useImagePicker();
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
@@ -36,33 +36,34 @@ const Perfil = () => {
 
     const handlePhoto = async () => {
         setLoading(true);
-    
+
         try {
             const userQuery = query(
                 collection(db, "users"),
                 where("user_id", "==", user_id)
             );
-    
+
             const querySnapshot = await getDocs(userQuery);
-    
+
             if (!querySnapshot.empty) {
                 const firstDoc = querySnapshot.docs[0];
                 const usersDocument = doc(db, 'users', firstDoc.id);
-    
+
                 try {
-                    const url = await uploadFile(image, imageName, 'images');
+
+                    const base = await base64Image;
                     const user = {
                         user_id,
                         email,
                         role,
-                        urlphoto: url,
+                        urlphoto: base,
                         document,
                         name,
                         lastname,
                         phone,
                         birthdate
                     };
-    
+
                     await updateDoc(usersDocument, user);
                     dispatch(setUserInfo(user));
                     setLoading(false);
@@ -82,7 +83,7 @@ const Perfil = () => {
             Alert.alert('No se pudo realizar la consulta');
         }
     }
-    
+
 
     return (
         <>
@@ -109,7 +110,17 @@ const Perfil = () => {
                                 resizeMode="contain"
                             />
                         ) : (
-                            <UserIcon style={{ marginTop: 40 }} width={250} height={250} />
+                            base64Image ? (
+                                <Image
+                                    source={{ uri: base64Image }}
+                                    style={styles.modalImage}
+                                    resizeMode="contain"
+                                />
+                            ) : (
+                                <UserIcon style={{ marginTop: 40 }} width={250} height={250} />
+                            )
+
+
                         )}
                         <View style={{ flexDirection: 'row', gap: 18, }}>
                             <TouchableOpacity onPress={pickImage} style={styles.editImage}>
@@ -136,7 +147,16 @@ const Perfil = () => {
                                     style={styles.userImage}
                                 />
                             ) : (
-                                <UserIcon width={150} height={150} />
+
+                                base64Image ? (
+                                    <Image
+                                        source={{ uri: base64Image }}
+                                        style={styles.userImage}
+                                    />
+                                ) : (
+                                    <UserIcon width={150} height={150} />
+                                )
+
                             )}
                             <View style={styles.camaraIcon}>
                                 <Camara width={24} height={24} />
