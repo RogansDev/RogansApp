@@ -1,26 +1,24 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MyColors, MyFont } from '../theme/AppTheme';
-import { useNavigation } from '@react-navigation/native';
 import Icons from '../theme/Icons';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootParamList } from '../../utils/RootParamList';
+import useRegisterFirebase from '../../hooks/useRegisterFirebase';
+import { useSelector } from 'react-redux';
 
 
-const UpdateKeys = () => {
+const UpdateKeys = (props: any) => {
 
-  const { Eye } = Icons
-
-  const navigate = useNavigation<StackNavigationProp<RootParamList>>();
+  const { Eye } = Icons;
+  const {handleUpdatePassword, loading} = useRegisterFirebase();
+  const {email} = useSelector((state: any)=>state.code);
 
   return (
     <TouchableOpacity
       style={styles.bottomContainer}
-      onPress={() => navigate.navigate("ConfirmationKey")}
-    >
+      onPress={() =>{handleUpdatePassword(email, props.password)}}>
       <View style={styles.contentText} >
         <Text style={styles.textClick}>
-          Actualizar contraseña
+          {loading ? "Actualizando...":"Actualizar contraseña"}
         </Text>
         <Eye />
       </View>
