@@ -7,11 +7,11 @@ import useFirebaseCode from '../../hooks/useFirebaseCode';
 
 const CodeUpdateKeys = () => {
 
-  const {code} = useSelector((state:any)=>state.code)
+  const {code, email} = useSelector((state:any)=>state.code)
 
  const {handleReadCode,  loading } = useFirebaseCode();
 
-  const verifyCode = async() =>{ handleReadCode(code); }
+  const verifyCode = async() =>{ handleReadCode(code, email); }
 
   return (
     <TouchableOpacity

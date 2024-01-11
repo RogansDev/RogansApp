@@ -11,7 +11,7 @@ import { MyColors, MyFont } from "../theme/AppTheme";
 import CodeUpdateKeys from "./CodeUpdateKeys";
 import Icons from "../theme/Icons";
 import useFirebaseCode from "../../hooks/useFirebaseCode";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setCodeInfo } from "../../state/CodeSlice";
 
 

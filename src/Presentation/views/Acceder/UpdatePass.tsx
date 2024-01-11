@@ -1,61 +1,80 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-
 import { MyColors, MyFont } from '../../../Presentation/theme/AppTheme';
 import UpdateKeys from '../../../Presentation/components/UpdateKeys';
 import Icons from '../../theme/Icons';
 
 const UpdatePass = () => {
- 
-    const { Check, LogoBlack } = Icons
 
-  return (
-    <View style={styles.container}>
-        <View style={styles.logoContainer}>
-           <LogoBlack width={140} height={100}/>
+    const { Check, LogoBlack } = Icons;
+    const [pass, setPass] = useState("");
+    const [rePass, setRePass] = useState("");
+    const [passMatch, setPassMatch] = useState(true); // Estado para verificar si las contraseñas coinciden
+
+    const handlePassChange = (text : any) => {
+        setPass(text);
+        // Verificar si las contraseñas coinciden al cambiar la contraseña
+        setPassMatch(text === rePass);
+    };
+
+    const handleRePassChange = (text : any) => {
+        setRePass(text);
+        // Verificar si las contraseñas coinciden al cambiar la contraseña de confirmación
+        setPassMatch(pass === text);
+    };
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.logoContainer}>
+                <LogoBlack width={140} height={100} />
+            </View>
+            <View style={styles.form}>
+                <Text style={styles.title}>Recuperar contraseña</Text>
+                <View style={{ marginTop: 30, }}>
+                    <View style={styles.inputContent}>
+                        <Text style={styles.textTitleKey}>Contraseña</Text>
+                        <Text style={styles.textRequireCheck}>(Requrido)</Text>
+                    </View>
+                    <TextInput
+                        placeholder='Nueva contraseña'
+                        keyboardType='default'
+                        style={[styles.textInputKey, !passMatch && styles.inputError]} // Aplicar estilo de error si las contraseñas no coinciden
+                        value={pass}
+                        onChangeText={handlePassChange}
+                    />
+                </View>
+                <View style={{ marginTop: 10, }}>
+                    <View style={styles.inputContent}>
+                        <Text style={styles.textTitleKey}>Contraseña</Text>
+                        <Text style={styles.textRequireCheck}>(Requrido)</Text>
+                    </View>
+                    <TextInput
+                        placeholder='Confirma la contraseña'
+                        keyboardType='default'
+                        style={[styles.textInputKey, !passMatch && styles.inputError]} // Aplicar estilo de error si las contraseñas no coinciden
+                        value={rePass}
+                        onChangeText={handleRePassChange}
+                    />
+                </View>
+                <View style={{ marginTop: 20 }}>
+                {/* Pasar pass como parámetro solo si las contraseñas coinciden */}
+                {passMatch && <UpdateKeys password={pass} />}
+            </View>
+                <View style={styles.contentInfo}>
+                    <View style={styles.infoContact}>
+                        <Text>La confirmación llegara al siguiente correo</Text>
+                        <Text style={{ textDecorationLine: "underline", alignSelf: "center" }}>
+                            Rogansya@gmail.com
+                        </Text>
+                    </View>
+                    <View style={styles.infoMethod}>
+                        <Check width={24} height={24} />
+                        <Text style={styles.textMethod}>Intenta otro metodo</Text>
+                    </View>
+                </View>
+            </View>
         </View>
-        <View style={styles.form}>
-            <Text style={styles.title}>Recuperacion contraseña</Text>
-            <View style={{marginTop: 30,}}>
-                <View style={styles.inputContent}>
-                   <Text style={styles.textTitleKey}>Contraseña</Text>
-                   <Text style={styles.textRequireCheck}>(Requrido)</Text>
-                </View>
-                <TextInput 
-                   placeholder='Nueva contraseña'
-                   keyboardType='default'
-                   style={styles.textInputKey}
-                />
-            </View>
-            <View style={{marginTop: 10,}}>
-                <View style={styles.inputContent}>
-                   <Text style={styles.textTitleKey}>Contraseña</Text>
-                   <Text style={styles.textRequireCheck}>(Requrido)</Text>
-                </View>
-                <TextInput 
-                   placeholder='Confirma la contraseña'
-                   keyboardType='default'
-                   style={styles.textInputKey}
-                />
-            </View>
-            <View style={{marginTop: 20,}}>
-                <UpdateKeys />
-            </View>
-            <View style={styles.contentInfo}>
-                <View style={styles.infoContact}>
-                    <Text>La confirmación llegara al siguiente correo</Text>
-                    <Text style={{textDecorationLine: "underline", alignSelf: "center"}}>
-                        Rogansya@gmail.com 
-                    </Text>
-                </View>
-                <View style={styles.infoMethod}>
-                    <Check width={24} height={24}/>
-                    <Text style={styles.textMethod}>Intenta otro metodo</Text>
-                </View>
-            </View>
-        </View>
-    </View>
-  )
+    )
 }
 
 const styles = StyleSheet.create({
@@ -137,7 +156,10 @@ const styles = StyleSheet.create({
     textMethod: {
         fontSize: 16,
         bottom: 1,
-    }
+    },
+    inputError: {
+        borderColor: 'red',
+    },
 });
 
 export default UpdatePass;
