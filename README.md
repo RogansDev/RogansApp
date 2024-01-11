@@ -47,6 +47,10 @@ npx expo install @react-native-async-storage/async-storage
 https://invertase.io/blog/send-email-extension
 https://www.youtube.com/watch?v=1nsnNLLnlrg&t=86s
 
+22. para la gestion de imagenes 
+expo install expo-file-system
+
+
 
 <code>expo install expo-font</code>
 
