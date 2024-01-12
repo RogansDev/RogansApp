@@ -14,6 +14,7 @@ import CustomTextInput from "../../components/CustomTextInput";
 import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
+import { FontAwesome } from '@expo/vector-icons'; 
 
 const Login = () => {
   const { email, password, onChange } = UseViewModel();

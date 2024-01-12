@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { ApiRogans } from '../../../../Data/source/remote/api/ApiRogans';
-import { RegisterAuthUseCases } from '../../../../Domain/useCases/auth/RegisterAuth';
-import { err } from 'react-native-svg/lib/typescript/xml';
 import useRegisterFirebase from '../../../../hooks/useRegisterFirebase';
 const RegisterViewModel = () => {
 
