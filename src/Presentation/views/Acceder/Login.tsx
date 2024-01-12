@@ -14,6 +14,7 @@ import CustomTextInput from "../../components/CustomTextInput";
 import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = () => {
   const { email, password, onChange } = UseViewModel();
