@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getDatabase } from "firebase/database";
-import { v4 } from 'uuid';
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCeBPAFWtk1ZDSbIo-lPmUqHFWqthqSaiE",
@@ -30,7 +30,7 @@ export async function uploadFile(file : any, nameFile : string , folderName : st
 
     try {
 
-        const storageRef = ref(storage, `${folderName}/${v4()}${nameFile}`)
+        const storageRef = ref(storage, `${folderName}/${nameFile}`)
         await uploadBytes(storageRef, file)
         const url = await getDownloadURL(storageRef)
         console.log('aqui deberia estar la url', url)
@@ -42,5 +42,18 @@ export async function uploadFile(file : any, nameFile : string , folderName : st
 
 }
 
+export async function SendEmailResetPassword(email: string) {
+    try {
+        const auth = getAuth();
+        
+        // Envia el correo electrónico de restablecimiento de contraseña
+        await sendPasswordResetEmail(auth, email);
+        
+        console.log('Correo electrónico de restablecimiento de contraseña enviado correctamente.');
+    } catch (error) {
+        console.error('Error al enviar el correo electrónico de restablecimiento de contraseña:', error);
+        throw error;
+    }
+}
 
 export { app, db, dbRealtime, firebaseConfig }

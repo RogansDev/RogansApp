@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MyFont } from "../../../Presentation/theme/AppTheme";
@@ -9,7 +10,11 @@ import { agendarCita } from '../../../../agendarCitaService';
 const ConfirmationPage = () => {
     const [botonActivo, setBotonActivo] = useState(false);
 
-    const { horaAgendada, fecha, virtualPresecial, selectedCard, cedulaUsuario }: any = useState();
+    const user = useSelector( (state : any) => state.user);
+    const fecha = useSelector( (state : any) => state.calendary.fecha);
+    const horaAgendada = useSelector( (state : any) => state.calendary.horaAgendada);
+    const cedulaUsuario = user.document;
+
 
     const { TickCircleIcon, TickCircleWhiteicon } = Icons;
 

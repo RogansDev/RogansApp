@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { View, ScrollView, Text, TextInput, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import MiCalendario from '../../components/MiCalendario';
 import PopUpError from '../../components/PopUpError';
@@ -10,6 +11,9 @@ import Icons from '../../../Presentation/theme/Icons';
 import * as WebBrowser from 'expo-web-browser';
 import { agendarCita } from '../../../../agendarCitaService';
 import { WebView } from 'react-native-webview';
+import { setCalendaryInfo, resetSpecificCalendaryInfo } from '../../../state/CalendarySlice';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../../utils/RootParamList';
 
 interface MiCalendarioHandles {
     toggleModal: () => void;
@@ -22,26 +26,29 @@ interface PopUpErrorHandles {
 const ProcedureDescription = () => {
     const { CalendarAddIcon, ArrowWhiteIcon, ArrowDownIcon, CloseIcon } = Icons;
 
-    const {
-        fecha,
-        setFecha,
-        horaAgendada,
-        setHoraAgendada,
-        virtualPresecial,
-        setVirtualPresecial,
-        selectedCard,
-        setSelectedCard,
-        nombreUsuario,
-        setNombreUsuario,
-        correoUsuario,
-        setCorreoUsuario,
-        cedulaUsuario,
-        setCedulaUsuario,
-        telUsuario,
-        setTelUsuario,
-    }: any = useState();
+    const dispatch = useDispatch();
+    const selectedCard = useSelector( (state : any) => state.calendary.selectedCard);
+    const calendaryState = useSelector((state : any) => state.calendary);
+    const user = useSelector( (state : any) => state.user);
 
-    const navigation = useNavigation();
+    const fecha = useSelector( (state : any) => state.calendary.fecha);
+    const horaAgendada = useSelector( (state : any) => state.calendary.horaAgendada);
+    const virtualPresencial = useSelector( (state : any) => state.calendary.virtualPresencial);
+    const nombreUsuario =  user.name;
+    const correoUsuario = user.email;
+    const cedulaUsuario = user.document;
+    const telUsuario = user.phone;
+
+    const actualizarVirtualPresencial = (virtualOPresencial) => {
+        dispatch(setCalendaryInfo({
+          fecha: calendaryState.fecha,
+          horaAgendada: calendaryState.hora,
+          virtualPresencial: virtualOPresencial,
+          selectedCard: calendaryState.selectedCard,
+        }));
+    };
+
+    const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible2, setModalVisible2] = useState(false);
@@ -52,9 +59,11 @@ const ProcedureDescription = () => {
     const [urlFinal, setUrlFinal] = useState('');
 
     useEffect(() => {
-        setFecha('');
-        setHoraAgendada('');
-        setVirtualPresecial('Presencial');
+        dispatch(resetSpecificCalendaryInfo([
+            'fecha',
+            'horaAgendada',
+            'virtualPresencial'
+        ]));
     }, []);
 
     const calendarioRef = useRef<MiCalendarioHandles>(null);
@@ -111,7 +120,7 @@ const ProcedureDescription = () => {
             buyerEmail: correoUsuario,
             fechaAgendada: fecha,
             horaAgendada: horaAgendada,
-            modalidad: virtualPresecial,
+            modalidad: selectedValue,
             duracion_cita: selectedCard.duracion_cita,
         };
 
@@ -153,7 +162,7 @@ const ProcedureDescription = () => {
             "evento_agendado": selectedCard.title,
             "fecha": fechaAgendadaFormateada,
             "especialidad": selectedCard.title,
-            "notas": virtualPresecial,
+            "notas": selectedValue,
             "status": "Pendiente",
             "valor": selectedCard.precio_cita
         };
@@ -174,47 +183,31 @@ const ProcedureDescription = () => {
 
     const verificarDatos = () => {
         if (selectedCard.tipo_cita === 'presencial-virtual') {
-            if (citaAgendada == false) {
-                if ((selectedValue == 'Virtual' || selectedValue == 'Presencial') && (fecha == '')) {
-                    abrirPopUpError('Elige una hora y fecha');
-                } else if ((selectedValue == null) && (fecha != '')) {
-                    abrirPopUpError('Elige si quieres tu cita presencial o virtual');
-                } else if ((selectedValue == null) && (fecha == '')) {
-                    abrirPopUpError('Rellena los campos');
-                } else {
-                    setCitaAgendada(true);
-                }
+            if ((selectedValue == 'Virtual' || selectedValue == 'Presencial') && (fecha == '')) {
+                abrirPopUpError('Elige una hora y fecha');
+            } else if ((selectedValue == null) && (fecha != '')) {
+                abrirPopUpError('Elige si quieres tu cita presencial o virtual');
+            } else if ((selectedValue == null) && (fecha == '')) {
+                abrirPopUpError('Rellena los campos');
             } else {
-                if (nombreUsuario == '' || correoUsuario == '' || cedulaUsuario == '' || telUsuario == '') {
-                    abrirPopUpError('Rellena todos los campos');
+                if (selectedCard.precio_cita === 'Gratis') {
+                    agendarHandler();
+                    navigation.navigate("Confirmado");
                 } else {
-                    if (selectedCard.precio_cita === 'Gratis') {
-                        agendarHandler();
-                        navigation.navigate("Confirmado");
-                    } else {
-                        agendarHandler();
-                        iniciarProcesoDePago();
-                    }
+                    agendarHandler();
+                    iniciarProcesoDePago();
                 }
             }
         } else {
-            if (citaAgendada == false) {
-                if (fecha == '') {
-                    abrirPopUpError('Elige una hora y fecha');
-                } else {
-                    setCitaAgendada(true);
-                }
+            if (fecha == '') {
+                abrirPopUpError('Elige una hora y fecha');
             } else {
-                if (nombreUsuario == '' || correoUsuario == '' || cedulaUsuario == '' || telUsuario == '') {
-                    abrirPopUpError('Rellena todos los campos');
+                if (selectedCard.precio_cita === 'Gratis') {
+                    agendarHandler();
+                    navigation.navigate("Confirmado");
                 } else {
-                    if (selectedCard.precio_cita === 'Gratis') {
-                        agendarHandler();
-                        navigation.navigate("Confirmado");
-                    } else {
-                        agendarHandler();
-                        iniciarProcesoDePago();
-                    }
+                    agendarHandler();
+                    iniciarProcesoDePago();
                 }
             }
         }
@@ -337,62 +330,7 @@ const ProcedureDescription = () => {
                             </View>
                         </Modal>
 
-                        {citaAgendada ? (
-                            <>
-                                <Text style={styles.title2}>Deja tus datos personales</Text>
-                                <View>
-                                    <View>
-                                        <View style={styles.titleModalButton}>
-                                            <Text style={styles.text1TitleModalButton}>Nombre usuario </Text>
-                                            <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
-                                        </View>
-                                        <View style={styles.modalButton}>
-                                            <TextInput style={styles.textInput} value={nombreUsuario} onChangeText={(texto) => setNombreUsuario(texto)}></TextInput>
-                                        </View>
-                                    </View>
-                                    <View>
-                                        <View style={styles.titleModalButton}>
-                                            <Text style={styles.text1TitleModalButton}>Correo </Text>
-                                            <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
-                                        </View>
-                                        <View style={styles.modalButton}>
-                                            <TextInput style={styles.textInput} value={correoUsuario} onChangeText={(texto) => setCorreoUsuario(texto)}></TextInput>
-                                        </View>
-                                    </View>
-                                    <View>
-                                        <View style={styles.titleModalButton}>
-                                            <Text style={styles.text1TitleModalButton}>Teléfono </Text>
-                                            <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
-                                        </View>
-                                        <View style={styles.modalButton}>
-                                            <TextInput style={styles.textInput} value={telUsuario} onChangeText={(texto) => setTelUsuario(texto)}></TextInput>
-                                        </View>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', gap: 8 }}>
-                                        <View style={{ width: 135, }}>
-                                            <View style={styles.titleModalButton}>
-                                                <Text style={styles.text1TitleModalButton}>Tipo de doc. </Text>
-                                            </View>
-                                            <TouchableOpacity onPress={() => setModalVisible2(true)} style={styles.modalButton}>
-                                                <Text style={styles.textModalButton}>{tipoDeDoc ? tipoDeDoc : 'CC'}</Text>
-                                                <ArrowDownIcon style={styles.imageModalButton} width={16} height={16} />
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={{ flex: 1, }}>
-                                            <View style={styles.titleModalButton}>
-                                                <Text style={styles.text1TitleModalButton}>Documento </Text>
-                                                <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
-                                            </View>
-                                            <View style={styles.modalButton}>
-                                                <TextInput style={styles.textInput} value={cedulaUsuario} onChangeText={(texto) => setCedulaUsuario(texto)}></TextInput>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </View>
-                            </>
-                        ) : (
-                            <>
-                                <MiCalendario ref={calendarioRef} onAbrirPopUpError={abrirPopUpError} />
+                        <MiCalendario ref={calendarioRef} onAbrirPopUpError={abrirPopUpError} />
                                 <Text style={styles.title2}>Agenda tu consulta</Text>
                                 <View>
                                     {selectedCard.tipo_cita === 'presencial-virtual' ? (
@@ -420,8 +358,6 @@ const ProcedureDescription = () => {
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                            </>
-                        )}
                         <TouchableOpacity onPress={verificarDatos} style={styles.button}>
                             <Text style={styles.textButtom}>Continuar</Text>
                             <ArrowWhiteIcon width={16} height={16} />

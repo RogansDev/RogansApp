@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   fecha: '',
   horaAgendada: '',
-  virtualPresecial: '',
+  virtualPresencial: '',
   selectedCard: '',
 };
 
@@ -16,23 +16,32 @@ const CalendarySlice = createSlice({
       const {
         fecha,
         horaAgendada,
-        virtualPresecial,
+        virtualPresencial,
         selectedCard,
       } = action.payload;
       state.fecha = fecha;
       state.horaAgendada = horaAgendada;
-      state.virtualPresecial = virtualPresecial;
+      state.virtualPresencial = virtualPresencial;
       state.selectedCard = selectedCard;
     },
     setClearCalendaryInfo: (state, action) => {
       state.fecha='';
       state.horaAgendada='';
-      state.virtualPresecial='';
+      state.virtualPresencial='';
       state.selectedCard='';
+    },
+    resetSpecificCalendaryInfo: (state, action) => {
+      const propertiesToReset = action.payload;
+
+      propertiesToReset.forEach(property => {
+        if (state.hasOwnProperty(property)) {
+          state[property] = initialState[property];
+        }
+      });
     },
   },
 });
 
-export const { setCalendaryInfo, setClearCalendaryInfo } = CalendarySlice.actions;
+export const { setCalendaryInfo, setClearCalendaryInfo, resetSpecificCalendaryInfo } = CalendarySlice.actions;
 
 export default CalendarySlice.reducer;

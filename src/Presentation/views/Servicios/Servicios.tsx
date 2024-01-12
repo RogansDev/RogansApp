@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { View, ScrollView, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../../utils/RootParamList';
+import { setCalendaryInfo } from '../../../state/CalendarySlice';
 import FloatingMenu from '../../../Presentation/components/FloatingMenu';
 import SearchBar from '../../../Presentation/components/SearchBar';
 import Icons from '../../../Presentation/theme/Icons';
@@ -10,8 +14,9 @@ import { consultCards, procedureCards } from '../Servicios/ServicesData';
 
 const Servicios = () => {
     const { CalendarEditIcon, CloseIcon } = Icons;
-
-    const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const calendaryState = useSelector((state : any) => state.calendary);
+    const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
     const [activeCategorias, setActiveCategorias] = useState<string[]>([]);
 
@@ -52,10 +57,11 @@ const Servicios = () => {
         return matchesSearchQuery && matchesCategory;
     });
 
-    const [selectedCard, setSelectedCard] = useState();
-
     const handleSelectCard = async (card: any) => {
-        setSelectedCard(card);
+        dispatch(setCalendaryInfo({
+            ...calendaryState,
+            selectedCard: card
+        }));
         if (card.category === 'Consultas') {
             navigation.navigate('DescripcionConsultas');
         } else {

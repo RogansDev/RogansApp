@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCalendaryInfo } from '../../state/CalendarySlice';
 import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView, ImageSourcePropType } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MyFont } from "../theme/AppTheme";
-
 import Icons from '../theme/Icons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../utils/RootParamList';
 
 const ConsultCard = ({ cards }: any) => {
-  const navigation = useNavigation();
-  const [selectedCard, setSelectedCard] = useState();
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
+  const dispatch = useDispatch();
+  const calendaryState = useSelector((state : any) => state.calendary);
 
   const { CalendarAddIcon } = Icons;
 
   const handleSelectCard = async (card: any) => {
-    setSelectedCard(card)
+    dispatch(setCalendaryInfo({
+      ...calendaryState,
+      selectedCard: card
+    }));
     navigation.navigate('DescripcionProcedimientos');
   };
 

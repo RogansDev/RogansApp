@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, Animated, Modal, TouchableOpacity, Dimensions, Platform, StyleSheet } from 'react-native';
 import { MyColors, MyFont } from "../theme/AppTheme";
 import { LocaleConfig, Calendar } from 'react-native-calendars';
-
+import { setCalendaryInfo, resetSpecificCalendaryInfo } from '../../state/CalendarySlice';
 import { Picker } from '@react-native-picker/picker';
 import PopUpError from './PopUpError';
 import Icons from '../theme/Icons';
@@ -57,6 +58,31 @@ const MiCalendario = forwardRef<MiCalendarioHandles, MiCalendarioProps>((props, 
 
   const { CloseIcon, TickCircleWhiteicon, ArrowDownIcon, ArrowGreen } = Icons;
 
+  const dispatch = useDispatch();
+  const calendaryState = useSelector((state : any) => state.calendary);
+  const fecha = useSelector( (state : any) => state.calendary.fecha);
+  const horaAgendada = useSelector( (state : any) => state.calendary.horaAgendada);
+
+  const actualizarFecha = (nuevaFecha) => {
+    
+
+    dispatch(setCalendaryInfo({
+      fecha: nuevaFecha,
+      horaAgendada: calendaryState.horaAgendada,
+      virtualPresecial: calendaryState.virtualPresecial,
+      selectedCard: calendaryState.selectedCard,
+    }));
+  };
+
+  const actualizarHora = (nuevaHora) => {
+    dispatch(setCalendaryInfo({
+      fecha: calendaryState.fecha,
+      horaAgendada: nuevaHora,
+      virtualPresecial: calendaryState.virtualPresecial,
+      selectedCard: calendaryState.selectedCard,
+    }));
+  };
+
   const [fechaSeleccionada, setFechaSeleccionada] = useState('');
   const [visible, setVisible] = useState(false);
   const [hora, setHora] = useState('12:00');
@@ -66,7 +92,6 @@ const MiCalendario = forwardRef<MiCalendarioHandles, MiCalendarioProps>((props, 
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(screenHeight)).current;
-  const { fecha, setFecha, horaAgendada, setHoraAgendada }: any = useState();
 
   useEffect(() => {
     const obtenerFechasNoDisponibles = async () => {
@@ -90,7 +115,10 @@ const MiCalendario = forwardRef<MiCalendarioHandles, MiCalendarioProps>((props, 
       Animated.timing(slideAnim, { toValue: screenHeight, duration: 500, useNativeDriver: true }).start();
     }
 
-    onAgendar();
+    console.log(hora + ' final Hora');
+
+    console.log(horaAgendada + ' final');
+    
   };
 
   useImperativeHandle(ref, () => ({
@@ -111,10 +139,16 @@ const MiCalendario = forwardRef<MiCalendarioHandles, MiCalendarioProps>((props, 
   }, [fechaSeleccionada]); // Dependencia en fechaSeleccionada
 
   const onDaySelect = (day: any) => {
-    setFecha(day.dateString)
+    actualizarFecha(day.dateString)
     setFechaSeleccionada(day.dateString);
-    console.log("Fecha seleccionada:", day.dateString);
+    console.log("Fecha seleccionada:", fechaSeleccionada);
   };
+
+  useEffect(() => {
+    if (hora) {
+      actualizarHora(hora + ' ' + amPm);
+    }
+  }, [hora, amPm]);
 
   const generarHorasComparacion = () => {
     const horas = [];
@@ -155,8 +189,6 @@ const MiCalendario = forwardRef<MiCalendarioHandles, MiCalendarioProps>((props, 
 
   const horasDisponiblesPicker = () => {
     const horas24 = generarHorasComparacion();
-    console.log(horas24.filter(hora24 => !noDisponible.some(cita => cita.fecha === fechaSeleccionada && cita.hora === hora24)));
-
     return horas24
       .filter(hora24 => !noDisponible.some(cita => cita.fecha === fechaSeleccionada && cita.hora === hora24))
       .map(hora24 => ({
@@ -194,9 +226,6 @@ const MiCalendario = forwardRef<MiCalendarioHandles, MiCalendarioProps>((props, 
     setHora(amPm === 'AM' ? '00:00' : '01:00');
   }, [amPm]);
 
-  const onAgendar = () => {
-    setHoraAgendada(hora + ' ' + amPm);
-  }
 
   function formatearFechaISO(fecha: any) {
     const año = fecha.getFullYear();
@@ -237,7 +266,7 @@ const MiCalendario = forwardRef<MiCalendarioHandles, MiCalendarioProps>((props, 
     }
   };
 
-  const verificarDatos = () => {
+  const verificarDatos = () => {  
     if ((hora == '00:00') && (fecha == '')) {
       abrirPopUpError('Elige una hora y fecha');
     } else if ((hora != '00:00') && (fecha == '')) {
@@ -247,23 +276,21 @@ const MiCalendario = forwardRef<MiCalendarioHandles, MiCalendarioProps>((props, 
     } else {
       toggleModal();
     }
+    console.log(horaAgendada + ' verificarDatos');
   }
 
   const cerrarModalSinDatos = () => {
-    setFecha('');
+    actualizarFecha('');
 
     toggleModal();
   }
 
   const primeraHoraDisponible = () => {
-    console.log(hora);
     const horasDisponibles = horasDisponiblesPicker();
     if (hora == horasDisponibles[0].value) {
-      console.log(hora);
 
       setHora(horasDisponibles[0].value);
     } else {
-      console.log(hora);
       setHora(hora);
     }
 
@@ -346,7 +373,7 @@ const MiCalendario = forwardRef<MiCalendarioHandles, MiCalendarioProps>((props, 
                             <Picker
                               selectedValue={hora}
                               style={styles.picker}
-                              onValueChange={(itemValue) => setHora(itemValue)}
+                              onValueChange={(itemValue) => {setHora(itemValue), actualizarHora(itemValue + ' ' + amPm);}}
                             >
                               {horasDisponiblesPicker().map((item, index) => (
                                 <Picker.Item key={index} label={item.label} value={item.value} />

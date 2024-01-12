@@ -43,6 +43,14 @@ npm i react-redux
 20. peristencia local
 npx expo install @react-native-async-storage/async-storage
 
+21. envio de email mediante una extension de firebase trigger email
+https://invertase.io/blog/send-email-extension
+https://www.youtube.com/watch?v=1nsnNLLnlrg&t=86s
+
+22. para la gestion de imagenes 
+expo install expo-file-system
+
+
 
 <code>expo install expo-font</code>
 
@@ -79,3 +87,9 @@ o
 
 <h3>Crear Build (en APK)</h3>
 <code>eas build -p android --profile production</code>
+
+<h1>Selector de imagenes</h1>
+
+Para seleccionar o tomar fotos o imagenes para la imagen de perfil del usuario.
+
+<code>npx expo install expo-image-picker</code>

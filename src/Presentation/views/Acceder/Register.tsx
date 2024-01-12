@@ -1,36 +1,27 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
-  TouchableOpacity,
   ScrollView,
-  Platform,
-  Animated,
   ToastAndroid
 } from "react-native";
 import Icons from "../../../Presentation/theme/Icons";
-import { Picker } from "@react-native-picker/picker";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
 import Checkbox from "expo-checkbox";
 import UseViewModel from "./ViewModel/RegisterViewModel";
 import CustomTextInput from "../../components/CustomTextInput";
 import RoundedBottom from "../../components/RoundedBottom";
+import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
 
 const Register = () => {
-  const scrollY = useRef(new Animated.Value(0)).current;
   
-
   const {
     name,
     email,
     lastname,
     document,
-    birthdate,
+    // birthdate,
     phone,
     password,
     ConfirmPassword,
@@ -39,6 +30,8 @@ const Register = () => {
     errorMessage,
   } = UseViewModel();
 
+  const { loading } = useRegisterFirebase();
+
   // verifica que todos los campos esten para llenos si no vota un error 
   useEffect(() => {
     if(errorMessage != ''){
@@ -46,7 +39,7 @@ const Register = () => {
     }
   }, [errorMessage])
 
-  const { LogoBlack, Eye, SendIcon } = Icons;
+  const { LogoBlack } = Icons;
 
   const handleRegister = () => {
     register();
@@ -74,7 +67,7 @@ const Register = () => {
             />
             {/* apellido */}
             <CustomTextInput
-              title="apellidos"
+              title="Apellidos"
               placeholder="Ingrese tu  apelido"
               keyboardType="default"
               value={lastname}
@@ -161,7 +154,10 @@ const Register = () => {
               </View>
             </View>
             {/* boton de registro */}
-            <RoundedBottom title="REGISTRARME" onPress={() => handleRegister() }/>
+            {loading ?
+            <RoundedBottom title="Cargando..." />           
+          :
+            <RoundedBottom title="Registrarme" onPress={() => handleRegister() }/>}
           </View>
         </View> 
     </ScrollView>

@@ -1,10 +1,9 @@
 import { useState } from 'react';
 
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth'
 import { initializeApp } from 'firebase/app'
 import { db, firebaseConfig } from '../firebase/index'
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
-
 import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -21,6 +20,7 @@ const useRegisterFirebase = () => {
 
     const navigation = useNavigation();
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleRegister = async (props: any) => {
 
@@ -28,6 +28,7 @@ const useRegisterFirebase = () => {
             return setError('Las contraseñas no coinciden');
         }
 
+        setLoading(true);
         try {
 
             createUserWithEmailAndPassword(auth, props.email, props.password)
@@ -48,17 +49,19 @@ const useRegisterFirebase = () => {
 
                         addDoc(collection(db, "users"), dataToCreate).
                             then(() => {
-
-                                navigation.navigate('Login')
+                                setLoading(false);
+                                navigation.navigate('Login');
                                 Alert.alert('Cargado correctamente!')
                             }).catch((error) => {
+                                setLoading(false);
                                 console.log(error)
                                 setError(error.message);
                                 Alert.alert('Ocurrio un error!');
                             });
 
                     } catch (error) {
-                        console.log(error)
+                        setLoading(false);
+                        console.log(error);
                         setError(error.message);
                         Alert.alert('Ocurrio un error!');
                     }
@@ -72,13 +75,14 @@ const useRegisterFirebase = () => {
                     if (error.code === 'auth/invalid-email') {
                         console.log('That email address is invalid!');
                     }
-
+                    setLoading(false);
                     console.log(error)
                     setError(error.message);
                     Alert.alert('Ocurrio un error!');
                 });
 
         } catch (error) {
+            setLoading(false);
             console.log(error)
             setError(error.message);
             Alert.alert('Ocurrio un error!');
@@ -89,7 +93,9 @@ const useRegisterFirebase = () => {
 
     const handleLogin = async (email: any, password: any) => {
 
-        console.log(`email ${email} y pass ${password}`)
+        await AsyncStorage.setItem('xqtes', JSON.stringify(email));
+        await AsyncStorage.setItem('asdqwe', JSON.stringify(password));
+        setLoading(true);
 
         try {
             await signInWithEmailAndPassword(auth, email, password)
@@ -124,18 +130,19 @@ const useRegisterFirebase = () => {
                                 birthdate: selectedProfile.birthdate,
                                 logged: true
                             }
-                           
-                            AsyncStorage.setItem('@xqtes', JSON.stringify(email));
-                            AsyncStorage.setItem('@asdqwe', JSON.stringify(password));
+
 
                             distpach(setUserInfo(user));
+                            setLoading(false);
 
                         } else {
+                            setLoading(false);
                             console.log('usuario no existe .', selectedProfile)
                             Alert.alert('usuario no existe!');
                         }
 
                     } catch (error) {
+                        setLoading(false);
                         setError(error.message);
                         console.log("err", error)
                         console.log("err aqui", error.message)
@@ -145,6 +152,7 @@ const useRegisterFirebase = () => {
 
                 })
                 .catch((error) => {
+                    setLoading(false);
                     console.log("error", error)
                     console.log("error", error.message)
                     setError(error.message);
@@ -152,6 +160,7 @@ const useRegisterFirebase = () => {
                 })
 
         } catch (error) {
+            setLoading(false);
             console.log("errerer", error)
             console.log("errerer", error.message)
             setError(error.message);
@@ -161,7 +170,39 @@ const useRegisterFirebase = () => {
 
     };
 
-    return { handleLogin, handleRegister, error, setError };
+    const handleUpdatePassword = async (email, password, newPassword) => {
+        setLoading(true);
+      
+        try {
+          // Reautenticar al usuario antes de cambiar la contraseña
+          await reauthenticateUser(email, password);
+      
+          // Cambiar la contraseña después de la reautenticación
+          await updatePassword(auth.currentUser, newPassword);
+          
+          setLoading(false);
+          Alert.alert('Contraseña actualizada con éxito!');
+          navigation.navigate('Perfil');
+        } catch (error) {
+          setLoading(false);
+          console.error('Error al cambiar la contraseña:', error);
+          Alert.alert('No se pudo actualizar la contraseña. Asegúrese de haber proporcionado la contraseña actual correcta.');
+        }
+      };
+      
+      const reauthenticateUser = async (email, password) => {
+        const user = auth.currentUser;
+        const credential = EmailAuthProvider.credential(email, password);
+      
+        try {
+          await reauthenticateWithCredential(user, credential);
+          return true;
+        } catch (error) {
+          console.error('Error during reauthentication:', error);
+          throw error;
+        }
+      };
+    return { handleLogin, handleRegister, error, setError, loading, handleUpdatePassword };
 };
 
 export default useRegisterFirebase;
