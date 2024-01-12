@@ -1,13 +1,12 @@
 import { useState } from 'react';
 
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updatePassword } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth'
 import { initializeApp } from 'firebase/app'
 import { db, firebaseConfig } from '../firebase/index'
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
-
 import { useNavigation } from '@react-navigation/native';
 import { Alert } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setUserInfo } from '../state/ProfileSlice';
 
@@ -18,7 +17,6 @@ const useRegisterFirebase = () => {
     const auth = getAuth(app)
 
     const distpach = useDispatch();
-    const {email: correo} = useSelector((state: any)=>state.code);
 
     const navigation = useNavigation();
     const [error, setError] = useState("");
@@ -172,58 +170,38 @@ const useRegisterFirebase = () => {
 
     };
 
-    const handleUpdatePassword = async (email: any, newPassword: any) => {
-
-        console.log('mi email es ...', email);
+    const handleUpdatePassword = async (email, password, newPassword) => {
         setLoading(true);
+      
         try {
-            const profileQuery = query(
-                collection(db, "users"),
-                where("email", "==", email)
-            );
-
-            const querySnapshot = await getDocs(profileQuery);
-
-            let selectedProfile: any;
-
-            querySnapshot.forEach((doc) => {
-                selectedProfile = doc.data();
-
-            });
-            if (selectedProfile) {
-
-                const uid = selectedProfile.user_id;
-                console.log('mi uid es ...', uid);
-
-                try {
-                    await updatePassword(uid, newPassword);
-                    setLoading(false);
-                    Alert.alert('Contraseña actualizada con existo!');
-                    navigation.navigate('ConfirmationKey');
-                } catch (error) {
-                    setLoading(false);
-                    console.log('email no existe .', selectedProfile)
-                    console.log('err no existe .', error)
-                    Alert.alert('email no existe!');
-                }
-
-            } else {
-                setLoading(false);
-                console.log('email no existe .', selectedProfile)
-                Alert.alert('email no existe!');
-            }
-
+          // Reautenticar al usuario antes de cambiar la contraseña
+          await reauthenticateUser(email, password);
+      
+          // Cambiar la contraseña después de la reautenticación
+          await updatePassword(auth.currentUser, newPassword);
+          
+          setLoading(false);
+          Alert.alert('Contraseña actualizada con éxito!');
+          navigation.navigate('Perfil');
         } catch (error) {
-            setLoading(false);
-            setError(error.message);
-            console.log("err", error)
-            console.log("err aqui", error.message)
-            Alert.alert('Ocurrio un error!');
+          setLoading(false);
+          console.error('Error al cambiar la contraseña:', error);
+          Alert.alert('No se pudo actualizar la contraseña. Asegúrese de haber proporcionado la contraseña actual correcta.');
         }
-
-
-    };
-
+      };
+      
+      const reauthenticateUser = async (email, password) => {
+        const user = auth.currentUser;
+        const credential = EmailAuthProvider.credential(email, password);
+      
+        try {
+          await reauthenticateWithCredential(user, credential);
+          return true;
+        } catch (error) {
+          console.error('Error during reauthentication:', error);
+          throw error;
+        }
+      };
     return { handleLogin, handleRegister, error, setError, loading, handleUpdatePassword };
 };
 
