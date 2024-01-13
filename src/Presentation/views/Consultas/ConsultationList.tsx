@@ -28,7 +28,7 @@ const Cosultationlist = () => {
   return (
     <View style={styles.container}>
       <FloatingMenu />
-      <ScrollView>
+      <ScrollView style={styles.content}>
         <Text style={styles.title}>Consultas para ti</Text>
         <View style={styles.consultationsContainer}>
           {consultCards.map((item, index) => (
@@ -65,6 +65,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FCFCFC",
     position: "relative",
+  },
+  content: {
+    top: 20,
   },
   title: {
     fontSize: 18,

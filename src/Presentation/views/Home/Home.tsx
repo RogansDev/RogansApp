@@ -12,12 +12,14 @@ import ButtonProcedureList from '../../components/BottomMasProcedimientos';
 import * as WebBrowser from 'expo-web-browser';
 import { consultCards, procedureCards } from '../Servicios/ServicesData';
 import { useSelector } from "react-redux";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootParamList } from "../../../utils/RootParamList";
 
 
 const Home = () => {
   const { UserIcon, ProcedimientoIcon, ConsultasIcon, AgendaIcon, Arrow } = Icons;
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
   const {name} = useSelector( (state : any) => state.user)
 
 

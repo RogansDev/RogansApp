@@ -73,65 +73,67 @@ const Servicios = () => {
     return (
         <View style={styles.container}>
             <FloatingMenu />
-            <SearchBar
-                onSearch={handleSearch}
-                resetSearch={resetSearch}
-                isSearchVisible={isSearchVisible}
-                toggleSearchBar={toggleSearchBar}
-            />
-            <View style={styles.containerCategoriaBtn}>
-                <TouchableOpacity
-                    onPress={() => toggleCategoriaBtn('Consultas')}
-                    style={activeCategorias.includes('Consultas') ? styles.categoriaBtnActive : styles.categoriaBtn}
-                >
-                    {activeCategorias.includes('Consultas') ? (
-                        <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                            <CloseIcon width={16} height={16} style={{ marginRight: 6, }} />
-                            <Text style={styles.textCategoriaBtnActive}>Consultas</Text>
-                        </View>
-                    ) : (
-                        <Text style={styles.textCategoriaBtn}>Consultas</Text>
-                    )}
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => toggleCategoriaBtn('Procedimientos')}
-                    style={activeCategorias.includes('Procedimientos') ? styles.categoriaBtnActive : styles.categoriaBtn}
-                >
-                    {activeCategorias.includes('Procedimientos') ? (
-                        <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                            <CloseIcon width={16} height={16} style={{ marginRight: 6, }} />
-                            <Text style={styles.textCategoriaBtnActive}>Procedimientos</Text>
-                        </View>
-                    ) : (
-                        <Text style={styles.textCategoriaBtn}>Procedimientos</Text>
-                    )}
-                </TouchableOpacity>
-            </View>
-            <Text style={styles.title}>Lo que ofrecemos para ti</Text>
-            {filteredItems.length > 0 ? (
-                <ScrollView>
-                    <View style={styles.consultationsContainer}>
-                        {filteredItems.map((item, index) => (
-                            <View key={`${item.id}_${index}`} style={styles.consultation}>
-                                <Image source={item.image} style={styles.consultationImage} />
-                                <View style={styles.consultationInfo}>
-                                    <Text style={styles.consultationTitle}>{item.title}</Text>
-                                    <TouchableOpacity onPress={() => handleSelectCard(item)} style={styles.agendarBtn}>
-                                        <CalendarEditIcon style={styles.iconAgendarBtn} width={16} height={16} />
-                                        <Text style={styles.textAgendarBtn}>
-                                            Agendar
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
+            <View style={styles.searchBar}>
+                <SearchBar
+                    onSearch={handleSearch}
+                    resetSearch={resetSearch}
+                    isSearchVisible={isSearchVisible}
+                    toggleSearchBar={toggleSearchBar}
+                />
+                <View style={styles.containerCategoriaBtn}>
+                    <TouchableOpacity
+                        onPress={() => toggleCategoriaBtn('Consultas')}
+                        style={activeCategorias.includes('Consultas') ? styles.categoriaBtnActive : styles.categoriaBtn}
+                    >
+                        {activeCategorias.includes('Consultas') ? (
+                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                <CloseIcon width={16} height={16} style={{ marginRight: 6, }} />
+                                <Text style={styles.textCategoriaBtnActive}>Consultas</Text>
                             </View>
-                        ))}
-                    </View>
-                </ScrollView>
-            ) : (
-                <View style={styles.noResultsContainer}>
-                    <Text style={styles.noResultsText}>No se encontraron servicios relacionados a tu búsqueda.</Text>
+                        ) : (
+                            <Text style={styles.textCategoriaBtn}>Consultas</Text>
+                        )}
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => toggleCategoriaBtn('Procedimientos')}
+                        style={activeCategorias.includes('Procedimientos') ? styles.categoriaBtnActive : styles.categoriaBtn}
+                    >
+                        {activeCategorias.includes('Procedimientos') ? (
+                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                <CloseIcon width={16} height={16} style={{ marginRight: 6, }} />
+                                <Text style={styles.textCategoriaBtnActive}>Procedimientos</Text>
+                            </View>
+                        ) : (
+                            <Text style={styles.textCategoriaBtn}>Procedimientos</Text>
+                        )}
+                    </TouchableOpacity>
                 </View>
-            )}
+                <Text style={styles.title}>Lo que ofrecemos para ti</Text>
+                {filteredItems.length > 0 ? (
+                    <ScrollView>
+                        <View style={styles.consultationsContainer}>
+                            {filteredItems.map((item, index) => (
+                                <View key={`${item.id}_${index}`} style={styles.consultation}>
+                                    <Image source={item.image} style={styles.consultationImage} />
+                                    <View style={styles.consultationInfo}>
+                                        <Text style={styles.consultationTitle}>{item.title}</Text>
+                                        <TouchableOpacity onPress={() => handleSelectCard(item)} style={styles.agendarBtn}>
+                                            <CalendarEditIcon style={styles.iconAgendarBtn} width={16} height={16} />
+                                            <Text style={styles.textAgendarBtn}>
+                                                Agendar
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            ))}
+                        </View>
+                    </ScrollView>
+                ) : (
+                    <View style={styles.noResultsContainer}>
+                        <Text style={styles.noResultsText}>No se encontraron servicios relacionados a tu búsqueda.</Text>
+                    </View>
+                )}
+            </View>
         </View>
     );
 };
@@ -142,12 +144,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#FCFCFC',
         position: "relative",
     },
+    searchBar: {
+        top: 20
+    },
     containerCategoriaBtn: {
         flexDirection: 'row',
         alignItems: "center",
         paddingHorizontal: 16,
-        marginTop: 15,
-        marginBottom: 20,
+        marginTop: 5,
+        marginBottom: 10,
         gap: 10,
     },
     categoriaBtn: {

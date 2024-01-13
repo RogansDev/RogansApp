@@ -161,7 +161,6 @@ const Perfil = () => {
                                     style={styles.userImage}
                                 />
                             ) : (
-
                                 base64Image ? (
                                     <Image
                                         source={{ uri: base64Image }}
@@ -170,7 +169,6 @@ const Perfil = () => {
                                 ) : (
                                     <UserIcon width={150} height={150} />
                                 )
-
                             )}
                             <View style={styles.camaraIcon}>
                                 <Camara width={24} height={24} />
@@ -235,9 +233,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FCFCFC',
         position: "relative",
+        
     },
     scrollContainer: {
         position: "relative",
+        top: 40
     },
     title: {
         fontSize: 24,
