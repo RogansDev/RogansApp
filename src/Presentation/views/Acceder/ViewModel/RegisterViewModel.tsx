@@ -107,7 +107,7 @@ const RegisterViewModel = () => {
       return true;
    }
 
-   return { ...values, onChange, register, errorMessage }
+   return { ...values, onChange, register, errorMessage, loading }
 }
 
 export default RegisterViewModel;

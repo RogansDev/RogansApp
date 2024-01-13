@@ -25,64 +25,90 @@ const useRegisterFirebase = () => {
     const [loading, setLoading] = useState(false);
 
     const handleRegister = async (props: any) => {
-        setLoading(true)
-        if (props.password !== props.ConfirmPassword) {
-            return setError('Las contraseñas no coinciden');
-        }
-        try {
-            await createUserWithEmailAndPassword(auth, props.email, props.password)
-                .then((userCredential) => {
-                    const userId = userCredential.user.uid;
-                    try {
-                        const dataToCreate = {
-                            user_id: userId,
-                            email: props.email,
-                            role: "client",
-                            urlphoto: '',
-                            document: props.document,
-                            name: props.name,
-                            lastname: props.lastname,
-                            phone: props.phone,
-                            birthdate: props.birthdate
-                        };
 
-                        addDoc(collection(db, "users"), dataToCreate).
-                            then(() => {
-                                navigation.navigate('Login')
-                                Alert.alert('Cargado correctamente!')
-                            }).catch((error) => {
-                                console.log(error)
+        if (props.password !== props.ConfirmPassword) { return setError('Las contraseñas no coinciden'); }
+
+        try {
+            setLoading(true);
+            const profileQuery = query(
+                collection(db, "users"),
+                where("document", "==", props.document)
+            );
+            const querySnapshot = await getDocs(profileQuery);
+            let selectedProfile: any;
+            querySnapshot.forEach((doc) => { selectedProfile = doc.data(); });
+
+            if (selectedProfile) {
+                console.log('Documento existe .', selectedProfile.email)
+                Alert.alert('Documento en uso!');
+                setLoading(false);
+
+            } else {
+                try {
+                    await createUserWithEmailAndPassword(auth, props.email, props.password)
+                        .then((userCredential) => {
+                            const userId = userCredential.user.uid;
+                            try {
+                                const dataToCreate = {
+                                    user_id: userId,
+                                    email: props.email,
+                                    role: "client",
+                                    urlphoto: '',
+                                    document: props.document,
+                                    name: props.name,
+                                    lastname: props.lastname,
+                                    phone: props.phone,
+                                    birthdate: props.birthdate
+                                };
+                                addDoc(collection(db, "users"), dataToCreate).
+                                    then(() => {
+                                        setLoading(false);
+                                        navigation.navigate('Login')
+                                        Alert.alert('Cargado correctamente!')
+                                    }).catch((error) => {
+                                        console.log(error)
+                                        setLoading(false);
+                                        setError(error.message);
+                                        Alert.alert('Ocurrio un error!');
+                                    });
+                            } catch (error) {
+                                setLoading(false);
+                                console.log(error);
                                 setError(error.message);
                                 Alert.alert('Ocurrio un error!');
-                            });
+                            }
 
-                    } catch (error) {
-                        console.log(error);
-                        setError(error.message);
-                        Alert.alert('Ocurrio un error!');
-                    }
+                        })
+                        .catch(error => {
+                            if (error.code === 'auth/email-already-in-use') {
+                                console.log('That email address is already in use!');
+                            }
 
-                })
-                .catch(error => {
-                    if (error.code === 'auth/email-already-in-use') {
-                        console.log('That email address is already in use!');
-                    }
+                            if (error.code === 'auth/invalid-email') {
+                                console.log('That email address is invalid!');
+                            }
+                            setLoading(false);
+                            console.log(error)
+                            setError(error.message);
+                            Alert.alert('Ocurrio un error!');
+                        });
 
-                    if (error.code === 'auth/invalid-email') {
-                        console.log('That email address is invalid!');
-                    }
+                } catch (error) {
+                    setLoading(false);
                     console.log(error)
                     setError(error.message);
                     Alert.alert('Ocurrio un error!');
-                });
+                }
+
+            }
 
         } catch (error) {
-            console.log(error)
+            setLoading(false);
             setError(error.message);
+            console.log("err", error)
+            console.log("err aqui", error.message)
             Alert.alert('Ocurrio un error!');
         }
-
-
     };
 
     const handleLogin = async (email: any, password: any) => {
@@ -164,38 +190,38 @@ const useRegisterFirebase = () => {
 
     };
 
-    const handleUpdatePassword = async (email, password, newPassword) => {
+    const handleUpdatePassword = async (email: any, password: any, newPassword: any) => {
         setLoading(true);
-      
+
         try {
-          // Reautenticar al usuario antes de cambiar la contraseña
-          await reauthenticateUser(email, password);
-      
-          // Cambiar la contraseña después de la reautenticación
-          await updatePassword(auth.currentUser, newPassword);
-          
-          setLoading(false);
-          Alert.alert('Contraseña actualizada con éxito!');
-          navigation.navigate('Perfil');
+            // Reautenticar al usuario antes de cambiar la contraseña
+            await reauthenticateUser(email, password);
+
+            // Cambiar la contraseña después de la reautenticación
+            await updatePassword(auth.currentUser, newPassword);
+
+            setLoading(false);
+            Alert.alert('Contraseña actualizada con éxito!');
+            navigation.navigate('Perfil');
         } catch (error) {
-          setLoading(false);
-          console.error('Error al cambiar la contraseña:', error);
-          Alert.alert('No se pudo actualizar la contraseña. Asegúrese de haber proporcionado la contraseña actual correcta.');
+            setLoading(false);
+            console.error('Error al cambiar la contraseña:', error);
+            Alert.alert('No se pudo actualizar la contraseña. Asegúrese de haber proporcionado la contraseña actual correcta.');
         }
-      };
-      
-      const reauthenticateUser = async (email, password) => {
+    };
+
+    const reauthenticateUser = async (email: any, password: any) => {
         const user = auth.currentUser;
         const credential = EmailAuthProvider.credential(email, password);
-      
+
         try {
-          await reauthenticateWithCredential(user, credential);
-          return true;
+            await reauthenticateWithCredential(user, credential);
+            return true;
         } catch (error) {
-          console.error('Error during reauthentication:', error);
-          throw error;
+            console.error('Error during reauthentication:', error);
+            throw error;
         }
-      };
+    };
     return { handleLogin, handleRegister, error, setError, loading, handleUpdatePassword };
 };
 

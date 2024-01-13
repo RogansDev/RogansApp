@@ -15,6 +15,7 @@ import RoundedBottom from "../../components/RoundedBottom";
 import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
 import CalendarioInput from "../../components/CalendarioInput";
 import PopUpError from "../../components/PopUpError";
+import Loading from "../loading/Loading";
 
 interface CalendarioHandles {
   toggleModal: () => void;
@@ -25,8 +26,9 @@ interface PopUpErrorHandles {
 }
 
 const Register = () => {
-  
+
   const {
+    loading,
     name,
     email,
     lastname,
@@ -40,7 +42,6 @@ const Register = () => {
     errorMessage,
   } = UseViewModel();
 
-  const { loading, } = useRegisterFirebase();
 
   const [birthDay, setBirthDay] = useState('');
   const [isChecked, setIsChecked] = useState(false);
@@ -48,7 +49,7 @@ const Register = () => {
   const { LogoBlack } = Icons;
 
   useEffect(() => {
-    if(errorMessage != ''){
+    if (errorMessage != '') {
       abrirPopUpError(errorMessage);
     }
   }, [errorMessage]);
@@ -69,7 +70,7 @@ const Register = () => {
 
   const abrirCalendario = () => {
     if (calendarioRef.current) {
-        calendarioRef.current.toggleModal();
+      calendarioRef.current.toggleModal();
     }
   };
 
@@ -97,121 +98,124 @@ const Register = () => {
     <ScrollView
       style={styles.container}
     >
-        {/* contenedor de formulario */}
-        <View style={styles.contentForm}>
-          <View style={styles.logoContainer}>
-            <LogoBlack style={styles.logo}/>
-          </View>
-          <View style={styles.form}>
-            {/* Nombre */}
-            <CustomTextInput
-              title="Nombre Usuario"
-              placeholder="Ingrese tu nombre "
-              keyboardType="default"
-              value={name}
-              onChangeText={onChange}
-              property="name"
-              secureTextEntry
-            />
-            {/* apellido */}
-            <CustomTextInput
-              title="Apellidos"
-              placeholder="Ingrese tu apelido"
-              keyboardType="default"
-              value={lastname}
-              onChangeText={onChange}
-              property="lastname"
-              secureTextEntry
-            />
-            {/* input de telefono */}
-            <CustomTextInput
-              title="Teléfono"
-              placeholder="Ingrese tu teléfono"
-              keyboardType="phone-pad"
-              value={phone}
-              onChangeText={onChange}
-              property="phone"
-            />
-            {/* correo electronico */}
-            <CustomTextInput
-              title="Correo"
-              placeholder="Ingrese tu correo"
-              keyboardType="email-address"
-              value={email}
-              onChangeText={onChange}
-              property="email"
-            />
-            {/* documentoo  */}
-            <CustomTextInput
-              title="documento identificacion"
-              placeholder="Ingrese tu cédula"
-              keyboardType="number-pad"
-              value={document}
-              onChangeText={onChange}
-              property="document"
-            />
-            {/* fecha de nacimiento */}
-            <View>
-              <View style={styles.labelContent}>
-                <Text style={styles.labelnombres}>Fecha de nacimiento </Text>
-                <Text style={styles.labelnombres2}>(Reqierido)</Text>
-              </View>
-              <TouchableOpacity style={styles.input} onPress={abrirCalendario}>
-                {birthDay === '' ? (
-                    <Text style={[styles.inputBirthDay, {color: '#C0C0C0',}]}>dd/mm/aaaa</Text>
-                  ):(
-                    <Text style={[styles.inputBirthDay, {color: '#000000',}]}>{birthDay}</Text>
-                )}
-              </TouchableOpacity>
-            </View>
-            {/* contraseñas */}
-            <CustomTextInput
-              title="Contraseña"
-              placeholder="Ingrese tu contraseña"
-              keyboardType="default"
-              value={password}
-              onChangeText={onChange}
-              property="password"
-              secureTextEntry={true}
-            />
-            {/* confirmar contraseña */}
-            <CustomTextInput
-              title="Confirmar contraseña"
-              placeholder="Confirmar la contraseña"
-              keyboardType="default"
-              value={ConfirmPassword}
-              onChangeText={onChange}
-              property="ConfirmPassword"
-              secureTextEntry
-            />
-            <Text style={styles.subtext}>La contraseña debe tener al menos 6 caracteres</Text>
-            {/* acepto terminos */}
-            <View style={styles.Accept}>
-              <Checkbox
-                value={isChecked}
-                onValueChange={handleCheckBoxChange}
-                style={styles.checkbox}
-              />
-              <View style={styles.textAccept}>
-                <Text>Acepto los</Text>
-                <Text
-                  style={{ textDecorationLine: "underline" }}
-                  // onPress={handleAcceptTerms}
-                >
-                  términos y condiciones
-                </Text>
-              </View>
-            </View>
-            {/* boton de registro */}
-            {loading ?
-            <RoundedBottom title="Cargando..." onPress={() => handleRegister() }/>
-            :
-            <RoundedBottom title="Registrarme" onPress={() => handleRegister() }/>
-            }
-          </View>
+      {/* contenedor de formulario */}
+      <View style={styles.contentForm}>
+        <View style={styles.logoContainer}>
+          <LogoBlack style={styles.logo} />
         </View>
-        <CalendarioInput ref={calendarioRef} onDateChange={handleDateChange} />
-        <PopUpError ref={PopUpErrorRef} />
+        <View style={styles.form}>
+          {/* Nombre */}
+          <CustomTextInput
+            title="Nombre Usuario"
+            placeholder="Ingrese tu nombre "
+            keyboardType="default"
+            value={name}
+            onChangeText={onChange}
+            property="name"
+            secureTextEntry
+          />
+          {/* apellido */}
+          <CustomTextInput
+            title="Apellidos"
+            placeholder="Ingrese tu apelido"
+            keyboardType="default"
+            value={lastname}
+            onChangeText={onChange}
+            property="lastname"
+            secureTextEntry
+          />
+          {/* input de telefono */}
+          <CustomTextInput
+            title="Teléfono"
+            placeholder="Ingrese tu teléfono"
+            keyboardType="phone-pad"
+            value={phone}
+            onChangeText={onChange}
+            property="phone"
+          />
+          {/* correo electronico */}
+          <CustomTextInput
+            title="Correo"
+            placeholder="Ingrese tu correo"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={onChange}
+            property="email"
+          />
+          {/* documentoo  */}
+          <CustomTextInput
+            title="documento identificacion"
+            placeholder="Ingrese tu cédula"
+            keyboardType="number-pad"
+            value={document}
+            onChangeText={onChange}
+            property="document"
+          />
+          {/* fecha de nacimiento */}
+          <View>
+            <View style={styles.labelContent}>
+              <Text style={styles.labelnombres}>Fecha de nacimiento </Text>
+              <Text style={styles.labelnombres2}>(Reqierido)</Text>
+            </View>
+            <TouchableOpacity style={styles.input} onPress={abrirCalendario}>
+              {birthDay === '' ? (
+                <Text style={[styles.inputBirthDay, { color: '#C0C0C0', }]}>dd/mm/aaaa</Text>
+              ) : (
+                <Text style={[styles.inputBirthDay, { color: '#000000', }]}>{birthDay}</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+          {/* contraseñas */}
+          <CustomTextInput
+            title="Contraseña"
+            placeholder="Ingrese tu contraseña"
+            keyboardType="default"
+            value={password}
+            onChangeText={onChange}
+            property="password"
+            secureTextEntry={true}
+          />
+          {/* confirmar contraseña */}
+          <CustomTextInput
+            title="Confirmar contraseña"
+            placeholder="Confirmar la contraseña"
+            keyboardType="default"
+            value={ConfirmPassword}
+            onChangeText={onChange}
+            property="ConfirmPassword"
+            secureTextEntry
+          />
+          <Text style={styles.subtext}>La contraseña debe tener al menos 6 caracteres</Text>
+          {/* acepto terminos */}
+          <View style={styles.Accept}>
+            <Checkbox
+              value={isChecked}
+              onValueChange={handleCheckBoxChange}
+              style={styles.checkbox}
+            />
+            <View style={styles.textAccept}>
+              <Text>Acepto los</Text>
+              <Text
+                style={{ textDecorationLine: "underline" }}
+              // onPress={handleAcceptTerms}
+              >
+                términos y condiciones
+              </Text>
+            </View>
+          </View>
+          {loading ? 
+          <View style={styles.roundedBottom}>
+            <Text  style={styles.textLoading}>
+            Cargando....
+          </Text>
+          </View> : <RoundedBottom
+            title="Registrarme"
+            onPress={() => handleRegister()} />
+          }
+        </View>
+      </View>
+      <CalendarioInput ref={calendarioRef} onDateChange={handleDateChange} />
+      <PopUpError ref={PopUpErrorRef} />
     </ScrollView>
   );
 };
@@ -234,9 +238,9 @@ const styles = StyleSheet.create({
     position: "relative",
     marginTop: 90,
     padding: 20,
-   
+
   },
-  
+
   form: {
     display: "flex",
     justifyContent: "center",
@@ -331,6 +335,7 @@ const styles = StyleSheet.create({
     color: MyColors.base,
     justifyContent: "center",
     borderRadius: 15,
+    marginTop:2
   },
   textBottom: {
     color: "white",
@@ -390,6 +395,23 @@ const styles = StyleSheet.create({
     fontSize: 11,
     marginBottom: 15,
   },
+  roundedText: {
+    width: '100%',
+    height: 50,
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'center',
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    borderRadius: 15,
+    marginTop: 15
+  },
+  textLoading: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 13,
+    fontFamily: MyFont.regular,
+  }
 });
 
 export default Register;
