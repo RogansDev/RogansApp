@@ -119,8 +119,6 @@ const Perfil = () => {
                             ) : (
                                 <UserIcon style={{ marginTop: 40 }} width={250} height={250} />
                             )
-
-
                         )}
                         <View style={{ flexDirection: 'row', gap: 18, }}>
                             <TouchableOpacity onPress={pickImage} style={styles.editImage}>
@@ -147,7 +145,6 @@ const Perfil = () => {
                                     style={styles.userImage}
                                 />
                             ) : (
-
                                 base64Image ? (
                                     <Image
                                         source={{ uri: base64Image }}
@@ -156,7 +153,6 @@ const Perfil = () => {
                                 ) : (
                                     <UserIcon width={150} height={150} />
                                 )
-
                             )}
                             <View style={styles.camaraIcon}>
                                 <Camara width={24} height={24} />
@@ -174,7 +170,6 @@ const Perfil = () => {
                             </View>
                         )}
                     </View>
-
                     <View style={styles.textContainer}>
                         <View style={styles.info}>
                             <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 3, }}>
@@ -232,9 +227,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FCFCFC',
         position: "relative",
+        
     },
     scrollContainer: {
         position: "relative",
+        top: 40
     },
     title: {
         fontSize: 24,

@@ -182,8 +182,9 @@ const styles = StyleSheet.create({
     position: "relative",
     marginTop: 90,
     padding: 20,
-    bottom: 69,
+   
   },
+  
   form: {
     display: "flex",
     justifyContent: "center",

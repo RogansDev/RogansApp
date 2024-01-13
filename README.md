@@ -50,10 +50,11 @@ https://www.youtube.com/watch?v=1nsnNLLnlrg&t=86s
 22. para la gestion de imagenes 
 expo install expo-file-system
 
-
-
 <code>expo install expo-font</code>
 
+23. para que salga una pantalla cyando se acaban los intentos en el codigo de verificacion
+
+npm install react-native-toast-message
 
 <h1>Uso de las fuentes personalizadas</h1>
 

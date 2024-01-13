@@ -235,6 +235,7 @@ const styles = StyleSheet.create({
     },
     content: {
         marginBottom: 50,
+        top: 50,
     },
     title: {
         fontFamily: MyFont.bold,

@@ -10,11 +10,15 @@ import { MyColors, MyFont } from "../../theme/AppTheme";
 import Icons from "../../theme/Icons";
 import useRegisterFirebase from '../../../hooks/useRegisterFirebase';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../../utils/RootParamList';
 
 const UpdatePasswordDash = () => {
 
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
-  const { LogoBlack, Eye } = Icons;
+  const { LogoBlack, Eye, UpdatePassword } = Icons;
   const { email } = useSelector((state: any) => state.user)
 
   const [oldPassword, setOldPassword] = useState('');
@@ -41,7 +45,7 @@ const UpdatePasswordDash = () => {
   return (
     <View style={styles.container}>
       <View style={{ marginTop: 30, }}>
-        <LogoBlack width={140} height={40} />
+        <LogoBlack width={140} height={40} style={styles.logo}/>
       </View>
       <View style={styles.form}>
         <View style={{ marginTop: 20, marginBottom: 20, }}>
@@ -90,7 +94,14 @@ const UpdatePasswordDash = () => {
           onPress={handleUpdatePass}>
           <Text style={styles.textClick}>{loading ? "Cargando" : "Actualizar contraseña"}</Text>
         </TouchableOpacity>
-
+        <View style={styles.containerUpdate}>
+          <UpdatePassword width={30} height={24} />
+          <Text
+            style={styles.textUpdate}
+            onPress={() => navigation.navigate("ModalVerifitCode")}>
+            Olvide mi contraseña
+          </Text>
+        </View>
       </View>
     </View>
   )
@@ -101,10 +112,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: MyColors.base,
     alignItems: 'center',
+
+  },
+  logo: {
+    top: 50,
   },
   form: {
     width: "100%",
     padding: 20,
+    top: 60,
   },
   title: {
     alignSelf: "center",
@@ -187,7 +203,19 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 13,
     fontFamily: MyFont.regular,
-  }
+  },
+  containerUpdate: {
+    display: "flex",
+    flexDirection: "row",
+    alignSelf: "center",
+    justifyContent: "center",
+    gap: 10,
+    marginTop: 30,
+  },
+  textUpdate: {
+    fontSize: 16,
+    fontFamily: MyFont.regular,
+  },
 });
 
 export default UpdatePasswordDash;

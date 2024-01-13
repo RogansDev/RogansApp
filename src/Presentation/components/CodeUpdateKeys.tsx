@@ -1,22 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MyColors } from '../theme/AppTheme';
 import Verify from '../../../assets/verify.svg'
 import { useSelector } from 'react-redux';
 import useFirebaseCode from '../../hooks/useFirebaseCode';
+import Toast from 'react-native-toast-message';
 
-const CodeUpdateKeys = () => {
+const CodeUpdateKeys = ({ codigoSolicitado, setCodigoSolicitado}) => {
 
   const {code, email} = useSelector((state:any)=>state.code)
 
  const {handleReadCode,  loading } = useFirebaseCode();
 
-  const verifyCode = async() =>{ handleReadCode(code, email); }
+ const [ intentosRestantes, setIntentosRestantes ] = useState(4);
+
+  // const verifyCode = async() =>{ handleReadCode(code, email); };
+
+
+  const verifyCode = async () => {
+     if (intentosRestantes > 0) {
+       handleReadCode(code, email);
+       setIntentosRestantes(intentosRestantes - 1);
+     } else {
+       Toast.show({
+         type: 'error',
+         text1: "Sin intentos disponibles",
+         visibilityTime: 2000,
+       })
+     }
+  }
 
   return (
     <TouchableOpacity
       style={styles.BottomRounded}
-      onPress={() => { verifyCode()}}>
+      onPress={verifyCode}
+      disabled={!codigoSolicitado}
+    >
       <View style={styles.contentBottom}>
         <Text style={styles.text}>
           {loading ? "Cargando...": "Verificar"}

@@ -30,6 +30,7 @@ const ModalVerifitCode = () => {
   const [reenviarCodePressed, setReenviarCodePressed] = useState(false);
   const [coder, setCoder] = useState("");
   const [mail, setMail] = useState("");
+  const [codigoSolicitado, setCodigoSolicitado ] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -65,14 +66,14 @@ const ModalVerifitCode = () => {
   const handleResendCode = () => { // solicito el codigo
     setReenviarCodePressed(false);
     handleSaveCode(mail);
-
+    setCodigoSolicitado(true);
   };
 
   return (
     <View style={styles.container}>
         <View style={styles.modalContent}>
           <View style={styles.modalItems}>
-              <>
+              <View style={styles.from}>
                 <View style={{ marginTop: 10 }}>
                   <View style={styles.inputContent}>
                     <Text style={styles.textTitleKey}>Correo electronico</Text>
@@ -122,9 +123,12 @@ const ModalVerifitCode = () => {
                 </View>
                 {/* boton de verficar codigo */}
                 <View style={{ marginTop: 100 }}>
-                  <CodeUpdateKeys />
+                  <CodeUpdateKeys 
+                        codigoSolicitado={codigoSolicitado} 
+                        setCodigoSolicitado={setCodigoSolicitado}
+                    />
                 </View>
-              </>
+              </View>
           </View>
         </View>
     </View>
@@ -152,6 +156,10 @@ const styles = StyleSheet.create({
     height: "80%",
     padding: 20,
     borderRadius: 10,
+    top: 40,
+  },
+  from: {
+    top: 60,
   },
   textContent: {
     display: "flex",
