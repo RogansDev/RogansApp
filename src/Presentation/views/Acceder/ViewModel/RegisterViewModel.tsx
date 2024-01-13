@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import useRegisterFirebase from '../../../../hooks/useRegisterFirebase';
 const RegisterViewModel = () => {
 
-   const { handleRegister, loading, setLoading } = useRegisterFirebase();
+   const { handleRegister, loading } = useRegisterFirebase();
 
    const [errorMessage, setErrorMessage] = useState('');
 

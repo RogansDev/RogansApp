@@ -33,7 +33,7 @@ const UpdatePass = () => {
                 <View style={{ marginTop: 30, }}>
                     <View style={styles.inputContent}>
                         <Text style={styles.textTitleKey}>Contraseña</Text>
-                        <Text style={styles.textRequireCheck}>(Requrido)</Text>
+                        <Text style={styles.textRequireCheck}> (Requrido)</Text>
                     </View>
                     <TextInput
                         placeholder='Nueva contraseña'
@@ -46,7 +46,7 @@ const UpdatePass = () => {
                 <View style={{ marginTop: 10, }}>
                     <View style={styles.inputContent}>
                         <Text style={styles.textTitleKey}>Contraseña</Text>
-                        <Text style={styles.textRequireCheck}>(Requrido)</Text>
+                        <Text style={styles.textRequireCheck}> (Requrido)</Text>
                     </View>
                     <TextInput
                         placeholder='Confirma la contraseña'

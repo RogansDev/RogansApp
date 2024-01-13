@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { MyColors } from '../theme/AppTheme';
+import { MyColors, MyFont } from '../theme/AppTheme';
 import Verify from '../../../assets/verify.svg'
 import { useSelector } from 'react-redux';
 import useFirebaseCode from '../../hooks/useFirebaseCode';
@@ -21,7 +21,7 @@ const CodeUpdateKeys = () => {
         <Text style={styles.text}>
           {loading ? "Cargando...": "Verificar"}
         </Text>
-        <Verify width="20" height="20" />
+        <Verify width="16" height="16" />
       </View>
     </TouchableOpacity>
   )
@@ -46,8 +46,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: MyColors.base,
-    fontSize: 16,
-    fontWeight: "500"
+    fontSize: 13,
+    fontWeight: "500",
+    fontFamily: MyFont.regular,
   }
 
 })

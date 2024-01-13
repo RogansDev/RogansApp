@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
-  ToastAndroid
+  TouchableOpacity
 } from "react-native";
 import Icons from "../../../Presentation/theme/Icons";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
@@ -40,7 +40,7 @@ const Register = () => {
     errorMessage,
   } = UseViewModel();
 
-  const { loading, setLoading } = useRegisterFirebase();
+  const { loading, } = useRegisterFirebase();
 
   const [birthDay, setBirthDay] = useState('');
   const [isChecked, setIsChecked] = useState(false);

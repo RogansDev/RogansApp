@@ -33,191 +33,182 @@ function PrivateScreen() {
         name="Home"
         component={Home}
         options={{
-          ...Platform.select({
-            ios: {
-              headerShown: true,
-              headerTintColor: MyColors.primary,
-              headerTitle: "Regresar",
-              headerTitleStyle: {
-                color: "black",
-              },
-            },
-            android: {
-              headerShown: false,
-            },
-          }),
-          headerTransparent: true,
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="ModalVerifitCode"
         component={VerifitCodes}
-        options={{
+        options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {
               headerShown: true,
-              headerTitle: "Regresar",
-              headerTintColor: MyColors.primary,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
             },
             android: {
-              headershown: false,
-            },
+              headerShown: false,
+            }
           }),
-          headerTransparent: true,
-        }}
+          headerTransparent: false,
+        })}
       />
       <Stack.Screen
         name="PassUpdatekeyDash"
         component={UpdatePasswordDash}
-        options={{
+        options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {
               headerShown: true,
-              headerTitle: "Regresar",
-              headerTintColor: MyColors.primary,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
             },
             android: {
               headerShown: false,
-            },
+            }
           }),
-          headerTransparent: true,
-        }}
+          headerTransparent: false,
+        })}
       />
       {/* aqui agregar las pantallas privadas  */}
       <Stack.Screen
         name="ListaDeConsultas"
         component={ConsultationList}
-        options={{
+        options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {
               headerShown: true,
-              headerTitle: "Regresar",
-              headerTintColor: MyColors.primary,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
             },
             android: {
               headerShown: false,
-            },
+            }
           }),
-          headerTransparent: true,
-        }}
+          headerTransparent: false,
+        })}
       />
       <Stack.Screen
         name="ListaDeProcedimientos"
         component={ProcedureList}
-        options={{
+        options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {
               headerShown: true,
-              headerTitle: "Regresar",
-              headerTintColor: MyColors.primary,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
             },
             android: {
               headerShown: false,
-            },
+            }
           }),
-          headerTransparent: true,
-        }}
+          headerTransparent: false,
+        })}
       />
       <Stack.Screen
         name="DescripcionConsultas"
         component={ConsultationDescription}
-        options={{
+        options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {
               headerShown: true,
-              headerTitle: "Regresar",
-              headerTintColor: MyColors.primary,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
             },
             android: {
               headerShown: false,
-            },
+            }
           }),
-          headerTransparent: true,
-        }}
+          headerTransparent: false,
+        })}
       />
       <Stack.Screen
         name="DescripcionProcedimientos"
         component={ProcedureDescription}
-        options={{
+        options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {
               headerShown: true,
-              headerTitle: "Regresar",
-              headerTintColor: MyColors.primary,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
             },
             android: {
               headerShown: false,
-            },
+            }
           }),
-          headerTransparent: true,
-        }}
+          headerTransparent: false,
+        })}
       />
       <Stack.Screen
         name="ConfirmacionConsulta"
         component={ConsultationConfirmation}
-        options={{
+        options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {
               headerShown: true,
-              headerTitle: "Regresar",
-              headerTintColor: MyColors.primary,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
             },
             android: {
               headerShown: false,
-            },
+            }
           }),
-          headerTransparent: true,
-        }}
+          headerTransparent: false,
+        })}
       />
       <Stack.Screen
         name="ConfirmacionProcedimiento"
         component={ProcedureConfirmation}
-        options={{
+        options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {
               headerShown: true,
-              headerTitle: "Regresar",
-              headerTintColor: MyColors.primary,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
             },
             android: {
               headerShown: false,
-            },
+            }
           }),
-          headerTransparent: true,
-        }}
+          headerTransparent: false,
+        })}
       />
       <Stack.Screen
         name="Confirmado"
         component={ConfirmationPage}
         options={{
-          ...Platform.select({
-            ios: {
-              headerShow: true,
-              headerTitle: "Regresar",
-              headerTintColor: MyColors.primary,
-            },
-            android: {
-              headerShow: false,
-            },
-          }),
-          headerTransparent: true,
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="Rechazado"
         component={DeniedPage}
         options={{
-          ...Platform.select({
-            ios: {
-              headerShown: true,
-              headerTitle: "Regresar",
-              headerTintColor: MyColors.primary,
-            },
-            android: {
-              headerShown: false,
-            },
-          }),
-          headerTransparent: true,
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -230,36 +221,42 @@ function PrivateScreen() {
       <Stack.Screen
         name="MiAgenda"
         component={MiAgenda}
-        options={{
+        options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {
               headerShown: true,
-              headerTitle: "Regresar",
-              headerTintColor: MyColors.primary,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
             },
             android: {
               headerShown: false,
-            },
+            }
           }),
-          headerTransparent: true,
-        }}
+          headerTransparent: false,
+        })}
       />
       <Stack.Screen
         name="EditarCita"
         component={EditarCita}
-        options={{
+        options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {
               headerShown: true,
-              headerTitle: "Regresar",
-              headerTintColor: MyColors.primary,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
             },
             android: {
               headerShown: false,
-            },
+            }
           }),
-          headerTransparent: true,
-        }}
+          headerTransparent: false,
+        })}
       />
       <Stack.Screen
         name="CitaCancelada"
@@ -271,36 +268,42 @@ function PrivateScreen() {
       <Stack.Screen
         name="Servicios"
         component={Servicios}
-        options={{
+        options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {
               headerShown: true,
-              headerTitle: "Regresar",
-              headerTintColor: MyColors.primary,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
             },
             android: {
               headerShown: false,
-            },
+            }
           }),
-          headerTransparent: true,
-        }}
+          headerTransparent: false,
+        })}
       />
       <Stack.Screen
         name="Perfil"
         component={Perfil}
-        options={{
+        options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {
               headerShown: true,
-              headerTitle: "Regresar",
-              headerTintColor: MyColors.primary,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
             },
             android: {
               headerShown: false,
-            },
+            }
           }),
-          headerTransparent: true,
-        }}
+          headerTransparent: false,
+        })}
       />
     </Stack.Navigator>
   );

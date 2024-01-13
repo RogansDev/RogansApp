@@ -124,8 +124,6 @@ const Perfil = () => {
                             ) : (
                                 <UserIcon style={{ marginTop: 40 }} width={250} height={250} />
                             )
-
-
                         )}
                         <View style={{ flexDirection: 'row', gap: 18, }}>
                             <TouchableOpacity onPress={pickImage} style={styles.editImage}>
@@ -134,6 +132,17 @@ const Perfil = () => {
                             <TouchableOpacity onPress={takePhoto} style={styles.editImage}>
                                 <Camara width={24} height={24} />
                             </TouchableOpacity>
+                        </View>
+                        <View>
+                        {image && (
+                            <View style={{ width: 120, borderRadius: 14, padding: 14, backgroundColor: '#000000', }}>
+                                <TouchableOpacity onPress={() => { handlePhoto() }}>
+                                    <Text style={{ color: 'white', textAlign: 'center', fontFamily: MyFont.regular, fontSize: 13, }}>
+                                        {loading ? "Cargando.." : "Guardar"}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        )} 
                         </View>
                     </View>
                 </View>
@@ -167,17 +176,6 @@ const Perfil = () => {
                                 <Camara width={24} height={24} />
                             </View>
                         </TouchableOpacity>
-                    </View>
-                    <View style={{ width: '100%' }}>
-                        {image && (
-                            <View style={{ width: '100%', borderRadius: 14, borderWidth: 2, borderColor: 'black', padding: 10, marginTop: 10 }}>
-                                <TouchableOpacity onPress={() => { handlePhoto() }}>
-                                    <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>
-                                        {loading ? "Cargando.." : "Guardar imagen"}
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}
                     </View>
 
                     <View style={styles.textContainer}>
@@ -339,7 +337,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        paddingBottom: 20,
+        paddingBottom: 40,
         overflow: 'hidden',
     },
     modalImage: {
