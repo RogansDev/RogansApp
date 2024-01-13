@@ -16,7 +16,7 @@ const UpdatePasswordDash = () => {
     
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
-    const { LogoBlack, Eye } = Icons;
+    const { LogoBlack, UpdatePassword } = Icons;
 
   return (
     <View style={styles.container}>
@@ -67,7 +67,15 @@ const UpdatePasswordDash = () => {
       >
         <Text style={styles.textClick}>Recuperar contraseña</Text>
       </TouchableOpacity>
-      
+      <View style={styles.containerUpdate}>
+          <UpdatePassword width={30} height={24} />
+          <Text
+            style={styles.textUpdate}
+            onPress={() => navigation.navigate("ModalVerifitCode")}
+          >
+            Olvide mi contraseña
+          </Text>
+        </View>
     </View>
   </View>
   )
@@ -158,7 +166,19 @@ const styles = StyleSheet.create({
       color: MyColors.base,
       fontSize: 13,
       fontFamily: MyFont.regular,
-    }
+    },
+    containerUpdate: {
+      display: "flex",
+      flexDirection: "row",
+      alignSelf: "center",
+      justifyContent: "center",
+      gap: 10,
+      marginTop: 30,
+    },
+    textUpdate: {
+      fontSize: 16,
+      fontFamily: MyFont.regular,
+    },
   });
 
 export default UpdatePasswordDash;

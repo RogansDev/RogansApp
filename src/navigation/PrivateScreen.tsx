@@ -21,7 +21,7 @@ import ProcedureList from "../Presentation/views/Procedimientos/ProceduresList";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../utils/RootParamList";
 import UpdatePasswordDash from "../Presentation/views/User/UpdatePasswordDash";
-
+import ModalVerifitCode from "../Presentation/components/ModalVerifitCode";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 
@@ -205,6 +205,19 @@ function PrivateScreen() {
           headerTitleAlign: 'left',
           headerShadowVisible: false,
         })}
+      />
+      <Stack.Screen
+          name="ModalVerifitCode"
+          component={ModalVerifitCode}
+          options={({ route, navigation }) => ({
+            headerShown: true,
+            headerTransparent: false,
+            headerTitle: '',
+            headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+            headerTintColor: '#00D0B1',
+            headerTitleAlign: 'left',
+            headerShadowVisible: false,
+          })}
       />
     </Stack.Navigator>
   );

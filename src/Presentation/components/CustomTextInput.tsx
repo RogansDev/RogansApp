@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, KeyboardType, TextInput } from 'react-native';
-import { Svg } from 'react-native-svg';
 import { MyFont } from '../theme/AppTheme';
 
 
@@ -32,7 +31,7 @@ const CustomTextInput = ({
       <Text style={styles.text1TitleModalButton}>
         {title}
       </Text>
-      <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
+      <Text style={styles.text2TitleModalButton}> (Requerido)</Text>
     </View>
     <TextInput
       placeholder={placeholder}
@@ -78,6 +77,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         marginVertical: 10,
+        fontFamily: MyFont.regular,
       },
 })
 export default CustomTextInput

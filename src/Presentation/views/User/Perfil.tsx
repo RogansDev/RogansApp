@@ -28,10 +28,6 @@ const Perfil = () => {
           }
     };
 
-    const handleSessionClose = () => {
-
-    }
-
     return (
         <>
         <Modal
@@ -128,7 +124,7 @@ const Perfil = () => {
                             </TouchableOpacity>
                         </View>
                         <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 30,}}>
-                            <TouchableOpacity onPress={handleSessionClose} style={{flexDirection: 'row', gap: 5,}}>
+                            <TouchableOpacity onPress={abrirPopUp} style={{flexDirection: 'row', gap: 5,}}>
                                 <CloseIcon width={16} height={16}/>
                                 <Text>
                                     Cerrar sesión

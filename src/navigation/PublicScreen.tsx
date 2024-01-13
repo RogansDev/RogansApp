@@ -11,8 +11,9 @@ import ConfirmationKey from '../Presentation/views/Acceder/ConfirmationKey';
 import UpdatePass from '../Presentation/views/Acceder/UpdatePass';
 import SecondScreen from '../Presentation/views/ContainerHome/SecondScreen';
 import Loading from '../Presentation/views/loading/Loading';
+import { RootParamList } from "../utils/RootParamList";
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootParamList>();
 
 function PublicScreen() {
 

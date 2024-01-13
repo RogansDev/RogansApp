@@ -1,4 +1,6 @@
 export type RootParamList = {
+  Loading: undefined;
+  Regresar: undefined;
   Login: undefined;
   UpdateKey: undefined;
   ModalVerifitCode: undefined;

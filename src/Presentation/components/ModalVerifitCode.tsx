@@ -94,6 +94,7 @@ const ModalVerifitCode = () => {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}
+        style={{backgroundColor: 'rgba(0, 0, 0, 0.5)',}}
       >
         <View style={styles.modalContent}>
           <View style={styles.modalItems}>
@@ -229,15 +230,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    overflow: 'hidden',
   },
   modalItems: {
-    display: "flex",
     flexDirection: "column",
-    alignSelf: "center",
     gap: 10,
     backgroundColor: MyColors.base,
     width: "90%",
-    height: "80%",
     padding: 20,
     borderRadius: 10,
   },

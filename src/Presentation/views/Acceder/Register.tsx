@@ -18,6 +18,16 @@ import UseViewModel from "./ViewModel/RegisterViewModel";
 import CustomTextInput from "../../components/CustomTextInput";
 import RoundedBottom from "../../components/RoundedBottom";
 import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
+import CalendarioInput from "../../components/CalendarioInput";
+import PopUpError from "../../components/PopUpError";
+
+interface CalendarioHandles {
+  toggleModal: () => void;
+}
+
+interface PopUpErrorHandles {
+  togglePopUpError: (mesaje: string) => void;
+}
 
 const Register = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -36,20 +46,58 @@ const Register = () => {
     errorMessage,
   } = UseViewModel();
 
-  const { loading } = useRegisterFirebase();
+  const { loading, setLoading } = useRegisterFirebase();
 
-  // verifica que todos los campos esten para llenos si no vota un error 
-  useEffect(() => {
-    if(errorMessage != ''){
-      ToastAndroid.show(errorMessage, ToastAndroid.LONG)
-    }
-  }, [errorMessage])
+  const [birthDay, setBirthDay] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
 
   const { LogoBlack, Eye, SendIcon } = Icons;
+
+  useEffect(() => {
+    if(errorMessage != ''){
+      abrirPopUpError(errorMessage);
+    }
+  }, [errorMessage]);
 
   const handleRegister = () => {
     register();
   };
+
+  const PopUpErrorRef = useRef<PopUpErrorHandles>(null);
+
+  const abrirPopUpError = (mensaje: string) => {
+    if (PopUpErrorRef.current) {
+      PopUpErrorRef.current.togglePopUpError(mensaje);
+    }
+  };
+
+  const calendarioRef = useRef<CalendarioHandles>(null);
+
+  const abrirCalendario = () => {
+    if (calendarioRef.current) {
+        calendarioRef.current.toggleModal();
+    }
+  };
+
+  const handleDateChange = (selectedDate) => {
+    const formattedDate = selectedDate.toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+    setBirthDay(formattedDate);
+    onChange('birthdate', formattedDate);
+  };
+
+  const handleCheckBoxChange = () => {
+    if (!isChecked) {
+      setIsChecked(true);
+      onChange('termsAccepted', true);
+    } else {
+      setIsChecked(false);
+      onChange('termsAccepted', false);
+    }
+  }
 
   return (
     <ScrollView
@@ -74,7 +122,7 @@ const Register = () => {
             {/* apellido */}
             <CustomTextInput
               title="Apellidos"
-              placeholder="Ingrese tu  apelido"
+              placeholder="Ingrese tu apelido"
               keyboardType="default"
               value={lastname}
               onChangeText={onChange}
@@ -83,8 +131,8 @@ const Register = () => {
             />
             {/* input de telefono */}
             <CustomTextInput
-              title="Telefono"
-              placeholder="Ingrese tu celular"
+              title="Teléfono"
+              placeholder="Ingrese tu teléfono"
               keyboardType="phone-pad"
               value={phone}
               onChangeText={onChange}
@@ -102,7 +150,7 @@ const Register = () => {
             {/* documentoo  */}
             <CustomTextInput
               title="documento identificacion"
-              placeholder="Ingrese tu cedula"
+              placeholder="Ingrese tu cédula"
               keyboardType="number-pad"
               value={document}
               onChangeText={onChange}
@@ -111,16 +159,16 @@ const Register = () => {
             {/* fecha de nacimiento */}
             <View>
               <View style={styles.labelContent}>
-                <Text style={styles.labelnombres}>Fecha de nacimiento</Text>
+                <Text style={styles.labelnombres}>Fecha de nacimiento </Text>
+                <Text style={styles.labelnombres2}>(Reqierido)</Text>
               </View>
-              <View style={styles.input}>
-                {/* <Text  onPress={showDatepicker}> */}
-                {/* {selectedDate
-                    ? selectedDate.toDateString()
-                    : "Selecciona una fecha"} */}
-                {/* </Text> */}
-                {/* logica de calendario pendiente */}
-              </View>
+              <TouchableOpacity style={styles.input} onPress={abrirCalendario}>
+                {birthDay === '' ? (
+                    <Text style={[styles.inputBirthDay, {color: '#C0C0C0',}]}>dd/mm/aaaa</Text>
+                  ):(
+                    <Text style={[styles.inputBirthDay, {color: '#000000',}]}>{birthDay}</Text>
+                )}
+              </TouchableOpacity>
             </View>
             {/* contraseñas */}
             <CustomTextInput
@@ -142,11 +190,12 @@ const Register = () => {
               property="ConfirmPassword"
               secureTextEntry
             />
+            <Text style={styles.subtext}>La contraseña debe tener al menos 6 caracteres</Text>
             {/* acepto terminos */}
             <View style={styles.Accept}>
               <Checkbox
-                // value={isChecked}
-                // onValueChange={handleCheckBoxChange}
+                value={isChecked}
+                onValueChange={handleCheckBoxChange}
                 style={styles.checkbox}
               />
               <View style={styles.textAccept}>
@@ -161,11 +210,14 @@ const Register = () => {
             </View>
             {/* boton de registro */}
             {loading ?
-            <RoundedBottom title="Cargando..." />           
-          :
-            <RoundedBottom title="Registrarme" onPress={() => handleRegister() }/>}
+            <RoundedBottom title="Cargando..." onPress={() => handleRegister() }/>
+            :
+            <RoundedBottom title="Registrarme" onPress={() => handleRegister() }/>
+            }
           </View>
-        </View> 
+        </View>
+        <CalendarioInput ref={calendarioRef} onDateChange={handleDateChange} />
+        <PopUpError ref={PopUpErrorRef} />
     </ScrollView>
   );
 };
@@ -203,7 +255,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     position: "absolute",
-    top: -9,
+    top: 2,
     left: 18,
     padding: 2,
     backgroundColor: MyColors.base,
@@ -214,6 +266,11 @@ const styles = StyleSheet.create({
     fontFamily: MyFont.regular,
     color: "#404040",
   },
+  labelnombres2: {
+    fontSize: 10,
+    fontFamily: MyFont.regular,
+    color: "#C0C0C0",
+  },
   labelRequerid: {
     fontSize: 10,
     fontFamily: MyFont.regular,
@@ -223,14 +280,17 @@ const styles = StyleSheet.create({
   input: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     borderWidth: 1,
     borderRadius: 10,
     width: "100%",
-    height: 50,
-    paddingVertical: 10,
+    paddingVertical: 11,
     paddingHorizontal: 20,
-    marginVertical: 3,
+    marginVertical: 10,
+  },
+  inputBirthDay: {
+    fontSize: 13,
+    fontFamily: MyFont.regular,
   },
   contentNext: {
     display: "flex",
@@ -328,6 +388,12 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 4,
+  },
+  subtext: {
+    fontFamily: MyFont.regular,
+    color: '#404040',
+    fontSize: 11,
+    marginBottom: 15,
   },
 });
 
