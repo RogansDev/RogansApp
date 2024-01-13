@@ -39,7 +39,7 @@ const Login = () => {
     setIsChecked(!isChecked);
   };
 
- 
+
 
   const handleAcceptTerms = () => {
     if (isChecked) {
@@ -59,14 +59,11 @@ const Login = () => {
 
         if (poiñlk !== null && mnbjhg !== null) {
 
-          // Eliminar comillas simples de los valores recuperados
-        const emailWithoutQuotes = poiñlk.replace(/['"]+/g, '');
-        const passwordWithoutQuotes = mnbjhg.replace(/['"]+/g, '');
+          const emailWithoutQuotes = poiñlk.replace(/['"]+/g, '');
+          const passwordWithoutQuotes = mnbjhg.replace(/['"]+/g, '');
 
-        // Actualizar el estado de email y password
-        onChange('email', emailWithoutQuotes);
-        onChange('password', passwordWithoutQuotes);
-          
+          onChange('password', passwordWithoutQuotes);
+          onChange('email', emailWithoutQuotes);
         }
 
       } catch (error) {
@@ -76,6 +73,9 @@ const Login = () => {
 
     obtenerDatos();
   }, [])
+
+
+
 
   return (
     <View style={styles.container}>
@@ -91,8 +91,7 @@ const Login = () => {
           keyboardType="email-address"
           onChangeText={onChange}
           secureTextEntry
-          property="email"
-        />
+          property="email" />
         {/* Input de contraseña */}
         <CustomTextInput
           title="Contraseña"
@@ -114,22 +113,15 @@ const Login = () => {
               fontFamily: MyFont.regular,
               borderRadius: 10,
               textAlign: 'center',
-              overflow: 'hidden',
-            }}>
-              Cargando...
-            </Text>
-            :
-            <SingLogin
-              text="Ingresar"
-              onPress={() => { handleLogin(email, password) }}
-            />}
+              overflow: 'hidden'
+            }}> Cargando... </Text>
+            : <SingLogin text="Ingresar" onPress={() => { handleLogin(email, password) }} />}
         </View>
         <View style={styles.containerUpdate}>
           <UpdatePassword width={30} height={24} />
           <Text
             style={styles.textUpdate}
-            onPress={() => navigation.navigate("ModalVerifitCode")}
-          >
+            onPress={() => navigation.navigate("ModalVerifitCode")}>
             Olvide mi contraseña
           </Text>
         </View>

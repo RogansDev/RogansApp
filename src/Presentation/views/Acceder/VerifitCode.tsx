@@ -7,12 +7,12 @@ import {
   StyleSheet,
   Modal,
 } from "react-native";
-import { MyColors, MyFont } from "../theme/AppTheme";
-import CodeUpdateKeys from "./CodeUpdateKeys";
-import Icons from "../theme/Icons";
-import useFirebaseCode from "../../hooks/useFirebaseCode";
+import { MyColors, MyFont } from "../../theme/AppTheme";
+import CodeUpdateKeys from "../../components/CodeUpdateKeys";
+import Icons from "../../theme/Icons";
+import useFirebaseCode from "../../../hooks/useFirebaseCode";
 import { useDispatch } from "react-redux";
-import { setCodeInfo } from "../../state/CodeSlice";
+import { setCodeInfo } from "../../../state/CodeSlice";
 
 
 const ModalVerifitCode = () => {
@@ -27,9 +27,6 @@ const ModalVerifitCode = () => {
     .map(() => useRef<TextInput>(null));
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [minutes, setMinutes] = useState(2);
-  const [seconds, setSeconds] = useState(0);
-  const [timeExpired, setTimeExpired] = useState(false);
   const [reenviarCodePressed, setReenviarCodePressed] = useState(false);
   const [coder, setCoder] = useState("");
   const [mail, setMail] = useState("");
@@ -37,45 +34,6 @@ const ModalVerifitCode = () => {
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
-
-  useEffect(() => {
-    // Configurar un temporizador para mostrar el modal después de 3 segundos
-    const autoShowTimer = setTimeout(() => {
-      setModalVisible(true);
-    }, 1000);
-
-    // Limpiar el temporizador automático al desmontar el componente
-    return () => clearTimeout(autoShowTimer);
-  }, []);
-
-  useEffect(() => {
-    let intervalId: string | number | NodeJS.Timeout | undefined;
-
-    if (modalVisible) {
-      intervalId = setInterval(() => {
-        if (minutes === 0 && seconds === 0) {
-          clearInterval(intervalId);
-          setReenviarCodePressed(true);
-          setTimeExpired(true);
-        } else {
-          if (seconds === 0) {
-            setMinutes((prevMinutes) => prevMinutes - 2);
-            setSeconds(59);
-          } else {
-            setSeconds((prevSeconds) => prevSeconds - 1);
-          }
-        }
-      }, 1000);
-    } else {
-      // Limpia el intervalo cuando el modal se cierra
-      clearInterval(intervalId);
-      // Restaura los valores iniciales cuando el modal se cierra
-      setMinutes(2);
-      setSeconds(0);
-    }
-    // Limpia el intervalo cuando el componente se desmonta
-    return () => clearInterval(intervalId);
-  }, [modalVisible, minutes, seconds]);
 
   const handleInputChange = (index: number, text: string) => {
 
@@ -101,86 +59,19 @@ const ModalVerifitCode = () => {
         }
       }
     }
-
   };
 
 
-
   const handleResendCode = () => { // solicito el codigo
-
     setReenviarCodePressed(false);
-    setMinutes(2);
-    setSeconds(0);
-    setTimeExpired(false);
     handleSaveCode(mail);
 
   };
 
   return (
     <View style={styles.container}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-        style={{backgroundColor: 'rgba(0, 0, 0, 0.5)',}}
-      >
         <View style={styles.modalContent}>
           <View style={styles.modalItems}>
-            {reenviarCodePressed && (
-              <>
-                <View style={styles.expiredContent}>
-                  <Text style={styles.expiredText}>¡Tiempo expirado!</Text>
-                  <Text style={styles.expiredText}>
-                    Puedes reenviar el código.
-                  </Text>
-                </View>
-                <View style={styles.textContent}>
-                  <Text>Ingresa el código de 6 dígitos que enviamos </Text>
-                  <Text>a tu correo</Text>
-                </View>
-                <View style={styles.timerCode}>
-                  <Text>Reenviar código en</Text>
-                  <Text>{`${minutes}:${seconds < 10 ? "0" : ""
-                    }${seconds}`}</Text>
-                </View>
-                <View style={styles.writeCodeContent}>
-                  {Array(6)
-                    .fill(0)
-                    .map((_, index) => (
-                      <TextInput
-                        key={index}
-                        ref={inputRefs[index] as React.RefObject<TextInput>}
-                        style={styles.writeCode}
-                        keyboardType="numeric"
-                        onChangeText={(text) => handleInputChange(index, text)}
-                        maxLength={1}
-                      />
-                    ))}
-                </View>
-                {/* para enviar codigo al correo */}
-                <View style={styles.optionsRed}>
-                  <TouchableOpacity
-                    style={styles.itemsCode}
-                    onPress={handleResendCode}
-                  >
-                    <Email />
-                    <Text
-                      style={[
-                        styles.resendCodeButton,
-                        reenviarCodePressed && styles.redText,
-                      ]}
-                    >
-                      Verificar código
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={{ marginTop: 100 }}></View>
-              </>
-            )}
-            {!reenviarCodePressed && (
               <>
                 <View style={{ marginTop: 10 }}>
                   <View style={styles.inputContent}>
@@ -203,10 +94,7 @@ const ModalVerifitCode = () => {
                   >
                     <Email />
                     <Text
-                      style={[
-                        styles.resendCodeButton,
-                        reenviarCodePressed && styles.redText,
-                      ]}
+                      style={styles.resendCodeButton}
                     >
                       {loading ? "Enviando...." : "Solicitar código"}
                     </Text>
@@ -232,21 +120,13 @@ const ModalVerifitCode = () => {
                       />
                     ))}
                 </View>
-                {/* texto de reenviar codigo */}
-                <View style={styles.timerCode}>
-                  <Text>Reenviar código en</Text>
-                  <Text>{`${minutes}:${seconds < 10 ? "0" : ""
-                    }${seconds}`}</Text>
-                </View>
                 {/* boton de verficar codigo */}
                 <View style={{ marginTop: 100 }}>
                   <CodeUpdateKeys />
                 </View>
               </>
-            )}
           </View>
         </View>
-      </Modal>
     </View>
   );
 };
@@ -261,13 +141,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    overflow: 'hidden',
   },
   modalItems: {
+    display: "flex",
     flexDirection: "column",
+    alignSelf: "center",
     gap: 10,
     backgroundColor: MyColors.base,
     width: "90%",
+    height: "80%",
     padding: 20,
     borderRadius: 10,
   },
@@ -381,9 +263,4 @@ const styles = StyleSheet.create({
 
 export default ModalVerifitCode;
 
-// cierre
-{
-  /* <TouchableOpacity onPress={toggleModal}>
-                      <Text>Close modal</Text>
-                   </TouchableOpacity> */
-}
+

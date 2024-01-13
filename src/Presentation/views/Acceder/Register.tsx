@@ -1,17 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
-  TouchableOpacity,
   ScrollView,
-  Platform,
-  Animated,
   ToastAndroid
 } from "react-native";
 import Icons from "../../../Presentation/theme/Icons";
-import { Picker } from "@react-native-picker/picker";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Checkbox from "expo-checkbox";
 import UseViewModel from "./ViewModel/RegisterViewModel";
@@ -30,14 +25,13 @@ interface PopUpErrorHandles {
 }
 
 const Register = () => {
-  const scrollY = useRef(new Animated.Value(0)).current;
   
   const {
     name,
     email,
     lastname,
     document,
-    birthdate,
+    // birthdate,
     phone,
     password,
     ConfirmPassword,
@@ -51,7 +45,7 @@ const Register = () => {
   const [birthDay, setBirthDay] = useState('');
   const [isChecked, setIsChecked] = useState(false);
 
-  const { LogoBlack, Eye, SendIcon } = Icons;
+  const { LogoBlack } = Icons;
 
   useEffect(() => {
     if(errorMessage != ''){

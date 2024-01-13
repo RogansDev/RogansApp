@@ -1,10 +1,9 @@
 import { useState } from 'react';
 
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth'
 import { initializeApp } from 'firebase/app'
 import { db, firebaseConfig } from '../firebase/index'
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
-
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../utils/RootParamList";
@@ -88,7 +87,8 @@ const useRegisterFirebase = () => {
 
     const handleLogin = async (email: any, password: any) => {
 
-        console.log(`email ${email} y pass ${password}`)
+        await AsyncStorage.setItem('xqtes', JSON.stringify(email));
+        await AsyncStorage.setItem('asdqwe', JSON.stringify(password));
         setLoading(true);
 
         try {
@@ -124,9 +124,8 @@ const useRegisterFirebase = () => {
                                 birthdate: selectedProfile.birthdate,
                                 logged: true
                             }
-                           
-                            AsyncStorage.setItem('@xqtes', JSON.stringify(email));
-                            AsyncStorage.setItem('@asdqwe', JSON.stringify(password));
+
+
                             distpach(setUserInfo(user));
                             setLoading(false);
 
@@ -165,7 +164,39 @@ const useRegisterFirebase = () => {
 
     };
 
-    return { handleLogin, handleRegister, error, setError, loading, setLoading };
+    const handleUpdatePassword = async (email, password, newPassword) => {
+        setLoading(true);
+      
+        try {
+          // Reautenticar al usuario antes de cambiar la contraseña
+          await reauthenticateUser(email, password);
+      
+          // Cambiar la contraseña después de la reautenticación
+          await updatePassword(auth.currentUser, newPassword);
+          
+          setLoading(false);
+          Alert.alert('Contraseña actualizada con éxito!');
+          navigation.navigate('Perfil');
+        } catch (error) {
+          setLoading(false);
+          console.error('Error al cambiar la contraseña:', error);
+          Alert.alert('No se pudo actualizar la contraseña. Asegúrese de haber proporcionado la contraseña actual correcta.');
+        }
+      };
+      
+      const reauthenticateUser = async (email, password) => {
+        const user = auth.currentUser;
+        const credential = EmailAuthProvider.credential(email, password);
+      
+        try {
+          await reauthenticateWithCredential(user, credential);
+          return true;
+        } catch (error) {
+          console.error('Error during reauthentication:', error);
+          throw error;
+        }
+      };
+    return { handleLogin, handleRegister, error, setError, loading, handleUpdatePassword };
 };
 
 export default useRegisterFirebase;

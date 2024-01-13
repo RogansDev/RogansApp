@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 // import { getEventTypes } from '../';
-import { View, ScrollView, Text, TouchableOpacity, Modal, StyleSheet } from "react-native";
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { useNavigation } from '@react-navigation/native';
 import FloatingMenu from '../../../Presentation/components/FloatingMenu';
@@ -13,24 +13,14 @@ import * as WebBrowser from 'expo-web-browser';
 import { consultCards, procedureCards } from '../Servicios/ServicesData';
 import { useSelector } from "react-redux";
 
-interface EventType {
-  name: string;
-}
 
 const Home = () => {
-  const { UserIcon, ProcedimientoIcon, ConsultasIcon, AgendaIcon, Arrow, CloseIcon } = Icons;
+  const { UserIcon, ProcedimientoIcon, ConsultasIcon, AgendaIcon, Arrow } = Icons;
 
   const navigation = useNavigation();
-  const state = useSelector( (state : any) => state)
+  const {name} = useSelector( (state : any) => state.user)
 
-  const userName = state.user.name;
 
-  useEffect(() => {
-
-    console.log('home', JSON.stringify(state, null, 5))
-    
-  }, [])
-  
 
   return (
     <View style={styles.container}>
@@ -38,7 +28,7 @@ const Home = () => {
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Hola {userName}</Text>
+            <Text style={styles.title}>Hola {name}</Text>
           </View>
           <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate("Perfil")}>
             <UserIcon width={27} height={27}/>

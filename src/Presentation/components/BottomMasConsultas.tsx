@@ -3,11 +3,13 @@ import { View, TouchableOpacity, StyleSheet, Text, Image } from 'react-native';
 import { MyColors, MyFont } from '../theme/AppTheme';
 import { useNavigation } from '@react-navigation/native';
 import Icons from "../theme/Icons";
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../utils/RootParamList';
 
 const BottonAcceder = () => {
   const { Arrow } = Icons;
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate("ListaDeConsultas")} style={styles.verMas}>
