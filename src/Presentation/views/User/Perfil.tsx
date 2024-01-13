@@ -84,6 +84,11 @@ const Perfil = () => {
         }
     }
 
+    const abrirPopUp = () => {        
+        if (PopUpCerrarSesionRef.current) {
+            PopUpCerrarSesionRef.current.togglePopUp();
+          }
+    };
 
     return (
         <>
@@ -128,6 +133,17 @@ const Perfil = () => {
                                 <Camara width={24} height={24} />
                             </TouchableOpacity>
                         </View>
+                        <View>
+                        {image && (
+                            <View style={{ width: 120, borderRadius: 14, padding: 14, backgroundColor: '#000000', }}>
+                                <TouchableOpacity onPress={() => { handlePhoto() }}>
+                                    <Text style={{ color: 'white', textAlign: 'center', fontFamily: MyFont.regular, fontSize: 13, }}>
+                                        {loading ? "Cargando.." : "Guardar"}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        )} 
+                        </View>
                     </View>
                 </View>
             </Modal>
@@ -159,17 +175,7 @@ const Perfil = () => {
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <View style={{ width: '100%' }}>
-                        {image && (
-                            <View style={{ width: '100%', borderRadius: 14, borderWidth: 2, borderColor: 'black', padding: 10, marginTop: 10 }}>
-                                <TouchableOpacity onPress={() => { handlePhoto() }}>
-                                    <Text style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>
-                                        {loading ? "Cargando.." : "Guardar imagen"}
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                    </View>
+
                     <View style={styles.textContainer}>
                         <View style={styles.info}>
                             <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 3, }}>
@@ -331,7 +337,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        paddingBottom: 20,
+        paddingBottom: 40,
         overflow: 'hidden',
     },
     modalImage: {

@@ -76,11 +76,11 @@ const ModalVerifitCode = () => {
               <View style={styles.from}>
                 <View style={{ marginTop: 10 }}>
                   <View style={styles.inputContent}>
-                    <Text style={styles.textTitleKey}>Correo electronico</Text>
-                    <Text style={styles.textRequireCheck}>(Requrido)</Text>
+                    <Text style={styles.textTitleKey}>Correo electrónico</Text>
+                    <Text style={styles.textRequireCheck}> (Requrido)</Text>
                   </View>
                   <TextInput
-                    placeholder="Correo electronico"
+                    placeholder="Correo electrónico"
                     keyboardType="email-address" // Configura el teclado para correos electrónicos
                     style={styles.textInputKey}
                     value={mail}
@@ -103,8 +103,7 @@ const ModalVerifitCode = () => {
                 </View>
                 {/* texto qur indica que son los digitos requeridos */}
                 <View style={styles.textContent}>
-                  <Text>Ingresa el código de 6 dígitos que enviamos </Text>
-                  <Text>a tu número correo</Text>
+                  <Text style={{textAlign: 'center', fontFamily: MyFont.regular,}}>Ingresa el código de 6 dígitos que {"\n"} enviamos a tu correo</Text>
                 </View>
                 {/* espacios para el codigo de verificacion */}
                 <View style={styles.writeCodeContent}>
@@ -143,8 +142,9 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
+    top: '6%',
   },
   modalItems: {
     display: "flex",
@@ -153,8 +153,8 @@ const styles = StyleSheet.create({
     gap: 10,
     backgroundColor: MyColors.base,
     width: "90%",
-    height: "80%",
     padding: 20,
+    paddingBottom: 30,
     borderRadius: 10,
     top: 40,
   },
@@ -162,7 +162,6 @@ const styles = StyleSheet.create({
     top: 60,
   },
   textContent: {
-    display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
@@ -256,6 +255,7 @@ const styles = StyleSheet.create({
     color: "#C0C0C0",
   },
   textInputKey: {
+    fontFamily: MyFont.regular,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",

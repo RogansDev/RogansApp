@@ -2,14 +2,14 @@ import React, { useRef, useImperativeHandle, forwardRef, useState } from 'react'
 import { View, Text, Animated, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamsList } from '../../../App';
+import { RootParamList } from '../../utils/RootParamList';
 import { MyFont } from "../theme/AppTheme";
 import Icons from '../theme/Icons';
 
 const PopUpCerrarSesion = forwardRef((props, ref) => {
     const { ArrowWhiteIcon, CloseIcon } = Icons;
 
-    const navigation = useNavigation<StackNavigationProp<RootStackParamsList>>();
+    const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
     const [visiblePopUp, setVisiblePopUp] = useState(false);
 
@@ -20,6 +20,10 @@ const PopUpCerrarSesion = forwardRef((props, ref) => {
     useImperativeHandle(ref, () => ({
         togglePopUp,
     }));
+
+    const handleSessionClose = () => {
+
+    }
 
 
     return (
@@ -41,7 +45,7 @@ const PopUpCerrarSesion = forwardRef((props, ref) => {
                         <TouchableOpacity onPress={() => setVisiblePopUp(false)} style={styles.noCerrarBtn}>
                             <Text style={[styles.textModal, {color: 'white',}]}>No cerrarla</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => {navigation.navigate("Login"), setVisiblePopUp(false)}} style={styles.siCerrarBtn}>
+                        <TouchableOpacity onPress={handleSessionClose} style={styles.siCerrarBtn}>
                             <Text style={styles.textModal}>Si, cerrar la sesión</Text>
                         </TouchableOpacity>
                     </View>

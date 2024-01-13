@@ -45,6 +45,7 @@ const MiAgenda = () => {
         fecha: string;
         evento_agendado: string;
         status: string;
+        valor: string;
     }
 
     const [citas, setCitas] = useState<Cita[]>([]);
@@ -82,9 +83,24 @@ const MiAgenda = () => {
             console.error('Error al cancelar cita:', error);
         }
     };
+
+    function formatearPrecio(numeroStr: any) {
+        if (!/^\d+$/.test(numeroStr)) {
+          return numeroStr;
+        }
+      
+        let caracteres = numeroStr.split('');
+        caracteres.reverse();
+      
+        for (let i = 3; i < caracteres.length; i += 4) {
+          caracteres.splice(i, 0, '.');
+        }
+      
+        return ('$' + caracteres.reverse().join(''));
+    }
     
-    const citasNoCanceladas = citas.filter(cita => cita.status !== 'Cancelado');
-    const citasCanceladas = citas.filter(cita => cita.status !== 'Confirmado');
+    const citasNoCanceladas = citas.filter(cita => cita.status === 'Confirmado' || cita.status === 'Pendiente');
+    const citasCanceladas = citas.filter(cita => cita.status === 'Cancelado' || cita.status === 'Finalizada');
 
     return (
         <View style={styles.container}>
@@ -116,11 +132,11 @@ const MiAgenda = () => {
                                             </View>
                                             <View style={{flexDirection: 'row', alignItems: 'center', gap: 5,}}>
                                                 <DollarIcon width={14} height={14} />
-                                                <Text style={styles.text}>$1´500.000</Text>
+                                                <Text style={styles.text}>{formatearPrecio(cita.valor)}</Text>
                                             </View>
                                         </View>
                                         <View style={{justifyContent: 'center', alignItems: 'flex-end',}}>
-                                            <Text style={[styles.text, {color: '#00D0B1',}]}>{cita.status === 'Confirmado' ? 'Agendada': ''}</Text>
+                                            <Text style={[styles.text, {color: '#00D0B1',}]}>{cita.status === 'Confirmado' || 'Pendiente' ? 'Agendada': ''}</Text>
                                             <TouchableOpacity style={styles.cancelarBtn} onPress={() => {setModalVisible(true), setCancelacion(cita.fecha)}}>
                                                 <TrashIcon width={16} height={16}/>
                                                 <Text style={styles.text}>Cancelar</Text>
@@ -161,11 +177,11 @@ const MiAgenda = () => {
                                             </View>
                                             <View style={{flexDirection: 'row', alignItems: 'center', gap: 5,}}>
                                                 <DollarIcon width={14} height={14} />
-                                                <Text style={styles.text}>$1´500.000</Text>
+                                                <Text style={styles.text}>{formatearPrecio(cita.valor)}</Text>
                                             </View>
                                         </View>
                                         <View style={{justifyContent: 'flex-start', alignItems: 'flex-end',}}>
-                                            <Text style={[styles.text, {color: '#404040',}]}>{cita.status === 'Cancelado' ? 'Cancelada': ''}</Text>
+                                            <Text style={[styles.text, {color: '#404040',}]}>{cita.status === 'Cancelado' ? 'Cancelada': 'Finalizada'}</Text>
                                         </View>
                                     </View>
                                 )

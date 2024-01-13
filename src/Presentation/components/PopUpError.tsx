@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontFamily: MyFont.medium,
         textAlign: 'center',
+        marginTop: 20,
     },
     btn: {
         flexDirection: 'row',

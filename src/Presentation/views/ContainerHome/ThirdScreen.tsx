@@ -28,25 +28,14 @@ const ThirdScreen = () => {
           servicios médicos en línea y obtener tratamientos personalizados <Text style={styles.parraText}>para tus necesidades.</Text>
         </Text>
         <TouchableOpacity
-          style={styles.botom}
+          style={styles.boton}
           onPress={() => navigation.navigate("Login")}
         >
           <View style={styles.contentBoton}>
-            <Text style={styles.textBoton}>Comencemos</Text>
-            <Arrow width={20} height={20} style={styles.icon} />
+            <Text style={styles.textBoton}>¡Comencemos!</Text>
+            <Arrow width={16} height={16} />
           </View>
         </TouchableOpacity>
-        <View style={styles.contentItems}>
-          <Text
-            style={styles.selectSecond}
-            onPress={() => navigation.navigate("first")}
-          ></Text>
-          <Text style={styles.selectFirst}></Text>
-          <Text
-            style={styles.selectThird}
-            onPress={() => navigation.navigate("thirdPage")}
-          ></Text>
-        </View>
       </View>
     </View>
   );
@@ -95,31 +84,26 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: MyFont.regular,
   },
-  botom: {
-    width: 340,
-    height: 50,
+  boton: {
+    width: '100%',
     backgroundColor: MyColors.base,
     justifyContent: "center",
     borderRadius: 15,
     marginTop: 20,
-    left: 2,
+    marginBottom: 40,
+    padding: 14,
   },
   contentBoton: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
-    alignSelf: "center",
+    alignItems: 'center',
     gap: 3,
   },
   textBoton: {
     color: MyColors.black,
     fontFamily: MyFont.regular,
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  icon: {
-    left: 10,
-    top: 6,
+    fontSize: 13,
   },
   contentItems: {
     display: "flex",
