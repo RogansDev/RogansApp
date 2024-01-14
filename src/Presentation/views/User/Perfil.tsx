@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import useImagePicker from '../../../hooks/useImagePicker';
 import { setClearUserInfo, setUserInfo } from '../../../state/ProfileSlice';
 import { setClearCalendaryInfo } from '../../../state/CalendarySlice';
-import { db, uploadFile } from '../../../firebase';
+import { db } from '../../../firebase';
 import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 
 const Perfil = () => {
@@ -20,7 +20,7 @@ const Perfil = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const { image, base64Image, pickImage, takePhoto } = useImagePicker();
+    const { image, base64Image, pickImage, takePhoto, convertImageToFirebaseUrl } = useImagePicker();
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
@@ -37,6 +37,8 @@ const Perfil = () => {
     const handlePhoto = async () => {
         setLoading(true);
 
+        
+
         try {
             const userQuery = query(
                 collection(db, "users"),
@@ -50,13 +52,13 @@ const Perfil = () => {
                 const usersDocument = doc(db, 'users', firstDoc.id);
 
                 try {
+                    const imageUrl = await convertImageToFirebaseUrl(image);
 
-                    const base = await base64Image;
                     const user = {
                         user_id,
                         email,
                         role,
-                        urlphoto: base,
+                        urlphoto: imageUrl,
                         document,
                         name,
                         lastname,

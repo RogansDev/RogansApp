@@ -2,17 +2,18 @@ import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { useSelector } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
+import { uploadFile } from '../firebase';
 
 
 const isValidImage = (uri) => {
-    // Verificar si la URL tiene una extensión de imagen válida
+
     const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'];
     const lowerCaseUri = uri.toLowerCase();
     return allowedExtensions.some(ext => lowerCaseUri.endsWith(ext));
 };
 
 const useImagePicker = () => {
-    const { urlphoto } = useSelector((state: any) => state.user);
+    const { urlphoto, user_id } = useSelector((state: any) => state.user);
     const [base64Image, setBase64Image] = useState(urlphoto);
     const [image, setImage] = useState("");
 
@@ -60,7 +61,7 @@ const useImagePicker = () => {
         if (!result.canceled && isValidImage(result.assets[0].uri)) {
             setImage(result.assets[0].uri);
             const base64 = await convertImageToBase64(result.assets[0].uri);
-            console.log('convierto mi imagen a base 64', base64)
+            // console.log('convierto mi imagen a base 64', base64)
             setBase64Image(base64);
         } else {
             // Mostrar una alerta o realizar alguna acción si la imagen no es válida
@@ -79,7 +80,26 @@ const useImagePicker = () => {
         }
     };
 
-    return { image, base64Image, pickImage, takePhoto };
+    const convertImageToFirebaseUrl = async (uri : any) => {
+        try {
+            const response = await fetch(uri);
+            const blob = await response.blob();
+    
+            // Generar un nombre único para la imagen
+            const imageName = `${user_id}_${Date.now()}.jpg`;
+    
+            // Subir la imagen al almacenamiento de Firebase
+            const imageUrl = await uploadFile(blob, imageName, 'images');
+    
+            return imageUrl;
+        } catch (error) {
+            console.error('Error al subir la imagen a Firebase:', error);
+            throw error;
+        }
+    };
+    
+
+    return { image, base64Image, pickImage, takePhoto, convertImageToFirebaseUrl };
 };
 
 export default useImagePicker;
