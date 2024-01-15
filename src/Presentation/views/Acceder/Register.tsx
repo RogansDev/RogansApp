@@ -183,7 +183,7 @@ const Register = () => {
             value={ConfirmPassword}
             onChangeText={onChange}
             property="ConfirmPassword"
-            secureTextEntry
+            secureTextEntry={true}
           />
           <Text style={styles.subtext}>La contraseña debe tener al menos 6 caracteres</Text>
           {/* acepto terminos */}
