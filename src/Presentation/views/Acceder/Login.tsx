@@ -99,6 +99,7 @@ const Login = () => {
           value={password}
           onChangeText={onChange}
           keyboardType="default"
+          secureTextEntry={true}
           property="password"
         />
         

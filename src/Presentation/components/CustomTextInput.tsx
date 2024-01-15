@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, KeyboardType, TextInput } from 'react-native';
 import { MyFont } from '../theme/AppTheme';
+import Icons from "../theme/Icons";
 
 
 interface Props {
@@ -13,6 +14,9 @@ interface Props {
    onChangeText: (property: string, value: any) => void
 }
 
+const {
+ Eye
+} = Icons;
 
 const CustomTextInput = ({
     title,
@@ -38,10 +42,14 @@ const CustomTextInput = ({
       keyboardType={keyboardType}
       style={styles.formTextInput}
       value={value}
-      secureTextEntry={false}
+      secureTextEntry={secureTextEntry}
       onChangeText={(text) => onChangeText(property, text)}
       autoCapitalize="none"
+      // quiero el Eye al final del campo, de color Negro 
+      // cuyando secureTextEntry sea true y gris cuando sea false
+      // EL click cambia el valor de secureTextEntry
     />
+    
   </View>
   )
 }
