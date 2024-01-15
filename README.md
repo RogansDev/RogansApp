@@ -15,13 +15,9 @@
 13. react-native-webview //instalar esta dependecia para el webview calendly
 14. expo-font // instalar esta dependencia para Expo Fonts (Fuentes personalizadas)
 
-
 instalar esta dependecia para calendly
 
-
 npm install --save react-calendly
-
-
 
 Para instalar la dependecia expo-font usar:
 16. npm i @react-native-async-storage/async-storage para almacenamiento local
