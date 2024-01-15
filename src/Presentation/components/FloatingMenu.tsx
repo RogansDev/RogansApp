@@ -3,6 +3,8 @@ import { View, TouchableOpacity, Text, Modal, StyleSheet, Platform } from 'react
 import { Linking } from 'react-native';
 import { MyColors, MyFont } from '../theme/AppTheme';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../utils/RootParamList';
 import useCurrentRoute from '../../hooks/useCurrentRoute';
 import Icons from '../theme/Icons';
 import UChatWebView from './UChatWebView';
@@ -13,7 +15,7 @@ const FloatingMenu = () => {
   const [chatVisible, seChatVisible] = useState(false);
 
   const currentRoute = useCurrentRoute();
-  const navigation = useNavigation();
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
   const isActive = (routeName: string) => {
     return currentRoute === routeName;
@@ -58,7 +60,7 @@ const FloatingMenu = () => {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => seChatVisible(!chatVisible)} style={styles.menuItem}>
             <Headphone style={styles.menuIcon} width={20} height={20} />
-            <Text style={styles.menuText}>Comunícate</Text>
+            <Text style={styles.menuText}>Consulta{"\n"}en vivo</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -82,6 +84,7 @@ const styles = StyleSheet.create({
     padding: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'flex-start',
     borderRadius: 20,
     // Sombras para Android
     elevation: 5,
@@ -100,6 +103,7 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 13,
     fontFamily: MyFont.regular,
+    textAlign: 'center',
   },
   activeMenuItem: {
     alignItems: 'center',
@@ -109,7 +113,7 @@ const styles = StyleSheet.create({
   uchatContainer: {
     position: 'absolute',
     width: '100%',
-    height: '60%',
+    height: '93%',
     bottom: 0,
     zIndex: 20,
     backgroundColor: 'white',
