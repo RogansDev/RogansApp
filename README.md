@@ -81,6 +81,15 @@ o
 <h3>Iniciar Expo</h3>
 <code>npx expo start</code>
 
+<h1>Empaquetado</h1>
+
+<h3>Iniciar sesión en Expo</h3>
+<code>eas login</code>
+Si es necesario, antes de esto instalar EAS CLI:
+<code>npm install -g eas-cli</code>
+
+<h3>Verificación de errores</h3>
+<code>npx expo doctor</code>
 
 <h3>Crear Build (en APK)</h3>
 <code>eas build -p android --profile production</code>
