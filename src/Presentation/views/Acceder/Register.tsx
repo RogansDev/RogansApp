@@ -112,7 +112,7 @@ const Register = () => {
             value={name}
             onChangeText={onChange}
             property="name"
-            secureTextEntry
+            secureTextEntry={false}
           />
           {/* apellido */}
           <CustomTextInput
@@ -122,7 +122,7 @@ const Register = () => {
             value={lastname}
             onChangeText={onChange}
             property="lastname"
-            secureTextEntry
+            secureTextEntry={false}
           />
           {/* input de telefono */}
           <CustomTextInput

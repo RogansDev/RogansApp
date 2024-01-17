@@ -90,7 +90,7 @@ const Login = () => {
           value={email}
           keyboardType="email-address"
           onChangeText={onChange}
-          secureTextEntry
+          secureTextEntry={false}
           property="email" />
         {/* Input de contraseña */}
         <CustomTextInput
