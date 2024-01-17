@@ -16,7 +16,7 @@ import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/fire
 const Perfil = () => {
     const dispatch = useDispatch();
     const { Forget, UserIcon, Camara, CloseIcon, GalleryAdd } = Icons;
-    const { name, lastname, document, email, phone, urlphoto, user_id, birthdate, role } = useSelector((state: any) => state.user);
+    const { name, lastname, document, email, phone, user_id, birthdate, role } = useSelector((state: any) => state.user);
 
     const [loading, setLoading] = useState(false);
 
