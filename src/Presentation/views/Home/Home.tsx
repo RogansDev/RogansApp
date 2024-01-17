@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 // import { getEventTypes } from '../';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { useNavigation } from '@react-navigation/native';
 import FloatingMenu from '../../../Presentation/components/FloatingMenu';
@@ -20,7 +20,7 @@ const Home = () => {
   const { UserIcon, ProcedimientoIcon, ConsultasIcon, AgendaIcon, Arrow } = Icons;
 
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
-  const {name} = useSelector( (state : any) => state.user)
+  const { name, urlphoto } = useSelector((state: any) => state.user)
 
 
 
@@ -33,7 +33,16 @@ const Home = () => {
             <Text style={styles.title}>Hola {name}</Text>
           </View>
           <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate("Perfil")}>
-            <UserIcon width={50} height={45}/>
+
+            {urlphoto ? (
+              <Image
+                source={{ uri: urlphoto }}
+                style={[styles.imageTiny, styles.roundedImage]} // Agregamos el estilo de imagen redonda
+                resizeMode="contain"
+              />
+            ) : (
+              <UserIcon width={50} height={45} />
+            )}
           </TouchableOpacity>
         </View>
         {/* ICONOS DE HEADER */}
@@ -158,6 +167,13 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontFamily: MyFont.medium,
     color: MyColors.secondary,
+  },
+  imageTiny: {
+    width: 60,
+    height: 60,
+  },
+  roundedImage: {
+    borderRadius: 30, // La mitad del tamaño de la imagen para hacerla redonda
   },
 });
 
