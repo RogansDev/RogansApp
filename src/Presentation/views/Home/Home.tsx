@@ -33,7 +33,7 @@ const Home = () => {
             <Text style={styles.title}>Hola {name}</Text>
           </View>
           <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate("Perfil")}>
-            <UserIcon width={27} height={27}/>
+            <UserIcon width={50} height={45}/>
           </TouchableOpacity>
         </View>
         {/* ICONOS DE HEADER */}
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 33,
+    fontSize: 25,
     fontFamily: MyFont.bold,
   },
   iconContainer: {
