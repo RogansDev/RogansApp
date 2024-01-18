@@ -15,20 +15,18 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.rogansdev.RogansApp",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.rogansdev.RogansApp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptiveIcon.png",
         "backgroundColor": "#FCFCFC"
       },
-      "package": "com.rogansdev.RogansApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "rogansya",
     "extra": {
       "eas": {
         "projectId": "bd8d9d9a-7119-481a-a757-ec044f47da53"
