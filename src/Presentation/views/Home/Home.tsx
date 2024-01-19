@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 // import { getEventTypes } from '../';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Image, Platform } from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { useNavigation } from '@react-navigation/native';
 import FloatingMenu from '../../../Presentation/components/FloatingMenu';
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
-    paddingTop: 40,
+    paddingTop: Platform.OS === 'android' ? 10 : 40,
     marginVertical: 30,
   },
   titleContainer: {
@@ -117,7 +117,13 @@ const styles = StyleSheet.create({
   iconContainer: {
     position: 'relative',
     marginLeft: 16,
-    overflow: 'hidden',
+    // Sombras para Android
+    elevation: 10,
+    // Sombras para iOS
+    shadowColor: "#DDD",
+    shadowOffset: { width: 4, height: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 10,
   },
   userIcon: {
     width: 27,

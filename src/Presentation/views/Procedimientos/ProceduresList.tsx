@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   proceduresContainer: {
-    marginBottom: 100,
+    marginBottom: 130,
     paddingHorizontal: 16,
   },
   procedure: {
