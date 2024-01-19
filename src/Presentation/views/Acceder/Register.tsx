@@ -4,7 +4,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
 } from "react-native";
 import Icons from "../../../Presentation/theme/Icons";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
@@ -227,6 +228,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignSelf: "center",
+    height: 20,
   },
   logo: {
     zIndex: 20,
@@ -236,7 +238,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 10,
     position: "relative",
-    marginTop: 90,
+    marginTop: Platform.OS === 'android' ? 55 : 10,
     padding: 20,
 
   },

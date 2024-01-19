@@ -187,18 +187,21 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     consultationsContainer: {
-        marginBottom: 100,
+        marginBottom: 300,
         paddingHorizontal: 16,
     },
     consultation: {
+        flex: 1,
         flexDirection: 'row',
         backgroundColor: 'white',
         borderRadius: 15,
         marginBottom: 12,
+        minHeight: 125,
     },
     consultationInfo: {
         flex: 1,
         flexDirection: 'column',
+        justifyContent: 'space-between',
         paddingTop: 20,
         paddingRight: 25,
         paddingLeft: 15,
@@ -206,7 +209,7 @@ const styles = StyleSheet.create({
     },
     consultationImage: {
         width: 143,
-        height: 111,
+        height: '100%',
         borderRadius: 15,
     },
 

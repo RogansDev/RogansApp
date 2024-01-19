@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, ScrollView, Text, Image, TouchableOpacity, Modal, StyleSheet, Alert } from 'react-native';
+import { View, ScrollView, Text, Image, TouchableOpacity, Modal, StyleSheet, Alert, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../../Presentation/theme/Icons';
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     },
     scrollContainer: {
         position: "relative",
-        top: 40
+        top: Platform.OS === 'android' ? 40 : 10,
     },
     title: {
         fontSize: 24,
