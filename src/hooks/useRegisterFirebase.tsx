@@ -72,7 +72,7 @@ const useRegisterFirebase = () => {
                                         try {
                                             const dataToUpload = {
                                                 codigo: codigo,
-                                                state: false,
+                                                status: false,
                                                 user_id: userId,
                                                 date_to_use: null,
                                                 date_to_expired: expirationDate,
