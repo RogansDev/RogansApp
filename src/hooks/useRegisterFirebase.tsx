@@ -11,6 +11,8 @@ import { Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setUserInfo } from '../state/ProfileSlice';
+import { add } from 'date-fns';
+import { sendEmailCodePromotion } from './useEmail';
 
 
 const useRegisterFirebase = () => {
@@ -62,9 +64,34 @@ const useRegisterFirebase = () => {
                                 };
                                 addDoc(collection(db, "users"), dataToCreate).
                                     then(() => {
-                                        setLoading(false);
-                                        navigation.navigate('Login')
-                                        Alert.alert('Cargado correctamente!')
+
+                                        var codigo = Math.floor(Math.random() * 900000) + 100000;
+                                        const currentDate = new Date();const expirationDate = new Date(currentDate);
+                                        expirationDate.setDate(currentDate.getDate() + 15);
+
+                                        try {
+                                            const dataToUpload = {
+                                                codigo: codigo,
+                                                state: false,
+                                                user_id: userId,
+                                                date_to_use: null,
+                                                date_to_expired: expirationDate,
+                                                charge: 50000
+                                            };
+                                            addDoc(collection(db, 'promotions'), dataToUpload).then(() => {
+                                                sendEmailCodePromotion(props.email, codigo);
+                                                setLoading(false);
+                                                navigation.navigate('Login')
+                                                Alert.alert('Registro exitoso! se envio un mail con un cupon de descuentos.')
+                                            }).catch()
+
+                                        } catch (error) {
+                                            console.log(error)
+                                            setLoading(false);
+                                            setError(error.message);
+                                            Alert.alert('Ocurrio un error!');
+                                        }
+
                                     }).catch((error) => {
                                         console.log(error)
                                         setLoading(false);
