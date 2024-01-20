@@ -10,7 +10,7 @@ import { RootParamList } from "../utils/RootParamList";
 import { Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setUserInfo } from '../state/ProfileSlice';
+import { setClearUserInfo, setUserInfo } from '../state/ProfileSlice';
 import { add } from 'date-fns';
 import { sendEmailCodePromotion } from './useEmail';
 
@@ -66,7 +66,7 @@ const useRegisterFirebase = () => {
                                     then(() => {
 
                                         var codigo = Math.floor(Math.random() * 900000) + 100000;
-                                        const currentDate = new Date();const expirationDate = new Date(currentDate);
+                                        const currentDate = new Date(); const expirationDate = new Date(currentDate);
                                         expirationDate.setDate(currentDate.getDate() + 15);
 
                                         try {
@@ -249,7 +249,38 @@ const useRegisterFirebase = () => {
             throw error;
         }
     };
-    return { handleLogin, handleRegister, error, setError, loading, handleUpdatePassword };
+
+    const handleDeleteAccount = async () => {
+        setLoading(true);
+
+        try {            
+            const user = auth.currentUser;            
+            await user.delete();
+            setLoading(false)
+            distpach(setClearUserInfo(''));
+            Alert.alert('Cuenta eliminada!');
+            // luego verificar si es necesario eliminar sus datos relacionados ó
+            // si es que nos sirve dejarlo en la base de datos de firebase
+            // pero como tal ya no podra ingresar de nuevo, solo con registro previo
+
+        } catch (error) {
+            setError(error.message);
+            setLoading(false)
+            console.error('Error al eliminar la cuenta', error);
+            Alert.alert('Cuenta no se pudo eliminar!');
+        }
+    };
+
+
+    return {
+        handleLogin,
+        handleRegister,
+        error,
+        setError,
+        loading,
+        handleUpdatePassword,
+        handleDeleteAccount
+    };
 };
 
 export default useRegisterFirebase;

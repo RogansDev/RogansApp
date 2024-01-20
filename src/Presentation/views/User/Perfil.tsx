@@ -12,11 +12,14 @@ import { setClearUserInfo, setUserInfo } from '../../../state/ProfileSlice';
 import { setClearCalendaryInfo } from '../../../state/CalendarySlice';
 import { db } from '../../../firebase';
 import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import useRegisterFirebase from '../../../hooks/useRegisterFirebase';
 
 const Perfil = () => {
+
     const dispatch = useDispatch();
     const { Forget, UserIcon, Camara, CloseIcon, GalleryAdd } = Icons;
     const { name, lastname, document, email, phone, user_id, birthdate, role } = useSelector((state: any) => state.user);
+    const { handleDeleteAccount, loading: firebaseLoading } = useRegisterFirebase();
 
     const [loading, setLoading] = useState(false);
 
@@ -34,10 +37,12 @@ const Perfil = () => {
         dispatch(setClearCalendaryInfo(""));
     }
 
+    const handleDeleteUser = () => {
+        handleDeleteAccount();
+    }
+
     const handlePhoto = async () => {
         setLoading(true);
-
-        
 
         try {
             const userQuery = query(
@@ -86,10 +91,10 @@ const Perfil = () => {
         }
     }
 
-    const abrirPopUp = () => {        
+    const abrirPopUp = () => {
         if (PopUpCerrarSesionRef.current) {
             PopUpCerrarSesionRef.current.togglePopUp();
-          }
+        }
     };
 
     return (
@@ -136,15 +141,15 @@ const Perfil = () => {
                             </TouchableOpacity>
                         </View>
                         <View>
-                        {image && (
-                            <View style={{ width: 120, borderRadius: 14, padding: 14, backgroundColor: '#000000', }}>
-                                <TouchableOpacity onPress={() => { handlePhoto() }}>
-                                    <Text style={{ color: 'white', textAlign: 'center', fontFamily: MyFont.regular, fontSize: 13, }}>
-                                        {loading ? "Cargando.." : "Guardar"}
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        )} 
+                            {image && (
+                                <View style={{ width: 120, borderRadius: 14, padding: 14, backgroundColor: '#000000', }}>
+                                    <TouchableOpacity onPress={() => { handlePhoto() }}>
+                                        <Text style={{ color: 'white', textAlign: 'center', fontFamily: MyFont.regular, fontSize: 13, }}>
+                                            {loading ? "Cargando.." : "Guardar"}
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            )}
                         </View>
                     </View>
                 </View>
@@ -177,7 +182,6 @@ const Perfil = () => {
                             </View>
                         </TouchableOpacity>
                     </View>
-
                     <View style={styles.textContainer}>
                         <View style={styles.info}>
                             <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 3, }}>
@@ -222,6 +226,15 @@ const Perfil = () => {
                                 </Text>
                             </TouchableOpacity>
                         </View>
+                        {/**deberiamos ponerle un modal preguntando si esta segura de que quiere dar de baja su registro */}
+                        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 30, }}>
+                            <TouchableOpacity onPress={handleDeleteUser} style={{ flexDirection: 'row', gap: 5, }}>
+                                <CloseIcon width={16} height={16} />
+                                <Text>
+                                    {firebaseLoading ? "Cargando....":"Eliminar cuenta"}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </ScrollView>
             </View>
@@ -235,7 +248,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FCFCFC',
         position: "relative",
-        
+
     },
     scrollContainer: {
         position: "relative",
