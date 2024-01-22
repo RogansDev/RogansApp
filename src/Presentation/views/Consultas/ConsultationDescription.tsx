@@ -11,6 +11,7 @@ import { WebView } from 'react-native-webview';
 import { setCalendaryInfo, resetSpecificCalendaryInfo } from '../../../state/CalendarySlice';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootParamList } from '../../../utils/RootParamList';
+import usePromotions from '../../../hooks/usePromotions';
 
 interface MiCalendarioHandles {
     toggleModal: () => void;
@@ -23,6 +24,7 @@ interface PopUpErrorHandles {
 const ConsultationDescription = () => {
     const { CalendarAddIcon, ArrowDownIcon, ArrowWhiteIcon, CloseIcon } = Icons;
     const dispatch = useDispatch();
+    const {handleStatusCode} = usePromotions();
     const selectedCard = useSelector( (state : any) => state.calendary.selectedCard);
     const calendaryState = useSelector((state : any) => state.calendary);
     const user = useSelector( (state : any) => state.user);
@@ -53,11 +55,13 @@ const ConsultationDescription = () => {
     const [urlFinal, setUrlFinal] = useState('');
 
     useEffect(() => {
+        
         dispatch(resetSpecificCalendaryInfo([
             'fecha',
             'horaAgendada',
             'virtualPresencial'
         ]));
+
     }, []);
 
     useEffect(() => {
@@ -183,6 +187,9 @@ const ConsultationDescription = () => {
     };
 
     const verificarDatos = () => {
+        
+        handleStatusCode(user.user_id);
+
         if ((selectedValue == 'Virtual' || selectedValue == 'Presencial') && (fecha == '')) {
             abrirPopUpError('Elige una hora y fecha');
         } else if ((selectedValue == null) && (fecha != '')) {

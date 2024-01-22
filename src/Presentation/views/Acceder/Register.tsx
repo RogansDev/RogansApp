@@ -207,7 +207,7 @@ const Register = () => {
           {loading ? 
           <View style={styles.roundedBottom}>
             <Text  style={styles.textLoading}>
-            Cargando....
+            Cargando...
           </Text>
           </View> : <RoundedBottom
             title="Registrarme"
