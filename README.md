@@ -51,6 +51,14 @@ expo install expo-file-system
 
 npm install react-native-toast-message
 
+
+24. para el manejo de notificaciones push
+https://www.youtube.com/watch?v=wM-DjAZI0X0 y 
+https://docs.expo.dev/push-notifications/overview/
+
+dependencias 
+npx expo install expo-notifications expo-device expo-constants
+
 <h1>Uso de las fuentes personalizadas</h1>
 
 En la carpeta ./assets/fonts/poppins se encuentran los archivos .ttf de la fuente usada en la App.

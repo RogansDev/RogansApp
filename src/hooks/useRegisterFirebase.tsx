@@ -13,13 +13,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setClearUserInfo, setUserInfo } from '../state/ProfileSlice';
 import { add } from 'date-fns';
 import { sendEmailCodePromotion } from './useEmail';
+import useNotificationPush from './useNotificationPush';
 
 
 const useRegisterFirebase = () => {
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app)
-
+    const { sendNotificationRegisterSuccess } = useNotificationPush();
     const distpach = useDispatch();
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
@@ -82,7 +83,8 @@ const useRegisterFirebase = () => {
                                                 sendEmailCodePromotion(props.email, codigo);
                                                 setLoading(false);
                                                 navigation.navigate('Login')
-                                                Alert.alert('Registro exitoso! se envio un mail con un cupon de descuentos.')
+                                                Alert.alert('Registro exitoso! se envio un mail con un cupon de descuentos.');
+                                                sendNotificationRegisterSuccess('Rogans', `Bienvenido a Rogans - ${props.name}`, { name: props.name })
                                             }).catch()
 
                                         } catch (error) {
