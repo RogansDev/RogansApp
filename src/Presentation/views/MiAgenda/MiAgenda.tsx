@@ -223,7 +223,6 @@ const MiAgenda = () => {
                                 <TouchableOpacity style={styles.siCancelarBtn} onPress={() => {
                                     cancelarCita(cedulaUsuario, cancelacion).then(response => {
                                             console.log(response);
-                                            // Aquí puedes actualizar tu estado o UI según la respuesta
                                             setModalVisible(false);
                                         });
                                     }}
@@ -341,7 +340,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         borderRadius: 10,
     },
-
 });
 
 export default MiAgenda;

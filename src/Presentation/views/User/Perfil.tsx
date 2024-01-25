@@ -17,11 +17,15 @@ import useRegisterFirebase from '../../../hooks/useRegisterFirebase';
 const Perfil = () => {
 
     const dispatch = useDispatch();
-    const { Forget, UserIcon, Camara, CloseIcon, GalleryAdd } = Icons;
+    const { Forget, UserIcon, Camara, CloseIcon, GalleryAdd, TrashIcon, TickCircleWhiteicon } = Icons;
     const { name, lastname, document, email, phone, user_id, birthdate, role } = useSelector((state: any) => state.user);
     const { handleDeleteAccount, loading: firebaseLoading } = useRegisterFirebase();
 
     const [loading, setLoading] = useState(false);
+
+    const [modalEliminarCuenta, setModalEliminarCuenta] = useState(false);
+
+    const [modalCerrarSesion, setModalCerrarSesion] = useState(false);
 
     const { image, base64Image, pickImage, takePhoto, convertImageToFirebaseUrl } = useImagePicker();
 
@@ -154,6 +158,88 @@ const Perfil = () => {
                     </View>
                 </View>
             </Modal>
+
+            {/* Modal para eliminarl cuenta */}
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalEliminarCuenta}
+                onRequestClose={() => setModalEliminarCuenta(false)}
+            >
+                <TouchableOpacity 
+                    style={styles.modalFade} 
+                    onPress={() => setModalEliminarCuenta(false)}
+                    activeOpacity={1} // Esto asegura que el área transparente también responda al toque
+                >
+                    <View style={styles.modalContainer2}>
+                        <View style={styles.modalContent}>
+                            <View>
+                                <TouchableOpacity style={styles.cerrarBtn} onPress={() => setModalCerrarSesion(false)}>
+                                    <CloseIcon width={16} height={16}/>
+                                    <Text style={styles.textModal}>Cerrar</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{marginTop: 40, marginBottom: 20,}}>
+                                <Text style={[styles.titleModal, {textAlign: 'center',}]}>¿Estas seguro que quieres eliminar tu cuenta?</Text>
+                                <Text style={[styles.textModal, {textAlign: 'center', marginTop: 10,}]}>Ten presente que esta es una acción irreversible que implica la eliminación de todos tus datos, como registro de citas, información de contacto, etc.</Text>
+                            </View>
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: 8,}}>
+                                <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.conservarBtn}>
+                                    <Text style={[styles.textModal, {color: 'white',}]}>No, conservar</Text>
+                                    <TickCircleWhiteicon width={16} height={16}/>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.siCancelarBtn} onPress={handleDeleteUser}>
+                                    <Text style={styles.textModal}>Si, elimininar cuenta</Text>
+                                    <TrashIcon width={16} height={16}/>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </Modal>
+
+            {/* Modal para cerrar sesion */}
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalCerrarSesion}
+                onRequestClose={() => setModalCerrarSesion(false)}
+            >
+                <TouchableOpacity 
+                    style={styles.modalFade} 
+                    onPress={() => setModalCerrarSesion(false)}
+                    activeOpacity={1} // Esto asegura que el área transparente también responda al toque
+                >
+                    <View style={styles.modalContainer2}>
+                        
+                        <View style={styles.modalContent}>
+                        <View>
+                                <TouchableOpacity style={styles.cerrarBtn} onPress={() => setModalEliminarCuenta(false)}>
+                                    <CloseIcon width={16} height={16}/>
+                                    <Text style={styles.textModal}>Cerrar</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{marginTop: 40, marginBottom: 20,}}>
+                                <Text style={[styles.titleModal, {textAlign: 'center',}]}>¿Estas seguro que quieres cerrar sesión?</Text>
+                            </View>
+                            <View style={{flexDirection: 'row', justifyContent: 'space-between', gap: 8,}}>
+                                <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.conservarBtn}>
+                                    <Text style={[styles.textModal, {color: 'white',}]}>No cerrar sesión</Text>
+                                    <TickCircleWhiteicon width={16} height={16}/>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.siCancelarBtn} onPress={handleSessionClose}>
+                                    <Text style={styles.textModal}>Si, cerrar sesión</Text>
+                                    <TrashIcon width={16} height={16}/>
+                                </TouchableOpacity>
+                            </View>
+                            
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            </Modal>
+
             <View style={styles.container}>
                 <ScrollView style={styles.scrollContainer}>
                     <Text style={styles.title}>Perfil</Text>
@@ -219,7 +305,7 @@ const Perfil = () => {
                             </TouchableOpacity>
                         </View>
                         <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 30, }}>
-                            <TouchableOpacity onPress={handleSessionClose} style={{ flexDirection: 'row', gap: 5, }}>
+                            <TouchableOpacity onPress={() => {setModalCerrarSesion(true)}} style={{ flexDirection: 'row', gap: 5, }}>
                                 <CloseIcon width={16} height={16} />
                                 <Text>
                                     Cerrar sesión
@@ -228,8 +314,8 @@ const Perfil = () => {
                         </View>
                         {/**deberiamos ponerle un modal preguntando si esta segura de que quiere dar de baja su registro */}
                         <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 30, }}>
-                            <TouchableOpacity onPress={handleDeleteUser} style={{ flexDirection: 'row', gap: 5, }}>
-                                <CloseIcon width={16} height={16} />
+                            <TouchableOpacity onPress={() => {setModalEliminarCuenta(true)}} style={{ flexDirection: 'row', gap: 5, }}>
+                                <TrashIcon width={16} height={16} />
                                 <Text>
                                     {firebaseLoading ? "Cargando....":"Eliminar cuenta"}
                                 </Text>
@@ -367,6 +453,53 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#909090',
         borderRadius: 16,
+    },
+    // Estilos Modal eliminar cuenta
+    modalFade: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    },
+    modalContainer2: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        maxWidth: 360,
+        padding: 16,
+        borderRadius: 16,
+    },
+    cerrarBtn: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+    titleModal: {
+        fontSize: 24,
+        fontFamily: MyFont.bold,
+    },
+    textModal: {
+        fontSize: 13,
+        fontFamily: MyFont.regular,
+    },
+    siCancelarBtn: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+        paddingVertical: 12,
+        paddingHorizontal: 14,
+    },
+    conservarBtn: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+        paddingVertical: 12,
+        paddingHorizontal: 14,
+        backgroundColor: 'black',
+        borderRadius: 10,
     },
 });
 
