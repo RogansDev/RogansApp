@@ -2,6 +2,7 @@ import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/fire
 import { db } from '../firebase';
 import { useDispatch } from 'react-redux';
 import { setStateClearPromotion, setStatePromotions } from '../state/PromotionSlice';
+import useNotificationPush from './useNotificationPush';
 
 interface Timestamp {
     nanoseconds: number;
@@ -16,6 +17,7 @@ interface Props {
 const usePromotions = () => {
 
     const distpach = useDispatch();
+    const { sendNotificationPrmotionsStatus } = useNotificationPush();
 
     const formatDate = (timestamp: Timestamp): string => {
         const milliseconds = timestamp.seconds * 1000;
@@ -107,6 +109,7 @@ const usePromotions = () => {
                     date_to_expired: selectedCode.date_to_expired
                 }
                 distpach(setStatePromotions(updatedUser));
+                sendNotificationPrmotionsStatus('Rogans', `Operacion ${status ? "con exito":"con exito"}`)
             }
         } catch (error) {
             console.log("err", error);

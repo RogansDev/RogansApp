@@ -93,6 +93,10 @@ const useNotificationPush = () => {
     sendPushNotification([expoPushTokens[0]], title, body, data);
   };
 
+  const sendNotificationPrmotionsStatus = (title, body) => {
+    sendPushNotification([expoPushTokens[0]], title, body, null);
+  };
+
   useEffect(() => {
     registerForPushNotifications();
     setupNotificationListeners();
@@ -108,7 +112,8 @@ const useNotificationPush = () => {
     notification,
     sendNotificationToManyDevices,
     sendNotificationToOneDevice,
-    sendNotificationRegisterSuccess
+    sendNotificationRegisterSuccess,
+    sendNotificationPrmotionsStatus
   };
 };
 
