@@ -14,14 +14,18 @@ import { consultCards, procedureCards } from '../Servicios/ServicesData';
 import { useSelector } from "react-redux";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
+import usePromotions from "../../../hooks/usePromotions";
 
 
 const Home = () => {
   const { UserIcon, ProcedimientoIcon, ConsultasIcon, AgendaIcon, Arrow } = Icons;
-
+  const {handleStatusCode} = usePromotions();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
-  const { name, urlphoto } = useSelector((state: any) => state.user)
+  const { name, urlphoto, user_id } = useSelector((state: any) => state.user)
 
+useEffect(() => {
+  handleStatusCode(user_id); // llamar en el home
+}, [])
 
 
   return (

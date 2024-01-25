@@ -24,7 +24,7 @@ interface PopUpErrorHandles {
 const ConsultationDescription = () => {
     const { CalendarAddIcon, ArrowDownIcon, ArrowWhiteIcon, CloseIcon } = Icons;
     const dispatch = useDispatch();
-    const {handleStatusCode} = usePromotions();
+    const {updateStatusCode} = usePromotions();
     const selectedCard = useSelector( (state : any) => state.calendary.selectedCard);
     const calendaryState = useSelector((state : any) => state.calendary);
     const promotions = useSelector( (state : any) => state.promotions);
@@ -193,10 +193,8 @@ const ConsultationDescription = () => {
         }
     };
 
-    const verificarDatos = () => {
+    const verificarDatos = () => {      
         
-        handleStatusCode(user.user_id);
-
         if ((selectedValue == 'Virtual' || selectedValue == 'Presencial') && (fecha == '')) {
             abrirPopUpError('Elige una hora y fecha');
         } else if ((selectedValue == null) && (fecha != '')) {
@@ -237,12 +235,16 @@ const ConsultationDescription = () => {
         if (receivedMessage === 'exitoso') {
             navigation.navigate("Confirmado");
             // pago: true y cupon usado: true (este valor debe estar desde antes de que el pago se realice)
+            // actualizar firebase
+            updateStatusCode(user.user_id, promotions.codigo, true);
         } else if (receivedMessage === 'rechazado') {
             navigation.navigate("Rechazado");
             // pago: false y cupon usado: false
+            updateStatusCode(user.user_id,promotions.codigo, false);
         } else if (receivedMessage === 'pendiente') {
             navigation.navigate("Pendiente");
             // pago: false y cupon usado: false
+            updateStatusCode(user.user_id, promotions.codigo,false);
         }
     };
 
