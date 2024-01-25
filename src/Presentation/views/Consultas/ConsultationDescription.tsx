@@ -27,6 +27,7 @@ const ConsultationDescription = () => {
     const {handleStatusCode} = usePromotions();
     const selectedCard = useSelector( (state : any) => state.calendary.selectedCard);
     const calendaryState = useSelector((state : any) => state.calendary);
+    const promotions = useSelector( (state : any) => state.promotions);
     const user = useSelector( (state : any) => state.user);
 
     const fecha = useSelector( (state : any) => state.calendary.fecha);
@@ -70,6 +71,8 @@ const ConsultationDescription = () => {
         } else if (selectedValue === 'Presencial') {
             actualizarVirtualPresencial('Presencial');
         }
+        console.log(promotions);
+        
     }, [selectedValue]);
 
     const calendarioRef = useRef<MiCalendarioHandles>(null);
@@ -114,6 +117,8 @@ const ConsultationDescription = () => {
             horaAgendada: string;
             modalidad: string | null;
             duracion_cita: string,
+            cupon: string,
+            valor_descuento: string,
         }
 
         const datosTransaccion: DatosTransaccion = {
@@ -128,6 +133,8 @@ const ConsultationDescription = () => {
             horaAgendada: horaAgendada,
             modalidad: selectedValue,
             duracion_cita: selectedCard.duracion_cita,
+            cupon: promotions.codigo,
+            valor_descuento: promotions.charge,
         };
 
         const queryString = Object.entries(datosTransaccion)
@@ -229,10 +236,13 @@ const ConsultationDescription = () => {
 
         if (receivedMessage === 'exitoso') {
             navigation.navigate("Confirmado");
+            // pago: true y cupon usado: true (este valor debe estar desde antes de que el pago se realice)
         } else if (receivedMessage === 'rechazado') {
             navigation.navigate("Rechazado");
+            // pago: false y cupon usado: false
         } else if (receivedMessage === 'pendiente') {
             navigation.navigate("Pendiente");
+            // pago: false y cupon usado: false
         }
     };
 

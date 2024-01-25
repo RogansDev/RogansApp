@@ -16,7 +16,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.rogansdev.RogansApp"
+      "bundleIdentifier": "com.rogansdev.RogansApp",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Esta aplicación utiliza la cámara para agregar la foto de perfil de los usuarios"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +27,8 @@
         "backgroundColor": "#FCFCFC"
       },
       "googleServicesFile":"./google-services.json",
-      "package": "com.rogansdev.RogansApp"      
+      "package": "com.rogansdev.RogansApp",
+      "permissions": ["CAMERA"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
