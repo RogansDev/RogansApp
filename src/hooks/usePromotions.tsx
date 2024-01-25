@@ -109,7 +109,7 @@ const usePromotions = () => {
                     date_to_expired: selectedCode.date_to_expired
                 }
                 distpach(setStatePromotions(updatedUser));
-                sendNotificationPrmotionsStatus('Rogans', `Operacion ${status ? "con exito":"con exito"}`)
+                sendNotificationPrmotionsStatus('Rogans', `Operacion ${status ? "con exito":"sin exito"}`);
             }
         } catch (error) {
             console.log("err", error);
