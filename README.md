@@ -106,3 +106,9 @@ Si es necesario, antes de esto instalar EAS CLI:
 Para seleccionar o tomar fotos o imagenes para la imagen de perfil del usuario.
 
 <code>npx expo install expo-image-picker</code>
+
+
+### para crear credenciales 
+keytool -genkeypair -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-key-alias
+### clase y alias 
+rogans y del 1 al 6 

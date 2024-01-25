@@ -23,7 +23,8 @@
         "foregroundImage": "./assets/adaptiveIcon.png",
         "backgroundColor": "#FCFCFC"
       },
-      "package": "com.rogansdev.RogansApp"
+      "googleServicesFile":"./google-services.json",
+      "package": "com.rogansdev.RogansApp"      
     },
     "web": {
       "favicon": "./assets/favicon.png"

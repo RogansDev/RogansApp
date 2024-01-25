@@ -17,7 +17,7 @@ async function sendPushNotification(expoPushTokens, title, body, data) {
       sound: 'default',
       title: title,
       body: body,
-      data: data, // en el cvaso de registro seria data.name
+      data: data, // en el caso de registro seria data.name
     }));
   
     await Promise.all(
@@ -89,7 +89,6 @@ const useNotificationPush = () => {
   };
 
   const sendNotificationRegisterSuccess = (title, body, data) => {
-    console.log('jsnjdnsajknd')
     sendPushNotification([expoPushTokens[0]], title, body, data);
   };
 
