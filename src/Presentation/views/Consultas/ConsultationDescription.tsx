@@ -231,6 +231,7 @@ const ConsultationDescription = () => {
 
     const handleMessage = (event) => {
         const receivedMessage = event.nativeEvent.data;
+        console.log(receivedMessage);
 
         setPagoVisible(false);
 
