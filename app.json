@@ -26,6 +26,7 @@
         "foregroundImage": "./assets/adaptiveIcon.png",
         "backgroundColor": "#FCFCFC"
       },
+      "googleServicesFile":"./google-services.json",
       "package": "com.rogansdev.RogansApp",
       "permissions": ["CAMERA"]
     },

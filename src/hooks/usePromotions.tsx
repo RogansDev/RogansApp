@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useDispatch } from 'react-redux';
 import { setStateClearPromotion, setStatePromotions } from '../state/PromotionSlice';
@@ -22,7 +22,7 @@ const usePromotions = () => {
         const date = new Date(milliseconds);
 
         const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Los meses en JavaScript son de 0 a 11
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
         const year = date.getFullYear();
 
         return `${day}/${month}/${year}`;
@@ -67,8 +67,55 @@ const usePromotions = () => {
         }
     };
 
+    const updateStatusCode = async (userId: any, code: any, status: boolean) => {
 
-    return { handleStatusCode }
+        const currentDate = new Date();
+        try {
+            const codeQuery = query(
+                collection(db, "promotions"),
+                where("user_id", "==", userId),
+                where("codigo", "==", code)
+            );
+    
+            const querySnapshot = await getDocs(codeQuery);
+            let selectedCode: any;
+            querySnapshot.forEach((doc) => {
+                selectedCode = doc.data();
+            });
+    
+            if (selectedCode) {
+                // Obtener la referencia del documento que quieres actualizar
+                const promoDocRef = doc(db, "promotions", querySnapshot.docs[0].id);
+    
+                // Actualizar el documento en Firestore con el nuevo estado
+                await updateDoc(promoDocRef, {
+                    codigo: code,
+                    status: status, // Actualizar el estado
+                    charge: selectedCode.charge,
+                    user_id: userId,
+                    date_to_use: currentDate,
+                    date_to_expired: selectedCode.date_to_expired
+                });
+    
+                // Despachar la acción para actualizar el estado local si es necesario
+                const updatedUser = {
+                    codigo: code,
+                    status: status, // Actualizar el estado
+                    charge: selectedCode.charge,
+                    user_id: userId,
+                    date_to_use: currentDate,
+                    date_to_expired: selectedCode.date_to_expired
+                }
+                distpach(setStatePromotions(updatedUser));
+            }
+        } catch (error) {
+            console.log("err", error);
+            console.log("err aqui", error.message);
+        }
+    };
+
+
+    return { handleStatusCode, updateStatusCode }
 
 }
 

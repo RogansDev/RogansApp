@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "488356227805",
+    "firebase_url": "https://rogans-app-408201-default-rtdb.firebaseio.com",
+    "project_id": "rogans-app-408201",
+    "storage_bucket": "rogans-app-408201.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:488356227805:android:6838b5dfc64034cb9b8934",
+        "android_client_info": {
+          "package_name": "com.rogansdev.RogansApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "488356227805-7ta65ngc1negegfpuev60gu9o9d4pp84.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiP3uD0Jf1iJMvIn40hHbkq2ssjHOA3CU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "488356227805-7ta65ngc1negegfpuev60gu9o9d4pp84.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

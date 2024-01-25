@@ -4,9 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "../Presentation/views/Home/Home";
 import CancelationConfirmation from "../Presentation/views/MiAgenda/CancelationConfirmation";
 import Servicios from "../Presentation/views/Servicios/Servicios";
-import { MyColors } from "../Presentation/theme/AppTheme";
 import CustomHeader from "../Presentation/components/CustomHeader";
-import CustomHeaderTransparent from "../Presentation/components/CustomHeaderTransparent";
 import Perfil from "../Presentation/views/User/Perfil";
 import EditarCita from "../Presentation/views/MiAgenda/EditarCita";
 import MiAgenda from "../Presentation/views/MiAgenda/MiAgenda";
@@ -19,7 +17,6 @@ import ConsultationDescription from "../Presentation/views/Consultas/Consultatio
 import ConsultationList from "../Presentation/views/Consultas/ConsultationList";
 import DeniedPage from "../Presentation/views/Consultas/DeniedPage";
 import ProcedureList from "../Presentation/views/Procedimientos/ProceduresList";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../utils/RootParamList";
 import UpdatePasswordDash from "../Presentation/views/User/UpdatePasswordDash";
 import VerifitCodes from "../Presentation/views/Acceder/VerifitCode";

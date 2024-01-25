@@ -51,6 +51,14 @@ expo install expo-file-system
 
 npm install react-native-toast-message
 
+
+24. para el manejo de notificaciones push
+https://www.youtube.com/watch?v=wM-DjAZI0X0 y 
+https://docs.expo.dev/push-notifications/overview/
+
+dependencias 
+npx expo install expo-notifications expo-device expo-constants
+
 <h1>Uso de las fuentes personalizadas</h1>
 
 En la carpeta ./assets/fonts/poppins se encuentran los archivos .ttf de la fuente usada en la App.
@@ -98,3 +106,9 @@ Si es necesario, antes de esto instalar EAS CLI:
 Para seleccionar o tomar fotos o imagenes para la imagen de perfil del usuario.
 
 <code>npx expo install expo-image-picker</code>
+
+
+### para crear credenciales 
+keytool -genkeypair -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-key-alias
+### clase y alias 
+rogans y del 1 al 6 

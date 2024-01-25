@@ -13,10 +13,8 @@ import Checkbox from "expo-checkbox";
 import UseViewModel from "./ViewModel/RegisterViewModel";
 import CustomTextInput from "../../components/CustomTextInput";
 import RoundedBottom from "../../components/RoundedBottom";
-import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
 import CalendarioInput from "../../components/CalendarioInput";
 import PopUpError from "../../components/PopUpError";
-import Loading from "../loading/Loading";
 
 interface CalendarioHandles {
   toggleModal: () => void;
