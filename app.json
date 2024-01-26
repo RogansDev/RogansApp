@@ -1,5 +1,8 @@
 {
   "expo": {
+    "notification": {
+      "icon": "./assets/icon.png"
+    },
     "name": "RogansApp",
     "slug": "RogansApp",
     "version": "1.0.1",
@@ -39,5 +42,6 @@
         "projectId": "bd8d9d9a-7119-481a-a757-ec044f47da53"
       }
     }
+    
   }
 }

@@ -11,13 +11,14 @@ Notifications.setNotificationHandler({
   }),
 });
 
-async function sendPushNotification(expoPushTokens, title, body, data) {
-    const messages = expoPushTokens.map((token) => ({
+async function sendPushNotification(expoPushTokens, title: any, body: any, data: any) {
+    const messages = expoPushTokens.map((token : any) => ({
       to: token,
       sound: 'default',
       title: title,
       body: body,
       data: data, // en el caso de registro seria data.name
+      icon: '../../assets/icon.png', // Agrega esta línea
     }));
   
     await Promise.all(
@@ -89,13 +90,11 @@ const useNotificationPush = () => {
     sendPushNotification([expoPushTokens[0]]);
   };
 
-  const sendNotificationRegisterSuccess = (title, body, data) => {
+  const sendNotificationRegisterSuccess = (title : any, body: any, data: any) => {
     sendPushNotification([expoPushTokens[0]], title, body, data);
   };
 
-  const sendNotificationPrmotionsStatus = (title, body) => {
-    sendPushNotification([expoPushTokens[0]], title, body, null);
-  };
+
 
   useEffect(() => {
     registerForPushNotifications();
@@ -112,8 +111,7 @@ const useNotificationPush = () => {
     notification,
     sendNotificationToManyDevices,
     sendNotificationToOneDevice,
-    sendNotificationRegisterSuccess,
-    sendNotificationPrmotionsStatus
+    sendNotificationRegisterSuccess
   };
 };
 

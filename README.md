@@ -56,6 +56,9 @@ npm install react-native-toast-message
 https://www.youtube.com/watch?v=wM-DjAZI0X0 y 
 https://docs.expo.dev/push-notifications/overview/
 
+y este video del back de notificactions 
+https://www.youtube.com/watch?v=-_vHKRVEgc4
+
 dependencias 
 npx expo install expo-notifications expo-device expo-constants
 
@@ -112,3 +115,4 @@ Para seleccionar o tomar fotos o imagenes para la imagen de perfil del usuario.
 keytool -genkeypair -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-key-alias
 ### clase y alias 
 rogans y del 1 al 6 
+
