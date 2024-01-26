@@ -29,6 +29,7 @@ const ProcedureDescription = () => {
     const dispatch = useDispatch();
     const selectedCard = useSelector( (state : any) => state.calendary.selectedCard);
     const calendaryState = useSelector((state : any) => state.calendary);
+    const promotions = useSelector( (state : any) => state.promotions);
     const user = useSelector( (state : any) => state.user);
 
     const fecha = useSelector( (state : any) => state.calendary.fecha);
@@ -108,6 +109,8 @@ const ProcedureDescription = () => {
             horaAgendada: string;
             modalidad: string | null;
             duracion_cita: string;
+            cupon: string,
+            valor_descuento: string,
         }
 
         const datosTransaccion: DatosTransaccion = {
@@ -122,13 +125,15 @@ const ProcedureDescription = () => {
             horaAgendada: horaAgendada,
             modalidad: selectedValue,
             duracion_cita: selectedCard.duracion_cita,
+            cupon: promotions.codigo,
+            valor_descuento: promotions.charge,
         };
 
         const queryString = Object.entries(datosTransaccion)
             .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
             .join('&');
 
-        const urlFinal = `https://rogansya.com/pagos/?${queryString}`;
+        const urlFinal = `https://rogansya.com/pagos/test/?${queryString}`;
 
         setUrlFinal(`https://rogansya.com/pagos/?${queryString}`);
         setPagoVisible(true);

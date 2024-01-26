@@ -141,7 +141,7 @@ const ConsultationDescription = () => {
             .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
             .join('&');
 
-        setUrlFinal(`https://rogansya.com/pagos/?${queryString}`);
+        setUrlFinal(`https://rogansya.com/pagos/test/?${queryString}`);
         setPagoVisible(true);
     };
 
@@ -227,24 +227,36 @@ const ConsultationDescription = () => {
         return ('$' + caracteres.reverse().join(''));
     }
 
+    let estadoCupon = false;
+
     const handleMessage = (event) => {
         const receivedMessage = event.nativeEvent.data;
-        console.log(receivedMessage);
 
-        setPagoVisible(false);
+        if (receivedMessage === 'cupon_true') {
+            estadoCupon = true;
+        } else if (receivedMessage === 'cupon_false') {
+            estadoCupon = false;
+        }
 
         if (receivedMessage === 'exitoso') {
-            navigation.navigate("Confirmado");
-            // pago: true y cupon usado: true (este valor debe estar desde antes de que el pago se realice)
-            // actualizar firebase
-            updateStatusCode(user.user_id, promotions.codigo, true);
+            if (estadoCupon) {
+                navigation.navigate("Confirmado");
+                setPagoVisible(false);
+                updateStatusCode(user.user_id, promotions.codigo, true);
+            } else {
+                navigation.navigate("Confirmado");
+                setPagoVisible(false);
+                updateStatusCode(user.user_id, promotions.codigo, false);
+            }
         } else if (receivedMessage === 'rechazado') {
             navigation.navigate("Rechazado");
-            // pago: false y cupon usado: false
+            setPagoVisible(false);
+            estadoCupon = false;
             updateStatusCode(user.user_id,promotions.codigo, false);
         } else if (receivedMessage === 'pendiente') {
             navigation.navigate("Pendiente");
-            // pago: false y cupon usado: false
+            setPagoVisible(false);
+            estadoCupon = false;
             updateStatusCode(user.user_id, promotions.codigo,false);
         }
     };
