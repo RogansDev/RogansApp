@@ -119,6 +119,7 @@ const ConsultationDescription = () => {
             duracion_cita: string,
             cupon: string,
             valor_descuento: string,
+            estado_cupon: string,
         }
 
         const datosTransaccion: DatosTransaccion = {
@@ -135,6 +136,7 @@ const ConsultationDescription = () => {
             duracion_cita: selectedCard.duracion_cita,
             cupon: promotions.codigo,
             valor_descuento: promotions.charge,
+            estado_cupon: promotions.status,
         };
 
         const queryString = Object.entries(datosTransaccion)
@@ -234,8 +236,10 @@ const ConsultationDescription = () => {
 
         if (receivedMessage === 'cupon_true') {
             estadoCupon = true;
+            console.log(estadoCupon);
         } else if (receivedMessage === 'cupon_false') {
             estadoCupon = false;
+            console.log(estadoCupon);
         }
 
         if (receivedMessage === 'exitoso') {
@@ -243,26 +247,31 @@ const ConsultationDescription = () => {
                 navigation.navigate("Confirmado");
                 setPagoVisible(false);
                 updateStatusCode(user.user_id, promotions.codigo, true);
+                console.log(estadoCupon);
             } else {
                 navigation.navigate("Confirmado");
                 setPagoVisible(false);
                 updateStatusCode(user.user_id, promotions.codigo, false);
+                console.log(estadoCupon);
             }
         } else if (receivedMessage === 'rechazado') {
             navigation.navigate("Rechazado");
             setPagoVisible(false);
             estadoCupon = false;
             updateStatusCode(user.user_id,promotions.codigo, false);
+            console.log(estadoCupon);
         } else if (receivedMessage === 'pendiente') {
             navigation.navigate("Pendiente");
             setPagoVisible(false);
             estadoCupon = false;
             updateStatusCode(user.user_id, promotions.codigo,false);
+            console.log(estadoCupon);
         }
     };
 
     const pagoCancelado = () => {
         setPagoVisible(false);
+        estadoCupon = false;
         navigation.navigate("Rechazado");
     }
 
