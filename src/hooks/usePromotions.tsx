@@ -17,7 +17,8 @@ interface Props {
 const usePromotions = () => {
 
     const distpach = useDispatch();
-    const { sendNotificationPrmotionsStatus } = useNotificationPush();
+    
+    const { sendNotificationRegisterSuccess } = useNotificationPush();
 
     const formatDate = (timestamp: Timestamp): string => {
         const milliseconds = timestamp.seconds * 1000;
@@ -109,7 +110,8 @@ const usePromotions = () => {
                     date_to_expired: selectedCode.date_to_expired
                 }
                 distpach(setStatePromotions(updatedUser));
-                sendNotificationPrmotionsStatus('Rogans', `Operacion ${status ? "con exito":"sin exito"}`);
+                sendNotificationRegisterSuccess('Rogans', `Operacion ${status ? "con exito":"sin exito"}`, { name: '1' });
+                
             }
         } catch (error) {
             console.log("err", error);

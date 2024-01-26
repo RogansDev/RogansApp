@@ -84,7 +84,7 @@ const useRegisterFirebase = () => {
                                                 setLoading(false);
                                                 navigation.navigate('Login')
                                                 Alert.alert('Registro exitoso! se envio un mail con un cupon de descuentos.');
-                                                sendNotificationRegisterSuccess('Rogans', `Bienvenido a Rogans - ${props.name}`, { name: props.name })
+                                                sendNotificationRegisterSuccess('Rogans', `Bienvenido a Rogans  ${props.name}`, { name: props.name })
                                             }).catch()
 
                                         } catch (error) {
