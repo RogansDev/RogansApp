@@ -116,3 +116,16 @@ keytool -genkeypair -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -v
 ### clase y alias 
 rogans y del 1 al 6 
 
+### para las notificaciones en ios 
+
+prueba expo tools ---> ExponentPushToken[CKWFJILzcaS1MzrWFupfHm] 
+
+1 - eas init --id bd8d9d9a-7119-481a-a757-ec044f47da53
+2 - eas device:create
+3 - apple id  desarrollo.rogansya@gmail.com 
+4 - pass Des@rrollo123*
+5 - eas build --profile development --platform ios
+6 - genero nuevo certificado, elijo el dispositivo y 'yes' 
+7 - npx expo start --dev-client 
+
+
