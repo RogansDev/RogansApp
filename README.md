@@ -7,7 +7,6 @@
 5. @react-navigation/native-stack //instalar esta dependecia para el navigation
 6. @react-navigation/stack //instalar esta dependecia para el navigation
 7. react-native-loading-spinner-overlay //instalar esta dependecia para el spinner
-8. react-native-navigation //instalar esta dependecia para el navigation
 9. react-native-picker-select //instalar esta dependecia para el picker
 10. react-native-safe-area-context //instalar esta dependecia para el navigation
 11. react-native-screens //instalar esta dependecia para el navigation
@@ -51,6 +50,17 @@ expo install expo-file-system
 23. para que salga una pantalla cyando se acaban los intentos en el codigo de verificacion
 
 npm install react-native-toast-message
+
+
+24. para el manejo de notificaciones push
+https://www.youtube.com/watch?v=wM-DjAZI0X0 y 
+https://docs.expo.dev/push-notifications/overview/
+
+y este video del back de notificactions 
+https://www.youtube.com/watch?v=-_vHKRVEgc4
+
+dependencias 
+npx expo install expo-notifications expo-device expo-constants
 
 <h1>Uso de las fuentes personalizadas</h1>
 
@@ -99,3 +109,10 @@ Si es necesario, antes de esto instalar EAS CLI:
 Para seleccionar o tomar fotos o imagenes para la imagen de perfil del usuario.
 
 <code>npx expo install expo-image-picker</code>
+
+
+### para crear credenciales 
+keytool -genkeypair -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-key-alias
+### clase y alias 
+rogans y del 1 al 6 
+

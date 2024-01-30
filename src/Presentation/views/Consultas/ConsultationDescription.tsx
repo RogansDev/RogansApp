@@ -11,6 +11,7 @@ import { WebView } from 'react-native-webview';
 import { setCalendaryInfo, resetSpecificCalendaryInfo } from '../../../state/CalendarySlice';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootParamList } from '../../../utils/RootParamList';
+import usePromotions from '../../../hooks/usePromotions';
 
 interface MiCalendarioHandles {
     toggleModal: () => void;
@@ -23,8 +24,10 @@ interface PopUpErrorHandles {
 const ConsultationDescription = () => {
     const { CalendarAddIcon, ArrowDownIcon, ArrowWhiteIcon, CloseIcon } = Icons;
     const dispatch = useDispatch();
+    const {updateStatusCode} = usePromotions();
     const selectedCard = useSelector( (state : any) => state.calendary.selectedCard);
     const calendaryState = useSelector((state : any) => state.calendary);
+    const promotions = useSelector( (state : any) => state.promotions);
     const user = useSelector( (state : any) => state.user);
 
     const fecha = useSelector( (state : any) => state.calendary.fecha);
@@ -53,11 +56,13 @@ const ConsultationDescription = () => {
     const [urlFinal, setUrlFinal] = useState('');
 
     useEffect(() => {
+        
         dispatch(resetSpecificCalendaryInfo([
             'fecha',
             'horaAgendada',
             'virtualPresencial'
         ]));
+
     }, []);
 
     useEffect(() => {
@@ -66,6 +71,8 @@ const ConsultationDescription = () => {
         } else if (selectedValue === 'Presencial') {
             actualizarVirtualPresencial('Presencial');
         }
+        console.log(promotions);
+        
     }, [selectedValue]);
 
     const calendarioRef = useRef<MiCalendarioHandles>(null);
@@ -110,6 +117,9 @@ const ConsultationDescription = () => {
             horaAgendada: string;
             modalidad: string | null;
             duracion_cita: string,
+            cupon: string,
+            valor_descuento: string,
+            estado_cupon: string,
         }
 
         const datosTransaccion: DatosTransaccion = {
@@ -124,13 +134,16 @@ const ConsultationDescription = () => {
             horaAgendada: horaAgendada,
             modalidad: selectedValue,
             duracion_cita: selectedCard.duracion_cita,
+            cupon: promotions.codigo,
+            valor_descuento: promotions.charge,
+            estado_cupon: promotions.status,
         };
 
         const queryString = Object.entries(datosTransaccion)
             .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
             .join('&');
 
-        setUrlFinal(`https://rogansya.com/pagos/?${queryString}`);
+        setUrlFinal(`https://rogansya.com/pagos/test/?${queryString}`);
         setPagoVisible(true);
     };
 
@@ -182,7 +195,8 @@ const ConsultationDescription = () => {
         }
     };
 
-    const verificarDatos = () => {
+    const verificarDatos = () => {      
+        
         if ((selectedValue == 'Virtual' || selectedValue == 'Presencial') && (fecha == '')) {
             abrirPopUpError('Elige una hora y fecha');
         } else if ((selectedValue == null) && (fecha != '')) {
@@ -215,22 +229,49 @@ const ConsultationDescription = () => {
         return ('$' + caracteres.reverse().join(''));
     }
 
+    let estadoCupon = false;
+
     const handleMessage = (event) => {
         const receivedMessage = event.nativeEvent.data;
 
-        setPagoVisible(false);
+        if (receivedMessage === 'cupon_true') {
+            estadoCupon = true;
+            console.log(estadoCupon);
+        } else if (receivedMessage === 'cupon_false') {
+            estadoCupon = false;
+            console.log(estadoCupon);
+        }
 
         if (receivedMessage === 'exitoso') {
-            navigation.navigate("Confirmado");
+            if (estadoCupon) {
+                navigation.navigate("Confirmado");
+                setPagoVisible(false);
+                updateStatusCode(user.user_id, promotions.codigo, true);
+                console.log(estadoCupon);
+            } else {
+                navigation.navigate("Confirmado");
+                setPagoVisible(false);
+                updateStatusCode(user.user_id, promotions.codigo, false);
+                console.log(estadoCupon);
+            }
         } else if (receivedMessage === 'rechazado') {
             navigation.navigate("Rechazado");
+            setPagoVisible(false);
+            estadoCupon = false;
+            updateStatusCode(user.user_id,promotions.codigo, false);
+            console.log(estadoCupon);
         } else if (receivedMessage === 'pendiente') {
             navigation.navigate("Pendiente");
+            setPagoVisible(false);
+            estadoCupon = false;
+            updateStatusCode(user.user_id, promotions.codigo,false);
+            console.log(estadoCupon);
         }
     };
 
     const pagoCancelado = () => {
         setPagoVisible(false);
+        estadoCupon = false;
         navigation.navigate("Rechazado");
     }
 

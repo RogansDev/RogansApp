@@ -1,0 +1,1 @@
+export const realtimeDB = 'https://rogans-app-408201-default-rtdb.firebaseio.com/';

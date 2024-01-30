@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   consultationsContainer: {
-    marginBottom: 100,
+    marginBottom: 130,
     paddingHorizontal: 16,
   },
   consultation: {

@@ -4,7 +4,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
 } from "react-native";
 import Icons from "../../../Presentation/theme/Icons";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
@@ -12,10 +13,8 @@ import Checkbox from "expo-checkbox";
 import UseViewModel from "./ViewModel/RegisterViewModel";
 import CustomTextInput from "../../components/CustomTextInput";
 import RoundedBottom from "../../components/RoundedBottom";
-import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
 import CalendarioInput from "../../components/CalendarioInput";
 import PopUpError from "../../components/PopUpError";
-import Loading from "../loading/Loading";
 
 interface CalendarioHandles {
   toggleModal: () => void;
@@ -206,7 +205,7 @@ const Register = () => {
           {loading ? 
           <View style={styles.roundedBottom}>
             <Text  style={styles.textLoading}>
-            Cargando....
+            Cargando...
           </Text>
           </View> : <RoundedBottom
             title="Registrarme"
@@ -227,6 +226,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignSelf: "center",
+    height: 20,
   },
   logo: {
     zIndex: 20,
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 10,
     position: "relative",
-    marginTop: 90,
+    marginTop: Platform.OS === 'android' ? 55 : 10,
     padding: 20,
 
   },

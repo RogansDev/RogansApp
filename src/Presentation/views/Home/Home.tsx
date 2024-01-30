@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 // import { getEventTypes } from '../';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Image, Platform } from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { useNavigation } from '@react-navigation/native';
 import FloatingMenu from '../../../Presentation/components/FloatingMenu';
@@ -14,14 +14,18 @@ import { consultCards, procedureCards } from '../Servicios/ServicesData';
 import { useSelector } from "react-redux";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
+import usePromotions from "../../../hooks/usePromotions";
 
 
 const Home = () => {
   const { UserIcon, ProcedimientoIcon, ConsultasIcon, AgendaIcon, Arrow } = Icons;
-
+  const {handleStatusCode} = usePromotions();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
-  const {name} = useSelector( (state : any) => state.user)
+  const { name, urlphoto, user_id } = useSelector((state: any) => state.user)
 
+useEffect(() => {
+  handleStatusCode(user_id); // llamar en el home
+}, [])
 
 
   return (
@@ -33,7 +37,16 @@ const Home = () => {
             <Text style={styles.title}>Hola {name}</Text>
           </View>
           <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate("Perfil")}>
-            <UserIcon width={50} height={45}/>
+
+            {urlphoto ? (
+              <Image
+                source={{ uri: urlphoto }}
+                style={[styles.imageTiny, styles.roundedImage]} // Agregamos el estilo de imagen redonda
+                resizeMode="contain"
+              />
+            ) : (
+              <UserIcon width={50} height={45} />
+            )}
           </TouchableOpacity>
         </View>
         {/* ICONOS DE HEADER */}
@@ -95,7 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
-    paddingTop: 40,
+    paddingTop: Platform.OS === 'android' ? 10 : 40,
     marginVertical: 30,
   },
   titleContainer: {
@@ -108,7 +121,13 @@ const styles = StyleSheet.create({
   iconContainer: {
     position: 'relative',
     marginLeft: 16,
-    overflow: 'hidden',
+    // Sombras para Android
+    elevation: 10,
+    // Sombras para iOS
+    shadowColor: "#DDD",
+    shadowOffset: { width: 4, height: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 10,
   },
   userIcon: {
     width: 27,
@@ -158,6 +177,13 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontFamily: MyFont.medium,
     color: MyColors.secondary,
+  },
+  imageTiny: {
+    width: 60,
+    height: 60,
+  },
+  roundedImage: {
+    borderRadius: 30, // La mitad del tamaño de la imagen para hacerla redonda
   },
 });
 

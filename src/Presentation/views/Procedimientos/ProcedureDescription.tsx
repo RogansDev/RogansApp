@@ -14,6 +14,7 @@ import { WebView } from 'react-native-webview';
 import { setCalendaryInfo, resetSpecificCalendaryInfo } from '../../../state/CalendarySlice';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootParamList } from '../../../utils/RootParamList';
+import usePromotions from '../../../hooks/usePromotions';
 
 interface MiCalendarioHandles {
     toggleModal: () => void;
@@ -27,8 +28,10 @@ const ProcedureDescription = () => {
     const { CalendarAddIcon, ArrowWhiteIcon, ArrowDownIcon, CloseIcon } = Icons;
 
     const dispatch = useDispatch();
+    const {updateStatusCode} = usePromotions();
     const selectedCard = useSelector( (state : any) => state.calendary.selectedCard);
     const calendaryState = useSelector((state : any) => state.calendary);
+    const promotions = useSelector( (state : any) => state.promotions);
     const user = useSelector( (state : any) => state.user);
 
     const fecha = useSelector( (state : any) => state.calendary.fecha);
@@ -108,6 +111,9 @@ const ProcedureDescription = () => {
             horaAgendada: string;
             modalidad: string | null;
             duracion_cita: string;
+            cupon: string,
+            valor_descuento: string,
+            estado_cupon: string,
         }
 
         const datosTransaccion: DatosTransaccion = {
@@ -122,15 +128,16 @@ const ProcedureDescription = () => {
             horaAgendada: horaAgendada,
             modalidad: selectedValue,
             duracion_cita: selectedCard.duracion_cita,
+            cupon: promotions.codigo,
+            valor_descuento: promotions.charge,
+            estado_cupon: promotions.status,
         };
 
         const queryString = Object.entries(datosTransaccion)
             .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
             .join('&');
 
-        const urlFinal = `https://rogansya.com/pagos/?${queryString}`;
-
-        setUrlFinal(`https://rogansya.com/pagos/?${queryString}`);
+        setUrlFinal(`https://rogansya.com/pagos/test/?${queryString}`);
         setPagoVisible(true);
     };
 
@@ -228,22 +235,43 @@ const ProcedureDescription = () => {
         return ('$' + caracteres.reverse().join(''));
     }
 
+    let estadoCupon = false;
+
     const handleMessage = (event) => {
         const receivedMessage = event.nativeEvent.data;
 
-        setPagoVisible(false);
+        if (receivedMessage === 'cupon_true') {
+            estadoCupon = true;
+        } else if (receivedMessage === 'cupon_false') {
+            estadoCupon = false;
+        }
 
         if (receivedMessage === 'exitoso') {
-            navigation.navigate("Confirmado");
+            if (estadoCupon) {
+                navigation.navigate("Confirmado");
+                setPagoVisible(false);
+                updateStatusCode(user.user_id, promotions.codigo, true);
+            } else {
+                navigation.navigate("Confirmado");
+                setPagoVisible(false);
+                updateStatusCode(user.user_id, promotions.codigo, false);
+            }
         } else if (receivedMessage === 'rechazado') {
             navigation.navigate("Rechazado");
+            setPagoVisible(false);
+            estadoCupon = false;
+            updateStatusCode(user.user_id,promotions.codigo, false);
         } else if (receivedMessage === 'pendiente') {
             navigation.navigate("Pendiente");
+            setPagoVisible(false);
+            estadoCupon = false;
+            updateStatusCode(user.user_id, promotions.codigo,false);
         }
     };
 
     const pagoCancelado = () => {
         setPagoVisible(false);
+        estadoCupon = false;
         navigation.navigate("Rechazado");
     }
 

@@ -10,14 +10,17 @@ import { RootParamList } from "../utils/RootParamList";
 import { Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setUserInfo } from '../state/ProfileSlice';
+import { setClearUserInfo, setUserInfo } from '../state/ProfileSlice';
+import { add } from 'date-fns';
+import { sendEmailCodePromotion } from './useEmail';
+import useNotificationPush from './useNotificationPush';
 
 
 const useRegisterFirebase = () => {
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app)
-
+    const { sendNotificationRegisterSuccess } = useNotificationPush();
     const distpach = useDispatch();
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
@@ -62,9 +65,35 @@ const useRegisterFirebase = () => {
                                 };
                                 addDoc(collection(db, "users"), dataToCreate).
                                     then(() => {
-                                        setLoading(false);
-                                        navigation.navigate('Login')
-                                        Alert.alert('Cargado correctamente!')
+
+                                        var codigo = Math.floor(Math.random() * 900000) + 100000;
+                                        const currentDate = new Date(); const expirationDate = new Date(currentDate);
+                                        expirationDate.setDate(currentDate.getDate() + 15);
+
+                                        try {
+                                            const dataToUpload = {
+                                                codigo: codigo,
+                                                status: false,
+                                                user_id: userId,
+                                                date_to_use: null,
+                                                date_to_expired: expirationDate,
+                                                charge: 50000
+                                            };
+                                            addDoc(collection(db, 'promotions'), dataToUpload).then(() => {
+                                                sendEmailCodePromotion(props.email, codigo);
+                                                setLoading(false);
+                                                navigation.navigate('Login')
+                                                Alert.alert('Registro exitoso! se envio un mail con un cupon de descuentos.');
+                                                sendNotificationRegisterSuccess('Rogans', `Bienvenido a Rogans  ${props.name}`, { name: props.name })
+                                            }).catch()
+
+                                        } catch (error) {
+                                            console.log(error)
+                                            setLoading(false);
+                                            setError(error.message);
+                                            Alert.alert('Ocurrio un error!');
+                                        }
+
                                     }).catch((error) => {
                                         console.log(error)
                                         setLoading(false);
@@ -222,7 +251,38 @@ const useRegisterFirebase = () => {
             throw error;
         }
     };
-    return { handleLogin, handleRegister, error, setError, loading, handleUpdatePassword };
+
+    const handleDeleteAccount = async () => {
+        setLoading(true);
+
+        try {            
+            const user = auth.currentUser;            
+            await user.delete();
+            setLoading(false)
+            distpach(setClearUserInfo(''));
+            Alert.alert('Cuenta eliminada!');
+            // luego verificar si es necesario eliminar sus datos relacionados ó
+            // si es que nos sirve dejarlo en la base de datos de firebase
+            // pero como tal ya no podra ingresar de nuevo, solo con registro previo
+
+        } catch (error) {
+            setError(error.message);
+            setLoading(false)
+            console.error('Error al eliminar la cuenta', error);
+            Alert.alert('Cuenta no se pudo eliminar!');
+        }
+    };
+
+
+    return {
+        handleLogin,
+        handleRegister,
+        error,
+        setError,
+        loading,
+        handleUpdatePassword,
+        handleDeleteAccount
+    };
 };
 
 export default useRegisterFirebase;

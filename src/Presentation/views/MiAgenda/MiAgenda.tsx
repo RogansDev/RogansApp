@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { View, ScrollView, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, Image, TouchableOpacity, Modal, StyleSheet, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootParamList } from '../../../utils/RootParamList';
@@ -107,7 +107,7 @@ const MiAgenda = () => {
             <FloatingMenu />
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.content}>
-                    <Text style={[styles.title, {marginTop: 30,}]}>Citas agendadas</Text>
+                    <Text style={styles.title}>Citas agendadas</Text>
                     {cargando ? (
                         // Muestra el mensaje de cargando
                         <Text style={{textAlign: 'center', padding: 15, fontFamily: MyFont.regular,}}>Cargando...</Text>
@@ -150,7 +150,7 @@ const MiAgenda = () => {
                         )
                     )}
                 </View>
-                <View style={[styles.content, {marginBottom: 80,}]}>
+                <View style={[styles.content, {marginBottom: 200,}]}>
                     <Text style={styles.title}>Anteriores</Text>
                     {cargando ? (
                         // Muestra el mensaje de cargando
@@ -223,7 +223,6 @@ const MiAgenda = () => {
                                 <TouchableOpacity style={styles.siCancelarBtn} onPress={() => {
                                     cancelarCita(cedulaUsuario, cancelacion).then(response => {
                                             console.log(response);
-                                            // Aquí puedes actualizar tu estado o UI según la respuesta
                                             setModalVisible(false);
                                         });
                                     }}
@@ -251,7 +250,7 @@ const styles = StyleSheet.create({
     },
     content: {
         marginBottom: 50,
-        top: 50,
+        top: Platform.OS === 'android' ? 50 : 10,
     },
     title: {
         fontFamily: MyFont.bold,
@@ -341,7 +340,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         borderRadius: 10,
     },
-
 });
 
 export default MiAgenda;
