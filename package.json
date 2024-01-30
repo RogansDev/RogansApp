@@ -41,14 +41,10 @@
     "react-native-toast-message": "^2  .2.0",
     "react-native-webview": "13.2.2",
     "react-redux": "^9.0.4",
-<<<<<<< HEAD
-    "uuid": "^9.0.1"
-=======
     "uuid": "^9.0.1",
     "expo-notifications": "~0.20.1",
     "expo-device": "~5.4.0",
     "expo-constants": "~14.4.2"
->>>>>>> 2cd79cd476baae0d8502bd71254469e3491e6e84
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
