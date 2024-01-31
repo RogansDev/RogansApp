@@ -2,7 +2,8 @@ import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/fire
 import { db } from '../firebase';
 import { useDispatch } from 'react-redux';
 import { setStateClearPromotion, setStatePromotions } from '../state/PromotionSlice';
-import useNotificationPush from './useNotificationPush';
+import { sendEmailCodePromotionStatus } from './useEmail';
+// import useNotificationPush from './useNotificationPush';
 
 interface Timestamp {
     nanoseconds: number;
@@ -18,7 +19,7 @@ const usePromotions = () => {
 
     const distpach = useDispatch();
     
-    const { sendNotificationRegisterSuccess } = useNotificationPush();
+    // const { sendNotificationRegisterSuccess } = useNotificationPush();
 
     const formatDate = (timestamp: Timestamp): string => {
         const milliseconds = timestamp.seconds * 1000;
@@ -70,7 +71,7 @@ const usePromotions = () => {
         }
     };
 
-    const updateStatusCode = async (userId: any, code: any, status: boolean) => {
+    const updateStatusCode = async (userId: any, code: any, status: boolean, email: string) => {
 
         const currentDate = new Date();
         try {
@@ -110,7 +111,8 @@ const usePromotions = () => {
                     date_to_expired: selectedCode.date_to_expired
                 }
                 distpach(setStatePromotions(updatedUser));
-                sendNotificationRegisterSuccess('Rogans', `Operacion ${status ? "con exito":"sin exito"}`, { name: '1' });
+                // sendNotificationRegisterSuccess('Rogans', `Operacion ${status ? "con exito":"sin exito"}`, { name: '1' });
+                sendEmailCodePromotionStatus(email, status);
                 
             }
         } catch (error) {

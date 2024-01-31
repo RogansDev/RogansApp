@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { useSelector } from 'react-redux';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system'; 
 import { uploadFile } from '../firebase';
 
 
 const isValidImage = (uri) => {
 
-    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'];
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.heic', '.heif', '.pdf'];
     const lowerCaseUri = uri.toLowerCase();
     return allowedExtensions.some(ext => lowerCaseUri.endsWith(ext));
 };
@@ -71,8 +71,7 @@ const useImagePicker = () => {
 
     const convertImageToBase64 = async (uri : any) => {
         try {
-            const base64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
-            
+            const base64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });            
             return `data:image/jpeg;base64,${base64}`;
         } catch (error) {
             console.error('Error al convertir la imagen a base64:', error);
@@ -84,13 +83,8 @@ const useImagePicker = () => {
         try {
             const response = await fetch(uri);
             const blob = await response.blob();
-    
-            // Generar un nombre único para la imagen
             const imageName = `${user_id}_${Date.now()}.jpg`;
-    
-            // Subir la imagen al almacenamiento de Firebase
-            const imageUrl = await uploadFile(blob, imageName, 'images');
-    
+            const imageUrl = await uploadFile(blob, imageName, 'images');    
             return imageUrl;
         } catch (error) {
             console.error('Error al subir la imagen a Firebase:', error);

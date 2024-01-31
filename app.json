@@ -21,7 +21,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.rogansdev.RogansApp",
       "infoPlist": {
-        "NSCameraUsageDescription": "Esta aplicación utiliza la cámara para agregar la foto de perfil de los usuarios"
+        "NSCameraUsageDescription": "Esta aplicación utiliza la cámara para agregar la foto de perfil de los usuarios",
+        "NSPhotoLibraryUsageDescription": "Necesitamos acceder a la galería para seleccionar imágenes."
       }
     },
     "android": {
