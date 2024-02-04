@@ -129,3 +129,7 @@ prueba expo tools ---> ExponentPushToken[CKWFJILzcaS1MzrWFupfHm]
 7 - npx expo start --dev-client 
 
 
+### para la gestion de login automatico
+expo install expo-secure-store
+
+

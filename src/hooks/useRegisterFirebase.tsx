@@ -14,6 +14,7 @@ import { setClearUserInfo, setUserInfo } from '../state/ProfileSlice';
 import { add } from 'date-fns';
 import { sendEmailCodePromotion } from './useEmail';
 import useNotificationPush from './useNotificationPush';
+import { saveCredentials } from '../services/credentials';
 
 
 const useRegisterFirebase = () => {
@@ -142,8 +143,7 @@ const useRegisterFirebase = () => {
 
     const handleLogin = async (email: any, password: any) => {
 
-        await AsyncStorage.setItem('xqtes', JSON.stringify(email));
-        await AsyncStorage.setItem('asdqwe', JSON.stringify(password));
+        
         setLoading(true);
 
         try {
@@ -179,7 +179,8 @@ const useRegisterFirebase = () => {
                                 birthdate: selectedProfile.birthdate,
                                 logged: true
                             }
-
+                            await saveCredentials('email', email);
+                            await saveCredentials('password', password);
 
                             distpach(setUserInfo(user));
                             setLoading(false);
