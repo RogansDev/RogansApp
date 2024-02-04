@@ -27,7 +27,7 @@ const Perfil = () => {
 
     const [modalCerrarSesion, setModalCerrarSesion] = useState(false);
 
-    const { image, base64Image, pickImage, takePhoto, convertImageToFirebaseUrl } = useImagePicker();
+    const { image, base64Image, pickImage, convertImageToFirebaseUrl } = useImagePicker();
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
@@ -140,9 +140,9 @@ const Perfil = () => {
                             <TouchableOpacity onPress={pickImage} style={styles.editImage}>
                                 <GalleryAdd width={24} height={24} />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={takePhoto} style={styles.editImage}>
+                            {/* <TouchableOpacity onPress={takePhoto} style={styles.editImage}>
                                 <Camara width={24} height={24} />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                         <View>
                             {image && (

@@ -43,15 +43,15 @@ const useImagePicker = () => {
         }
     };
 
-    const takePhoto = async () => {
-        // Pedir permisos para la cámara
+    /*const takePhoto = async () => {
+        
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
         if (status !== 'granted') {
             alert('Lo siento, necesitamos permisos para acceder a tu cámara!');
             return;
         }
 
-        // Abrir la cámara
+        
         let result = await ImagePicker.launchCameraAsync({
             allowsEditing: true,
             aspect: [4, 3],
@@ -61,13 +61,14 @@ const useImagePicker = () => {
         if (!result.canceled && isValidImage(result.assets[0].uri)) {
             setImage(result.assets[0].uri);
             const base64 = await convertImageToBase64(result.assets[0].uri);
-            // console.log('convierto mi imagen a base 64', base64)
+            
             setBase64Image(base64);
         } else {
-            // Mostrar una alerta o realizar alguna acción si la imagen no es válida
+            
             alert('La imagen capturada no es válida. Por favor, elige una imagen JPEG, PNG, GIF, o BMP.');
         }
     };
+    */
 
     const convertImageToBase64 = async (uri : any) => {
         try {
@@ -93,7 +94,12 @@ const useImagePicker = () => {
     };
     
 
-    return { image, base64Image, pickImage, takePhoto, convertImageToFirebaseUrl };
+    return { 
+        image, 
+        base64Image, 
+        pickImage, 
+        // takePhoto, 
+        convertImageToFirebaseUrl };
 };
 
 export default useImagePicker;
