@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
   Platform
 } from "react-native";
 import Icons from "../../../Presentation/theme/Icons";
@@ -94,7 +95,12 @@ const Register = () => {
   }
 
   return (
-    <ScrollView
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"} // Ajusta este valor según la plataforma
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0} // Puedes ajustar este valor según necesites
+    >
+      <ScrollView
       style={styles.container}
     >
       {/* contenedor de formulario */}
@@ -203,7 +209,7 @@ const Register = () => {
             </View>
           </View>
           {loading ? 
-          <View style={styles.roundedBottom}>
+          <View style={[styles.roundedBottom, {marginTop: 10,}]}>
             <Text  style={styles.textLoading}>
             Cargando...
           </Text>
@@ -216,6 +222,7 @@ const Register = () => {
       <CalendarioInput ref={calendarioRef} onDateChange={handleDateChange} />
       <PopUpError ref={PopUpErrorRef} />
     </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -335,7 +342,7 @@ const styles = StyleSheet.create({
     color: MyColors.base,
     justifyContent: "center",
     borderRadius: 15,
-    marginTop:2
+    marginTop: 2
   },
   textBottom: {
     color: "white",

@@ -45,7 +45,7 @@ useEffect(() => {
                 resizeMode="contain"
               />
             ) : (
-              <UserIcon width={50} height={45} />
+              <UserIcon style={styles.userIcon} width={50} height={45} />
             )}
           </TouchableOpacity>
         </View>
@@ -130,8 +130,10 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
   },
   userIcon: {
-    width: 27,
-    height: 27,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    overflow: 'hidden',
   },
   containerRoundedBtn: {
     flexDirection: "row",

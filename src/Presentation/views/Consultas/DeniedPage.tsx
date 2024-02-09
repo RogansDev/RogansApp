@@ -14,6 +14,7 @@ const ConfirmationPage = () => {
     const user = useSelector( (state : any) => state.user);
     const fecha = useSelector( (state : any) => state.calendary.fecha);
     const horaAgendada = useSelector( (state : any) => state.calendary.horaAgendada);
+    const virtualPresencial = useSelector( (state : any) => state.calendary.virtualPresencial);
     const cedulaUsuario = user.document;
 
     const navigation = useNavigation();

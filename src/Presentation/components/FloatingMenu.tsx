@@ -10,9 +10,9 @@ import Icons from '../theme/Icons';
 import UChatWebView from './UChatWebView';
 
 const FloatingMenu = () => {
-  const { InicioIcon, ServiciosIcon, MiAgendaIcon, Headphone, InicioBlack, ServiciosBlack, MiAgendaBlack, CloseIcon } = Icons;
+  const { InicioIcon, ServiciosIcon, MiAgendaIcon, Headphone, InicioGreen, ServiciosGreen, MiAgendaGreen, CloseIcon, MessageIcon } = Icons;
 
-  const [chatVisible, seChatVisible] = useState(false);
+  const [chatVisible, setChatVisible] = useState(false);
 
   const currentRoute = useCurrentRoute();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
@@ -27,46 +27,53 @@ const FloatingMenu = () => {
         animationType="slide"
         transparent={true}
         visible={chatVisible}
-        onRequestClose={() => seChatVisible(!chatVisible)}
+        onRequestClose={() => setChatVisible(!chatVisible)}
       >
         <View style={styles.uchatContainer}>
-          <TouchableOpacity onPress={() => seChatVisible(!chatVisible)} style={{ position: 'absolute', top: 12, left: 15, }}>
+          <TouchableOpacity onPress={() => setChatVisible(!chatVisible)} style={{ position: 'absolute', top: 12, left: 15, }}>
             <CloseIcon width={16} height={16} />
           </TouchableOpacity>
           <UChatWebView />
         </View>
-        <TouchableOpacity onPress={() => seChatVisible(!chatVisible)} style={styles.uchatOverlay} />
+        <TouchableOpacity onPress={() => setChatVisible(!chatVisible)} style={styles.uchatOverlay} />
       </Modal>
 
       <View style={styles.menuContainer}>
+        <TouchableOpacity onPress={() => setChatVisible(!chatVisible)} style={styles.chat}>
+          <MessageIcon width={20} height={20} />
+          <Text style={styles.chatText}>Chat en vivo</Text>
+        </TouchableOpacity>
         <View style={styles.menu}>
           <TouchableOpacity
             onPress={() => navigation.navigate("Home")}
             style={isActive('Home') ? styles.activeMenuItem : styles.menuItem}>
-            {isActive('Home') ? <InicioBlack style={styles.menuIcon} width={20} height={20} /> : <InicioIcon style={styles.menuIcon} width={20} height={20} />}
-            <Text style={styles.menuText}>Inicio</Text>
+            {isActive('Home') ? <InicioGreen style={styles.menuIcon} width={20} height={20} /> : <InicioIcon style={styles.menuIcon} width={20} height={20} />}
+            <View style={isActive('Home') ? styles.activeTextBorder : styles.textBorder}>
+              <Text style={isActive('Home') ? styles.activeMenuText : styles.menuText}>Home</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate("Servicios")}
             style={isActive('Servicios') ? styles.activeMenuItem : styles.menuItem}>
-            {isActive('Servicios') ? <ServiciosBlack style={styles.menuIcon} width={20} height={20} /> : <ServiciosIcon style={styles.menuIcon} width={20} height={20} />}
-            <Text style={styles.menuText}>Servicios</Text>
+            {isActive('Servicios') ? <ServiciosGreen style={styles.menuIcon} width={20} height={20} /> : <ServiciosIcon style={styles.menuIcon} width={20} height={20} />}
+            <View style={isActive('Servicios') ? styles.activeTextBorder : styles.textBorder}>
+              <Text style={isActive('Servicios') ? styles.activeMenuText : styles.menuText}>Servicios</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate("MiAgenda")}
             style={isActive('MiAgenda') ? styles.activeMenuItem : styles.menuItem}>
-            {isActive('MiAgenda') ? <MiAgendaBlack style={styles.menuIcon} width={20} height={20} /> : <MiAgendaIcon style={styles.menuIcon} width={20} height={20} />}
-            <Text style={styles.menuText}>Mi agenda</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => seChatVisible(!chatVisible)} style={styles.menuItem}>
-            <Headphone style={styles.menuIcon} width={20} height={20} />
-            <Text style={styles.menuText}>Consulta{"\n"}en vivo</Text>
+            {isActive('MiAgenda') ? <MiAgendaGreen style={styles.menuIcon} width={20} height={20} /> : <MiAgendaIcon style={styles.menuIcon} width={20} height={20} />}
+            <View style={isActive('MiAgenda') ? styles.activeTextBorder : styles.textBorder}>
+              <Text style={isActive('MiAgenda') ? styles.activeMenuText : styles.menuText}>Mi agenda</Text>
+            </View>
           </TouchableOpacity>
         </View>
       </View>
     </>
   );
 };
+
 
 const styles = StyleSheet.create({
   menuContainer: {
@@ -83,7 +90,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 16,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'flex-start',
     borderRadius: 20,
     // Sombras para Android
@@ -96,19 +103,36 @@ const styles = StyleSheet.create({
   },
   menuItem: {
     alignItems: 'center',
+    width: 80,
   },
   menuIcon: {
-    marginBottom: 8,
+    marginBottom: 4,
+  },
+  textBorder: {
+    borderBottomWidth: 0,
+    borderBottomColor: '#00D0B1',
+  },
+  activeTextBorder: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#00D0B1',
   },
   menuText: {
     fontSize: 13,
     fontFamily: MyFont.regular,
     textAlign: 'center',
+    paddingBottom: 4,
+    color: 'black',
+  },
+  activeMenuText: {
+    fontSize: 13,
+    fontFamily: MyFont.regular,
+    textAlign: 'center',
+    paddingBottom: 4,
+    color: '#12B69E',
   },
   activeMenuItem: {
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#00D0B1',
+    width: 80,
   },
   uchatContainer: {
     position: 'absolute',
@@ -133,6 +157,22 @@ const styles = StyleSheet.create({
   uchatOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  chat: {
+    position: 'absolute',
+    top: -50,
+    right: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    backgroundColor: '#12B69E',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 16,
+  },
+  chatText: {
+    color: '#FFFFFF',
   }
 });
 

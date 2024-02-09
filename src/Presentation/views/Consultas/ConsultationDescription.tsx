@@ -9,6 +9,7 @@ import Icons from '../../../Presentation/theme/Icons';
 import { agendarCita } from '../../../../agendarCitaService';
 import { WebView } from 'react-native-webview';
 import { setCalendaryInfo, resetSpecificCalendaryInfo } from '../../../state/CalendarySlice';
+import { setSpecialityInfo } from '../../../state/SpecialitySlice';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootParamList } from '../../../utils/RootParamList';
 import usePromotions from '../../../hooks/usePromotions';
@@ -33,19 +34,24 @@ const ConsultationDescription = () => {
     const fecha = useSelector( (state : any) => state.calendary.fecha);
     const horaAgendada = useSelector( (state : any) => state.calendary.horaAgendada);
     const virtualPresencial = useSelector( (state : any) => state.calendary.virtualPresencial);
+    console.log('virtualPresencial desde el estado:', virtualPresencial);
     const nombreUsuario =  user.name;
     const correoUsuario = user.email;
     const cedulaUsuario = user.document;
     const telUsuario = user.phone;
 
-    const actualizarVirtualPresencial = (virtualOPresencial) => {
+    const actualizarVirtualPresencial = (value) => {
         dispatch(setCalendaryInfo({
-          fecha: calendaryState.fecha,
-          horaAgendada: calendaryState.hora,
-          virtualPresencial: virtualOPresencial,
-          selectedCard: calendaryState.selectedCard,
+          ...calendaryState,
+          virtualPresencial: value,
         }));
-    };
+      };
+
+      const actualizarEspecialidad = (value) => {
+        dispatch(setSpecialityInfo({
+            especialidadEstado: value,
+        }));
+      };
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
@@ -56,7 +62,6 @@ const ConsultationDescription = () => {
     const [urlFinal, setUrlFinal] = useState('');
 
     useEffect(() => {
-        
         dispatch(resetSpecificCalendaryInfo([
             'fecha',
             'horaAgendada',
@@ -64,16 +69,6 @@ const ConsultationDescription = () => {
         ]));
 
     }, []);
-
-    useEffect(() => {
-        if (selectedValue === 'Virtual') {
-            actualizarVirtualPresencial('Virtual');
-        } else if (selectedValue === 'Presencial') {
-            actualizarVirtualPresencial('Presencial');
-        }
-        console.log(promotions);
-        
-    }, [selectedValue]);
 
     const calendarioRef = useRef<MiCalendarioHandles>(null);
 
@@ -206,9 +201,13 @@ const ConsultationDescription = () => {
         } else {
             if (selectedCard.precio_cita === 'Gratis') {
                 agendarHandler();
+                actualizarVirtualPresencial(selectedValue);
+                actualizarEspecialidad(selectedCard.title);
                 navigation.navigate("Confirmado");
             } else {
                 agendarHandler();
+                actualizarVirtualPresencial(selectedValue);
+                actualizarEspecialidad(selectedCard.title);
                 iniciarProcesoDePago();
             }
         }
@@ -314,10 +313,10 @@ const ConsultationDescription = () => {
                                     </TouchableOpacity>
 
                                     <View>
-                                        <TouchableOpacity onPress={() => { setSelectedValue("Presencial"), setModalVisible(false) }} style={{ paddingVertical: 2, marginVertical: 8, }}>
+                                        <TouchableOpacity onPress={() => { setSelectedValue("Presencial"), setModalVisible(false), actualizarVirtualPresencial("Presencial") }} style={{ paddingVertical: 2, marginVertical: 8, }}>
                                             <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>Presencial</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => { setSelectedValue("Virtual"), setModalVisible(false) }} style={{ paddingVertical: 2, marginVertical: 8, }}>
+                                        <TouchableOpacity onPress={() => { setSelectedValue("Virtual"), setModalVisible(false), actualizarVirtualPresencial("Virtual") }} style={{ paddingVertical: 2, marginVertical: 8, }}>
                                             <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>Virtual</Text>
                                         </TouchableOpacity>
                                     </View>

@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../utils/RootParamList";
 import { Alert } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setClearUserInfo, setUserInfo } from '../state/ProfileSlice';
 import { add } from 'date-fns';
@@ -27,6 +27,8 @@ const useRegisterFirebase = () => {
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const user = useSelector( (state : any) => state.user);
+    const nombre = user.name;
 
     const handleRegister = async (props: any) => {
 

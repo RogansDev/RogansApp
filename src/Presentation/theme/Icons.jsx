@@ -40,6 +40,9 @@ import CloseIcon from '../../../assets/icons/close.svg';
 import InicioBlack from '../../../assets/icons/inicio-black.svg';
 import ServiciosBlack from '../../../assets/icons/servicios-black.svg';
 import MiAgendaBlack from '../../../assets/icons/mi-agenda-black.svg';
+import InicioGreen from '../../../assets/icons/inicio-green.svg';
+import ServiciosGreen from '../../../assets/icons/servicios-green.svg';
+import MiAgendaGreen from '../../../assets/icons/mi-agenda-green.svg';
 import LupaIcon from '../../../assets/icons/lupa.svg';
 import BulletPoint from '../../../assets/icons/bullet-point.svg';
 import UbicacionIcon from '../../../assets/icons/ubicacion.svg';
@@ -54,10 +57,11 @@ import Phone from "../../../assets/mobile.svg";
 import Email from "../../../assets/sms.svg";
 import UpdatePassword from '../../../assets/icons/password-check.svg';
 import ArrowGreen from '../../../assets/icons/arrow-green.svg';
-import Headphone from '../../../assets/icons/headphone.svg'
-import Camara from '../../../assets/icons/camera.svg'
-import Editar2Icon from '../../../assets/icons/editar-2.svg'
-import GalleryAdd from '../../../assets/icons/gallery-add.svg'
+import Headphone from '../../../assets/icons/headphone.svg';
+import Camara from '../../../assets/icons/camera.svg';
+import Editar2Icon from '../../../assets/icons/editar-2.svg';
+import GalleryAdd from '../../../assets/icons/gallery-add.svg';
+import MessageIcon from '../../../assets/icons/message.svg';
 
 const Icons = {
   LogoWhite,
@@ -120,6 +124,10 @@ const Icons = {
   Camara,
   Editar2Icon,
   GalleryAdd,
+  MessageIcon,
+  InicioGreen,
+  ServiciosGreen,
+  MiAgendaGreen
 };
 
 export default Icons;

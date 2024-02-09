@@ -11,7 +11,7 @@ const useFirebaseCode = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const handleSaveCode = async (mail: any) => {
+    const handleSaveCode = async (mail: any, nombre: any) => {
 
         setLoading(true);
         try {
@@ -34,7 +34,7 @@ const useFirebaseCode = () => {
                     };
                     addDoc(collection(db, "emailcodes"), dataToCreate).
                         then(() => {
-                            sendEmailCode(mail, codigo);
+                            sendEmailCode(mail, codigo, nombre);
                             setLoading(false);
                             Alert.alert(`Código enviado a ${mail}`);
                         }).catch((error) => {

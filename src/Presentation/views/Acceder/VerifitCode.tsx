@@ -11,7 +11,7 @@ import { MyColors, MyFont } from "../../theme/AppTheme";
 import CodeUpdateKeys from "../../components/CodeUpdateKeys";
 import Icons from "../../theme/Icons";
 import useFirebaseCode from "../../../hooks/useFirebaseCode";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCodeInfo } from "../../../state/CodeSlice";
 
 
@@ -31,6 +31,8 @@ const ModalVerifitCode = () => {
   const [coder, setCoder] = useState("");
   const [mail, setMail] = useState("");
   const [codigoSolicitado, setCodigoSolicitado ] = useState(false);
+  const user = useSelector( (state : any) => state.user);
+  const nombre = user.name;
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -63,9 +65,11 @@ const ModalVerifitCode = () => {
   };
 
 
-  const handleResendCode = () => { // solicito el codigo
+  const handleResendCode = () => { // solicito el codigo    
+    console.log(nombre);
+    
     setReenviarCodePressed(false);
-    handleSaveCode(mail);
+    handleSaveCode(mail, nombre);
     setCodigoSolicitado(true);
   };
 
@@ -84,7 +88,7 @@ const ModalVerifitCode = () => {
                     keyboardType="email-address" // Configura el teclado para correos electrónicos
                     style={styles.textInputKey}
                     value={mail}
-                    onChangeText={(text) => setMail(text)} // Actualiza el estado al cambiar el texto
+                    onChangeText={(text) => setMail(text.toLowerCase())} // Actualiza el estado al cambiar el texto
                   />
                 </View>
                 {/* para enviar codigo al correo */}

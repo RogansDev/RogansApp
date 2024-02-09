@@ -119,7 +119,7 @@ export const consultCards = [
       tipo_cita: 'presencial',
       precio_cita: 'Gratis', 
     },
-    { 
+    /* { 
       id: 6,
       departamento: 'Facial',
       title: 'Plasma Facial (PRP)', 
@@ -148,7 +148,7 @@ export const consultCards = [
       duracion_cita: "20 minutos",
       tipo_cita: 'presencial',
       precio_cita: '80000', 
-    },
+    }, */
     { 
       id: 9,
       departamento: 'Corporal',
@@ -169,7 +169,7 @@ export const consultCards = [
       tipo_cita: 'presencial-virtual',
       precio_cita: '80000', 
     },
-    { 
+    /* { 
       id: 11,
       departamento: 'Facial',
       title: 'Harmonyca', 
@@ -178,8 +178,8 @@ export const consultCards = [
       duracion_cita: "30 minutos",
       tipo_cita: 'presencial',
       precio_cita: 'Gratis', 
-    },
-    { 
+    }, */
+    /* { 
       id: 12,
       departamento: 'Facial',
       title: 'Limpieza Facial', 
@@ -188,7 +188,7 @@ export const consultCards = [
       duracion_cita: "20 minutos",
       tipo_cita: 'presencial',
       precio_cita: 'Gratis', 
-    },
+    }, */
     { 
       id: 13,
       departamento: 'Capilar',
@@ -199,7 +199,7 @@ export const consultCards = [
       tipo_cita: 'presencial',
       precio_cita: '90000', 
     },
-    { 
+/*     { 
       id: 14,
       departamento: 'Facial',
       title: 'Radiesse', 
@@ -268,5 +268,5 @@ export const consultCards = [
       duracion_cita: "30 minutos",
       tipo_cita: 'presencial',
       precio_cita: 'Gratis', 
-    },
+    }, */
   ];

@@ -12,6 +12,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { agendarCita } from '../../../../agendarCitaService';
 import { WebView } from 'react-native-webview';
 import { setCalendaryInfo, resetSpecificCalendaryInfo } from '../../../state/CalendarySlice';
+import { setSpecialityInfo } from '../../../state/SpecialitySlice';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootParamList } from '../../../utils/RootParamList';
 import usePromotions from '../../../hooks/usePromotions';
@@ -33,6 +34,7 @@ const ProcedureDescription = () => {
     const calendaryState = useSelector((state : any) => state.calendary);
     const promotions = useSelector( (state : any) => state.promotions);
     const user = useSelector( (state : any) => state.user);
+    const specialityState = useSelector( (state : any) => state.speciality.especialidadEstado);
 
     const fecha = useSelector( (state : any) => state.calendary.fecha);
     const horaAgendada = useSelector( (state : any) => state.calendary.horaAgendada);
@@ -42,12 +44,17 @@ const ProcedureDescription = () => {
     const cedulaUsuario = user.document;
     const telUsuario = user.phone;
 
-    const actualizarVirtualPresencial = (virtualOPresencial) => {
+    const actualizarVirtualPresencial = (value) => {
         dispatch(setCalendaryInfo({
-          fecha: calendaryState.fecha,
-          horaAgendada: calendaryState.hora,
-          virtualPresencial: virtualOPresencial,
-          selectedCard: calendaryState.selectedCard,
+          ...calendaryState,
+          virtualPresencial: value,
+        }));
+    };
+
+    const actualizarEspecialidad = (value) => {
+        dispatch(setSpecialityInfo({
+            ...specialityState,
+            especialidadEstado: value,
         }));
     };
 
@@ -199,9 +206,13 @@ const ProcedureDescription = () => {
             } else {
                 if (selectedCard.precio_cita === 'Gratis') {
                     agendarHandler();
+                    actualizarVirtualPresencial(selectedValue);
+                    actualizarEspecialidad(selectedCard.title);
                     navigation.navigate("Confirmado");
                 } else {
                     agendarHandler();
+                    actualizarVirtualPresencial(selectedValue);
+                    actualizarEspecialidad(selectedCard.title);
                     iniciarProcesoDePago();
                 }
             }
@@ -211,9 +222,13 @@ const ProcedureDescription = () => {
             } else {
                 if (selectedCard.precio_cita === 'Gratis') {
                     agendarHandler();
+                    actualizarVirtualPresencial("Presencial");
+                    actualizarEspecialidad(selectedCard.title);
                     navigation.navigate("Confirmado");
                 } else {
                     agendarHandler();
+                    actualizarVirtualPresencial("Presencial");
+                    actualizarEspecialidad(selectedCard.title);
                     iniciarProcesoDePago();
                 }
             }

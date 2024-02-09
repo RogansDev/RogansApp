@@ -3,6 +3,7 @@ import ProfileSlice from './ProfileSlice'
 import CalendarySlice from './CalendarySlice'
 import CodeSlice from './CodeSlice'
 import PromotionSlice from './PromotionSlice'
+import SpecialitySlice from './SpecialitySlice'
 
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
     user:ProfileSlice,
     calendary: CalendarySlice,
     code: CodeSlice,
-    promotions: PromotionSlice
+    promotions: PromotionSlice,
+    speciality: SpecialitySlice
   },
 })
