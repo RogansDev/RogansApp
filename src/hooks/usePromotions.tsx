@@ -44,7 +44,6 @@ const usePromotions = () => {
             const querySnapshot = await getDocs(codeQuery);
             let selectedCode: any;
             querySnapshot.forEach((doc) => {
-                console.log(doc.data())
                 selectedCode = doc.data();
             });
 
@@ -71,7 +70,7 @@ const usePromotions = () => {
         }
     };
 
-    const updateStatusCode = async (userId: any, code: any, status: boolean, email: string) => {
+    const updateStatusCode = async (userId: any, code: any, status: boolean, email: string, name: string) => {
 
         const currentDate = new Date();
         try {
@@ -112,7 +111,7 @@ const usePromotions = () => {
                 }
                 distpach(setStatePromotions(updatedUser));
                 // sendNotificationRegisterSuccess('Rogans', `Operacion ${status ? "con exito":"sin exito"}`, { name: '1' });
-                sendEmailCodePromotionStatus(email, status);
+                sendEmailCodePromotionStatus(email, status, name);
                 
             }
         } catch (error) {

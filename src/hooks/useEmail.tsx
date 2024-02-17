@@ -2,7 +2,7 @@ import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase";
 
 
-export async function sendEmailCode(email: any, codigo: any) {
+export async function sendEmailCode(email: any, codigo: any, name: any) {
 
   try {
     const collectionRef = collection(db, 'mail');
@@ -68,7 +68,7 @@ export async function sendEmailCode(email: any, codigo: any) {
         <div class="email-container">
           <div class="email-footer">
             <h2 style="color: #28a745;">ROGANS</h2>   
-            <h4 style="color: #28a745;">Hola ${email} </h4>        
+            <h4 style="color: #28a745;">Bienvenido ${name ? name : email} </h4>        
             <p>Su codigo es ${codigo}.</p>
             Saludos<br>
             ROGANS HEALTH
@@ -91,7 +91,7 @@ export async function sendEmailCode(email: any, codigo: any) {
 }
 
 
-export async function sendEmailCodePromotion(email: any, codigo: any) {
+export async function sendEmailCodePromotion(email: any, codigo: any, name: any) {
 
   try {
     const collectionRef = collection(db, 'mail');
@@ -157,7 +157,7 @@ export async function sendEmailCodePromotion(email: any, codigo: any) {
         <div class="email-container">
           <div class="email-footer">
             <h2 style="color: #28a745;">ROGANS</h2>   
-            <h4 style="color: #28a745;">Hola ${email} </h4>        
+            <h4 style="color: #28a745;">Bienvenido ${name ? name : email} </h4>            
             <p>Su codigo de descuento es ${codigo}.</p>
             Saludos<br>
             ROGANS HEALTH
@@ -180,7 +180,7 @@ export async function sendEmailCodePromotion(email: any, codigo: any) {
 }
 
 
-export async function sendEmailCodePromotionStatus(email: any, status: boolean) {
+export async function sendEmailCodePromotionStatus(email: any, status: boolean, name:any) {
 
   const state = `${status ? "Aprobado" : "Rechazado"}`
 
@@ -248,7 +248,7 @@ export async function sendEmailCodePromotionStatus(email: any, status: boolean) 
         <div class="email-container">
           <div class="email-footer">
             <h2 style="color: #28a745;">ROGANS</h2>   
-            <h4 style="color: #28a745;">Hola ${email} </h4>        
+            <h4 style="color: #28a745;">Bienvenido ${name ? name : email} </h4>            
             <p>Su pago fue ${state}.</p>
             Saludos<br>
             ROGANS HEALTH

@@ -8,7 +8,6 @@ import { useNavigation } from "@react-navigation/native";
 import SingLogin from "../../../Presentation/components/SingLogin";
 import UseViewModel from "./ViewModel/LoginViewModel";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
-import Checkbox from "expo-checkbox";
 import Icons from "../../theme/Icons";
 import CustomTextInput from "../../components/CustomTextInput";
 import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
@@ -34,22 +33,6 @@ const Login = () => {
   const [isChecked, setIsChecked] = useState(false);
 
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
-
-  const handleCheckBoxChange = () => {
-    setIsChecked(!isChecked);
-  };
-
-
-
-  const handleAcceptTerms = () => {
-    if (isChecked) {
-      // logica para navegar a otra pantalla
-      console.log("Le diste check");
-    } else {
-      // Informar al usuario de que debe marcar el CheckBox para aceptar las políticas
-      console.log("Debes aceptar las políticas antes de proceder.");
-    }
-  };
 
   useEffect(() => {
     const obtenerDatos = async () => {

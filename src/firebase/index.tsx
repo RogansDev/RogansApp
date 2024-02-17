@@ -33,7 +33,6 @@ export async function uploadFile(file : any, nameFile : string , folderName : st
         const storageRef = ref(storage, `${folderName}/${nameFile}`)
         await uploadBytes(storageRef, file)
         const url = await getDownloadURL(storageRef)
-        console.log('aqui deberia estar la url', url)
         return url;
     } catch (error) {
         console.error('Error al cargar el archivo:', error);

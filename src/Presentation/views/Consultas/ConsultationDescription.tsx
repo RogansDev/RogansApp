@@ -246,25 +246,25 @@ const ConsultationDescription = () => {
             if (estadoCupon) {
                 navigation.navigate("Confirmado");
                 setPagoVisible(false);
-                updateStatusCode(user.user_id, promotions.codigo, true, user.email);
+                updateStatusCode(user.user_id, promotions.codigo, true, user.email, user.name);
                 console.log(estadoCupon);
             } else {
                 navigation.navigate("Confirmado");
                 setPagoVisible(false);
-                updateStatusCode(user.user_id, promotions.codigo, false, user.email);
+                updateStatusCode(user.user_id, promotions.codigo, false, user.email, user.name);
                 console.log(estadoCupon);
             }
         } else if (receivedMessage === 'rechazado') {
             navigation.navigate("Rechazado");
             setPagoVisible(false);
             estadoCupon = false;
-            updateStatusCode(user.user_id,promotions.codigo, false, user.email);
+            updateStatusCode(user.user_id,promotions.codigo, false, user.email, user.name);
             console.log(estadoCupon);
         } else if (receivedMessage === 'pendiente') {
             navigation.navigate("Pendiente");
             setPagoVisible(false);
             estadoCupon = false;
-            updateStatusCode(user.user_id, promotions.codigo,false, user.email);
+            updateStatusCode(user.user_id, promotions.codigo,false, user.email, user.name);
             console.log(estadoCupon);
         }
     };
