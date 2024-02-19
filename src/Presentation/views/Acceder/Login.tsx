@@ -14,6 +14,7 @@ import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ButtonFacebook from "../../components/ButtonFacebook";
 
 const Login = () => {
   const { email, password, onChange } = UseViewModel();
@@ -122,6 +123,7 @@ const Login = () => {
             Registrarme
           </Text>
         </View>
+        <ButtonFacebook/>
         <View style={styles.loginAuthe}>
           <Google width={30} height={30} />
           <Facebook width={30} height={30} />

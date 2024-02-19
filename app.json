@@ -14,6 +14,17 @@
       "resizeMode": "cover",
       "backgroundColor": "#FCFCFC"
     },
+    "plugins": [
+      [
+        "react-native-fbsdk-next",
+        {
+          "appID": "765659755482251",
+          "clientToken": "5f3a7334b4bcfe9f8526f9936f779460",
+          "displayName": "RN_RogansApp",
+          "scheme": "fb765659755482251"
+        }
+      ]
+    ],
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -30,9 +41,11 @@
         "foregroundImage": "./assets/adaptiveIcon.png",
         "backgroundColor": "#FCFCFC"
       },
-      "googleServicesFile":"./google-services.json",
+      "googleServicesFile": "./google-services.json",
       "package": "com.rogansdev.RogansApp",
-      "permissions": ["CAMERA"],
+      "permissions": [
+        "CAMERA"
+      ],
       "versionCode": 2
     },
     "web": {
@@ -43,6 +56,5 @@
         "projectId": "bd8d9d9a-7119-481a-a757-ec044f47da53"
       }
     }
-    
   }
 }

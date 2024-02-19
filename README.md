@@ -132,4 +132,15 @@ prueba expo tools ---> ExponentPushToken[CKWFJILzcaS1MzrWFupfHm]
 ### para la gestion de login automatico
 expo install expo-secure-store
 
+### para facebook 
+
+npx expo install react-native-fbsdk-next
+
+luego npx run:android
+
+
+### ignorar
+
+https://com.rogansdev.RogansApp/expo-development-client/?url=http%3A%2F%2F192.168.100.4%3A8081
+
 
