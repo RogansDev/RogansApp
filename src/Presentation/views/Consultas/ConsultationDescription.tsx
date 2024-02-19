@@ -23,6 +23,13 @@ interface PopUpErrorHandles {
 }
 
 const ConsultationDescription = () => {
+    /*const webViewRef = useRef(null);
+
+    const setLocalStorage = () => {
+        const script = `localStorage.setItem('myKey', 'myValue'); true;`;
+        webViewRef.current.injectJavaScript(script);
+    };*/
+    
     const { CalendarAddIcon, ArrowDownIcon, ArrowWhiteIcon, CloseIcon } = Icons;
     const dispatch = useDispatch();
     const {updateStatusCode} = usePromotions();
@@ -139,6 +146,8 @@ const ConsultationDescription = () => {
             .join('&');
 
         setUrlFinal(`https://rogansya.com/pagos/test/?${queryString}`);
+        console.log(`https://rogansya.com/pagos/test/?${queryString}`);
+        
         setPagoVisible(true);
     };
 
@@ -288,6 +297,8 @@ const ConsultationDescription = () => {
                     </TouchableOpacity>
                     <WebView style={{ width: '100%', height: '100%', }}
                         source={{ uri: urlFinal }}
+                        javaScriptEnabled={true}
+                        domStorageEnabled={true}
                         onMessage={handleMessage}
                     />
                 </View>

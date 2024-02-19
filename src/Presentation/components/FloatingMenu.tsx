@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   menuItem: {
     alignItems: 'center',
-    width: 80,
+    width: 100,
   },
   menuIcon: {
     marginBottom: 4,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   activeMenuItem: {
     alignItems: 'center',
-    width: 80,
+    width: 100,
   },
   uchatContainer: {
     position: 'absolute',

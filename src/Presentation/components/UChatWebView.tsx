@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { WebView } from 'react-native-webview';
 import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 
 const UChatWebView = () => {
   const [isLoading, setLoading] = useState(true);
+  const user = useSelector( (state : any) => state.user);
+  const nombreUsuario =  user.name;
+  const apellidoUsuario = user.lastname;
+  const telUsuario = user.phone;
+
+  const url = `https://rogansya.com/rogans-app/uchat/?name=${encodeURIComponent(nombreUsuario)}&lastname=${encodeURIComponent(apellidoUsuario)}&phone=${encodeURIComponent(telUsuario)}`;
+
+  console.log(url);
 
   return (
     <>
@@ -13,8 +22,10 @@ const UChatWebView = () => {
         </View>
       )}
       <WebView
-        source={{ uri: 'https://rogansya.com/rogans-app/uchat/' }}
+        source={{ uri: url }}
         style={styles.webview}
+        javaScriptEnabled={true}
+        domStorageEnabled={true}
         onLoadStart={() => setLoading(true)}
         onLoadEnd={() => setLoading(false)}
       />
