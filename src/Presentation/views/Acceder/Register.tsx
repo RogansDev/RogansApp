@@ -96,9 +96,8 @@ const Register = () => {
 
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"} // Ajusta este valor según la plataforma
-      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0} // Puedes ajustar este valor según necesites
+      style={styles.container}
+      {...(Platform.OS === "ios" && { behavior: "padding", keyboardVerticalOffset: 64 })}
     >
       <ScrollView
       style={styles.container}
