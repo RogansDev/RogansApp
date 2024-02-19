@@ -265,22 +265,22 @@ const ProcedureDescription = () => {
             if (estadoCupon) {
                 navigation.navigate("Confirmado");
                 setPagoVisible(false);
-                updateStatusCode(user.user_id, promotions.codigo, true, correoUsuario);
+                updateStatusCode(user.user_id, promotions.codigo, true, correoUsuario, user.name);
             } else {
                 navigation.navigate("Confirmado");
                 setPagoVisible(false);
-                updateStatusCode(user.user_id, promotions.codigo, false, correoUsuario);
+                updateStatusCode(user.user_id, promotions.codigo, false, correoUsuario, user.name);
             }
         } else if (receivedMessage === 'rechazado') {
             navigation.navigate("Rechazado");
             setPagoVisible(false);
             estadoCupon = false;
-            updateStatusCode(user.user_id,promotions.codigo, false, correoUsuario);
+            updateStatusCode(user.user_id,promotions.codigo, false, correoUsuario, user.name);
         } else if (receivedMessage === 'pendiente') {
             navigation.navigate("Pendiente");
             setPagoVisible(false);
             estadoCupon = false;
-            updateStatusCode(user.user_id, promotions.codigo,false, correoUsuario);
+            updateStatusCode(user.user_id, promotions.codigo,false, correoUsuario, user.name);
         }
     };
 

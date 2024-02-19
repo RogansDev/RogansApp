@@ -1,20 +1,18 @@
 import { useState } from 'react';
-
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth'
 import { initializeApp } from 'firebase/app'
 import { db, firebaseConfig } from '../firebase/index'
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../utils/RootParamList";
 import { Alert } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
 import { setClearUserInfo, setUserInfo } from '../state/ProfileSlice';
-import { add } from 'date-fns';
 import { sendEmailCodePromotion } from './useEmail';
 import useNotificationPush from './useNotificationPush';
 import { saveCredentials } from '../services/credentials';
+
 
 
 const useRegisterFirebase = () => {
@@ -27,8 +25,7 @@ const useRegisterFirebase = () => {
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const user = useSelector( (state : any) => state.user);
-    const nombre = user.name;
+    const currentDate = new Date();
 
     const handleRegister = async (props: any) => {
 
@@ -45,7 +42,6 @@ const useRegisterFirebase = () => {
             querySnapshot.forEach((doc) => { selectedProfile = doc.data(); });
 
             if (selectedProfile) {
-                console.log('Documento existe .', selectedProfile.email)
                 Alert.alert('Documento en uso!');
                 setLoading(false);
 
@@ -64,13 +60,16 @@ const useRegisterFirebase = () => {
                                     name: props.name,
                                     lastname: props.lastname,
                                     phone: props.phone,
-                                    birthdate: props.birthdate
+                                    birthdate: props.birthdate,
+                                    createdAt: currentDate
+
                                 };
                                 addDoc(collection(db, "users"), dataToCreate).
                                     then(() => {
 
                                         var codigo = Math.floor(Math.random() * 900000) + 100000;
-                                        const currentDate = new Date(); const expirationDate = new Date(currentDate);
+                                        const currentDate = new Date();
+                                        const expirationDate = new Date(currentDate);
                                         expirationDate.setDate(currentDate.getDate() + 15);
 
                                         try {
@@ -83,11 +82,12 @@ const useRegisterFirebase = () => {
                                                 charge: 50000
                                             };
                                             addDoc(collection(db, 'promotions'), dataToUpload).then(() => {
-                                                sendEmailCodePromotion(props.email, codigo);
-                                                setLoading(false);
-                                                navigation.navigate('Login')
+                                                sendEmailCodePromotion(props.email, codigo, props.name);
+                                                // navigation.navigate('Login')
+                                                sendNotificationRegisterSuccess('Rogans', `Bienvenido a Rogans  ${props.name}`, { name: props.name });
+                                                handleLogin(props.email, props.password);
                                                 Alert.alert('Registro exitoso! se envio un mail con un cupon de descuentos.');
-                                                sendNotificationRegisterSuccess('Rogans', `Bienvenido a Rogans  ${props.name}`, { name: props.name })
+                                                setLoading(false);
                                             }).catch()
 
                                         } catch (error) {
@@ -145,7 +145,7 @@ const useRegisterFirebase = () => {
 
     const handleLogin = async (email: any, password: any) => {
 
-        
+
         setLoading(true);
 
         try {
@@ -255,18 +255,19 @@ const useRegisterFirebase = () => {
         }
     };
 
-    const handleDeleteAccount = async () => {
+    const handleDeleteAccount = async (userID : any) => {
         setLoading(true);
 
-        try {            
-            const user = auth.currentUser;            
-            await user.delete();
+        try {
+            const user = auth.currentUser;
+            const userDoc = doc(db, "users", userID);
+
+            await user.delete();            
+            await deleteDoc(userDoc);
+
             setLoading(false)
             distpach(setClearUserInfo(''));
             Alert.alert('Cuenta eliminada!');
-            // luego verificar si es necesario eliminar sus datos relacionados ó
-            // si es que nos sirve dejarlo en la base de datos de firebase
-            // pero como tal ya no podra ingresar de nuevo, solo con registro previo
 
         } catch (error) {
             setError(error.message);

@@ -50,8 +50,31 @@ const Perfil = () => {
     };
 
 
-    const handleDeleteUser = () => {
-        handleDeleteAccount();
+    const handleDeleteUser = async () => {
+
+        try {
+
+            await deleteCredentials("email");
+            await deleteCredentials("password");
+
+            dispatch(setClearUserInfo(""));
+            dispatch(setClearCalendaryInfo(""));
+
+            const userQuery = query(
+                collection(db, "users"),
+                where("user_id", "==", user_id)
+            );
+
+            const querySnapshot = await getDocs(userQuery);
+            const firstDoc = querySnapshot.docs[0];
+
+            handleDeleteAccount(firstDoc.id);
+
+        } catch (error) {
+
+        }
+
+
     }
 
     const handlePhoto = async () => {

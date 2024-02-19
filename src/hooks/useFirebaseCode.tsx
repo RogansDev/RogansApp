@@ -27,6 +27,7 @@ const useFirebaseCode = () => {
             });
 
             if (selectedEmail) {
+                console.log(selectedEmail)
                 var codigo = Math.floor(Math.random() * 900000) + 100000;
                 try {
                     const dataToCreate = {
@@ -34,9 +35,9 @@ const useFirebaseCode = () => {
                     };
                     addDoc(collection(db, "emailcodes"), dataToCreate).
                         then(() => {
-                            sendEmailCode(mail, codigo, nombre);
+                            sendEmailCode(mail, codigo, selectedEmail.name);
                             setLoading(false);
-                            Alert.alert(`Código enviado a ${mail}`);
+                            Alert.alert(`${selectedEmail.name.toUpperCase()} se envio un código a ${mail}`);
                         }).catch((error) => {
                             setLoading(false);
                             console.log(error)
