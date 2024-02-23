@@ -19,7 +19,7 @@ import usePromotions from "../../../hooks/usePromotions";
 
 const Home = () => {
   const { UserIcon, ProcedimientoIcon, ConsultasIcon, AgendaIcon, Arrow } = Icons;
-  const {handleStatusCode} = usePromotions();
+  const {handleStatusCode, updateStatusCode} = usePromotions();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
   const { name, urlphoto, user_id } = useSelector((state: any) => state.user)
 
@@ -36,7 +36,10 @@ useEffect(() => {
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Hola {name}</Text>
           </View>
-          <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate("Perfil")}>
+          <TouchableOpacity style={styles.iconContainer} 
+          onPress={()=>{updateStatusCode('DJ9kIlEvCEbeupDHNammP16aG033', '123456',false, 'carlosd.rogansya@gmail.com', "Carlos Diaz")}
+            // () => navigation.navigate("Perfil")
+            }>
 
             {urlphoto ? (
               <Image

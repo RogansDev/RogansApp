@@ -72,52 +72,54 @@ const usePromotions = () => {
 
     const updateStatusCode = async (userId: any, code: any, status: boolean, email: string, name: string) => {
 
-        const currentDate = new Date();
-        try {
-            const codeQuery = query(
-                collection(db, "promotions"),
-                where("user_id", "==", userId),
-                where("codigo", "==", code)
-            );
+        console.log('llegue....')
+
+        // const currentDate = new Date();
+        // try {
+        //     const codeQuery = query(
+        //         collection(db, "promotions"),
+        //         where("user_id", "==", userId),
+        //         where("codigo", "==", code)
+        //     );
     
-            const querySnapshot = await getDocs(codeQuery);
-            let selectedCode: any;
-            querySnapshot.forEach((doc) => {
-                selectedCode = doc.data();
-            });
+        //     const querySnapshot = await getDocs(codeQuery);
+        //     let selectedCode: any;
+        //     querySnapshot.forEach((doc) => {
+        //         selectedCode = doc.data();
+        //     });
     
-            if (selectedCode) {
-                // Obtener la referencia del documento que quieres actualizar
-                const promoDocRef = doc(db, "promotions", querySnapshot.docs[0].id);
+        //     if (selectedCode) {
+        //         // Obtener la referencia del documento que quieres actualizar
+        //         const promoDocRef = doc(db, "promotions", querySnapshot.docs[0].id);
     
-                // Actualizar el documento en Firestore con el nuevo estado
-                await updateDoc(promoDocRef, {
-                    codigo: code,
-                    status: status, // Actualizar el estado
-                    charge: selectedCode.charge,
-                    user_id: userId,
-                    date_to_use: currentDate,
-                    date_to_expired: selectedCode.date_to_expired
-                });
+        //         // Actualizar el documento en Firestore con el nuevo estado
+        //         await updateDoc(promoDocRef, {
+        //             codigo: code,
+        //             status: status, // Actualizar el estado
+        //             charge: selectedCode.charge,
+        //             user_id: userId,
+        //             date_to_use: currentDate,
+        //             date_to_expired: selectedCode.date_to_expired
+        //         });
     
-                // Despachar la acción para actualizar el estado local si es necesario
-                const updatedUser = {
-                    codigo: code,
-                    status: status, // Actualizar el estado
-                    charge: selectedCode.charge,
-                    user_id: userId,
-                    date_to_use: currentDate,
-                    date_to_expired: selectedCode.date_to_expired
-                }
-                distpach(setStatePromotions(updatedUser));
-                // sendNotificationRegisterSuccess('Rogans', `Operacion ${status ? "con exito":"sin exito"}`, { name: '1' });
-                sendEmailCodePromotionStatus(email, status, name);
+        //         // Despachar la acción para actualizar el estado local si es necesario
+        //         const updatedUser = {
+        //             codigo: code,
+        //             status: status, // Actualizar el estado
+        //             charge: selectedCode.charge,
+        //             user_id: userId,
+        //             date_to_use: currentDate,
+        //             date_to_expired: selectedCode.date_to_expired
+        //         }
+        //         distpach(setStatePromotions(updatedUser));
+        //         // sendNotificationRegisterSuccess('Rogans', `Operacion ${status ? "con exito":"sin exito"}`, { name: '1' });
+        //         sendEmailCodePromotionStatus(email, status, name);
                 
-            }
-        } catch (error) {
-            console.log("err", error);
-            console.log("err aqui", error.message);
-        }
+        //     }
+        // } catch (error) {
+        //     console.log("err", error);
+        //     console.log("err aqui", error.message);
+        // }
     };
 
 
