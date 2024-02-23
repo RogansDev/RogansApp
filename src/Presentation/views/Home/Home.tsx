@@ -36,11 +36,7 @@ useEffect(() => {
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Hola {name}</Text>
           </View>
-          <TouchableOpacity style={styles.iconContainer} 
-          onPress={()=>{updateStatusCode('DJ9kIlEvCEbeupDHNammP16aG033', '123456',false, 'carlosd.rogansya@gmail.com', "Carlos Diaz")}
-            // () => navigation.navigate("Perfil")
-            }>
-
+          <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate("Perfil")}>
             {urlphoto ? (
               <Image
                 source={{ uri: urlphoto }}
