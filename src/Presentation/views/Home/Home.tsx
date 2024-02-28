@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-// import { getEventTypes } from '../';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Image, Platform } from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { useNavigation } from '@react-navigation/native';
@@ -15,17 +14,29 @@ import { useSelector } from "react-redux";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
 import usePromotions from "../../../hooks/usePromotions";
+import useServices from "../../../hooks/useServices";
+import usePopUp from "../../../hooks/usePopUp";
 
 
 const Home = () => {
   const { UserIcon, ProcedimientoIcon, ConsultasIcon, AgendaIcon, Arrow } = Icons;
-  const {handleStatusCode, updateStatusCode} = usePromotions();
+  const {handleStatusCode} = usePromotions();
+  const {getServices, services, loadingServices} = useServices();
+  const {getPopups, popups, loadingPopUps} = usePopUp();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
   const { name, urlphoto, user_id } = useSelector((state: any) => state.user)
 
 useEffect(() => {
-  handleStatusCode(user_id); // llamar en el home
+  handleStatusCode(user_id);
+  getServices();
+  getPopups();
 }, [])
+
+useEffect(() => {
+  console.log('servicios...',JSON.stringify(services, null, 6));
+  console.log('popups...', JSON.stringify(popups, null, 6));
+}, [popups,services])
+
 
 
   return (
@@ -40,7 +51,7 @@ useEffect(() => {
             {urlphoto ? (
               <Image
                 source={{ uri: urlphoto }}
-                style={[styles.imageTiny, styles.roundedImage]} // Agregamos el estilo de imagen redonda
+                style={[styles.imageTiny, styles.roundedImage]} 
                 resizeMode="contain"
               />
             ) : (

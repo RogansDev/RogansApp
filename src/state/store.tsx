@@ -4,6 +4,8 @@ import CalendarySlice from './CalendarySlice'
 import CodeSlice from './CodeSlice'
 import PromotionSlice from './PromotionSlice'
 import SpecialitySlice from './SpecialitySlice'
+import ServicesSlice from './ServicesSlice'
+import PopUpSlice from './PopUpSlice'
 
 
 export const store = configureStore({
@@ -12,6 +14,8 @@ export const store = configureStore({
     calendary: CalendarySlice,
     code: CodeSlice,
     promotions: PromotionSlice,
-    speciality: SpecialitySlice
+    speciality: SpecialitySlice,
+    services: ServicesSlice,
+    popups: PopUpSlice
   },
 })
