@@ -6,9 +6,11 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "android": {
+        "gradleCommand": ":app:assembleDebug"
+      },
       "ios": {
-        "resourceClass": "m1-medium",
-        "simulator": true
+        "resourceClass": "m1-medium"
       }
     },
     "preview": {
