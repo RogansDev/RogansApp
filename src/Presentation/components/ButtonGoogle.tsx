@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -37,11 +37,9 @@ import { useEffect, useState } from "react";
   };
 
   return (
-    <GoogleSigninButton
-          size={GoogleSigninButton.Size.Standard}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={signin}
-    />
+    <TouchableOpacity style={styles.button} onPress={signin}>
+      <Text style={styles.text}>Iniciar sesión con Google</Text>
+    </TouchableOpacity>
   );
 }
 
@@ -51,6 +49,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  button: {
+    backgroundColor: '#4285F4',
+    padding: 10,
+    borderRadius: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    color: '#fff',
+    fontSize: 16,
   },
 });
 export default GoogleButton;
