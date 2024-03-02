@@ -27,7 +27,7 @@ const ConsultCard = ({ cards }: any) => {
       {cards.map((card: {
         id: Key | null | undefined; category?: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; image: ImageSourcePropType; title: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined;
       }) => (
-        <View key={card.id} style={styles.card}>
+        <TouchableOpacity key={card.id} style={styles.card} onPress={() => handleSelectCard(card)}>
           <View style={styles.overlay} />
           <Image source={card.image} style={styles.cardImage} />
           <Text style={styles.cardText}>{card.title}</Text>
@@ -38,7 +38,7 @@ const ConsultCard = ({ cards }: any) => {
             <Text style={styles.textAgendarBtn}>Agendar cita</Text>
             <AgendarIcon style={styles.iconAgendarBtn} width={16} height={16} />
           </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
       ))}
     </ScrollView>
   );

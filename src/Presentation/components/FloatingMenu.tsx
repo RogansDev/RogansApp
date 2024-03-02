@@ -9,10 +9,8 @@ import useCurrentRoute from '../../hooks/useCurrentRoute';
 import Icons from '../theme/Icons';
 import UChatWebView from './UChatWebView';
 
-const FloatingMenu = () => {
+const FloatingMenu = ({ chatVisible, setChatVisible }) => {
   const { InicioIcon, ServiciosIcon, MiAgendaIcon, Headphone, InicioGreen, ServiciosGreen, MiAgendaGreen, CloseIcon, MessageIcon } = Icons;
-
-  const [chatVisible, setChatVisible] = useState(false);
 
   const currentRoute = useCurrentRoute();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
@@ -41,7 +39,7 @@ const FloatingMenu = () => {
       <View style={styles.menuContainer}>
         <TouchableOpacity onPress={() => setChatVisible(!chatVisible)} style={styles.chat}>
           <MessageIcon width={20} height={20} />
-          <Text style={styles.chatText}>Chat en vivo</Text>
+          <Text style={styles.chatText}>Asesoria medica</Text>
         </TouchableOpacity>
         <View style={styles.menu}>
           <TouchableOpacity
@@ -173,6 +171,7 @@ const styles = StyleSheet.create({
   },
   chatText: {
     color: '#FFFFFF',
+    fontFamily: MyFont.regular,
   }
 });
 

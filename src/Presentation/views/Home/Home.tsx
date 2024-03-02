@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState ,useEffect } from "react";
 // import { getEventTypes } from '../';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Image, Platform } from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
@@ -15,13 +15,15 @@ import { useSelector } from "react-redux";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
 import usePromotions from "../../../hooks/usePromotions";
+import HomeBannesrs from "../../components/HomeBanners";
 
 
 const Home = () => {
-  const { UserIcon, ProcedimientoIcon, ConsultasIcon, AgendaIcon, Arrow } = Icons;
+  const { UserTwo, ProcedimientoIcon, ConsultasIcon, AgendaIcon, Arrow, QuestionIcon } = Icons;
   const {handleStatusCode, updateStatusCode} = usePromotions();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
-  const { name, urlphoto, user_id } = useSelector((state: any) => state.user)
+  const { name, user_id } = useSelector((state: any) => state.user)
+  const [chatVisible, setChatVisible] = useState(false);
 
 useEffect(() => {
   handleStatusCode(user_id); // llamar en el home
@@ -30,43 +32,41 @@ useEffect(() => {
 
   return (
     <View style={styles.container}>
-      <FloatingMenu />
+      <FloatingMenu chatVisible={chatVisible} setChatVisible={setChatVisible} />
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Hola {name}</Text>
           </View>
-          <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate("Perfil")}>
-            {urlphoto ? (
-              <Image
-                source={{ uri: urlphoto }}
-                style={[styles.imageTiny, styles.roundedImage]} // Agregamos el estilo de imagen redonda
-                resizeMode="contain"
-              />
-            ) : (
-              <UserIcon style={styles.userIcon} width={50} height={45} />
-            )}
+          <TouchableOpacity style={{overflow: 'hidden',}} onPress={() => navigation.navigate("Perfil")}>
+            <UserTwo width={20} height={20} />
           </TouchableOpacity>
         </View>
         {/* ICONOS DE HEADER */}
-        <View style={styles.containerRoundedBtn}>
-          <TouchableOpacity onPress={() => navigation.navigate("ListaDeProcedimientos")} style={styles.roundedBtn}>
-            <ProcedimientoIcon style={styles.iconRoundedBtn} width={24} height={24} />
-            <Text style={styles.textRoundedBtn}>
+        <View style={styles.containerNavBtn}>
+          <View style={{position: 'absolute', width: 50, height: 1, backgroundColor: '#444444', top: 0, left: 15,}} />
+          <TouchableOpacity onPress={() => navigation.navigate("ListaDeProcedimientos")} style={styles.navBtn}>
+            <Text style={styles.textNavBtn}>
               Procedimientos
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("ListaDeConsultas")} style={styles.roundedBtn}>
-            <ConsultasIcon style={styles.iconRoundedBtn} width={24} height={24} />
-            <Text style={styles.textRoundedBtn}>
+          <TouchableOpacity onPress={() => navigation.navigate("ListaDeConsultas")} style={styles.navBtn}>
+            <Text style={styles.textNavBtn}>
               Consultas
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("MiAgenda")} style={styles.roundedBtn}>
-            <AgendaIcon style={styles.iconRoundedBtn} width={24} height={24} />
-            <Text style={styles.textRoundedBtn}>
+          <TouchableOpacity onPress={() => navigation.navigate("MiAgenda")} style={styles.navBtn}>
+            <Text style={styles.textNavBtn}>
               Mi Agenda
             </Text>
+          </TouchableOpacity>
+        </View>
+        <HomeBannesrs />
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#404040', borderRadius: 18, paddingVertical: 12, paddingHorizontal: 15, marginTop: 30, marginBottom: 20, marginHorizontal: 15,}}>
+          <Text style={{fontFamily: MyFont.regular, fontSize: 16, lineHeight: 18, color: '#FFFFFF',}}>Realiza tu{`\n`}consulta en vivo {`\n`}gratis</Text>
+          <TouchableOpacity onPress={() => setChatVisible(true)} style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 4, backgroundColor: '#FFFFFF', paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12,}}>
+            <Text style={{fontFamily: MyFont.regular, fontSize: 12, color: '#444444',}}>Consulta ahora</Text>
+            <QuestionIcon width={16} height={16} />
           </TouchableOpacity>
         </View>
         {/* texto de consultas y botton de mas consultas */}
@@ -85,7 +85,7 @@ useEffect(() => {
         <View style={{ marginBottom: 30 }}>
           <ProcedureCard cards={procedureCards} />
         </View>
-        <View style={{ marginBottom: 110, alignItems: 'center', }}>
+        <View style={{ marginBottom: 150, alignItems: 'center', }}>
           <TouchableOpacity onPress={() => WebBrowser.openBrowserAsync('https://rogansya.com/rogans-app/legal/')} style={{ flexDirection: 'row', alignItems: 'center', gap: 8, }}>
             <Text style={{ fontFamily: MyFont.medium, fontSize: 16, }}>Términos y condiciones</Text>
             <Arrow width={16} height={16} />
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
-    paddingTop: Platform.OS === 'android' ? 10 : 40,
+    paddingTop: Platform.OS === 'android' ? 10 : 10,
     marginVertical: 30,
   },
   titleContainer: {
@@ -117,53 +117,22 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: MyFont.bold,
   },
-  iconContainer: {
+  containerNavBtn: {
     position: 'relative',
-    marginLeft: 16,
-    // Sombras para Android
-    elevation: 10,
-    // Sombras para iOS
-    shadowColor: "#DDD",
-    shadowOffset: { width: 4, height: 1 },
-    shadowOpacity: 1,
-    shadowRadius: 10,
-  },
-  userIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    overflow: 'hidden',
-  },
-  containerRoundedBtn: {
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,
+    paddingTop: 8,
     marginBottom: 30,
+    gap: 18,
   },
-  roundedBtn: {
-    width: 100,
-    height: 100,
-    marginRight: 10,
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 100,
-    // Sombras para Android
-    elevation: 10,
-    // Sombras para iOS
-    shadowColor: "#F0F0F0",
-    shadowOffset: { width: 4, height: 1 },
-    shadowOpacity: 1,
-    shadowRadius: 10,
+  navBtn: {
+    
   },
-  iconRoundedBtn: {
-    width: 20,
-    height: 20,
-    marginBottom: 8,
-  },
-  textRoundedBtn: {
-    fontSize: 9.7,
+  textNavBtn: {
+    fontSize: 12,
     fontFamily: MyFont.regular,
+    color: '#444444',
   },
   section: {
     flex: 1,

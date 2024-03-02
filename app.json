@@ -5,7 +5,7 @@
     },
     "name": "RogansApp",
     "slug": "RogansApp",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -33,7 +33,7 @@
       "googleServicesFile":"./google-services.json",
       "package": "com.rogansdev.RogansApp",
       "permissions": ["CAMERA"],
-      "versionCode": 4
+      "versionCode": 5
     },
     "web": {
       "favicon": "./assets/favicon.png"

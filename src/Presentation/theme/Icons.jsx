@@ -62,6 +62,8 @@ import Camara from '../../../assets/icons/camera.svg';
 import Editar2Icon from '../../../assets/icons/editar-2.svg';
 import GalleryAdd from '../../../assets/icons/gallery-add.svg';
 import MessageIcon from '../../../assets/icons/message.svg';
+import QuestionIcon from '../../../assets/icons/message-question.svg';
+import UserTwo from '../../../assets/icons/user-two.svg';
 
 const Icons = {
   LogoWhite,
@@ -127,7 +129,9 @@ const Icons = {
   MessageIcon,
   InicioGreen,
   ServiciosGreen,
-  MiAgendaGreen
+  MiAgendaGreen,
+  QuestionIcon,
+  UserTwo
 };
 
 export default Icons;

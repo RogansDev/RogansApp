@@ -207,7 +207,7 @@ const Perfil = () => {
                     <View style={styles.modalContainer2}>
                         <View style={styles.modalContent}>
                             <View>
-                                <TouchableOpacity style={styles.cerrarBtn} onPress={() => setModalCerrarSesion(false)}>
+                                <TouchableOpacity style={styles.cerrarBtn} onPress={() => setModalEliminarCuenta(false)}>
                                     <CloseIcon width={16} height={16} />
                                     <Text style={styles.textModal}>Cerrar</Text>
                                 </TouchableOpacity>
@@ -248,7 +248,7 @@ const Perfil = () => {
 
                         <View style={styles.modalContent}>
                             <View>
-                                <TouchableOpacity style={styles.cerrarBtn} onPress={() => setModalEliminarCuenta(false)}>
+                                <TouchableOpacity style={styles.cerrarBtn} onPress={() => setModalCerrarSesion(false)}>
                                     <CloseIcon width={16} height={16} />
                                     <Text style={styles.textModal}>Cerrar</Text>
                                 </TouchableOpacity>
@@ -263,7 +263,7 @@ const Perfil = () => {
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.siCancelarBtn} onPress={handleSessionClose}>
                                     <Text style={styles.textModal}>Si, cerrar sesión</Text>
-                                    <TrashIcon width={16} height={16} />
+                                    <CloseIcon width={16} height={16} />
                                 </TouchableOpacity>
                             </View>
 
@@ -410,6 +410,7 @@ const styles = StyleSheet.create({
     textContainer: {
         position: 'relative',
         marginTop: 0,
+        marginBottom: 40,
         width: '100%',
         height: 'auto',
         paddingHorizontal: 16,
