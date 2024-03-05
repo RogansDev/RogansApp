@@ -5,7 +5,7 @@ import { getDatabase } from "firebase/database";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCeBPAFWtk1ZDSbIo-lPmUqHFWqthqSaiE",
+    apiKey: "AIzaSyCeBPAFWtk1ZDSbIo-lPmUqHFWqthqSaiE", //rogans web
     authDomain: "rogans-app-408201.firebaseapp.com",
     projectId: "rogans-app-408201",
     storageBucket: "rogans-app-408201.appspot.com",

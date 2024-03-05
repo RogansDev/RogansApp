@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: "488356227805-eq706g6v23mpnq8t1hka9ut3rndeg4sq.apps.googleusercontent.com",
+      webClientId: "488356227805-7ta65ngc1negegfpuev60gu9o9d4pp84.apps.googleusercontent.com",
       androidClientId: "488356227805-bgsi99ubhrnfqs5bst425h4d39clourr.apps.googleusercontent.com",
     });
   }, []);
