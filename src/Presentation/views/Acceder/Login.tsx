@@ -20,7 +20,6 @@ const Login = () => {
   const { email, password, onChange } = UseViewModel();
   const { handleLogin, loading } = useRegisterFirebase();
 
-
   const {
     LogoBlack,
     LineGray,
@@ -86,7 +85,7 @@ const Login = () => {
           secureTextEntry={true}
           property="password"
         />
-        
+
         <View style={{ marginTop: 20 }}>
           {loading ?
             <Text style={{
@@ -123,7 +122,11 @@ const Login = () => {
             Registrarme
           </Text>
         </View>
-        <GoogleButton />
+        <View style={styles.contentLoginGoogle}>
+          <View style={{ alignSelf: 'center' }}>
+            <GoogleButton />
+          </View>
+        </View>
         <View style={styles.loginAuthe}>
           <Google width={30} height={30} />
           <Facebook width={30} height={30} />
@@ -212,6 +215,11 @@ const styles = StyleSheet.create({
   textUpdate: {
     fontSize: 16,
     fontFamily: MyFont.regular,
+  },
+  contentLoginGoogle: {
+    width: '100%',
+    justifyContent: 'center',
+    marginTop:3
   },
   lineContent: {
     display: "flex",

@@ -12,24 +12,31 @@ import { getCredentials } from "../../../services/credentials";
 const Loading = () => {
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
-    const { handleLogin } = useRegisterFirebase();
+    const { handleLogin,handleGoogleLogin } = useRegisterFirebase();
 
     useEffect(() => {
         const checkLogin = async () => {
-            const email = await getCredentials('email')
-            const password = await getCredentials('password')
+            const email = await getCredentials('email');
+            const password = await getCredentials('password');
+            const googleId = await getCredentials('googleToken');
             await fetchFonts();
-            console.log(` mis datos son ${email} y ${password} `)
 
             if (email && password) {
-                
+
                 try {
                     await handleLogin(email, password);
                 } catch (error) {
                     navigation.navigate('Login');
                 }
-            } else {
-                // Si no hay credenciales almacenadas, navega directamente a la pantalla de login
+            } else if (email && googleId) {
+                try {
+                    await handleGoogleLogin(googleId);
+                } catch (error) {
+                    navigation.navigate('Login');
+                }
+             }
+            else {
+
                 navigation.navigate('Regresar');
             }
         };
@@ -37,11 +44,11 @@ const Loading = () => {
         checkLogin();
     }, []);
 
-        return (
-            <View style={styles.container}>
-                <ActivityIndicator size="large" color="#00D0B1" />
-            </View>
-        );
+    return (
+        <View style={styles.container}>
+            <ActivityIndicator size="large" color="#00D0B1" />
+        </View>
+    );
 }
 
 

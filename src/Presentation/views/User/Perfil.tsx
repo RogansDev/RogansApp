@@ -42,6 +42,7 @@ const Perfil = () => {
 
         await deleteCredentials("email");
         await deleteCredentials("password");
+        await deleteCredentials("googleToken");
 
         dispatch(setClearUserInfo(""));
         dispatch(setClearCalendaryInfo(""));
@@ -53,9 +54,10 @@ const Perfil = () => {
     const handleDeleteUser = async () => {
 
         try {
-
+            
             await deleteCredentials("email");
             await deleteCredentials("password");
+            await deleteCredentials("googleToken");            
 
             dispatch(setClearUserInfo(""));
             dispatch(setClearCalendaryInfo(""));

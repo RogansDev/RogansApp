@@ -11,17 +11,13 @@ import { useDispatch } from 'react-redux';
 import { setClearUserInfo, setUserInfo } from '../state/ProfileSlice';
 import { sendEmailCodePromotion } from './useEmail';
 import useNotificationPush from './useNotificationPush';
-import { saveCredentials } from '../services/credentials';
-
-
+import { getCredentials, saveCredentials } from '../services/credentials';
 
 const useRegisterFirebase = () => {
-
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app)
     const { sendNotificationRegisterSuccess } = useNotificationPush();
     const distpach = useDispatch();
-
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -219,9 +215,7 @@ const useRegisterFirebase = () => {
             Alert.alert('Ocurrio un error!');
 
         }
-
     };
-
     const handleUpdatePassword = async (email: any, password: any, newPassword: any) => {
         setLoading(true);
 
@@ -241,7 +235,6 @@ const useRegisterFirebase = () => {
             Alert.alert('No se pudo actualizar la contraseña. Asegúrese de haber proporcionado la contraseña actual correcta.');
         }
     };
-
     const reauthenticateUser = async (email: any, password: any) => {
         const user = auth.currentUser;
         const credential = EmailAuthProvider.credential(email, password);
@@ -254,21 +247,17 @@ const useRegisterFirebase = () => {
             throw error;
         }
     };
-
-    const handleDeleteAccount = async (userID : any) => {
+    const handleDeleteAccount = async (userID: any) => {
         setLoading(true);
-
         try {
+            const googleId = await getCredentials('googleToken');
             const user = auth.currentUser;
             const userDoc = doc(db, "users", userID);
-
-            await user.delete();            
+            googleId ? null : await user.delete();
             await deleteDoc(userDoc);
-
             setLoading(false)
             distpach(setClearUserInfo(''));
             Alert.alert('Cuenta eliminada!');
-
         } catch (error) {
             setError(error.message);
             setLoading(false)
@@ -276,16 +265,138 @@ const useRegisterFirebase = () => {
             Alert.alert('Cuenta no se pudo eliminar!');
         }
     };
+    // Google Register
+    const handleGoogleRegister = async (props: any) => {
+        try {
+            setLoading(true);
+            const profileQuery = query(
+                collection(db, "users"),
+                where("document", "==", props.document)
+            );
+            const querySnapshot = await getDocs(profileQuery);
+            let selectedProfile: any;
+            querySnapshot.forEach((doc) => { selectedProfile = doc.data(); });
+            if (selectedProfile) {
+                Alert.alert('Documento en uso!');
+                setLoading(false);
+            } else {
+                const dataToCreate = {
+                    user_id: props.google_id,
+                    email: props.email,
+                    role: "client",
+                    urlphoto: props.photo,
+                    document: props.document,
+                    name: props.name,
+                    lastname: props?.lastname ?? '',
+                    phone: props.phone,
+                    birthdate: props.birthdate,
+                    createdAt: currentDate
+                };
+                addDoc(collection(db, "users"), dataToCreate).
+                    then(() => {
+                        var codigo = Math.floor(Math.random() * 900000) + 100000;
+                        const currentDate = new Date();
+                        const expirationDate = new Date(currentDate);
+                        expirationDate.setDate(currentDate.getDate() + 15);
+                        try {
+                            const dataToUpload = {
+                                codigo: codigo,
+                                status: false,
+                                user_id: props.google_id,
+                                date_to_use: null,
+                                date_to_expired: expirationDate,
+                                charge: 50000
+                            };
+                            addDoc(collection(db, 'promotions'), dataToUpload).then(() => {
+                                sendEmailCodePromotion(props.email, codigo, props.name);
+                                sendNotificationRegisterSuccess('Rogans', `Bienvenido a Rogans  ${props.name}`, { name: props.name });
+                                handleGoogleLogin(props.google_id);
+                                Alert.alert('Registro exitoso! se envio un mail con un cupon de descuentos.');
+                                setLoading(false);
+                            }).catch((error) => {
+                                console.log(error)
+                                setLoading(false);
+                                setError(error.message);
+                                Alert.alert('Ocurrio un error!');
+                            })
+                        } catch (error) {
+                            console.log(error)
+                            setLoading(false);
+                            setError(error.message);
+                            Alert.alert('Ocurrio un error!');
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        setLoading(false);
+                        setError(error.message);
+                        Alert.alert('Ocurrio un error!');
+                    }
+                    )
+            }
+        } catch (error) {
+            setLoading(false);
+            setError(error.message);
+            console.log("err", error)
+            console.log("err aqui", error.message)
+            Alert.alert('Ocurrio un error!');
+        }
+    };
 
+    const handleGoogleLogin = async (id: any) => {
+        setLoading(true);
+        try {
+            const profileQuery = query(
+                collection(db, "users"),
+                where("user_id", "==", id)
+            );
+            const querySnapshot = await getDocs(profileQuery);
+            let selectedProfile: any;
+            querySnapshot.forEach((doc) => {
+                selectedProfile = doc.data();
+            });
+            // SI EXISTE EN FIRESTORE LO MUESTRA
+            if (selectedProfile) {
+                const user = {
+                    user_id: selectedProfile.user_id,
+                    email: selectedProfile.email,
+                    role: selectedProfile.role,
+                    urlphoto: selectedProfile.urlphoto,
+                    document: selectedProfile.document,
+                    name: selectedProfile.name,
+                    lastname: selectedProfile?.lastname,
+                    phone: selectedProfile.phone,
+                    birthdate: selectedProfile.birthdate,
+                    logged: true
+                }
+                await saveCredentials('email', selectedProfile.email);
+                await saveCredentials('googleToken', selectedProfile.user_id);
+                distpach(setUserInfo(user));
+                setLoading(false);
+            } else {
+                setLoading(false);
+                console.log('usuario no existe .', selectedProfile)
+                Alert.alert('usuario no existe!');
+            }
+        } catch (error) {
+            setLoading(false);
+            console.log("errerer", error)
+            console.log("errerer", error.message)
+            setError(error.message);
+            Alert.alert('Ocurrio un error!');
+        }
+    };
 
     return {
         handleLogin,
         handleRegister,
+        handleGoogleRegister,
         error,
         setError,
         loading,
         handleUpdatePassword,
-        handleDeleteAccount
+        handleDeleteAccount,
+        handleGoogleLogin
     };
 };
 
