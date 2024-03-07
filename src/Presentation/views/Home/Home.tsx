@@ -15,19 +15,31 @@ import { useSelector } from "react-redux";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
 import usePromotions from "../../../hooks/usePromotions";
+import useServices from "../../../hooks/useServices";
+import usePopUp from "../../../hooks/usePopUp";
 import HomeBannesrs from "../../components/HomeBanners";
 
 
 const Home = () => {
   const { UserTwo, ProcedimientoIcon, ConsultasIcon, AgendaIcon, Arrow, QuestionIcon } = Icons;
-  const {handleStatusCode, updateStatusCode} = usePromotions();
+  const {handleStatusCode} = usePromotions();
+  const {getServices, services, loadingServices} = useServices();
+  const {getPopups, popups, loadingPopUps} = usePopUp();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
   const { name, user_id } = useSelector((state: any) => state.user)
   const [chatVisible, setChatVisible] = useState(false);
 
 useEffect(() => {
-  handleStatusCode(user_id); // llamar en el home
+  handleStatusCode(user_id);
+  getServices();
+  getPopups();
 }, [])
+
+useEffect(() => {
+  console.log('servicios...',JSON.stringify(services, null, 6));
+  console.log('popups...', JSON.stringify(popups, null, 6));
+}, [popups,services])
+
 
 
   return (

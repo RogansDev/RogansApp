@@ -10,6 +10,7 @@ import Loading from '../Presentation/views/loading/Loading';
 import { Platform } from 'react-native';
 import { RootParamList } from "../utils/RootParamList";
 import CustomHeader from '../Presentation/components/CustomHeader';
+import GoogleRegister from '../Presentation/views/Acceder/GoogleRegister';
 
 const Stack = createNativeStackNavigator<RootParamList>();
 
@@ -59,6 +60,26 @@ function PublicScreen() {
       <Stack.Screen
         name="Register"
         component={Register}
+        options={({ navigation, route }) => ({
+          ...Platform.select({
+            ios: {
+              headerShown: true,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
+            },
+            android: {
+              headerShown: false,
+            }
+          }),
+          headerTransparent: false,
+        })}
+      />
+      <Stack.Screen
+        name="GoogleRegister"
+        component={GoogleRegister}
         options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {

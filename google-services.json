@@ -15,8 +15,12 @@
       },
       "oauth_client": [
         {
-          "client_id": "488356227805-7ta65ngc1negegfpuev60gu9o9d4pp84.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "488356227805-bgsi99ubhrnfqs5bst425h4d39clourr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rogansdev.RogansApp",
+            "certificate_hash": "fe2b965bb0d2d1e9c9efc325f2bc1b1e122e68a2"
+          }
         }
       ],
       "api_key": [
@@ -30,6 +34,13 @@
             {
               "client_id": "488356227805-7ta65ngc1negegfpuev60gu9o9d4pp84.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "488356227805-eq706g6v23mpnq8t1hka9ut3rndeg4sq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.rogansdev.RogansApp"
+              }
             }
           ]
         }

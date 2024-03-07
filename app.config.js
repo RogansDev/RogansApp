@@ -1,4 +1,4 @@
-{
+export default {
   "expo": {
     "notification": {
       "icon": "./assets/icon.png"
@@ -14,6 +14,17 @@
       "resizeMode": "cover",
       "backgroundColor": "#FCFCFC"
     },
+    "plugins": [
+      ["@react-native-google-signin/google-signin"],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "15.0"
+          }
+        }
+      ]
+    ],
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -23,14 +34,15 @@
       "infoPlist": {
         "NSCameraUsageDescription": "Esta aplicación utiliza la cámara para agregar la foto de perfil de los usuarios",
         "NSPhotoLibraryUsageDescription": "Necesitamos acceder a la galería para seleccionar imágenes."
-      }
+      },
+      "googleServicesFile": process.env.GOOGLE_SERVICES_INFOPLIST || "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptiveIcon.png",
         "backgroundColor": "#FCFCFC"
       },
-      "googleServicesFile":"./google-services.json",
+      "googleServicesFile": process.env.GOOGLE_SERVICES_JSON || "./google-services.json",
       "package": "com.rogansdev.RogansApp",
       "permissions": ["CAMERA"],
       "versionCode": 5
@@ -43,6 +55,5 @@
         "projectId": "bd8d9d9a-7119-481a-a757-ec044f47da53"
       }
     }
-    
   }
 }
