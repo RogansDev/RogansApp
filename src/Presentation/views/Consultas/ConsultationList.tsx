@@ -25,9 +25,11 @@ const Cosultationlist = () => {
     navigation.navigate('DescripcionConsultas');
   };
 
+  const [chatVisible, setChatVisible] = useState(false);
+
   return (
     <View style={styles.container}>
-      <FloatingMenu />
+      <FloatingMenu chatVisible={chatVisible} setChatVisible={setChatVisible} />
       <ScrollView style={styles.content}>
         <Text style={styles.title}>Consultas para ti</Text>
         <View style={styles.consultationsContainer}>

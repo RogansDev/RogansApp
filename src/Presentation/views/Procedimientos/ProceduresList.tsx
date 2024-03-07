@@ -17,6 +17,7 @@ const Cosultationlist = () => {
   const dispatch = useDispatch();
   const calendaryState = useSelector((state : any) => state.calendary);
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
+  const [chatVisible, setChatVisible] = useState(false);
 
   const handleSelectCard = async (card: any) => {
     dispatch(setCalendaryInfo({
@@ -29,7 +30,7 @@ const Cosultationlist = () => {
 
   return (
     <View style={styles.container}>
-      <FloatingMenu />
+      <FloatingMenu chatVisible={chatVisible} setChatVisible={setChatVisible} />
       <ScrollView style={styles.content}>
         <Text style={styles.title}>Procedimientos para ti</Text>
         <View style={styles.proceduresContainer}>

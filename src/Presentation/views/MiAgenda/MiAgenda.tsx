@@ -50,6 +50,7 @@ const MiAgenda = () => {
 
     const [citas, setCitas] = useState<Cita[]>([]);
     const [cargando, setCargando] = useState(true);
+    const [chatVisible, setChatVisible] = useState(false);
 
     useEffect(() => {
         obtenerCitas(cedulaUsuario).then(data => {
@@ -104,7 +105,7 @@ const MiAgenda = () => {
 
     return (
         <View style={styles.container}>
-            <FloatingMenu />
+            <FloatingMenu chatVisible={chatVisible} setChatVisible={setChatVisible} />
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.content}>
                     <Text style={styles.title}>Citas agendadas</Text>

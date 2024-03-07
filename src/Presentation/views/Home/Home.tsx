@@ -1,6 +1,6 @@
 import React, { useState ,useEffect } from "react";
 // import { getEventTypes } from '../';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Image, Platform } from "react-native";
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Dimensions, Image, Modal, Platform } from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { useNavigation } from '@react-navigation/native';
 import FloatingMenu from '../../../Presentation/components/FloatingMenu';
@@ -11,7 +11,8 @@ import Icons from '../../../Presentation/theme/Icons';
 import ButtonProcedureList from '../../components/BottomMasProcedimientos';
 import * as WebBrowser from 'expo-web-browser';
 import { consultCards, procedureCards } from '../Servicios/ServicesData';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
+import { setCalendaryInfo } from '../../../state/CalendarySlice';
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
 import usePromotions from "../../../hooks/usePromotions";
@@ -20,14 +21,23 @@ import usePopUp from "../../../hooks/usePopUp";
 import HomeBannesrs from "../../components/HomeBanners";
 
 
+
+
 const Home = () => {
-  const { UserTwo, ProcedimientoIcon, ConsultasIcon, AgendaIcon, Arrow, QuestionIcon } = Icons;
+  const { UserTwo, Arrow, QuestionIcon, CloseIcon } = Icons;
   const {handleStatusCode} = usePromotions();
   const {getServices, services, loadingServices} = useServices();
   const {getPopups, popups, loadingPopUps} = usePopUp();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
   const { name, user_id } = useSelector((state: any) => state.user)
   const [chatVisible, setChatVisible] = useState(false);
+  const [modalPopUp, setModalPopUp] = useState(false);
+  const [popUpInfo, setPopUpInfo]: any = useState({});
+  const viewportWidth = Dimensions.get('window').width;
+  const IMAGE_WIDTH = viewportWidth * 0.8;
+  const IMAGE_HEIGHT = IMAGE_WIDTH * 0.9;
+  const dispatch = useDispatch();
+  const calendaryState = useSelector((state : any) => state.calendary);
 
 useEffect(() => {
   handleStatusCode(user_id);
@@ -36,15 +46,84 @@ useEffect(() => {
 }, [])
 
 useEffect(() => {
-  console.log('servicios...',JSON.stringify(services, null, 6));
-  console.log('popups...', JSON.stringify(popups, null, 6));
-}, [popups,services])
+  if (popups) {
+    setPopUpInfo(popups[0]);
+  }
+}, [popups]);
 
+useEffect(() => {
+  if (popUpInfo) {
+    if (popUpInfo.acttivo == true) {
+      setModalPopUp(true);
+    }
+  }
+}, [popUpInfo]);
 
+const handleSelectCard = async (card: any, link: any) => {    
+  dispatch(setCalendaryInfo({
+    ...calendaryState,
+    selectedCard: card
+  }));
+  console.log(calendaryState.selectedCard);
+  
+  navigation.navigate(link);
+};
 
   return (
     <View style={styles.container}>
       <FloatingMenu chatVisible={chatVisible} setChatVisible={setChatVisible} />
+
+      <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalPopUp}
+          onRequestClose={() => setModalPopUp(false)}
+      >
+          <TouchableOpacity
+              style={styles.modalFade}
+              onPress={() => setModalPopUp(false)}
+              activeOpacity={1} // Esto asegura que el área transparente también responda al toque
+          >
+              <View style={styles.modalContainer2}>
+                  <View style={[styles.modalContent, {width: IMAGE_WIDTH, height: IMAGE_HEIGHT}]}>
+                          <TouchableOpacity style={styles.cerrarBtn} onPress={() => setModalPopUp(false)}>
+                              <CloseIcon width={16} height={16} />
+                              <Text style={styles.textModal}>Cerrar</Text>
+                          </TouchableOpacity>
+                      <TouchableOpacity onPress={() => {
+                        const linkParts = popUpInfo.description.split('?');
+                        if (linkParts[0] === 'nav') {
+                          navigation.navigate(linkParts[1]);
+                        } else if (linkParts[0] === 'service') {
+                          const cardIndex = parseInt(linkParts[1].replace('consultCards[', '').replace(']', ''), 10);
+                          const selectedCard = consultCards[cardIndex];
+                          const screenName = linkParts[2];
+                    
+                          if (selectedCard && screenName) {
+                            handleSelectCard(selectedCard, screenName);
+                          } else {
+                            console.error('Invalid link format or undefined card/screen');
+                          }
+                        } else {
+                          console.error('Unrecognized link format');
+                        }
+
+                        setModalPopUp(false)
+                      }}>
+                      {
+                        popUpInfo && (
+                          <Image 
+                            source={{ uri: popUpInfo.url_imagen }} 
+                            style={{ width: '100%', height: '100%', zIndex: 10 }}
+                          />
+                        )
+                      }
+                      </TouchableOpacity>
+                  </View>
+              </View>
+          </TouchableOpacity>
+      </Modal>
+
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
@@ -166,6 +245,38 @@ const styles = StyleSheet.create({
   },
   roundedImage: {
     borderRadius: 30, // La mitad del tamaño de la imagen para hacerla redonda
+  },
+  modalFade: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  modalContainer2: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+  },
+  modalContent: {
+    position: 'relative',
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  cerrarBtn: {
+    position: 'absolute',
+    top: 13,
+    left: 13,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    zIndex: 20,
+    backgroundColor: 'rgba(265, 265, 265, 0.5)',
+    paddingVertical: 3,
+    paddingHorizontal: 6,
+    borderRadius: 14,
+    overflow: 'hidden',
+  },
+  textModal: {
+    fontSize: 13,
+    fontFamily: MyFont.regular,
   },
 });
 

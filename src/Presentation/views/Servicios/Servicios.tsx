@@ -37,6 +37,7 @@ const Servicios = () => {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [isSearchVisible, setIsSearchVisible] = useState(false);
+    const [chatVisible, setChatVisible] = useState(false);
 
     const handleSearch = (query: any) => {
         setSearchQuery(query.toLowerCase());
@@ -72,7 +73,7 @@ const Servicios = () => {
 
     return (
         <View style={styles.container}>
-            <FloatingMenu />
+            <FloatingMenu chatVisible={chatVisible} setChatVisible={setChatVisible} />
             <View style={styles.searchBar}>
                 <SearchBar
                     onSearch={handleSearch}

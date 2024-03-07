@@ -7,6 +7,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import Icons from "../../theme/Icons";
 import { RootParamList } from "../../../utils/RootParamList";
 
+
 const ThirdScreen = () => {
 
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
@@ -48,6 +49,13 @@ const styles = StyleSheet.create({
     position: 'relative',
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  video: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
   background: {
     position: 'absolute',
