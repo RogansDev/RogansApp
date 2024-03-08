@@ -8,9 +8,16 @@ import { setGoogleInfo } from "../../state/GoogleDataSlice";
 import { useNavigation } from "@react-navigation/native";
 import { RootParamList } from "../../utils/RootParamList";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../firebase";
+import { saveCredentials } from "../../services/credentials";
+import { setUserInfo } from "../../state/ProfileSlice";
+import { Text, View } from "react-native";
+import { MyFont } from "../theme/AppTheme";
 
 const GoogleButton = () => {
   const [error, setError] = useState();
+  const [loading, setloading] = useState(false);
   const distpach = useDispatch();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
@@ -22,6 +29,7 @@ const GoogleButton = () => {
   }, []);
 
   const signin = async () => {
+    setloading(true);
     try {
       await GoogleSignin.hasPlayServices();
       const user: any = await GoogleSignin.signIn();
@@ -33,25 +41,69 @@ const GoogleButton = () => {
         name: user.user.name,
       }
       distpach(setGoogleInfo(google));
-      navigation.navigate("GoogleRegister");
+      try {
+        const userQuery = query(
+          collection(db, "users"),
+          where("email", "==", user.user.email)
+        );
+        const querySnapshot = await getDocs(userQuery);
+        let selectedEmail: any;
+        querySnapshot.forEach((doc) => {
+          console.log(doc.data())
+          selectedEmail = doc.data();
+        });
+        if (selectedEmail) {
+          const user = {
+            user_id: selectedEmail.user_id,
+            email: selectedEmail.email,
+            role: selectedEmail.role,
+            urlphoto: selectedEmail.urlphoto,
+            document: selectedEmail.document,
+            name: selectedEmail.name,
+            lastname: selectedEmail?.lastname,
+            phone: selectedEmail.phone,
+            birthdate: selectedEmail.birthdate,
+            logged: true
+          }
+          await saveCredentials('email', selectedEmail.email);
+          await saveCredentials('googleToken', selectedEmail.user_id);
+          distpach(setUserInfo(user));
+          setloading(false);
+        } else {
+          setloading(false);
+          navigation.navigate("GoogleRegister");
+        }
+      } catch (error) {
+        console.log(error);
+        setError(error);
+        setloading(false);
+      }
+
     } catch (e) {
       console.log(e);
       setError(e);
+      setloading(false);
     }
   };
 
-  // const logout = () => {
-  //   setUserInfo();
-  //   GoogleSignin.revokeAccess();
-  //   GoogleSignin.signOut();
-  // };
-
   return (
-    <GoogleSigninButton
-      size={GoogleSigninButton.Size.Standard}
-      color={GoogleSigninButton.Color.Dark}
-      onPress={signin}
-    />
+    <View>
+      {loading ? <Text style={{
+        backgroundColor: 'black',
+        color: 'white',
+        width: '100%',
+        padding: 14,
+        fontSize: 13,
+        fontFamily: MyFont.regular,
+        borderRadius: 10,
+        textAlign: 'center',
+        overflow: 'hidden'
+      }}> Cargando... </Text> : <GoogleSigninButton
+        size={GoogleSigninButton.Size.Standard}
+        color={GoogleSigninButton.Color.Dark}
+        onPress={signin}
+      />}
+    </View>
   );
 }
 

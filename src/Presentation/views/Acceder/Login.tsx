@@ -122,11 +122,11 @@ const Login = () => {
             Registrarme
           </Text>
         </View>
-        {/*<View style={styles.contentLoginGoogle}>
+        <View style={styles.contentLoginGoogle}>
           <View style={{ alignSelf: 'center' }}>
             <GoogleButton />
           </View>
-        </View>*/}
+        </View>
         <View style={styles.loginAuthe}>
           <Google width={30} height={30} />
           <Facebook width={30} height={30} />
