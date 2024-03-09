@@ -15,8 +15,8 @@ async function sendPushNotification(expoPushTokens, title: any, body: any, data:
     const messages = expoPushTokens.map((token : any) => ({
       to: token,
       sound: 'default',
-      title: title,
-      body: body,
+      title: 'Bienvenido a rogans',
+      body: 'body test',
       data: data, // en el caso de registro seria data.name
       icon: '../../assets/icon.png', // Agrega esta línea
     }));
@@ -94,6 +94,10 @@ const useNotificationPush = () => {
     sendPushNotification([expoPushTokens[0]], title, body, data);
   };
 
+  const sendNotificationWithTitleBodyAndData = (title : any, body: any, data: any) => {
+    sendPushNotification([expoPushTokens[0]], title, body, data);
+  };
+
 
 
   useEffect(() => {
@@ -111,7 +115,8 @@ const useNotificationPush = () => {
     notification,
     sendNotificationToManyDevices,
     sendNotificationToOneDevice,
-    sendNotificationRegisterSuccess
+    sendNotificationRegisterSuccess,
+    sendNotificationWithTitleBodyAndData
   };
 };
 

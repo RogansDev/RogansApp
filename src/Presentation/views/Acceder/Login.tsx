@@ -15,10 +15,14 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import GoogleButton from "../../components/ButtonGoogle";
+import useNotificationPush from "../../../hooks/useNotificationPush";
 
 const Login = () => {
   const { email, password, onChange } = UseViewModel();
   const { handleLogin, loading } = useRegisterFirebase();
+  const { sendNotificationToManyDevices,
+    sendNotificationToOneDevice,
+    sendNotificationWithTitleBodyAndData } = useNotificationPush();
 
   const {
     LogoBlack,
@@ -29,8 +33,6 @@ const Login = () => {
     UpdatePassword,
     Arrow,
   } = Icons;
-
-  const [isChecked, setIsChecked] = useState(false);
 
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
@@ -127,6 +129,14 @@ const Login = () => {
             <GoogleButton />
           </View>
         </View>
+        <View style={styles.containerUpdate}>
+          <Arrow width={30} height={24} color={'black'} />
+          <Text
+            style={styles.textUpdate}
+            onPress={sendNotificationToManyDevices}>
+            Notification push
+          </Text>
+        </View>
         <View style={styles.loginAuthe}>
           <Google width={30} height={30} />
           <Facebook width={30} height={30} />
@@ -219,7 +229,7 @@ const styles = StyleSheet.create({
   contentLoginGoogle: {
     width: '100%',
     justifyContent: 'center',
-    marginTop:3
+    marginTop: 3
   },
   lineContent: {
     display: "flex",
