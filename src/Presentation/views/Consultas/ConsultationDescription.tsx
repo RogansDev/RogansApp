@@ -122,6 +122,8 @@ const ConsultationDescription = () => {
             cupon: string,
             valor_descuento: string,
             estado_cupon: string,
+            nombre: string,
+            cedula: string,
         }
 
         const datosTransaccion: DatosTransaccion = {
@@ -139,6 +141,8 @@ const ConsultationDescription = () => {
             cupon: promotions.codigo,
             valor_descuento: promotions.charge,
             estado_cupon: promotions.status,
+            nombre: user.name,
+            cedula: user.document,
         };
 
         const queryString = Object.entries(datosTransaccion)

@@ -64,6 +64,7 @@ import GalleryAdd from '../../../assets/icons/gallery-add.svg';
 import MessageIcon from '../../../assets/icons/message.svg';
 import QuestionIcon from '../../../assets/icons/message-question.svg';
 import UserTwo from '../../../assets/icons/user-two.svg';
+import GoogleLogo from '../../../assets/icons/google_logo.svg';
 
 const Icons = {
   LogoWhite,
@@ -131,7 +132,8 @@ const Icons = {
   ServiciosGreen,
   MiAgendaGreen,
   QuestionIcon,
-  UserTwo
+  UserTwo,
+  GoogleLogo,
 };
 
 export default Icons;

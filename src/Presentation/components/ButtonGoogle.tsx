@@ -12,14 +12,16 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
 import { saveCredentials } from "../../services/credentials";
 import { setUserInfo } from "../../state/ProfileSlice";
-import { Text, View } from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { MyFont } from "../theme/AppTheme";
+import Icons from "../theme/Icons";
 
 const GoogleButton = () => {
   const [error, setError] = useState();
   const [loading, setloading] = useState(false);
   const distpach = useDispatch();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
+  const { GoogleLogo } = Icons;
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -53,11 +55,11 @@ const GoogleButton = () => {
           selectedEmail = doc.data();
         });
         if (selectedEmail) {
-          const user = {
+          const user: any = {
             user_id: selectedEmail.user_id,
             email: selectedEmail.email,
             role: selectedEmail.role,
-            urlphoto: selectedEmail.urlphoto,
+            urlphoto: selectedEmail.urlphoto == "" ? google.urlphoto :  selectedEmail.urlphoto,
             document: selectedEmail.document,
             name: selectedEmail.name,
             lastname: selectedEmail?.lastname,
@@ -88,23 +90,45 @@ const GoogleButton = () => {
 
   return (
     <View>
-      {loading ? <Text style={{
-        backgroundColor: 'black',
-        color: 'white',
-        width: '100%',
-        padding: 14,
-        fontSize: 13,
-        fontFamily: MyFont.regular,
-        borderRadius: 10,
-        textAlign: 'center',
-        overflow: 'hidden'
-      }}> Cargando... </Text> : <GoogleSigninButton
-        size={GoogleSigninButton.Size.Standard}
-        color={GoogleSigninButton.Color.Dark}
-        onPress={signin}
-      />}
+      {loading ?
+      <View style={styles.button}>
+          <GoogleLogo width={26} height={26} />
+          <Text style={styles.text}>Cargando...</Text>
+      </View>
+      :
+      <TouchableOpacity style={styles.button} onPress={signin}>
+          <GoogleLogo width={26} height={26} />
+          <Text style={styles.text}>Continuar con Google</Text>
+      </TouchableOpacity>}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    width: 230,
+    backgroundColor: '#FFFFFF', // Color de fondo de Google
+    padding: 12,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 14,
+    // Sombras para Android
+    elevation: 1,
+    // Sombras para iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
+    gap: 8,
+    marginTop: 28,
+  },
+  text: {
+    color: '#000000',
+    fontFamily: MyFont.regular,
+    fontSize: 14,
+  }
+});
+
 
 export default GoogleButton;
