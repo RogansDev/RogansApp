@@ -126,7 +126,7 @@ const Login = () => {
         </View>
         <View style={styles.contentLoginGoogle}>
           <View style={{ alignSelf: 'center' }}>
-            <GoogleButton />
+            {/*<GoogleButton />*/}
           </View>
         </View>
         <View style={styles.containerUpdate}>
