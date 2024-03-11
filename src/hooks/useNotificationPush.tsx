@@ -6,7 +6,7 @@ import Constants from 'expo-constants';
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
-    shouldPlaySound: true,
+    shouldPlaySound: false,
     shouldSetBadge: false,
   }),
 });
@@ -16,9 +16,9 @@ async function sendPushNotification(expoPushTokens, title: any, body: any, data:
       to: token,
       sound: 'default',
       title: 'Bienvenido a rogans',
-      body: 'body test',
+      body: 'Hola',
       data: data, // en el caso de registro seria data.name
-      icon: '../../assets/icon.png', // Agrega esta línea
+      // icon: '../../assets/icon.png', // Agrega esta línea
     }));
   
     await Promise.all(

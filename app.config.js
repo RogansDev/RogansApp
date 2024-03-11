@@ -1,8 +1,5 @@
 export default {
   "expo": {
-    "notification": {
-      "icon": "./assets/icon.png"
-    },
     "name": "RogansApp",
     "slug": "RogansApp",
     "version": "1.2.3",
