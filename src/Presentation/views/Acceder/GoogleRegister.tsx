@@ -141,20 +141,6 @@ const GoogleRegister = () => {
             onChangeText={onChange}
             property="document"
           />
-          {/* fecha de nacimiento */}
-          <View>
-            <View style={styles.labelContent}>
-              <Text style={styles.labelnombres}>Fecha de nacimiento </Text>
-              <Text style={styles.labelnombres2}>(Reqierido)</Text>
-            </View>
-            <TouchableOpacity style={styles.input} onPress={abrirCalendario}>
-              {birthDay === '' ? (
-                <Text style={[styles.inputBirthDay, { color: '#C0C0C0', }]}>dd/mm/aaaa</Text>
-              ) : (
-                <Text style={[styles.inputBirthDay, { color: '#000000', }]}>{birthDay}</Text>
-              )}
-            </TouchableOpacity>
-          </View>
           {/* acepto terminos */}
           <View style={styles.Accept}>
             <Checkbox

@@ -1,18 +1,14 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Button, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import ScreenThrid from "../../../Presentation/components/ScreenThrid";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Icons from "../../theme/Icons";
 import { RootParamList } from "../../../utils/RootParamList";
-import { Video, ResizeMode } from 'expo-av';
+
 
 const ThirdScreen = () => {
-  const video = React.useRef(null);
-  const secondVideo = React.useRef(null);
-  const [status, setStatus] = React.useState({});
-  const [statusSecondVideo, setStatusSecondVideo] = React.useState({});
 
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
@@ -21,10 +17,11 @@ const ThirdScreen = () => {
 
   return (
     <View style={styles.container}>
-      
-
       <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.3)', zIndex: 2, }} />
-      
+      <Image
+        source={require("../../../../assets/doctores-third.png")}
+        style={styles.background}
+      />
       <View style={styles.form}>
         <Text style={styles.titleform}>Bienvenido a Rogans</Text>
         <Text style={styles.parraForm}>
@@ -59,9 +56,6 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-  },
-  button: {
-
   },
   background: {
     position: 'absolute',
