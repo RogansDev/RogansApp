@@ -24,10 +24,7 @@ const ThirdScreen = () => {
       
 
       <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.3)', zIndex: 2, }} />
-      <Image
-        source={require("../../../../assets/doctores-third.png")}
-        style={styles.background}
-      />
+      
       <View style={styles.form}>
         <Text style={styles.titleform}>Bienvenido a Rogans</Text>
         <Text style={styles.parraForm}>
