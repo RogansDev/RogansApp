@@ -14,6 +14,7 @@ import { db } from '../../../firebase';
 import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import useRegisterFirebase from '../../../hooks/useRegisterFirebase';
 import { deleteCredentials } from '../../../services/credentials';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const Perfil = () => {
 
@@ -43,10 +44,10 @@ const Perfil = () => {
         await deleteCredentials("email");
         await deleteCredentials("password");
         await deleteCredentials("googleToken");
+        await GoogleSignin.signOut();
 
         dispatch(setClearUserInfo(""));
         dispatch(setClearCalendaryInfo(""));
-
 
     };
 
@@ -57,10 +58,12 @@ const Perfil = () => {
             
             await deleteCredentials("email");
             await deleteCredentials("password");
-            await deleteCredentials("googleToken");            
+            await deleteCredentials("googleToken");  
+            await GoogleSignin.signOut();          
 
             dispatch(setClearUserInfo(""));
             dispatch(setClearCalendaryInfo(""));
+            
 
             const userQuery = query(
                 collection(db, "users"),
