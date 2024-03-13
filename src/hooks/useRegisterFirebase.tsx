@@ -253,7 +253,11 @@ const useRegisterFirebase = () => {
             const googleId = await getCredentials('googleToken');
             const user = auth.currentUser;
             const userDoc = doc(db, "users", userID);
-            googleId ? null : await user.delete();
+            if (googleId || googleId !== null || googleId !== undefined || googleId !== '') {
+                console.log('null')
+            } else {
+                await user.delete();
+            }
             await deleteDoc(userDoc);
             setLoading(false)
             distpach(setClearUserInfo(''));

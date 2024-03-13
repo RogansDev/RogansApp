@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, ScrollView, Text, Image, TouchableOpacity, Modal, StyleSheet, Alert, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MyFont } from "../../../Presentation/theme/AppTheme";
@@ -40,14 +40,18 @@ const Perfil = () => {
 
     const handleSessionClose = async () => {
 
+        try {
+            await deleteCredentials("email");
+            await deleteCredentials("password");
+            await deleteCredentials("googleToken");
+            await GoogleSignin.signOut();
 
-        await deleteCredentials("email");
-        await deleteCredentials("password");
-        await deleteCredentials("googleToken");
-        await GoogleSignin.signOut();
+            dispatch(setClearUserInfo(""));
+            dispatch(setClearCalendaryInfo(""));
 
-        dispatch(setClearUserInfo(""));
-        dispatch(setClearCalendaryInfo(""));
+        } catch (error) {
+            console.log('error......', error);
+        }
 
     };
 
@@ -55,15 +59,15 @@ const Perfil = () => {
     const handleDeleteUser = async () => {
 
         try {
-            
+
             await deleteCredentials("email");
             await deleteCredentials("password");
-            await deleteCredentials("googleToken");  
-            await GoogleSignin.signOut();          
+            await deleteCredentials("googleToken");
+            await GoogleSignin.signOut();
 
             dispatch(setClearUserInfo(""));
             dispatch(setClearCalendaryInfo(""));
-            
+
 
             const userQuery = query(
                 collection(db, "users"),
@@ -72,11 +76,10 @@ const Perfil = () => {
 
             const querySnapshot = await getDocs(userQuery);
             const firstDoc = querySnapshot.docs[0];
-
             handleDeleteAccount(firstDoc.id);
 
         } catch (error) {
-
+            console.log('error:::::::', error);
         }
 
 
@@ -137,6 +140,13 @@ const Perfil = () => {
             PopUpCerrarSesionRef.current.togglePopUp();
         }
     };
+
+    useEffect(() => {
+        GoogleSignin.configure({
+          webClientId: "488356227805-7ta65ngc1negegfpuev60gu9o9d4pp84.apps.googleusercontent.com",
+          androidClientId: "488356227805-bgsi99ubhrnfqs5bst425h4d39clourr.apps.googleusercontent.com",
+        });
+      }, []);
 
     return (
         <>

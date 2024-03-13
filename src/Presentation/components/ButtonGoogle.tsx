@@ -12,7 +12,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
 import { saveCredentials } from "../../services/credentials";
 import { setUserInfo } from "../../state/ProfileSlice";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { MyFont } from "../theme/AppTheme";
 import Icons from "../theme/Icons";
 
@@ -76,15 +76,17 @@ const GoogleButton = () => {
           navigation.navigate("GoogleRegister");
         }
       } catch (error) {
-        console.log(error);
+        console.log('error........................', error);
         setError(error);
         setloading(false);
+        Alert.alert(`No se pudo ingresar error ${error}`);
       }
 
     } catch (e) {
-      console.log(e);
+      console.log('e..........................>', e);
       setError(e);
       setloading(false);
+      Alert.alert(`No se pudo ingresar error ${e}`);
     }
   };
 
