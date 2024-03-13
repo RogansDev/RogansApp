@@ -12,7 +12,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
 import { saveCredentials } from "../../services/credentials";
 import { setUserInfo } from "../../state/ProfileSlice";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { MyFont } from "../theme/AppTheme";
 import Icons from "../theme/Icons";
 
@@ -59,7 +59,7 @@ const GoogleButton = () => {
             user_id: selectedEmail.user_id,
             email: selectedEmail.email,
             role: selectedEmail.role,
-            urlphoto: selectedEmail.urlphoto == "" ? google.urlphoto :  selectedEmail.urlphoto,
+            urlphoto: selectedEmail.urlphoto == "" ? google.urlphoto : selectedEmail.urlphoto,
             document: selectedEmail.document,
             name: selectedEmail.name,
             lastname: selectedEmail?.lastname,
@@ -91,15 +91,16 @@ const GoogleButton = () => {
   return (
     <View>
       {loading ?
-      <View style={styles.button}>
+        <View style={styles.button}>
           <GoogleLogo width={26} height={26} />
           <Text style={styles.text}>Cargando...</Text>
-      </View>
-      :
-      <TouchableOpacity style={styles.button} onPress={signin}>
-          <GoogleLogo width={26} height={26} />
-          <Text style={styles.text}>Continuar con Google</Text>
-      </TouchableOpacity>}
+        </View>
+        :
+        <GoogleSigninButton
+          size={GoogleSigninButton.Size.Standard}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={signin}
+        />}
     </View>
   );
 }
