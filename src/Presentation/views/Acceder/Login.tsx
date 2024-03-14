@@ -106,7 +106,7 @@ const Login = () => {
           <Text
             style={styles.textUpdate}
             onPress={() => navigation.navigate("ModalVerifitCode")}>
-            Olvide mi contraseña
+            Olvide mi contraseña 454545
           </Text>
         </View>
         <View style={styles.lineContent}>
@@ -118,7 +118,7 @@ const Login = () => {
           <Arrow width={30} height={24} color={'black'} />
           <Text
             style={styles.textUpdate}
-            onPress={() => navigation.navigate("Register")}>
+            onPress={() => navigation.navigate("register")}>
             Registrarme
           </Text>
         </View>
