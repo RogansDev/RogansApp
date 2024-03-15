@@ -2,6 +2,7 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from "@react-native-google-signin/google-signin";
+import * as React from 'react';
 import { useEffect, useState } from "react";
 import { useDispatch } from 'react-redux'
 import { setGoogleInfo } from "../../state/GoogleDataSlice";
@@ -26,7 +27,7 @@ const GoogleButton = () => {
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: "488356227805-7ta65ngc1negegfpuev60gu9o9d4pp84.apps.googleusercontent.com",
-      androidClientId: "488356227805-bgsi99ubhrnfqs5bst425h4d39clourr.apps.googleusercontent.com",
+      androidClientId: "488356227805-f7lh2vuf5mamq9gcr6m861mv75e5hu7t.apps.googleusercontent.com",
     });
   }, []);
 
@@ -98,15 +99,13 @@ const GoogleButton = () => {
           <Text style={styles.text}>Cargando...</Text>
       </View>
       :
-      <GoogleSigninButton
-        size={GoogleSigninButton.Size.Standard}
-        color={GoogleSigninButton.Color.Dark}
-        onPress={signin}
-      />
-      /*<TouchableOpacity style={styles.button} onPress={signin}>
-          <GoogleLogo width={26} height={26} />
-          <Text style={styles.text}>Continuar con Google</Text>
-      </TouchableOpacity>*/}
+      <><GoogleSigninButton
+          size={GoogleSigninButton.Size.Standard}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={signin} /><TouchableOpacity style={styles.button} onPress={signin}>
+            <GoogleLogo width={26} height={26} />
+            <Text style={styles.text}>Continuar con Google</Text>
+          </TouchableOpacity></>}
     </View>
   );
 }

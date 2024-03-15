@@ -5,7 +5,7 @@ export default {
     },
     "name": "RogansApp",
     "slug": "RogansApp",
-    "version": "1.2.6.3",
+    "version": "1.2.6.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -21,6 +21,8 @@ export default {
         {
           "android": {
             "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0"
           },
           "ios": {
             "deploymentTarget": "15.0"
@@ -48,7 +50,7 @@ export default {
       "googleServicesFile": process.env.GOOGLE_SERVICES_JSON || "./google-services.json",
       "package": "com.rogansdev.RogansApp",
       "permissions": ["CAMERA"],
-      "versionCode": 12
+      "versionCode": 15
     },
     "web": {
       "favicon": "./assets/favicon.png"

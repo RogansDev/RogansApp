@@ -9,7 +9,7 @@ import useCurrentRoute from '../../hooks/useCurrentRoute';
 import Icons from '../theme/Icons';
 import UChatWebView from './UChatWebView';
 
-const FloatingMenu = ({ chatVisible, setChatVisible }) => {
+const FloatingMenu = ({ chatVisible, setChatVisible }: any) => {
   const { InicioIcon, ServiciosIcon, MiAgendaIcon, Headphone, InicioGreen, ServiciosGreen, MiAgendaGreen, CloseIcon, MessageIcon } = Icons;
 
   const currentRoute = useCurrentRoute();

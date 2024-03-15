@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "488356227805-bgsi99ubhrnfqs5bst425h4d39clourr.apps.googleusercontent.com",
+          "client_id": "488356227805-f7lh2vuf5mamq9gcr6m861mv75e5hu7t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.rogansdev.RogansApp",
-            "certificate_hash": "fe2b965bb0d2d1e9c9efc325f2bc1b1e122e68a2"
+            "certificate_hash": "d1d16163e976921fc57f1c8afa083b1b4b8c9b09"
           }
         },
         {
