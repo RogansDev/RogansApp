@@ -99,13 +99,10 @@ const GoogleButton = () => {
           <Text style={styles.text}>Cargando...</Text>
       </View>
       :
-      <><GoogleSigninButton
-          size={GoogleSigninButton.Size.Standard}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={signin} /><TouchableOpacity style={styles.button} onPress={signin}>
-            <GoogleLogo width={26} height={26} />
-            <Text style={styles.text}>Continuar con Google</Text>
-          </TouchableOpacity></>}
+      <TouchableOpacity style={styles.button} onPress={signin}>
+        <GoogleLogo width={26} height={26} />
+        <Text style={styles.text}>Continuar con Google</Text>
+      </TouchableOpacity>}
     </View>
   );
 }
