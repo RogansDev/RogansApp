@@ -5,7 +5,7 @@ export default {
     },
     "name": "RogansApp",
     "slug": "RogansApp",
-    "version": "1.2.6.2",
+    "version": "1.2.6.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,6 +19,9 @@ export default {
       [
         "expo-build-properties",
         {
+          "android": {
+            "compileSdkVersion": 34,
+          },
           "ios": {
             "deploymentTarget": "15.0"
           }
@@ -45,7 +48,7 @@ export default {
       "googleServicesFile": process.env.GOOGLE_SERVICES_JSON || "./google-services.json",
       "package": "com.rogansdev.RogansApp",
       "permissions": ["CAMERA"],
-      "versionCode": 11
+      "versionCode": 12
     },
     "web": {
       "favicon": "./assets/favicon.png"
