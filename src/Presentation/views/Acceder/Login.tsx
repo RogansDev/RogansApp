@@ -118,7 +118,7 @@ const Login = () => {
           <Arrow width={30} height={24} color={'black'} />
           <Text
             style={styles.textUpdate}
-            onPress={() => navigation.navigate("Register")}>
+            onPress={() => navigation.navigate("register")}>
             Registrarme
           </Text>
         </View>

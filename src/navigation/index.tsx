@@ -5,11 +5,26 @@ import PrivateScreen from './PrivateScreen';
 import PublicScreen from './PublicScreen';
 
 const Navigation = () => {
-    
-    const { logged } = useSelector((state: any) => state.user);    
+
+    const { logged } = useSelector((state: any) => state.user);
+
+    const linking = {
+        prefixes: ['https://rogansapp.page.link', 'rogansapp://'],
+        config: {
+            screens: {
+                PublicScreen: {
+                    path: 'register',
+                    screens: {
+                        Register: 'register',
+                    },
+                },
+            },
+        },
+    };
+
 
     return (
-        <NavigationContainer>
+        <NavigationContainer linking={linking}>
             {logged ? <PrivateScreen /> : <PublicScreen />}
         </NavigationContainer>
     );

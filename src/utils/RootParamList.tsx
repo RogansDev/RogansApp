@@ -5,7 +5,7 @@ export type RootParamList = {
   UpdateKey: undefined;
   ModalVerifitCode: undefined;
   ConfirmationKey: undefined;
-  Register: undefined;
+  register: undefined;
   GoogleRegister: undefined;
   thirdPage: undefined;
   second: undefined;

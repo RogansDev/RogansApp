@@ -15,7 +15,7 @@ const NavRegister = () => {
   return (
     <TouchableOpacity
       style={styles.roundedBottom}
-      onPress={() => navigation.navigate('Register')}
+      onPress={() => navigation.navigate('register')}
     >
       <View style={styles.flexBttom}>
         <Text style={styles.textBottom}>Registrate</Text>

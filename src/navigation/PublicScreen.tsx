@@ -58,7 +58,7 @@ function PublicScreen() {
         })}
       />
       <Stack.Screen
-        name="Register"
+        name="register"
         component={Register}
         options={({ navigation, route }) => ({
           ...Platform.select({
