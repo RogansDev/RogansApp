@@ -27,4 +27,5 @@ export type RootParamList = {
   CitaCancelada: undefined;
   Servicios: undefined;
   Perfil: undefined;
+  Pagos: undefined;
 };

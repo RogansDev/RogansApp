@@ -20,6 +20,7 @@ import ProcedureList from "../Presentation/views/Procedimientos/ProceduresList";
 import { RootParamList } from "../utils/RootParamList";
 import UpdatePasswordDash from "../Presentation/views/User/UpdatePasswordDash";
 import VerifitCodes from "../Presentation/views/Acceder/VerifitCode";
+import Pagos from "../Presentation/views/Pasarela/Pagos";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 
@@ -29,6 +30,13 @@ function PrivateScreen() {
       <Stack.Screen
         name="Home"
         component={Home}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Pagos"
+        component={Pagos}
         options={{
           headerShown: false,
         }}

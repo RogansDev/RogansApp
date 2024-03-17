@@ -34,7 +34,7 @@ const Cosultationlist = () => {
         <Text style={styles.title}>Consultas para ti</Text>
         <View style={styles.consultationsContainer}>
           {consultCards.map((item, index) => (
-            <View key={index} style={styles.consultation}>
+            <TouchableOpacity key={index} style={styles.consultation} onPress={() => handleSelectCard(item)}>
               <Image source={item.image} style={styles.consultationImage} />
               <View style={styles.consultationInfo}>
                 <View>
@@ -54,7 +54,7 @@ const Cosultationlist = () => {
                   </TouchableOpacity>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
       </ScrollView>

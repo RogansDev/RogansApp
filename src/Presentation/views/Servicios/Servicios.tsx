@@ -114,7 +114,7 @@ const Servicios = () => {
                     <ScrollView>
                         <View style={styles.consultationsContainer}>
                             {filteredItems.map((item, index) => (
-                                <View key={`${item.id}_${index}`} style={styles.consultation}>
+                                <TouchableOpacity onPress={() => handleSelectCard(item)} key={`${item.id}_${index}`} style={styles.consultation}>
                                     <Image source={item.image} style={styles.consultationImage} />
                                     <View style={styles.consultationInfo}>
                                         <Text style={styles.consultationTitle}>{item.title}</Text>
@@ -125,7 +125,7 @@ const Servicios = () => {
                                             </Text>
                                         </TouchableOpacity>
                                     </View>
-                                </View>
+                                </TouchableOpacity>
                             ))}
                         </View>
                     </ScrollView>

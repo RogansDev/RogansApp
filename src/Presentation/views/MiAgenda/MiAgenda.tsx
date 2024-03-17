@@ -46,6 +46,7 @@ const MiAgenda = () => {
         evento_agendado: string;
         status: string;
         valor: string;
+        notas: string;
     }
 
     const [citas, setCitas] = useState<Cita[]>([]);
@@ -65,7 +66,7 @@ const MiAgenda = () => {
     }, []);
     
 
-    const { DollarIcon, ClockIcon, CloseIcon, TickCircleWhiteicon, TrashIcon } = Icons;
+    const { DollarIcon, ClockIcon, CloseIcon, TickCircleWhiteicon, TrashIcon, InfoIcon } = Icons;
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
@@ -135,6 +136,10 @@ const MiAgenda = () => {
                                                 <DollarIcon width={14} height={14} />
                                                 <Text style={styles.text}>{formatearPrecio(cita.valor)}</Text>
                                             </View>
+                                            <View style={{flexDirection: 'row', alignItems: 'center', gap: 5,}}>
+                                                <InfoIcon width={14} height={14} />
+                                                <Text style={styles.text}>{cita.notas}</Text>
+                                            </View>
                                         </View>
                                         <View style={{justifyContent: 'center', alignItems: 'flex-end',}}>
                                             <Text style={[styles.text, {color: '#00D0B1',}]}>{cita.status === 'Confirmado' || 'Pendiente' ? 'Agendada': ''}</Text>
@@ -142,6 +147,13 @@ const MiAgenda = () => {
                                                 <TrashIcon width={16} height={16}/>
                                                 <Text style={styles.text}>Cancelar</Text>
                                             </TouchableOpacity>
+                                        </View>
+                                        <View style={styles.infoContent}>
+                                        <>
+                                        <Text style={styles.textInfo}>
+                                            Nos vemos para tu cita de {cita.evento_agendado} en Autopista Norte # 106 - 71, Consultorio 401, Bogotá, Colombia
+                                        </Text> 
+                                        </>
                                         </View>
                                     </View>
                                 )
@@ -341,6 +353,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'black',
         borderRadius: 10,
     },
+    infoContent: {
+        flex: 1,
+    },
+    textInfo: {
+        
+    }
 });
 
 export default MiAgenda;

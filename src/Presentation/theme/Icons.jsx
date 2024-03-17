@@ -65,6 +65,7 @@ import MessageIcon from '../../../assets/icons/message.svg';
 import QuestionIcon from '../../../assets/icons/message-question.svg';
 import UserTwo from '../../../assets/icons/user-two.svg';
 import GoogleLogo from '../../../assets/icons/google_logo.svg';
+import InfoIcon from '../../../assets/icons/info-circle.svg';
 
 const Icons = {
   LogoWhite,
@@ -134,6 +135,7 @@ const Icons = {
   QuestionIcon,
   UserTwo,
   GoogleLogo,
+  InfoIcon,
 };
 
 export default Icons;
