@@ -19,6 +19,7 @@ import usePromotions from "../../../hooks/usePromotions";
 import useServices from "../../../hooks/useServices";
 import usePopUp from "../../../hooks/usePopUp";
 import HomeBannesrs from "../../components/HomeBanners";
+import usePackages from "../../../hooks/usePackages";
 
 
 
@@ -26,8 +27,9 @@ import HomeBannesrs from "../../components/HomeBanners";
 const Home = () => {
   const { UserTwo, Arrow, QuestionIcon, CloseIcon } = Icons;
   const {handleStatusCode} = usePromotions();
-  const {getServices, services, loadingServices} = useServices();
-  const {getPopups, popups, loadingPopUps} = usePopUp();
+  const {getServices} = useServices();
+  const {getPopups, popups} = usePopUp();
+  const {getPackages, packages} = usePackages();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
   const { name, user_id } = useSelector((state: any) => state.user)
   const [chatVisible, setChatVisible] = useState(false);
@@ -43,7 +45,12 @@ useEffect(() => {
   handleStatusCode(user_id);
   getServices();
   getPopups();
+  getPackages();
 }, [])
+
+useEffect(() => {
+  console.log('paquetes....', JSON.stringify(packages, null, 6))
+}, [packages]);
 
 useEffect(() => {
   if (popups) {

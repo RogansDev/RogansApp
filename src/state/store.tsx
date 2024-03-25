@@ -7,6 +7,7 @@ import SpecialitySlice from './SpecialitySlice'
 import ServicesSlice from './ServicesSlice'
 import PopUpSlice from './PopUpSlice'
 import GoogleDataSlice from './GoogleDataSlice'
+import PackageSlice from './PackageSlice'
 
 
 export const store = configureStore({
@@ -18,6 +19,7 @@ export const store = configureStore({
     promotions: PromotionSlice,
     speciality: SpecialitySlice,
     services: ServicesSlice,
-    popups: PopUpSlice
+    popups: PopUpSlice,
+    packages: PackageSlice,
   },
 })
