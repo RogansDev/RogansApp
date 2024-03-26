@@ -38,6 +38,7 @@ const MiAgenda = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [cancelacion, setCancelacion] = useState<string | null>(null);
     const user = useSelector( (state : any) => state.user);
+    const telUsuario =  user.phone;
     const cedulaUsuario = user.document;
 
     interface Cita {
@@ -66,7 +67,7 @@ const MiAgenda = () => {
     }, []);
     
 
-    const { DollarIcon, ClockIcon, CloseIcon, TickCircleWhiteicon, TrashIcon, InfoIcon } = Icons;
+    const { DollarIcon, ClockIcon, CloseIcon, TickCircleWhiteicon, TrashIcon, InfoIcon, VirtualIcon, ProfileIcon } = Icons;
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
@@ -119,41 +120,64 @@ const MiAgenda = () => {
                                 const { diaSemana, numeroDia, mes, hora } = formatearFecha(cita.fecha);
                                 return (
                                     <View key={index} style={styles.cita}>
-                                        <View style={{alignItems: 'center', width: 80,}}>
-                                            <View style={{flexDirection: 'column', alignItems: 'center',}}>
-                                                <Text style={styles.text}>{diaSemana}</Text>
-                                                <Text style={styles.numeroDia}>{numeroDia}</Text>
-                                                <Text style={styles.text}>{mes}</Text>
+                                        <View style={{flexDirection: "row",}}>
+                                            <View style={{alignItems: 'center', width: 80,}}>
+                                                <View style={{flexDirection: 'column', alignItems: 'center',}}>
+                                                    <Text style={styles.text}>{diaSemana}</Text>
+                                                    <Text style={styles.numeroDia}>{numeroDia}</Text>
+                                                    <Text style={styles.text}>{mes}</Text>
+                                                </View>
                                             </View>
-                                        </View>
-                                        <View style={{flexDirection: 'column', alignItems: 'flex-start', flex: 1, marginLeft: 15, gap: 2,}}>
-                                            <Text style={styles.titleCita}>{cita.evento_agendado}</Text>
-                                            <View style={{flexDirection: 'row', alignItems: 'center', gap: 5,}}>
-                                                <ClockIcon width={14} height={14} />
-                                                <Text style={styles.text}>{hora}</Text>
+                                            <View style={{flexDirection: 'column', alignItems: 'flex-start', flex: 1, marginLeft: 15, gap: 2,}}>
+                                                <Text style={styles.titleCita}>{cita.evento_agendado}</Text>
+                                                <View style={{flexDirection: 'row', alignItems: 'center', gap: 5,}}>
+                                                    <ClockIcon width={14} height={14} />
+                                                    <Text style={styles.text}>{hora}</Text>
+                                                </View>
+                                                <View style={{flexDirection: 'row', alignItems: 'center', gap: 5,}}>
+                                                    <DollarIcon width={14} height={14} />
+                                                    <Text style={styles.text}>{formatearPrecio(cita.valor)}</Text>
+                                                </View>
+                                                <View style={{flexDirection: 'row', alignItems: 'center', gap: 5,}}>
+                                                    {
+                                                        cita.notas === "Virtual" ? (
+                                                            <>
+                                                            <VirtualIcon width={14} height={14} />
+                                                            <Text style={styles.text}>{cita.notas}</Text>
+                                                            </>
+                                                        ):(
+                                                            <>
+                                                            <ProfileIcon width={14} height={14} />
+                                                            <Text style={styles.text}>Presencial</Text>
+                                                            </>
+                                                        )
+                                                    }                                                    
+                                                </View>
                                             </View>
-                                            <View style={{flexDirection: 'row', alignItems: 'center', gap: 5,}}>
-                                                <DollarIcon width={14} height={14} />
-                                                <Text style={styles.text}>{formatearPrecio(cita.valor)}</Text>
+                                            <View style={{justifyContent: 'center', alignItems: 'flex-end',}}>
+                                                <Text style={[styles.text, {color: '#00D0B1',}]}>{cita.status === 'Confirmado' || 'Pendiente' ? 'Agendada': ''}</Text>
+                                                <TouchableOpacity style={styles.cancelarBtn} onPress={() => {setModalVisible(true), setCancelacion(cita.fecha)}}>
+                                                    <TrashIcon width={16} height={16}/>
+                                                    <Text style={styles.text}>Cancelar</Text>
+                                                </TouchableOpacity>
                                             </View>
-                                            <View style={{flexDirection: 'row', alignItems: 'center', gap: 5,}}>
-                                                <InfoIcon width={14} height={14} />
-                                                <Text style={styles.text}>{cita.notas}</Text>
-                                            </View>
-                                        </View>
-                                        <View style={{justifyContent: 'center', alignItems: 'flex-end',}}>
-                                            <Text style={[styles.text, {color: '#00D0B1',}]}>{cita.status === 'Confirmado' || 'Pendiente' ? 'Agendada': ''}</Text>
-                                            <TouchableOpacity style={styles.cancelarBtn} onPress={() => {setModalVisible(true), setCancelacion(cita.fecha)}}>
-                                                <TrashIcon width={16} height={16}/>
-                                                <Text style={styles.text}>Cancelar</Text>
-                                            </TouchableOpacity>
                                         </View>
                                         <View style={styles.infoContent}>
-                                        <>
-                                        <Text style={styles.textInfo}>
-                                            Nos vemos para tu cita de {cita.evento_agendado} en Autopista Norte # 106 - 71, Consultorio 401, Bogotá, Colombia
-                                        </Text> 
-                                        </>
+                                            <View style={{flexDirection: "row", alignItems: "center", gap: 15, marginTop: 6, paddingRight: 25,}}>
+                                                <InfoIcon width={16} height={16} />
+                                                {
+                                                    cita.notas === "Virtual" ? (
+                                                        <Text style={styles.textInfo}>
+                                                            Te contactaremos al <Text style={styles.telUsuario}>{telUsuario && telUsuario !== 'none' ? telUsuario : "número registrado"}</Text> un día antes de la cita.
+                                                        </Text> 
+                                                    ):(
+                                                        <Text style={styles.textInfo}>
+                                                            Nos vemos para tu cita en: Cra 45 # 106 - 71, Consultorio 401, Bogotá, Colombia
+                                                        </Text> 
+                                                    )
+                                                }
+                                                
+                                            </View>
                                         </View>
                                     </View>
                                 )
@@ -273,7 +297,7 @@ const styles = StyleSheet.create({
     },
     cita: {
         marginHorizontal: 16,
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-between',
         padding: 15,
         marginBottom: 16,
@@ -354,10 +378,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     infoContent: {
-        flex: 1,
+        width: '100%', // Asegura que el View ocupe el 100% del ancho disponible
     },
     textInfo: {
         
+    },
+    telUsuario: {
+        color: '#00967F',
     }
 });
 

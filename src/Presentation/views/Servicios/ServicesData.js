@@ -49,7 +49,7 @@ export const consultCards = [
     {
       id: 6,
       image: require("../../../../assets/consultas/estetica-dental.jpg"),
-      title: "Estética dental ",
+      title: "Estética dental",
       description:
         "Te ayudamos a lograr la sonrisa perfecta que siempre has deseado. Nuestro equipo de especialistas en odontología estética se dedica a transformar sonrisas y a mejorar la confianza de nuestros pacientes.",
       duracion_cita: "30 minutos",

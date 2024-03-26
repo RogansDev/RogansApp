@@ -63,7 +63,7 @@ const MiCalendario = forwardRef<MiCalendarioHandles, MiCalendarioProps>((props, 
   const fecha = useSelector( (state : any) => state.calendary.fecha);
   const horaAgendada = useSelector( (state : any) => state.calendary.horaAgendada);
 
-  const actualizarFecha = (nuevaFecha) => {
+  const actualizarFecha = (nuevaFecha: any) => {
     
 
     dispatch(setCalendaryInfo({
@@ -74,7 +74,7 @@ const MiCalendario = forwardRef<MiCalendarioHandles, MiCalendarioProps>((props, 
     }));
   };
 
-  const actualizarHora = (nuevaHora) => {
+  const actualizarHora = (nuevaHora: any) => {
     dispatch(setCalendaryInfo({
       fecha: calendaryState.fecha,
       horaAgendada: nuevaHora,
@@ -141,7 +141,7 @@ const MiCalendario = forwardRef<MiCalendarioHandles, MiCalendarioProps>((props, 
   const onDaySelect = (day: any) => {
     actualizarFecha(day.dateString)
     setFechaSeleccionada(day.dateString);
-    console.log("Fecha seleccionada:", fechaSeleccionada);
+    console.log("Fecha seleccionada:", fechaSeleccionada);    
   };
 
   useEffect(() => {
@@ -257,6 +257,22 @@ const MiCalendario = forwardRef<MiCalendarioHandles, MiCalendarioProps>((props, 
   };
 
   const domingosMarcados = marcarDomingos();
+  
+  const [diasNoDisponibles, setDiasNoDisponibles] = useState({});
+
+  useEffect(() => {
+    const fetchDisponibilidad = async () => {
+      try {
+        const response = await fetch('https://rogansya.com/rogans-app/disponibilidad.json');
+        const datosExternos = await response.json();
+        setDiasNoDisponibles(diasPrev => ({...diasPrev, ...datosExternos}));
+      } catch (error) {
+        console.error('Error al obtener la disponibilidad:', error);
+      }
+    };
+
+    fetchDisponibilidad();
+  }, []);
 
   const PopUpErrorRef = useRef<PopUpErrorHandles>(null);
 
@@ -313,6 +329,7 @@ const MiCalendario = forwardRef<MiCalendarioHandles, MiCalendarioProps>((props, 
                 onDayPress={onDaySelect}
                 markedDates={{
                   ...domingosMarcados,
+                  ...diasNoDisponibles,
                   [fecha]: {
                     selected: true,
                     selectedColor: 'black',

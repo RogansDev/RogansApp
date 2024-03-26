@@ -109,9 +109,9 @@ const Login = () => {
             Olvide mi contraseña
           </Text>
         </View>
-        <View style={styles.lineContent}>
-          <View>
-            <LineGray />
+        <View style={styles.contentLoginGoogle}>
+          <View style={{ alignSelf: 'center' }}>
+            <GoogleButton />
           </View>
         </View>
         <View style={styles.containerUpdate}>
@@ -121,11 +121,6 @@ const Login = () => {
             onPress={() => navigation.navigate("register")}>
             Registrarme
           </Text>
-        </View>
-        <View style={styles.contentLoginGoogle}>
-          <View style={{ alignSelf: 'center' }}>
-            <GoogleButton />
-          </View>
         </View>
         <View style={styles.loginAuthe}>
           <Google width={30} height={30} />

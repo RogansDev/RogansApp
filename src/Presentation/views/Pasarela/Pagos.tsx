@@ -28,6 +28,40 @@ const Pagos = () => {
         setExpanded(!isExpanded);
     };
 
+    const handlePayment = () => {
+        const cardData = {
+            cardNumber: '4509953566233704',
+            cardExpirationMonth: '12',
+            cardExpirationYear: '2025',
+            securityCode: '123',
+            cardholderName: 'APROBADO',
+            identificationType: 'DNI',
+            identificationNumber: '12345678',
+        };
+        
+        // Asegúrate de que la URL sea correcta y de que el servidor esté accesible
+        fetch('https://rogansya.com/pagos/mercadopago/tokenize.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(cardData).toString(),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.token) {
+                console.log('Token:', data.token);
+                // Procede con el pago utilizando el token recibido
+            } else {
+                console.error('Token no recibido:', data);
+            }
+        })
+        .catch(error => {
+            console.error('Error tokenizando la tarjeta:', error);
+        });
+    };
+    
+
     return (
         <View style={styles.container}>
             <ScrollView style={styles.scrollContainer}>
@@ -99,7 +133,7 @@ const Pagos = () => {
                             <Text style={styles.price}>Gratis</Text>
                             <Text style={styles.consulta}>Consulta capilar</Text>
                         </View>
-                        <TouchableOpacity style={styles.agendarBtn}>
+                        <TouchableOpacity onPress={handlePayment} style={styles.agendarBtn}>
                             <Text style={styles.textAgendarBtn}>Agendar</Text>
                             <CalendarWhiteIcon style={styles.iconAgendarBtn} width={16} height={16} />
                         </TouchableOpacity>
