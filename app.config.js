@@ -28,7 +28,8 @@ export default {
             "deploymentTarget": "15.0"
           }
         }
-      ]
+      ],
+      "expo-apple-authentication"
     ],
     "assetBundlePatterns": [
       "**/*"
@@ -40,7 +41,8 @@ export default {
         "NSCameraUsageDescription": "Esta aplicación utiliza la cámara para agregar la foto de perfil de los usuarios",
         "NSPhotoLibraryUsageDescription": "Necesitamos acceder a la galería para seleccionar imágenes."
       },
-      "googleServicesFile": process.env.GOOGLE_SERVICES_INFOPLIST || "./GoogleService-Info.plist"
+      "googleServicesFile": process.env.GOOGLE_SERVICES_INFOPLIST || "./GoogleService-Info.plist",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
