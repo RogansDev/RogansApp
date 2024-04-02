@@ -17,6 +17,7 @@ const ButtonApple = (props: any) => {
                 ],
             });
             console.log(credential);
+            Alert.alert('Mis datos son', `${credential.email}`);
         } catch (e: any) {
             if (e.code === 'ERR_CANCELED') {
                 console.log('Inicio de sesión con Apple cancelado por el usuario');
