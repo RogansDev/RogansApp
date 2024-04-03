@@ -29,13 +29,14 @@ const ButtonApple = (props: any) => {
                     AppleAuthentication.AppleAuthenticationScope.EMAIL,
                 ],
             });
-            console.log(credential);
+            console.log(JSON.stringify(credential, null, 5));
+
             const apple = {
                 google_id: credential?.identityToken,
-                email: credential.email,
+                email: credential?.email,
                 urlphoto: '',
                 idToken: credential?.identityToken,
-                name: credential?.fullName?.familyName,
+                name: credential?.fullName?.familyName 
             }
             distpach(setGoogleInfo(apple));
             try {
