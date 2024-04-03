@@ -30,7 +30,8 @@ export default {
           }
         }
       ],
-      "expo-apple-authentication"
+      "expo-apple-authentication",
+      "@react-native-google-signin/google-signin"
     ],
     "assetBundlePatterns": [
       "**/*"
