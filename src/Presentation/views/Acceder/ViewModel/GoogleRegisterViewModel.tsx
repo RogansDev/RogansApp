@@ -21,8 +21,8 @@ const GoogleRegisterViewModel = () => {
     });
 
     useEffect(() => {
-     console.log('google...', google)
-    }, [])
+     console.log('data...', JSON.stringify(google, null, 5))     
+    }, [google])
     
 
     const onChange = (property: string, value: any) => {
@@ -35,7 +35,7 @@ const GoogleRegisterViewModel = () => {
         }
     };
 
-    const calcularMayorDeEdad = (fechaNacimiento) => {
+    const calcularMayorDeEdad = (fechaNacimiento: any) => {
         const partesFecha = fechaNacimiento.split('/');
         const fechaNacimientoDate = new Date(partesFecha[2], partesFecha[1] - 1, partesFecha[0]);
 
@@ -51,7 +51,7 @@ const GoogleRegisterViewModel = () => {
         return edad >= 18;
     };
 
-    const esEmailValido = (email) => {
+    const esEmailValido = (email : any) => {
         const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regexEmail.test(email);
     };
