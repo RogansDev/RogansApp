@@ -132,4 +132,7 @@ prueba expo tools ---> ExponentPushToken[CKWFJILzcaS1MzrWFupfHm]
 ### para la gestion de login automatico
 expo install expo-secure-store
 
+### para login con apple 
+npx expo install expo-apple-authentication
+
 

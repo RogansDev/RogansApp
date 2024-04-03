@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  Platform
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import SingLogin from "../../../Presentation/components/SingLogin";
@@ -15,6 +16,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import GoogleButton from "../../components/ButtonGoogle";
+import ButtonApple from "../../components/ButtonApple";
 
 const Login = () => {
   const { email, password, onChange } = UseViewModel();
@@ -122,6 +124,17 @@ const Login = () => {
             Registrarme
           </Text>
         </View>
+        <View style={styles.contentLoginGoogle}>
+          <View style={{ alignSelf: 'center' }}>
+            <GoogleButton />
+          </View>
+        </View>
+        {Platform.OS === 'ios' &&
+          <View style={styles.contentLoginGoogle}>
+            <View style={{ alignSelf: 'center' }}>
+              <ButtonApple />
+            </View>
+          </View>}
         <View style={styles.loginAuthe}>
           <Google width={30} height={30} />
           <Facebook width={30} height={30} />
@@ -214,7 +227,7 @@ const styles = StyleSheet.create({
   contentLoginGoogle: {
     width: '100%',
     justifyContent: 'center',
-    marginTop:3
+    marginTop: 3
   },
   lineContent: {
     display: "flex",
