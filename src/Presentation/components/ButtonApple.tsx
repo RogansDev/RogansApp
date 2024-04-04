@@ -15,7 +15,7 @@ import { setUserInfo } from '../../state/ProfileSlice';
 const ButtonApple = (props: any) => {
 
     const { Apple } = Icons;
-    const { title = 'Continuar con apple' } = props;
+    const { title = 'Continuar con Apple' } = props;
     const [error, setError] = useState();
     const [loading, setloading] = useState(false);
     const distpach = useDispatch();
@@ -101,10 +101,10 @@ export default ButtonApple
 
 const styles = StyleSheet.create({
     button: {
+        width:230,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 32,
+        padding: 12,
         elevation: 3,
         backgroundColor: 'black',
         borderRadius: 15,

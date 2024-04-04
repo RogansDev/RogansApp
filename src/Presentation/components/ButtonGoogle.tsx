@@ -1,6 +1,5 @@
 import {
   GoogleSignin,
-  GoogleSigninButton,
 } from "@react-native-google-signin/google-signin";
 import * as React from 'react';
 import { useEffect, useState } from "react";
@@ -110,15 +109,13 @@ const GoogleButton = () => {
 const styles = StyleSheet.create({
   button: {
     width: 230,
-    backgroundColor: '#FFFFFF', // Color de fondo de Google
+    backgroundColor: '#FFFFFF',
     padding: 12,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 14,
-    // Sombras para Android
     elevation: 1,
-    // Sombras para iOS
     shadowColor: '#000',
     shadowOffset: { width: 1, height: 2 },
     shadowOpacity: 0.15,
