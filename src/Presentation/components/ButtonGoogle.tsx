@@ -75,14 +75,14 @@ const GoogleButton = () => {
           setloading(false);
           navigation.navigate("GoogleRegister");
         }
-      } catch (error) {
+      } catch (error: any) {
         console.log('error........................', error);
         setError(error);
         setloading(false);
         Alert.alert(`No se pudo ingresar error ${error}`);
       }
 
-    } catch (e) {
+    } catch (e: any) {
       console.log('e..........................>', e);
       setError(e);
       setloading(false);
