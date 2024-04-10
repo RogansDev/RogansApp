@@ -19,15 +19,16 @@ import usePromotions from "../../../hooks/usePromotions";
 import useServices from "../../../hooks/useServices";
 import usePopUp from "../../../hooks/usePopUp";
 import HomeBannesrs from "../../components/HomeBanners";
-
-
-
+import useRealtime from "../../../hooks/useRealTime";
+import useNotificationPush from "../../../hooks/useNotificationPush";
 
 const Home = () => {
   const { UserTwo, Arrow, QuestionIcon, CloseIcon } = Icons;
   const {handleStatusCode} = usePromotions();
-  const {getServices, services, loadingServices} = useServices();
-  const {getPopups, popups, loadingPopUps} = usePopUp();
+  const {getServices} = useServices();
+  const {getPopups, popups} = usePopUp();
+  const { readAllRegister} = useRealtime();
+  const { sendNotificationRegisterSuccess } = useNotificationPush();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
   const { name, user_id } = useSelector((state: any) => state.user)
   const [chatVisible, setChatVisible] = useState(false);
@@ -63,16 +64,35 @@ const handleSelectCard = async (card: any, link: any) => {
   dispatch(setCalendaryInfo({
     ...calendaryState,
     selectedCard: card
-  }));
-  console.log(calendaryState.selectedCard);
-  
+  }));  
   navigation.navigate(link);
 };
+
+useEffect(() => {
+  const showData = (data) => {
+    console.log("Datos recibidos de Firebase Realtime Database:", data);
+    
+    const keys = Object.keys(data); 
+    if (keys.length > 0) {
+      const lastKey = keys[keys.length - 1];
+      const lastRecord = data[lastKey];
+      console.log("Último registro:", lastRecord);
+      sendNotificationRegisterSuccess(lastRecord.body, lastRecord.title, { name: lastRecord.title });
+    } else {
+      console.log("No data available");
+    }
+  };
+
+  readAllRegister(showData);
+  return () => {
+    readAllRegister(() => {}); 
+  };
+}, []);
+
 
   return (
     <View style={styles.container}>
       <FloatingMenu chatVisible={chatVisible} setChatVisible={setChatVisible} />
-
       <Modal
           animationType="fade"
           transparent={true}
@@ -107,7 +127,6 @@ const handleSelectCard = async (card: any, link: any) => {
                         } else {
                           console.error('Unrecognized link format');
                         }
-
                         setModalPopUp(false)
                       }}>
                       {
@@ -127,7 +146,7 @@ const handleSelectCard = async (card: any, link: any) => {
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Hola {name}</Text>
+            <Text style={styles.title}>Hola - {name}</Text>
           </View>
           <TouchableOpacity style={{overflow: 'hidden',}} onPress={() => navigation.navigate("Perfil")}>
             <UserTwo width={20} height={20} />
