@@ -29,7 +29,6 @@ const ButtonApple = (props: any) => {
                     AppleAuthentication.AppleAuthenticationScope.EMAIL,
                 ],
             });
-            console.log(JSON.stringify(credential, null, 5));
 
             const apple = {
                 google_id: credential?.identityToken,
@@ -47,7 +46,6 @@ const ButtonApple = (props: any) => {
                 const querySnapshot = await getDocs(userQuery);
                 let selectedEmail: any;
                 querySnapshot.forEach((doc) => {
-                    console.log(doc.data())
                     selectedEmail = doc.data();
                 });
                 if (selectedEmail) {
