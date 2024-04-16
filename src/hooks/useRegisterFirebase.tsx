@@ -275,13 +275,18 @@ const useRegisterFirebase = () => {
             setLoading(true);
             const profileQuery = query(
                 collection(db, "users"),
-                where("document", "==", props.document)
+                where("document", "==", props.document),
             );
             const querySnapshot = await getDocs(profileQuery);
             let selectedProfile: any;
             querySnapshot.forEach((doc) => { selectedProfile = doc.data(); });
-            if (selectedProfile) {
-                Alert.alert('Documento en uso!');
+            if (selectedProfile) {                
+                console.log('selectedProfile',JSON.stringify(selectedProfile, null, 5))
+                if (selectedProfile.email === props.email) {
+                    handleGoogleLogin(selectedProfile.user_id);
+                } else {
+                    Alert.alert('Documento en uso con otro correo electrónico!');
+                }
                 setLoading(false);
             } else {
                 const dataToCreate = {
