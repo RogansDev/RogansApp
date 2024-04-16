@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   KeyboardAvoidingView,
   Platform
 } from "react-native";
@@ -37,7 +36,6 @@ const GoogleRegister = () => {
     errorMessage,
   } = UseViewModel();
 
-
   const [birthDay, setBirthDay] = useState('');
   const [isChecked, setIsChecked] = useState(false);
 
@@ -69,7 +67,7 @@ const GoogleRegister = () => {
     }
   };
 
-  const handleDateChange = (selectedDate) => {
+  const handleDateChange = (selectedDate : any) => {
     const formattedDate = selectedDate.toLocaleDateString('es-ES', {
       day: '2-digit',
       month: '2-digit',

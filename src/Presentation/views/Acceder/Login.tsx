@@ -32,8 +32,6 @@ const Login = () => {
     Arrow,
   } = Icons;
 
-  const [isChecked, setIsChecked] = useState(false);
-
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
   useEffect(() => {
@@ -58,9 +56,6 @@ const Login = () => {
 
     obtenerDatos();
   }, [])
-
-
-
 
   return (
     <View style={styles.container}>

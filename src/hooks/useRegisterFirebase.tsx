@@ -275,15 +275,39 @@ const useRegisterFirebase = () => {
             setLoading(true);
             const profileQuery = query(
                 collection(db, "users"),
-                where("document", "==", props.document)
+                where("document", "==", props.document),
             );
+
+            const profileQueryByEmail = query(
+                collection(db, "users"),
+                where("email", "==", props.email),
+            );
+
             const querySnapshot = await getDocs(profileQuery);
+            const querySnapshotByemail = await getDocs(profileQueryByEmail);
+
             let selectedProfile: any;
+            let selectedProfileByEmail: any;
             querySnapshot.forEach((doc) => { selectedProfile = doc.data(); });
-            if (selectedProfile) {
-                Alert.alert('Documento en uso!');
-                setLoading(false);
-            } else {
+            querySnapshotByemail.forEach((doc) => { selectedProfileByEmail = doc.data(); });
+
+            if (selectedProfile && selectedProfileByEmail) {
+                if(selectedProfile.email === props.email){
+                    handleGoogleLogin(selectedProfile.user_id);                
+                }else {
+                    Alert.alert('Documento en uso con otro correo electrónico!');
+                }
+                setLoading(false);                
+
+            } else if (selectedProfile || selectedProfileByEmail){                
+                if(selectedProfileByEmail){
+                    handleGoogleLogin(selectedProfileByEmail.user_id);
+                }else{
+                    Alert.alert('Documento en uso con otro correo electrónico!');
+                }
+                setLoading(false);                
+
+            } else{
                 const dataToCreate = {
                     user_id: props.google_id,
                     email: props.email,

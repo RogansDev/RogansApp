@@ -21,8 +21,6 @@ import usePopUp from "../../../hooks/usePopUp";
 import HomeBannesrs from "../../components/HomeBanners";
 
 
-
-
 const Home = () => {
   const { UserTwo, Arrow, QuestionIcon, CloseIcon } = Icons;
   const {handleStatusCode} = usePromotions();

@@ -15,7 +15,7 @@ import { setUserInfo } from '../../state/ProfileSlice';
 const ButtonApple = (props: any) => {
 
     const { Apple } = Icons;
-    const { title = 'Continuar con apple' } = props;
+    const { title = 'Continuar con Apple' } = props;
     const [error, setError] = useState();
     const [loading, setloading] = useState(false);
     const distpach = useDispatch();
@@ -29,7 +29,6 @@ const ButtonApple = (props: any) => {
                     AppleAuthentication.AppleAuthenticationScope.EMAIL,
                 ],
             });
-            console.log(JSON.stringify(credential, null, 5));
 
             const apple = {
                 google_id: credential?.identityToken,
@@ -47,7 +46,6 @@ const ButtonApple = (props: any) => {
                 const querySnapshot = await getDocs(userQuery);
                 let selectedEmail: any;
                 querySnapshot.forEach((doc) => {
-                    console.log(doc.data())
                     selectedEmail = doc.data();
                 });
                 if (selectedEmail) {
@@ -101,10 +99,10 @@ export default ButtonApple
 
 const styles = StyleSheet.create({
     button: {
+        width:230,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 32,
+        padding: 12,
         elevation: 3,
         backgroundColor: 'black',
         borderRadius: 15,
