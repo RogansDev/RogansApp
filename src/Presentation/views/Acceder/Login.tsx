@@ -111,6 +111,12 @@ const Login = () => {
             <GoogleButton />
           </View>
         </View>
+        {Platform.OS === 'ios' &&
+          <View style={styles.contentLoginGoogle}>
+            <View style={{ alignSelf: 'center' }}>
+              <ButtonApple />
+            </View>
+          </View>}
         <View style={styles.containerUpdate}>
           <Arrow width={30} height={24} color={'black'} />
           <Text
@@ -119,17 +125,6 @@ const Login = () => {
             Registrarme
           </Text>
         </View>
-        <View style={styles.contentLoginGoogle}>
-          <View style={{ alignSelf: 'center' }}>
-            <GoogleButton />
-          </View>
-        </View>
-        {Platform.OS === 'ios' &&
-          <View style={styles.contentLoginGoogle}>
-            <View style={{ alignSelf: 'center' }}>
-              <ButtonApple />
-            </View>
-          </View>}
         <View style={styles.loginAuthe}>
           <Google width={30} height={30} />
           <Facebook width={30} height={30} />

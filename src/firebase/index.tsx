@@ -27,9 +27,7 @@ const storage = getStorage(app);
  */
 
 export async function uploadFile(file : any, nameFile : string , folderName : string ){
-
     try {
-
         const storageRef = ref(storage, `${folderName}/${nameFile}`)
         await uploadBytes(storageRef, file)
         const url = await getDownloadURL(storageRef)
@@ -38,16 +36,13 @@ export async function uploadFile(file : any, nameFile : string , folderName : st
         console.error('Error al cargar el archivo:', error);
         throw error;
     }
-
 }
 
 export async function SendEmailResetPassword(email: string) {
     try {
-        const auth = getAuth();
-        
+        const auth = getAuth();        
         // Envia el correo electrónico de restablecimiento de contraseña
-        await sendPasswordResetEmail(auth, email);
-        
+        await sendPasswordResetEmail(auth, email);        
         console.log('Correo electrónico de restablecimiento de contraseña enviado correctamente.');
     } catch (error) {
         console.error('Error al enviar el correo electrónico de restablecimiento de contraseña:', error);
