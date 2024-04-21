@@ -69,20 +69,16 @@ const handleSelectCard = async (card: any, link: any) => {
 };
 
 useEffect(() => {
-  const showData = (data) => {
-    console.log("Datos recibidos de Firebase Realtime Database:", data);
-    
+  const showData = (data : any) => {    
     const keys = Object.keys(data); 
     if (keys.length > 0) {
       const lastKey = keys[keys.length - 1];
       const lastRecord = data[lastKey];
-      console.log("Último registro:", lastRecord);
       sendNotificationRegisterSuccess(lastRecord.body, lastRecord.title, { name: lastRecord.title });
     } else {
       console.log("No data available");
     }
   };
-
   readAllRegister(showData);
   return () => {
     readAllRegister(() => {}); 
@@ -97,8 +93,7 @@ useEffect(() => {
           animationType="fade"
           transparent={true}
           visible={modalPopUp}
-          onRequestClose={() => setModalPopUp(false)}
-      >
+          onRequestClose={() => setModalPopUp(false)}>
           <TouchableOpacity
               style={styles.modalFade}
               onPress={() => setModalPopUp(false)}
