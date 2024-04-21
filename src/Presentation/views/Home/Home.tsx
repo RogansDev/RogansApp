@@ -146,7 +146,7 @@ useEffect(() => {
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Hola - {name}</Text>
+            <Text style={styles.title}>Hola {name}</Text>
           </View>
           <TouchableOpacity style={{overflow: 'hidden',}} onPress={() => navigation.navigate("Perfil")}>
             <UserTwo width={20} height={20} />
