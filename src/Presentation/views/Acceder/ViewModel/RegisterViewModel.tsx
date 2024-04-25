@@ -28,7 +28,7 @@ const RegisterViewModel = () => {
       }
    };
 
-   const calcularMayorDeEdad = (fechaNacimiento) => {
+   const calcularMayorDeEdad = (fechaNacimiento: any) => {
       const partesFecha = fechaNacimiento.split('/');
       const fechaNacimientoDate = new Date(partesFecha[2], partesFecha[1] - 1, partesFecha[0]);
     
@@ -44,7 +44,7 @@ const RegisterViewModel = () => {
       return edad >= 18;
     };
 
-    const esEmailValido = (email) => {
+    const esEmailValido = (email: any) => {
       const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return regexEmail.test(email);
     };
@@ -71,14 +71,14 @@ const RegisterViewModel = () => {
          setErrorMessage('Ingresa un correo válido');
          return false;
       }
-      if (values.document === '') {
-         setErrorMessage('Ingresa tu cédula')
-         return false;
-      }
-      if (values.birthdate === '') {
-         setErrorMessage('Ingresa tu fecha de nacimiento')
-         return false;
-      }
+      // if (values.document === '') {
+      //    setErrorMessage('Ingresa tu cédula')
+      //    return false;
+      // }
+      // if (values.birthdate === '') {
+      //    setErrorMessage('Ingresa tu fecha de nacimiento')
+      //    return false;
+      // }
       if (values.password === '') {
          setErrorMessage('Ingresa tu contraseña')
          return false;
@@ -95,10 +95,10 @@ const RegisterViewModel = () => {
          setErrorMessage('Las contraseñas no coiciden')
          return false;
       }
-      if (!calcularMayorDeEdad(values.birthdate)) {
-         setErrorMessage('Debes ser mayor de edad para registrarte');
-         return false;
-      }
+      // if (!calcularMayorDeEdad(values.birthdate)) {
+      //    setErrorMessage('Debes ser mayor de edad para registrarte');
+      //    return false;
+      // }
       if (!values.termsAccepted) {
          setErrorMessage('Debes aceptar los términos y condiciones');
          return false;

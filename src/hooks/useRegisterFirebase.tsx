@@ -35,12 +35,12 @@ const useRegisterFirebase = () => {
             );
             const querySnapshot = await getDocs(profileQuery);
             let selectedProfile: any;
+            let selectedProfileAux: any;
             querySnapshot.forEach((doc) => { selectedProfile = doc.data(); });
-
-            if (selectedProfile) {
+            selectedProfileAux = (props.document == '' || props.document == null ) ? false : selectedProfile;
+            if (selectedProfileAux) {
                 Alert.alert('Documento en uso!');
                 setLoading(false);
-
             } else {
                 try {
                     await createUserWithEmailAndPassword(auth, props.email, props.password)
@@ -86,7 +86,7 @@ const useRegisterFirebase = () => {
                                                 setLoading(false);
                                             }).catch()
 
-                                        } catch (error) {
+                                        } catch (error: any) {
                                             console.log(error)
                                             setLoading(false);
                                             setError(error.message);
@@ -99,7 +99,7 @@ const useRegisterFirebase = () => {
                                         setError(error.message);
                                         Alert.alert('Ocurrio un error!');
                                     });
-                            } catch (error) {
+                            } catch (error: any) {
                                 setLoading(false);
                                 console.log(error);
                                 setError(error.message);
@@ -121,7 +121,7 @@ const useRegisterFirebase = () => {
                             Alert.alert('Ocurrio un error!');
                         });
 
-                } catch (error) {
+                } catch (error: any) {
                     setLoading(false);
                     console.log(error)
                     setError(error.message);
@@ -130,7 +130,7 @@ const useRegisterFirebase = () => {
 
             }
 
-        } catch (error) {
+        } catch (error: any) {
             setLoading(false);
             setError(error.message);
             console.log("err", error)
@@ -287,19 +287,20 @@ const useRegisterFirebase = () => {
             const querySnapshotByemail = await getDocs(profileQueryByEmail);
 
             let selectedProfile: any;
+            let selectedProfileAux: any;
             let selectedProfileByEmail: any;
             querySnapshot.forEach((doc) => { selectedProfile = doc.data(); });
             querySnapshotByemail.forEach((doc) => { selectedProfileByEmail = doc.data(); });
-
-            if (selectedProfile && selectedProfileByEmail) {
-                if(selectedProfile.email === props.email){
-                    handleGoogleLogin(selectedProfile.user_id);                
+            selectedProfileAux = (props.document == '' || props.document == null ) ? false : selectedProfile;
+            if (selectedProfileAux && selectedProfileByEmail) {
+                if(selectedProfileAux.email === props.email){
+                    handleGoogleLogin(selectedProfileAux.user_id);                
                 }else {
                     Alert.alert('Documento en uso con otro correo electrónico!');
                 }
                 setLoading(false);                
 
-            } else if (selectedProfile || selectedProfileByEmail){                
+            } else if (selectedProfileAux || selectedProfileByEmail){                
                 if(selectedProfileByEmail){
                     handleGoogleLogin(selectedProfileByEmail.user_id);
                 }else{
@@ -347,7 +348,7 @@ const useRegisterFirebase = () => {
                                 setError(error.message);
                                 Alert.alert('Ocurrio un error!');
                             })
-                        } catch (error) {
+                        } catch (error: any) {
                             console.log(error)
                             setLoading(false);
                             setError(error.message);
@@ -362,7 +363,7 @@ const useRegisterFirebase = () => {
                     }
                     )
             }
-        } catch (error) {
+        } catch (error: any) {
             setLoading(false);
             setError(error.message);
             console.log("err", error)
@@ -406,7 +407,7 @@ const useRegisterFirebase = () => {
                 console.log('usuario no existe .', selectedProfile)
                 Alert.alert('usuario no existe!');
             }
-        } catch (error) {
+        } catch (error: any) {
             setLoading(false);
             console.log("errerer", error)
             console.log("errerer", error.message)
