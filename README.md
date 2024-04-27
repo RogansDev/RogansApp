@@ -119,6 +119,8 @@ rogans y del 1 al 6
 ### para las notificaciones en ios 
 
 prueba expo tools ---> ExponentPushToken[CKWFJILzcaS1MzrWFupfHm] 
+                       ExponentPushToken[CKWFJILzcaS1MzrWFupfHm]
+link de uso            https://expo.dev/notifications                       
 
 1 - eas init --id bd8d9d9a-7119-481a-a757-ec044f47da53
 2 - eas device:create
