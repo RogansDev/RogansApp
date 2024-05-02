@@ -142,7 +142,7 @@ npx expo install expo-apple-authentication
 const {savePaymentDetails, /*otras props*/} = useMercadoPago();
 
 ## 2 uso
-savePaymentDetails(user_id, 'carlosd.rogansya@gmail.com', 4500, 'pago por mercado pago', 50, name);
+savePaymentDetails(user_id, 'carlosd.rogansya@gmail.com', 4500, 'pago por mercado pago', 50, name, producto);
 
 ## se importara de una ruta relativa 
 import useMercadoPago from "../../../hooks/useMercadoPago";
