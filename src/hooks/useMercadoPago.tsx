@@ -10,7 +10,7 @@ const useMercadoPago = () => {
     const [loading, setLoading] = useState(false);
 
     const savePaymentDetails = (idUsuario: string, email: string, monto: number,
-        detalle: string, cantidad: number, name: string
+        detalle: string, cantidad: number, name: string, producto: string
     ) => {
         const fecha = obtenerFechaActual();
         const dataToUpload = {
@@ -19,6 +19,7 @@ const useMercadoPago = () => {
             monto: monto,
             detalle: detalle,
             cantidad: cantidad,
+            producto: producto,
             fecha: fecha
         }
         setLoading(true);
@@ -84,7 +85,7 @@ const useMercadoPago = () => {
     }
 
     const updatePaymentDetailsById = async (idUsuario: string, email: string, monto: number,
-        detalle: string, cantidad: number, name: string
+        detalle: string, cantidad: number, name: string, producto: string
     ) => {
         const mpagoDocument = doc(db, 'mercadopago', idUsuario);
         setLoading(true);
@@ -96,6 +97,7 @@ const useMercadoPago = () => {
                 monto: monto,
                 detalle: detalle,
                 cantidad: cantidad,
+                producto: producto,
                 fecha: fecha
             }
             await updateDoc(mpagoDocument, dataToUpload);
