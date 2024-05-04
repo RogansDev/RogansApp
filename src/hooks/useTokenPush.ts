@@ -1,4 +1,5 @@
 import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
 import { collection, doc, setDoc, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 
@@ -23,19 +24,24 @@ const useTokenPush = () => {
     const token = await registerForPushNotificationsAsync();
     if (!token) return;
 
-    const tokensRef = collection(db, 'userTokens');
-    const q = query(tokensRef, where('token', '==', token));
+    // Only proceed if the platform is iOS
+    if (Platform.OS === 'ios') {
+      const tokensRef = collection(db, 'userTokens');
+      const q = query(tokensRef, where('token', '==', token));
 
-    const querySnapshot = await getDocs(q);
-    if (querySnapshot.empty) {
-      const newTokenRef = doc(collection(db, 'userTokens'));
-      await setDoc(newTokenRef, { token });
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) {
+        const newTokenRef = doc(collection(db, 'userTokens'));
+        await setDoc(newTokenRef, { token });
+      } else {
+        console.log('Token already exists in Firestore');
+      }
     } else {
-      console.log('Token already exists in Firestore');
+      console.log('Not an iOS device, token not saved');
     }
   };
 
-  return {handleGestionToken};
+  return { handleGestionToken };
 };
 
 export default useTokenPush;
