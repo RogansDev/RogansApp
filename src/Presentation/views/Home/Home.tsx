@@ -19,16 +19,14 @@ import usePromotions from "../../../hooks/usePromotions";
 import useServices from "../../../hooks/useServices";
 import usePopUp from "../../../hooks/usePopUp";
 import HomeBannesrs from "../../components/HomeBanners";
-import useRealtime from "../../../hooks/useRealTime";
-import useNotificationPush from "../../../hooks/useNotificationPush";
+import useTokenPush from "../../../hooks/useTokenPush";
 
 const Home = () => {
   const { UserTwo, Arrow, QuestionIcon, CloseIcon } = Icons;
   const {handleStatusCode} = usePromotions();
   const {getServices} = useServices();
   const {getPopups, popups} = usePopUp();
-  const { readAllRegister} = useRealtime();
-  const { sendNotificationRegisterSuccess } = useNotificationPush();
+  const {handleGestionToken} = useTokenPush();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
   const { name, user_id } = useSelector((state: any) => state.user)
   const [chatVisible, setChatVisible] = useState(false);
@@ -69,20 +67,7 @@ const handleSelectCard = async (card: any, link: any) => {
 };
 
 useEffect(() => {
-  const showData = (data : any) => {    
-    const keys = Object.keys(data); 
-    if (keys.length > 0) {
-      const lastKey = keys[keys.length - 1];
-      const lastRecord = data[lastKey];
-      sendNotificationRegisterSuccess(lastRecord.body, lastRecord.title, { name: lastRecord.title });
-    } else {
-      console.log("No data available");
-    }
-  };
-  readAllRegister(showData);
-  return () => {
-    readAllRegister(() => {}); 
-  };
+  handleGestionToken(); 
 }, []);
 
 
