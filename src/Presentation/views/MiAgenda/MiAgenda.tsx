@@ -9,6 +9,7 @@ import Icons from '../../../Presentation/theme/Icons';
 import FloatingMenu from '../../../Presentation/components/FloatingMenu';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale/es';
+import { Linking } from 'react-native';
 
 const obtenerCitas = async (cedula: any) => {
     try {
@@ -42,29 +43,57 @@ const MiAgenda = () => {
     const cedulaUsuario = user.document;
 
     interface Cita {
+        fecha_que_agendo: string | number | Date;
         nombre: string;
         fecha: string;
         evento_agendado: string;
         status: string;
         valor: string;
         notas: string;
+        meet: string;
     }
 
     const [citas, setCitas] = useState<Cita[]>([]);
     const [cargando, setCargando] = useState(true);
     const [chatVisible, setChatVisible] = useState(false);
+    const [citasNoCanceladas, setCitasNoCanceladas] = useState<Cita[]>([]);
+    const [citasCanceladas, setCitasCanceladas] = useState<Cita[]>([]);
 
     useEffect(() => {
         obtenerCitas(cedulaUsuario).then(data => {
             if (data && data.length > 0) {
-                const citasOrdenadas = data.sort((a: any, b: any) => new Date(a.fecha_que_agendo).getTime() - new Date(b.fecha_que_agendo).getTime());
+                const citasOrdenadas = data.sort((a: any, b: any) => new Date(b.fecha_que_agendo).getTime() - new Date(a.fecha_que_agendo).getTime());
                 setCitas(citasOrdenadas);
             } else {
                 setCitas([]);
             }
             setCargando(false);
         });
+        
+        console.log(citas);
+        
     }, []);
+    
+    useEffect(() => {
+        let fechaActual = new Date();
+    
+        fechaActual.setHours(fechaActual.getHours() - 5);
+    
+        const noCanceladas = citas.filter(cita => {
+            const fechaCita = new Date(cita.fecha_que_agendo);
+            return (cita.status === 'Confirmado' || cita.status === 'Pendiente') && fechaCita >= fechaActual;
+        });
+    
+        const canceladas = citas.filter(cita => {
+            const fechaCita = new Date(cita.fecha_que_agendo);
+            return (cita.status === 'Cancelado' || cita.status === 'Finalizada' || fechaCita < fechaActual);
+        });
+    
+        setCitasNoCanceladas(noCanceladas);
+        setCitasCanceladas(canceladas);
+    }, [citas]);
+    
+    
     
 
     const { DollarIcon, ClockIcon, CloseIcon, TickCircleWhiteicon, TrashIcon, InfoIcon, VirtualIcon, ProfileIcon } = Icons;
@@ -101,9 +130,15 @@ const MiAgenda = () => {
       
         return ('$' + caracteres.reverse().join(''));
     }
+
+    const openGoogleMeet = async (link: any) => {
+        try {
+            await Linking.openURL(link);
+        } catch (error) {
+            console.error('No se pudo abrir el enlace:', error);
+        }
+    };
     
-    const citasNoCanceladas = citas.filter(cita => cita.status === 'Confirmado' || cita.status === 'Pendiente');
-    const citasCanceladas = citas.filter(cita => cita.status === 'Cancelado' || cita.status === 'Finalizada');
 
     return (
         <View style={styles.container}>
@@ -163,13 +198,21 @@ const MiAgenda = () => {
                                             </View>
                                         </View>
                                         <View style={styles.infoContent}>
-                                            <View style={{flexDirection: "row", alignItems: "center", gap: 15, marginTop: 6, paddingRight: 25,}}>
+                                            <View style={{flexDirection: "row", alignItems: "center", gap: 10, marginTop: 6, paddingRight: 25,}}>
                                                 <InfoIcon width={16} height={16} />
                                                 {
                                                     cita.notas === "Virtual" ? (
+                                                        <View style={{flexDirection: 'row', gap: 4,}}>
                                                         <Text style={styles.textInfo}>
-                                                            Te contactaremos al <Text style={styles.telUsuario}>{telUsuario && telUsuario !== 'none' ? telUsuario : "número registrado"}</Text> un día antes de la cita.
-                                                        </Text> 
+                                                            Haz click 👉
+                                                        </Text>
+                                                        <TouchableOpacity onPress={() => openGoogleMeet(cita.meet)}>
+                                                            <Text style={styles.telUsuario}>aquí</Text>
+                                                        </TouchableOpacity>
+                                                        <Text style={styles.textInfo}>
+                                                            para ingresar a tu consulta.
+                                                        </Text>
+                                                        </View>
                                                     ):(
                                                         <Text style={styles.textInfo}>
                                                             Nos vemos para tu cita en: Cra 45 # 106 - 71, Consultorio 401, Bogotá, Colombia

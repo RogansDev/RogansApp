@@ -1,6 +1,6 @@
 import React, { useState ,useEffect } from "react";
 // import { getEventTypes } from '../';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Dimensions, Image, Modal, Platform } from "react-native";
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Dimensions, Image, Modal, Platform, Linking } from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { useNavigation } from '@react-navigation/native';
 import FloatingMenu from '../../../Presentation/components/FloatingMenu';
@@ -124,6 +124,9 @@ useEffect(() => {
                           } else {
                             console.error('Invalid link format or undefined card/screen');
                           }
+                        } else if (linkParts[0] === 'web') {
+                          const url = linkParts[1];
+                          Linking.openURL(url).catch(err => console.error('An error occurred', err));
                         } else {
                           console.error('Unrecognized link format');
                         }

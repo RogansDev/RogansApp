@@ -9,13 +9,16 @@ import { agendarCita } from '../../../../agendarCitaService';
 
 const ConfirmationPage = () => {
     const [botonActivo, setBotonActivo] = useState(false);
+    const [meetLink, setMeetLink] = useState("");
 
     const user = useSelector( (state : any) => state.user);
     const fecha = useSelector( (state : any) => state.calendary.fecha);
     const horaAgendada = useSelector( (state : any) => state.calendary.horaAgendada);
     const virtualPresencial = useSelector( (state : any) => state.calendary.virtualPresencial);
     const specialityState = useSelector( (state : any) => state.speciality.especialidadEstado);
+    const selectedCard = useSelector( (state : any) => state.calendary.selectedCard);
     const cedulaUsuario = user.document;
+    const emailUsuario = user.email;
     const telUsuario =  user.phone;
 
 
@@ -23,9 +26,44 @@ const ConfirmationPage = () => {
 
     const navigation = useNavigation();
 
-    const editarStatusHandler = async (cedula: any, fecha: any) => {
+    let meet = "";
+
+    const calendarHandler = async (startDateTime: any, endDateTime: any) => {
         try {
-            const response = await fetch(`https://rogansya.com/rogans-app/index.php?accion=editarStatus&cedula=${cedula}&fecha=${fecha}`);
+            const response = await fetch('https://rogansya.com/rogans-app/calendar.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: emailUsuario,
+                    startDateTime: startDateTime,
+                    endDateTime: endDateTime,
+                    summary: `${selectedCard.title} - ${user.name} ${user.lastname}`,
+                    description: "Cita virtual en Rogans"
+                })
+            });
+    
+            const data = await response.json();
+
+            if (data.message === 'Evento creado') {
+                meet = data.meetLink
+                console.log("Evento creado:", data.eventLink);
+                console.log("Enlace de Meet:", data.meetLink);
+            } else {
+                console.log("Error al crear evento:", data.message);
+            }
+        } catch (error) {
+            console.error('Error al agendar evento:', error);
+        }
+
+        await editarStatusHandler(cedulaUsuario, fechaAgendadaFormateada, meet);
+    };
+    
+
+    const editarStatusHandler = async (cedula: any, fecha: any, meet: any) => {
+        try {
+            const response = await fetch(`https://rogansya.com/rogans-app/index.php?accion=editarStatus&cedula=${cedula}&fecha=${fecha}&meet=${meet}`);
             const data = await response.json();
             if (data.mensaje === "Cita cancelada exitosamente") {
                 console.log("Estatus actualizado");
@@ -53,15 +91,56 @@ const ConfirmationPage = () => {
         return fechaHora.toISOString().replace('.000', '');
     }
 
+    function convertirFechaHoraCalendar(fecha: any, horaAgendada: any) {
+        const [hora, minutos, ampm] = horaAgendada.match(/(\d+):(\d+) (\w+)/).slice(1);
+        let hora24 = ampm === 'PM' ? parseInt(hora, 10) + 12 : parseInt(hora, 10);
+        if (hora24 === 24) hora24 = 12;
+        if (hora24 === 12 && ampm === 'AM') hora24 = 0;
+
+        const fechaHora = new Date(`${fecha} ${hora24}:${minutos}:00`);
+
+        fechaHora.setHours(fechaHora.getHours() - 5);
+        const isoDate = fechaHora.toISOString();
+
+        const timeZoneOffset = '-05:00';
+        const formattedDate = isoDate.replace('Z', timeZoneOffset);
+    
+        return formattedDate;
+    }
+
+    function convertirFechaHoraCalendarFinal(fecha: any, horaAgendada: any) {
+        const [hora, minutos, ampm] = horaAgendada.match(/(\d+):(\d+) (\w+)/).slice(1);
+        let hora24 = ampm === 'PM' ? parseInt(hora, 10) + 12 : parseInt(hora, 10);
+        if (hora24 === 24) hora24 = 12; // Ajustar de 24 a 0 para la medianoche.
+        if (hora24 === 12 && ampm === 'AM') hora24 = 0; // Ajustar las 12 AM a 0.
+    
+        const fechaHora = new Date(`${fecha} ${hora24}:${minutos}:00`);
+    
+        fechaHora.setHours(fechaHora.getHours() - 5);
+        fechaHora.setMinutes(fechaHora.getMinutes() + 30);
+    
+        const isoDate = fechaHora.toISOString();
+        const timeZoneOffset = '-05:00';
+        const formattedDate = isoDate.replace('Z', timeZoneOffset);
+    
+        return formattedDate; 
+    }
+
     const fechaAgendadaFormateada = convertirFechaYHora(fecha, horaAgendada);
+    const fechaCalendar = convertirFechaHoraCalendar(fecha, horaAgendada);
+    const fechaCalendarFinal = convertirFechaHoraCalendarFinal(fecha, horaAgendada);
 
     useEffect(() => {
-        editarStatusHandler(cedulaUsuario, fechaAgendadaFormateada);
-        console.log('especialidad:', specialityState);
+        if(virtualPresencial === "Virtual") {
+            calendarHandler(fechaCalendar, fechaCalendarFinal);
+        } else {
+            editarStatusHandler(cedulaUsuario, fechaAgendadaFormateada, meet);
+        }
         
+        console.log('especialidad:', specialityState);        
     }, []);
 
-    function formatFecha(fecha) {
+    function formatFecha(fecha: any) {
         const partes = fecha.split('-');
         return `${partes[2]}/${partes[1]}/${partes[0]}`;
     }

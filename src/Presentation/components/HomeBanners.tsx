@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet, Image, Dimensions, TouchableOpacity, Animated } from 'react-native';
+import { View, FlatList, StyleSheet, Image, Dimensions, TouchableOpacity, Animated, Linking } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCalendaryInfo } from '../../state/CalendarySlice';
 import { useNavigation } from '@react-navigation/native';
@@ -7,7 +7,6 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../utils/RootParamList";
 import { consultCards, procedureCards } from '../views/Servicios/ServicesData';
 import useServices from "../../hooks/useServices";
-
 
 
 const HomeBanners = () => {  
@@ -78,6 +77,7 @@ const HomeBanners = () => {
         renderItem={({ item }) => (
           <TouchableOpacity
           onPress={() => {
+            console.log(item.link);
             const linkParts = item.link.split('?'); // Esto dividirá el string en partes separadas por '?'
             if (linkParts[0] === 'nav') {
               // Si el primer segmento es 'nav', navega a la pantalla especificada en el segundo segmento
@@ -93,6 +93,9 @@ const HomeBanners = () => {
               } else {
                 console.error('Invalid link format or undefined card/screen');
               }
+            } else if (linkParts[0] === 'web') {
+              const url = linkParts[1];
+              Linking.openURL(url).catch(err => console.error('An error occurred', err));
             } else {
               console.error('Unrecognized link format');
             }
