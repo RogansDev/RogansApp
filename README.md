@@ -119,6 +119,8 @@ rogans y del 1 al 6
 ### para las notificaciones en ios 
 
 prueba expo tools ---> ExponentPushToken[CKWFJILzcaS1MzrWFupfHm] 
+                       ExponentPushToken[CKWFJILzcaS1MzrWFupfHm]
+link de uso            https://expo.dev/notifications                       
 
 1 - eas init --id bd8d9d9a-7119-481a-a757-ec044f47da53
 2 - eas device:create
@@ -134,5 +136,15 @@ expo install expo-secure-store
 
 ### para login con apple 
 npx expo install expo-apple-authentication
+
+### implementacion de hook de mercado pago
+## 1 desestructurar 
+const {savePaymentDetails, /*otras props*/} = useMercadoPago();
+
+## 2 uso
+savePaymentDetails(user_id, 'carlosd.rogansya@gmail.com', 4500, 'pago por mercado pago', 50, name, producto);
+
+## se importara de una ruta relativa 
+import useMercadoPago from "../../../hooks/useMercadoPago";
 
 

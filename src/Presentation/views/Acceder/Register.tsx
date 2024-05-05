@@ -74,7 +74,7 @@ const Register = () => {
     }
   };
 
-  const handleDateChange = (selectedDate) => {
+  const handleDateChange = (selectedDate: any) => {
     const formattedDate = selectedDate.toLocaleDateString('es-ES', {
       day: '2-digit',
       month: '2-digit',

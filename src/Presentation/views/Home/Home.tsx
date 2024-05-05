@@ -19,16 +19,14 @@ import usePromotions from "../../../hooks/usePromotions";
 import useServices from "../../../hooks/useServices";
 import usePopUp from "../../../hooks/usePopUp";
 import HomeBannesrs from "../../components/HomeBanners";
-import useRealtime from "../../../hooks/useRealTime";
-import useNotificationPush from "../../../hooks/useNotificationPush";
+import useTokenPush from "../../../hooks/useTokenPush";
 
 const Home = () => {
   const { UserTwo, Arrow, QuestionIcon, CloseIcon } = Icons;
   const {handleStatusCode} = usePromotions();
   const {getServices} = useServices();
   const {getPopups, popups} = usePopUp();
-  const { readAllRegister} = useRealtime();
-  const { sendNotificationRegisterSuccess } = useNotificationPush();
+  const {handleGestionToken} = useTokenPush();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
   const { name, user_id } = useSelector((state: any) => state.user)
   const [chatVisible, setChatVisible] = useState(false);
@@ -69,24 +67,7 @@ const handleSelectCard = async (card: any, link: any) => {
 };
 
 useEffect(() => {
-  const showData = (data) => {
-    console.log("Datos recibidos de Firebase Realtime Database:", data);
-    
-    const keys = Object.keys(data); 
-    if (keys.length > 0) {
-      const lastKey = keys[keys.length - 1];
-      const lastRecord = data[lastKey];
-      console.log("Último registro:", lastRecord);
-      sendNotificationRegisterSuccess(lastRecord.body, lastRecord.title, { name: lastRecord.title });
-    } else {
-      console.log("No data available");
-    }
-  };
-
-  readAllRegister(showData);
-  return () => {
-    readAllRegister(() => {}); 
-  };
+  handleGestionToken(); 
 }, []);
 
 
@@ -97,8 +78,7 @@ useEffect(() => {
           animationType="fade"
           transparent={true}
           visible={modalPopUp}
-          onRequestClose={() => setModalPopUp(false)}
-      >
+          onRequestClose={() => setModalPopUp(false)}>
           <TouchableOpacity
               style={styles.modalFade}
               onPress={() => setModalPopUp(false)}
@@ -149,7 +129,7 @@ useEffect(() => {
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Hola - {name}</Text>
+            <Text style={styles.title}>Hola {name}</Text>
           </View>
           <TouchableOpacity style={{overflow: 'hidden',}} onPress={() => navigation.navigate("Perfil")}>
             <UserTwo width={20} height={20} />

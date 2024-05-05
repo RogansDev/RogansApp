@@ -74,10 +74,10 @@ const GoogleRegisterViewModel = () => {
             setErrorMessage('Ingresa un correo válido');
             return false;
         }
-        if (values.document === '') {
-            setErrorMessage('Ingresa tu cédula')
-            return false;
-        }
+        // if (values.document === '') {
+        //     setErrorMessage('Ingresa tu cédula')
+        //     return false;
+        // }
         // Se comenta o elimina la validación de la fecha de nacimiento siendo obligatoria.
         /*
         if (values.birthdate === '') {
@@ -87,10 +87,10 @@ const GoogleRegisterViewModel = () => {
         */
     
         // Se modifica la condición para calcular si es mayor de edad solo si se ha proporcionado la fecha de nacimiento.
-        if (values.birthdate && !calcularMayorDeEdad(values.birthdate)) {
-            setErrorMessage('Debes ser mayor de edad para registrarte');
-            return false;
-        }
+        // if (values.birthdate && !calcularMayorDeEdad(values.birthdate)) {
+        //     setErrorMessage('Debes ser mayor de edad para registrarte');
+        //     return false;
+        // }
         if (!values.termsAccepted) {
             setErrorMessage('Debes aceptar los términos y condiciones');
             return false;
