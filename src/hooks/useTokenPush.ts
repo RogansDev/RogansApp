@@ -24,8 +24,6 @@ const useTokenPush = () => {
     const token = await registerForPushNotificationsAsync();
     if (!token) return;
 
-    // Only proceed if the platform is iOS
-    if (Platform.OS === 'ios') {
       const tokensRef = collection(db, 'userTokens');
       const q = query(tokensRef, where('token', '==', token));
 
@@ -33,9 +31,7 @@ const useTokenPush = () => {
       if (querySnapshot.empty) {
         const newTokenRef = doc(collection(db, 'userTokens'));
         await setDoc(newTokenRef, { token });
-      } else {
-        console.log('Token already exists in Firestore');
-      }
+      
     } else {
       console.log('Not an iOS device, token not saved');
     }
