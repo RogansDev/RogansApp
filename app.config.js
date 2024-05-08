@@ -5,7 +5,7 @@ export default {
     },
     "name": "RogansApp",
     "slug": "RogansApp",
-    "version": "1.3.2",
+    "version": "1.3.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -54,7 +54,7 @@ export default {
       "googleServicesFile": process.env.GOOGLE_SERVICES_JSON || "./google-services.json",
       "package": "com.rogansdev.RogansApp",
       "permissions": ["CAMERA"],
-      "versionCode": 21
+      "versionCode": 22
     },
     "web": {
       "favicon": "./assets/favicon.png"
