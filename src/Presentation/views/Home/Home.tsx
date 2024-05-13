@@ -42,6 +42,7 @@ useEffect(() => {
   handleStatusCode(user_id);
   getServices();
   getPopups();
+  handleGestionToken();
 }, [])
 
 useEffect(() => {
@@ -65,12 +66,6 @@ const handleSelectCard = async (card: any, link: any) => {
   }));  
   navigation.navigate(link);
 };
-
-useEffect(() => {
-  handleGestionToken(); 
-}, []);
-
-
   return (
     <View style={styles.container}>
       <FloatingMenu chatVisible={chatVisible} setChatVisible={setChatVisible} />
