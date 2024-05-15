@@ -1,0 +1,251 @@
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { View, ScrollView, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootParamList } from '../../../utils/RootParamList';
+import { setCalendaryInfo } from '../../../state/CalendarySlice';
+import FloatingMenu from '../../../Presentation/components/FloatingMenu';
+import SearchBarStore from '../../../Presentation/components/SearchBarStore';
+import Icons from '../../../Presentation/theme/Icons';
+import { consultCards, procedureCards } from '../Servicios/ServicesData';
+import StoreBannerCard from '../../../Presentation/components/StoreBannerCard';
+
+const productCards = [
+    {
+        id: 1,
+        image: require("../../../../assets/banner-tienda1.jpg"),
+        title: "Cuidado del cabello",
+    },
+    {
+        id: 2,
+        image: require("../../../../assets/banner-tienda2.jpg"),
+        title: "Cuidado del cabello",
+    },
+    {
+        id: 3,
+        image: require("../../../../assets/banner-tienda3.jpg"),
+        title: "Cuidado del cabello",
+    },
+];
+
+const Tienda = () => {
+    const { CalendarEditIcon, CloseIcon } = Icons;
+    const dispatch = useDispatch();
+    const calendaryState = useSelector((state : any) => state.calendary);
+    const navigation = useNavigation<StackNavigationProp<RootParamList>>();
+
+    const [activeCategorias, setActiveCategorias] = useState<string[]>([]);
+
+    const toggleCategoriaBtn = (categoria: string) => {
+        if (activeCategorias.includes(categoria)) {
+            setActiveCategorias(activeCategorias.filter(cat => cat !== categoria));
+        } else {
+            setActiveCategorias([...activeCategorias, categoria]);
+        }
+    };
+
+    const consultCardsWithCategory = consultCards.map(item => ({ ...item, category: 'Consultas' }));
+    const procedureCardsWithCategory = procedureCards.map(item => ({ ...item, category: 'Procedimientos' }));
+
+
+    const servicesItems = [...consultCardsWithCategory, ...procedureCardsWithCategory]
+        .sort((a, b) => a.title.localeCompare(b.title));
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const [chatVisible, setChatVisible] = useState(false);
+
+    const handleSearch = (query: any) => {
+        setSearchQuery(query.toLowerCase());
+    };
+
+    const resetSearch = () => {
+        setSearchQuery(''); // Restablece la búsqueda
+    };
+
+    const filteredItems = servicesItems.filter((item) => {
+        const matchesSearchQuery = item.title.toLowerCase().includes(searchQuery);
+        const matchesCategory = activeCategorias.length === 0 || activeCategorias.some(cat => item.category === cat);
+        return matchesSearchQuery && matchesCategory;
+    });
+
+    const handleSelectCard = async (card: any) => {
+        dispatch(setCalendaryInfo({
+            ...calendaryState,
+            selectedCard: card
+        }));
+        if (card.category === 'Consultas') {
+            navigation.navigate('DescripcionConsultas');
+        } else {
+            navigation.navigate('DescripcionProcedimientos');
+        }
+
+    };
+
+    return (
+        <View style={styles.container}>
+            <FloatingMenu chatVisible={chatVisible} setChatVisible={setChatVisible} />
+            <View style={styles.searchBar}>
+                <SearchBarStore
+                    onSearch={handleSearch}
+                    resetSearch={resetSearch}
+                />
+                <View style={styles.containerCategoriaBtn}>
+                    <TouchableOpacity
+                        onPress={() => toggleCategoriaBtn('Consultas')}
+                        style={activeCategorias.includes('Consultas') ? styles.categoriaBtnActive : styles.categoriaBtn}
+                    >
+                        {activeCategorias.includes('Consultas') ? (
+                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                <CloseIcon width={16} height={16} style={{ marginRight: 6, }} />
+                                <Text style={styles.textCategoriaBtnActive}>Consultas</Text>
+                            </View>
+                        ) : (
+                            <Text style={styles.textCategoriaBtn}>Consultas</Text>
+                        )}
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => toggleCategoriaBtn('Procedimientos')}
+                        style={activeCategorias.includes('Procedimientos') ? styles.categoriaBtnActive : styles.categoriaBtn}
+                    >
+                        {activeCategorias.includes('Procedimientos') ? (
+                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                <CloseIcon width={16} height={16} style={{ marginRight: 6, }} />
+                                <Text style={styles.textCategoriaBtnActive}>Procedimientos</Text>
+                            </View>
+                        ) : (
+                            <Text style={styles.textCategoriaBtn}>Procedimientos</Text>
+                        )}
+                    </TouchableOpacity>
+                </View>
+                {filteredItems.length > 0 ? (
+                    <ScrollView>
+                        <StoreBannerCard cards={productCards}/>
+                        <View style={styles.consultationsContainer}>
+                            {filteredItems.map((item, index) => (
+                                <TouchableOpacity onPress={() => handleSelectCard(item)} key={`${item.id}_${index}`} style={styles.consultation}>
+                                    <Image source={item.image} style={styles.consultationImage} />
+                                    <View style={styles.consultationInfo}>
+                                        <Text style={styles.consultationTitle}>{item.title}</Text>
+                                        <TouchableOpacity onPress={() => handleSelectCard(item)} style={styles.agendarBtn}>
+                                            <CalendarEditIcon style={styles.iconAgendarBtn} width={16} height={16} />
+                                            <Text style={styles.textAgendarBtn}>
+                                                Agendar
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+                    </ScrollView>
+                ) : (
+                    <View style={styles.noResultsContainer}>
+                        <Text style={styles.noResultsText}>No se encontraron servicios relacionados a tu búsqueda.</Text>
+                    </View>
+                )}
+            </View>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#FCFCFC',
+        position: "relative",
+    },
+    searchBar: {
+        top: 20
+    },
+    containerCategoriaBtn: {
+        flexDirection: 'row',
+        alignItems: "center",
+        paddingHorizontal: 16,
+        marginTop: 5,
+        marginBottom: 10,
+        gap: 10,
+    },
+    categoriaBtn: {
+        paddingVertical: 5,
+        paddingHorizontal: 13,
+        borderRadius: 20,
+        backgroundColor: '#F9F9F9',
+    },
+    textCategoriaBtn: {
+        fontSize: 12,
+        fontFamily: MyFont.regular,
+        paddingTop: 2,
+        color: '#00967F',
+    },
+    categoriaBtnActive: {
+        paddingVertical: 5,
+        paddingHorizontal: 13,
+        borderRadius: 20,
+        backgroundColor: '#9FEDE2',
+    },
+    textCategoriaBtnActive: {
+        fontSize: 12,
+        fontFamily: MyFont.regular,
+        paddingTop: 2,
+        color: 'black',
+    },
+    title: {
+        fontSize: 18,
+        fontFamily: MyFont.medium,
+        color: MyColors.secondary,
+        marginBottom: 8,
+    },
+    consultationsContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between', // O 'center', según el diseño.
+        marginBottom: 300,
+    },
+    consultation: {
+        flexBasis: '50%',
+        marginBottom: 10,
+        overflow: 'hidden',
+        padding: 10,
+    },
+    consultationInfo: {
+        
+    },
+    consultationImage: {
+        width: '100%',
+        height: 160,
+        borderRadius: 15,
+    },
+
+    consultationTitle: {
+        fontSize: 18,
+        fontFamily: MyFont.medium,
+        color: '#404040',
+        marginBottom: 30,
+    },
+    // Estilos boton agendar:
+    agendarBtn: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+    },
+    iconAgendarBtn: {
+        marginRight: 10,
+    },
+    textAgendarBtn: {
+        fontSize: 13,
+        fontFamily: MyFont.regular,
+    },
+    noResultsContainer: {
+        flex: 1,
+        alignItems: 'center',
+        padding: 40,
+    },
+    noResultsText: {
+        fontSize: 14,
+        fontFamily: MyFont.regular,
+        color: '#404040',
+    },
+});
+
+export default Tienda;

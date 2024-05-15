@@ -28,4 +28,5 @@ export type RootParamList = {
   Servicios: undefined;
   Perfil: undefined;
   Pagos: undefined;
+  Tienda: undefined;
 };

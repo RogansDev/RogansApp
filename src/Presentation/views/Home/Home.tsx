@@ -158,6 +158,11 @@ useEffect(() => {
               Pago
             </Text>
           </TouchableOpacity>*/}
+          <TouchableOpacity onPress={() => navigation.navigate("Tienda")} style={styles.navBtn}>
+            <Text style={styles.textNavBtn}>
+              Tienda
+            </Text>
+          </TouchableOpacity>
         </View>
         <HomeBannesrs />
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#404040', borderRadius: 18, paddingVertical: 12, paddingHorizontal: 15, marginTop: 30, marginBottom: 20, marginHorizontal: 15,}}>
