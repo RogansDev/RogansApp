@@ -44,7 +44,7 @@ const useFirebaseCode = () => {
                             setError(error.message);
                             Alert.alert('Ocurrio un error!');
                         });
-                } catch (error) {
+                } catch (error: any) {
                     setLoading(false);
                     console.log(error);
                     setError(error.message);
@@ -55,7 +55,7 @@ const useFirebaseCode = () => {
                 console.log('email no existe .', selectedEmail)
                 Alert.alert('email no existe!');
             }
-        } catch (error) {
+        } catch (error: any) {
             setLoading(false);
             console.log(error);
             setError(error.message);
@@ -92,7 +92,7 @@ const useFirebaseCode = () => {
                 console.log('codigo no existe .', selectedCode)
                 Alert.alert('codigo no existe!');
             }
-        } catch (error) {
+        } catch (error: any) {
             setLoading(false);
             setError(error.message);
             console.log("err", error)

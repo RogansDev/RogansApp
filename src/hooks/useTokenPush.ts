@@ -1,9 +1,11 @@
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
-import { collection, doc, setDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+import { useSelector } from 'react-redux';
 
 const useTokenPush = () => {
+  const { name, user_id, email, document } = useSelector((state: any) => state.user)
   async function registerForPushNotificationsAsync() {
     let token;
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -22,18 +24,36 @@ const useTokenPush = () => {
 
   const handleGestionToken = async () => {
     const token = await registerForPushNotificationsAsync();
+    console.log('token', token)
     if (!token) return;
 
+    console.log('object 1')
       const tokensRef = collection(db, 'userTokens');
       const q = query(tokensRef, where('token', '==', token));
-
+      const plataforma = Platform.OS;
       const querySnapshot = await getDocs(q);
       if (querySnapshot.empty) {
-        const newTokenRef = doc(collection(db, 'userTokens'));
-        await setDoc(newTokenRef, { token });
+
+        console.log('if into')
+
+        const data = { 
+          token: token ? token : '', 
+          name: name ? name : '', 
+          document: document? document : '',
+          user_id: user_id ? user_id : '', 
+          email: email ? email : '',
+          plataforma: plataforma ? plataforma : ''
+        }
+
+        try {
+          addDoc(collection(db, "userTokens"), data);
+        } catch (error) {
+          console.log('error al guardar token', error)
+        }
+        
       
     } else {
-      console.log('Not an iOS device, token not saved');
+      console.log('token not saved');
     }
   };
 
