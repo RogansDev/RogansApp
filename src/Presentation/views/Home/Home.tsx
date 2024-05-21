@@ -42,7 +42,7 @@ useEffect(() => {
   handleStatusCode(user_id);
   getServices();
   getPopups();
-  handleGestionToken();
+  handleGestionToken(); // no se esta ejecutando
 }, [])
 
 useEffect(() => {

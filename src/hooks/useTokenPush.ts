@@ -9,23 +9,13 @@ const useTokenPush = () => {
     role, urlphoto,lastname, phone, birthdate,
    } = useSelector((state: any) => state.user)
   async function registerForPushNotificationsAsync() {
-    let token;
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus === 'granted') {
-      token = (await Notifications.getExpoPushTokenAsync()).data;
-    } else {
-      alert('Failed to get push token for push notification!');
-    }
+    let token = (await Notifications.getExpoPushTokenAsync()).data;
     return token;
   }
 
   const handleGestionToken = async () => {
     const token = await registerForPushNotificationsAsync();
+    console.log('token', token)
     if (!token) return;
     const tokensRef = query(
       collection(db, "users"),
