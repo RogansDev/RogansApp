@@ -12,6 +12,7 @@ import { setClearUserInfo, setUserInfo } from '../state/ProfileSlice';
 import { sendEmailCodePromotion } from './useEmail';
 import useNotificationPush from './useNotificationPush';
 import { getCredentials, saveCredentials } from '../services/credentials';
+import { obtenerCodigoLongitudSeis, obtenerFechaActual } from '../utils/helper';
 
 const useRegisterFirebase = () => {
     const app = initializeApp(firebaseConfig);
@@ -63,21 +64,21 @@ const useRegisterFirebase = () => {
                                 addDoc(collection(db, "users"), dataToCreate).
                                     then(() => {
 
-                                        var codigo = Math.floor(Math.random() * 900000) + 100000;
-                                        const currentDate = new Date();
-                                        const expirationDate = new Date(currentDate);
-                                        expirationDate.setDate(currentDate.getDate() + 15);
+                                        var codigo = obtenerCodigoLongitudSeis()
+                                        const fechaActual = obtenerFechaActual();
 
                                         try {
-                                            const dataToUpload = {
-                                                codigo: codigo,
-                                                status: false,
-                                                user_id: userId,
-                                                date_to_use: null,
-                                                date_to_expired: expirationDate,
-                                                charge: 50000
+                                            const postDataReferencias = {
+                                                fecha: fechaActual,
+                                                role: dataToCreate.role,
+                                                code: codigo,
+                                                email: dataToCreate.email,
+                                                arrayReferenciadosEmails:[],
+                                                arrayReferenciadosMontos:[],
+                                                arrayReferenciadosFechas:[]
                                             };
-                                            addDoc(collection(db, 'promotions'), dataToUpload).then(() => {
+                                            
+                                            addDoc(collection(db, 'referencias'), postDataReferencias).then(() => {
                                                 sendEmailCodePromotion(props.email, codigo, props.name);
                                                 // navigation.navigate('Login')
                                                 sendNotificationRegisterSuccess('Rogans', `Bienvenido a Rogans  ${props.name}`, { name: props.name });
@@ -323,20 +324,21 @@ const useRegisterFirebase = () => {
                 };
                 addDoc(collection(db, "users"), dataToCreate).
                     then(() => {
-                        var codigo = Math.floor(Math.random() * 900000) + 100000;
-                        const currentDate = new Date();
-                        const expirationDate = new Date(currentDate);
-                        expirationDate.setDate(currentDate.getDate() + 15);
+                        var codigo = obtenerCodigoLongitudSeis()
+                        const fechaActual = obtenerFechaActual();
+                        
                         try {
-                            const dataToUpload = {
-                                codigo: codigo,
-                                status: false,
-                                user_id: props.google_id,
-                                date_to_use: null,
-                                date_to_expired: expirationDate,
-                                charge: 50000
+                            const postDataReferencias = {
+                                fecha: fechaActual,
+                                role: dataToCreate.role,
+                                code: codigo,
+                                email: dataToCreate.email,
+                                arrayReferenciadosEmails:[],
+                                arrayReferenciadosMontos:[],
+                                arrayReferenciadosFechas:[]
                             };
-                            addDoc(collection(db, 'promotions'), dataToUpload).then(() => {
+                            
+                            addDoc(collection(db, 'referencias'), postDataReferencias).then(() => {
                                 sendEmailCodePromotion(props.email, codigo, props.name);
                                 sendNotificationRegisterSuccess('Rogans', `Bienvenido a Rogans  ${props.name}`, { name: props.name });
                                 handleGoogleLogin(props.google_id);
