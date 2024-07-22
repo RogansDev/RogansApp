@@ -46,9 +46,25 @@ const ButtonApple = (props: any) => {
             distpach(setGoogleInfo(apple));
 
             try {
+
+                let key;
+                let value;
+
+                if (credential.email != null && credential.email != '' && credential.email != undefined) {
+                    key = 'email';
+                    value = credential.email;
+                } else {
+                    key = 'user_id';
+                    value = userId
+                }
+
+                console.log('key', key);
+                console.log('value', value);
+
+                
                 const userQuery = query(
-                    collection(db, "users"),
-                    where("user_id", "==", userId)
+                  collection(db, "users"),
+                  where(key, '==', value) 
                 );
                 
                 const querySnapshot = await getDocs(userQuery);                
