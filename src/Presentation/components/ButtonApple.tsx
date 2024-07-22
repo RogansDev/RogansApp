@@ -30,24 +30,34 @@ const ButtonApple = (props: any) => {
                 ],
             });
 
+            const desiredLength = 48; 
+            let userId = credential?.identityToken;
+            if (userId.length > desiredLength) {
+            userId = userId.substring(0, desiredLength);
+            }
+
             const apple = {
-                google_id: credential?.identityToken,
+                google_id: userId,
                 email: credential?.email,
                 urlphoto: '',
-                idToken: credential?.identityToken,
+                idToken: userId,
                 name: credential?.fullName?.familyName 
             }
             distpach(setGoogleInfo(apple));
+
             try {
                 const userQuery = query(
                     collection(db, "users"),
-                    where("email", "==", credential.email)
+                    where("user_id", "==", userId)
                 );
-                const querySnapshot = await getDocs(userQuery);
+                
+                const querySnapshot = await getDocs(userQuery);                
                 let selectedEmail: any;
+
                 querySnapshot.forEach((doc) => {
                     selectedEmail = doc.data();
                 });
+                
                 if (selectedEmail) {
                     const user: any = {
                         user_id: selectedEmail?.user_id,
