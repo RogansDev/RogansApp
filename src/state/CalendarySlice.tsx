@@ -5,6 +5,7 @@ const initialState = {
   fecha: '',
   horaAgendada: '',
   virtualPresencial: '',
+  tipoCita: '',
   selectedCard: '',
 };
 
@@ -18,16 +19,19 @@ const CalendarySlice = createSlice({
         horaAgendada,
         virtualPresencial,
         selectedCard,
+        tipoCita
       } = action.payload;
       state.fecha = fecha;
       state.horaAgendada = horaAgendada;
       state.virtualPresencial = virtualPresencial;
+      state.tipoCita = tipoCita;
       state.selectedCard = selectedCard;
     },
     setClearCalendaryInfo: (state, action) => {
       state.fecha='';
       state.horaAgendada='';
       state.virtualPresencial='';
+      state.tipoCita='';
       state.selectedCard='';
     },
     resetSpecificCalendaryInfo: (state, action) => {

@@ -22,6 +22,8 @@ import UpdatePasswordDash from "../Presentation/views/User/UpdatePasswordDash";
 import VerifitCodes from "../Presentation/views/Acceder/VerifitCode";
 import Pagos from "../Presentation/views/Pasarela/Pagos";
 import Tienda from "../Presentation/views/Tienda/Tienda";
+import Producto from "../Presentation/views/Tienda/Producto";
+import ConfirmarCompra from "../Presentation/views/Tienda/ConfirmarCompra";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 
@@ -314,6 +316,34 @@ function PrivateScreen() {
       <Stack.Screen
         name="Tienda"
         component={Tienda}
+        options={({ navigation, route }) => ({
+          ...Platform.select({
+            ios: {
+              headerShown: true,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
+            },
+            android: {
+              headerShown: false,
+            }
+          }),
+          headerTransparent: false,
+        })}
+      />
+       <Stack.Screen
+        name="Producto"
+        component={Producto}
+        options={({ navigation, route }) => ({
+          headerShown: false,
+          headerTransparent: false,
+        })}
+      />
+      <Stack.Screen
+        name="ConfirmarCompra"
+        component={ConfirmarCompra}
         options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {

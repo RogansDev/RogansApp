@@ -29,4 +29,6 @@ export type RootParamList = {
   Perfil: undefined;
   Pagos: undefined;
   Tienda: undefined;
+  Producto: undefined;
+  ConfirmarCompra: undefined;
 };

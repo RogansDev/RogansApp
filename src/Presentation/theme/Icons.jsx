@@ -15,6 +15,7 @@ import ProcedimientoIcon from '../../../assets/icons/procedimientos.svg';
 import ConsultasIcon from '../../../assets/icons/consultas.svg';
 import AgendaIcon from '../../../assets/icons/agenda.svg';
 import AgendarIcon from '../../../assets/icons/agendar.svg';
+import AgendarWhiteIcon from '../../../assets/icons/agendar-white.svg';
 import CalendarIcon from '../../../assets/icons/calendar.svg';
 import CalendarEditIcon from '../../../assets/icons/calendar-edit.svg';
 import CalendarAddIcon from '../../../assets/icons/calendar-add.svg';
@@ -66,6 +67,17 @@ import QuestionIcon from '../../../assets/icons/message-question.svg';
 import UserTwo from '../../../assets/icons/user-two.svg';
 import GoogleLogo from '../../../assets/icons/google_logo.svg';
 import InfoIcon from '../../../assets/icons/info-circle.svg';
+import AgregarIcon from '../../../assets/icons/agregar.svg';
+import FilterIcon from '../../../assets/icons/filter.svg';
+import AddCicle from '../../../assets/icons/add-circle.svg';
+import MinusCicle from '../../../assets/icons/minus-circle.svg';
+import ClipBoardTick from '../../../assets/icons/clipboard-tick.svg';
+import Note from '../../../assets/icons/note.svg';
+import CardWhite from '../../../assets/icons/card-white.svg';
+import TrashGreyIcon from '../../../assets/icons/trash-grey.svg';
+import BriefCaseIcon from '../../../assets/icons/briefcase.svg';
+import GpsIcon from '../../../assets/icons/gps.svg';
+import StarIcon from '../../../assets/icons/star.svg';
 
 const Icons = {
   LogoWhite,
@@ -136,6 +148,18 @@ const Icons = {
   UserTwo,
   GoogleLogo,
   InfoIcon,
+  AgendarWhiteIcon,
+  AgregarIcon,
+  FilterIcon,
+  AddCicle,
+  MinusCicle,
+  ClipBoardTick,
+  Note,
+  CardWhite,
+  TrashGreyIcon,
+  BriefCaseIcon,
+  GpsIcon,
+  StarIcon,
 };
 
 export default Icons;

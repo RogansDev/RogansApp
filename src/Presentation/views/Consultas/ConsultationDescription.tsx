@@ -47,24 +47,33 @@ const ConsultationDescription = () => {
     const cedulaUsuario = user.document;
     const telUsuario = user.phone;
 
-    const actualizarVirtualPresencial = (value) => {
+    const actualizarVirtualPresencial = (value: any) => {
         dispatch(setCalendaryInfo({
           ...calendaryState,
           virtualPresencial: value,
         }));
-      };
+    };
 
-      const actualizarEspecialidad = (value) => {
+    const actualizarTipoCita = (value: any) => {
+        dispatch(setCalendaryInfo({
+          ...calendaryState,
+          tipoCita: value,
+        }));
+    };
+
+    const actualizarEspecialidad = (value: any) => {
         dispatch(setSpecialityInfo({
             especialidadEstado: value,
         }));
-      };
+    };
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalTipoCita, setModalTipoCita] = useState(false);
     const [pagoVisible, setPagoVisible] = useState(false);
     const [selectedValue, setSelectedValue] = useState<string | null>(null);
+    const [selectedCita, setSelectedCita] = useState<string | null>(null);
     const [citaAgendada, setCitaAgendada] = useState(false);
     const [urlFinal, setUrlFinal] = useState('');
 
@@ -180,7 +189,7 @@ const ConsultationDescription = () => {
             "nombre": nombreUsuario + "/&" + cedulaUsuario,
             "telefono": telUsuario,
             "correo": correoUsuario,
-            "evento_agendado": selectedCard.title,
+            "evento_agendado": selectedCard.title + ' - ' + selectedCita,
             "fecha": fechaAgendadaFormateada,
             "especialidad": selectedCard.title,
             "notas": selectedValue,
@@ -203,23 +212,28 @@ const ConsultationDescription = () => {
         }
     };
 
-    const verificarDatos = () => {      
-        
-        if ((selectedValue == 'Virtual' || selectedValue == 'Presencial') && (fecha == '')) {
+    const verificarDatos = () => {
+        if ((selectedValue == 'Virtual' || selectedValue == 'Presencial') && (selectedCita != null) && (fecha == '')) {
             abrirPopUpError('Elige una hora y fecha');
-        } else if ((selectedValue == null) && (fecha != '')) {
+        } else if ((selectedValue == null) && (selectedCita != null) && (fecha != '')) {
             abrirPopUpError('Elige si quieres tu cita presencial o virtual');
-        } else if ((selectedValue == null) && (fecha == '')) {
+        } else if ((selectedValue != null) && (selectedCita == null) && (fecha != '')) {
+            abrirPopUpError('Elige si tu cita es incial o de control');
+        } else if ((selectedValue == null) || (fecha == '') || (selectedCita == null)) {
+            abrirPopUpError('Rellena los campos');
+        } else if ((selectedValue == null) && (fecha == '') && (selectedCita == null)) {
             abrirPopUpError('Rellena los campos');
         } else {
-            if (selectedCard.precio_cita === 'Gratis') {
+            if (selectedCard.precio_cita === 'Gratis' || selectedCita === 'Cita de control') {
                 agendarHandler();
                 actualizarVirtualPresencial(selectedValue);
+                actualizarTipoCita(selectedCita);
                 actualizarEspecialidad(selectedCard.title);
                 navigation.navigate("Confirmado");
             } else {
                 agendarHandler();
                 actualizarVirtualPresencial(selectedValue);
+                actualizarTipoCita(selectedCita);
                 actualizarEspecialidad(selectedCard.title);
                 iniciarProcesoDePago();
             }
@@ -243,7 +257,7 @@ const ConsultationDescription = () => {
 
     let estadoCupon = false;
 
-    const handleMessage = (event) => {
+    const handleMessage = (event: any) => {
         const receivedMessage = event.nativeEvent.data;
 
         if (receivedMessage === 'cupon_true') {
@@ -314,7 +328,7 @@ const ConsultationDescription = () => {
                     <View style={styles.textContainer}>
                         <Text style={styles.title}>{selectedCard.title}</Text>
                         <Text style={styles.text}>Valor consulta</Text>
-                        <Text style={styles.price}>{formatearPrecio(selectedCard.precio_cita)}</Text>
+                        <Text style={styles.price}>{selectedCita == 'Cita de control' ? ('Gratis'):(formatearPrecio(selectedCard.precio_cita))}</Text>
                         <Text style={styles.description}>{selectedCard.description}</Text>
                         <Modal
                             transparent={true}
@@ -338,18 +352,53 @@ const ConsultationDescription = () => {
                                 </View>
                             </View>
                         </Modal>
+
+                        <Modal
+                            transparent={true}
+                            visible={modalTipoCita}
+                            onRequestClose={() => setModalTipoCita(false)}
+                        >
+                            <View style={styles.modalContainer}>
+                                <View style={styles.modalContent}>
+                                    <TouchableOpacity onPress={() => setModalTipoCita(false)} style={{ position: 'absolute', top: 20, left: 20, }}>
+                                        <CloseIcon width={16} height={16} />
+                                    </TouchableOpacity>
+
+                                    <View>
+                                        <TouchableOpacity onPress={() => { setSelectedCita("Cita inicial"), setModalTipoCita(false), actualizarTipoCita("Cita inicial") }} style={{ paddingVertical: 2, marginVertical: 8, }}>
+                                            <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>Cita inicial</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => { setSelectedCita("Cita de control"), setModalTipoCita(false), actualizarTipoCita("Cita de control") }} style={{ paddingVertical: 2, marginVertical: 8, }}>
+                                            <Text style={{ fontFamily: MyFont.regular, fontSize: 14 }}>Cita de control</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+                        </Modal>
                         
                         <MiCalendario ref={calendarioRef} onAbrirPopUpError={abrirPopUpError} />
                                 <Text style={styles.title2}>Agenda tu consulta</Text>
                                 <View>
-                                    <View style={styles.titleModalButton}>
-                                        <Text style={styles.text1TitleModalButton}>Tipo de consulta </Text>
-                                        <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
+                                    <View>
+                                        <View style={styles.titleModalButton}>
+                                            <Text style={styles.text1TitleModalButton}>Modalidad </Text>
+                                            <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
+                                        </View>
+                                        <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.modalButton}>
+                                            <Text style={styles.textModalButton}>{selectedValue ? selectedValue : 'Virtual o presencial'}</Text>
+                                            <ArrowDownIcon style={styles.imageModalButton} width={16} height={16} />
+                                        </TouchableOpacity>
                                     </View>
-                                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.modalButton}>
-                                        <Text style={styles.textModalButton}>{selectedValue ? selectedValue : 'Virtual o presencial'}</Text>
-                                        <ArrowDownIcon style={styles.imageModalButton} width={16} height={16} />
-                                    </TouchableOpacity>
+                                    <View>
+                                        <View style={styles.titleModalButton}>
+                                            <Text style={styles.text1TitleModalButton}>Tipo de cita </Text>
+                                            <Text style={styles.text2TitleModalButton}>(Requerido)</Text>
+                                        </View>
+                                        <TouchableOpacity onPress={() => setModalTipoCita(true)} style={styles.modalButton}>
+                                            <Text style={styles.textModalButton}>{selectedCita ? selectedCita : 'Cita inicial o de control'}</Text>
+                                            <ArrowDownIcon style={styles.imageModalButton} width={16} height={16} />
+                                        </TouchableOpacity>
+                                    </View>
                                     <View>
                                         <View style={styles.titleModalButton}>
                                             <Text style={styles.text1TitleModalButton}>Fecha de consulta </Text>

@@ -30,8 +30,59 @@ const productCards = [
     },
 ];
 
+const products = [
+    {
+        id: 1,
+        image: require("../../../../assets/tienda.jpg"),
+        type: "Perdida del cabello",
+        title: "Shampoo",
+        description:
+          "En Rogans entendemos lo desafiante que puede ser lidiar con la pérdida de cabello y sus efectos en la autoestima y la confianza. Te ofrecemos un enfoque integral y experto para abordar la alopecia y ayudarlo a recuperar su cabello y su confianza.",
+        duracion_cita: "30 minutos",
+        price_old: "80000",
+        price: "50000",
+        category: "Productos",
+    },
+    {
+        id: 2,
+        image: require("../../../../assets/tienda.jpg"),
+        type: "Perdida del cabello",
+        title: "Cuidado del cabello",
+        description:
+          "En Rogans entendemos lo desafiante que puede ser lidiar con la pérdida de cabello y sus efectos en la autoestima y la confianza. Te ofrecemos un enfoque integral y experto para abordar la alopecia y ayudarlo a recuperar su cabello y su confianza.",
+        price_old: "80000",
+        price: "50000",
+        category: "Productos",
+    },
+]
+
+const services = [
+    {
+        id: 1,
+        image: require("../../../../assets/tienda.jpg"),
+        type: "Perdida del cabello",
+        title: "Cuidado del cabello",
+        description:
+          "En Rogans entendemos lo desafiante que puede ser lidiar con la pérdida de cabello y sus efectos en la autoestima y la confianza. Te ofrecemos un enfoque integral y experto para abordar la alopecia y ayudarlo a recuperar su cabello y su confianza.",
+        price_old: "80000",
+        price: "50000",
+        category: "Servicios",
+    },
+    {
+        id: 2,
+        image: require("../../../../assets/tienda.jpg"),
+        type: "Perdida del cabello",
+        title: "Cuidado del cabello",
+        description:
+          "En Rogans entendemos lo desafiante que puede ser lidiar con la pérdida de cabello y sus efectos en la autoestima y la confianza. Te ofrecemos un enfoque integral y experto para abordar la alopecia y ayudarlo a recuperar su cabello y su confianza.",
+        price_old: "80000",
+        price: "50000",
+        category: "Servicios",
+    },
+]
+
 const Tienda = () => {
-    const { CalendarEditIcon, CloseIcon } = Icons;
+    const { AgendarWhiteIcon, AgregarIcon, CloseIcon, FilterIcon, AgendarIcon } = Icons;
     const dispatch = useDispatch();
     const calendaryState = useSelector((state : any) => state.calendary);
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
@@ -46,11 +97,7 @@ const Tienda = () => {
         }
     };
 
-    const consultCardsWithCategory = consultCards.map(item => ({ ...item, category: 'Consultas' }));
-    const procedureCardsWithCategory = procedureCards.map(item => ({ ...item, category: 'Procedimientos' }));
-
-
-    const servicesItems = [...consultCardsWithCategory, ...procedureCardsWithCategory]
+    const productsItems = [...products, ...services]
         .sort((a, b) => a.title.localeCompare(b.title));
 
     const [searchQuery, setSearchQuery] = useState('');
@@ -64,23 +111,28 @@ const Tienda = () => {
         setSearchQuery(''); // Restablece la búsqueda
     };
 
-    const filteredItems = servicesItems.filter((item) => {
+    const filteredItems = productsItems.filter((item) => {
         const matchesSearchQuery = item.title.toLowerCase().includes(searchQuery);
         const matchesCategory = activeCategorias.length === 0 || activeCategorias.some(cat => item.category === cat);
         return matchesSearchQuery && matchesCategory;
     });
 
-    const handleSelectCard = async (card: any) => {
-        dispatch(setCalendaryInfo({
-            ...calendaryState,
-            selectedCard: card
-        }));
-        if (card.category === 'Consultas') {
-            navigation.navigate('DescripcionConsultas');
-        } else {
-            navigation.navigate('DescripcionProcedimientos');
-        }
+    const handleSelectProduct = async (card: any) => {
+        navigation.navigate('Producto');
+    };
 
+    const setNumber = (input: number | string) => {
+        if (input) {
+            let number = Number(input);
+            if (!isNaN(number)) {
+                let val = number.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+                return val;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     };
 
     return (
@@ -91,48 +143,64 @@ const Tienda = () => {
                     onSearch={handleSearch}
                     resetSearch={resetSearch}
                 />
-                <View style={styles.containerCategoriaBtn}>
-                    <TouchableOpacity
-                        onPress={() => toggleCategoriaBtn('Consultas')}
-                        style={activeCategorias.includes('Consultas') ? styles.categoriaBtnActive : styles.categoriaBtn}
-                    >
-                        {activeCategorias.includes('Consultas') ? (
-                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                                <CloseIcon width={16} height={16} style={{ marginRight: 6, }} />
-                                <Text style={styles.textCategoriaBtnActive}>Consultas</Text>
-                            </View>
-                        ) : (
-                            <Text style={styles.textCategoriaBtn}>Consultas</Text>
-                        )}
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => toggleCategoriaBtn('Procedimientos')}
-                        style={activeCategorias.includes('Procedimientos') ? styles.categoriaBtnActive : styles.categoriaBtn}
-                    >
-                        {activeCategorias.includes('Procedimientos') ? (
-                            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                                <CloseIcon width={16} height={16} style={{ marginRight: 6, }} />
-                                <Text style={styles.textCategoriaBtnActive}>Procedimientos</Text>
-                            </View>
-                        ) : (
-                            <Text style={styles.textCategoriaBtn}>Procedimientos</Text>
-                        )}
-                    </TouchableOpacity>
+                <View style={styles.topBar}>
+                    <View style={styles.containerCategoriaBtn}>
+                        <TouchableOpacity
+                            onPress={() => toggleCategoriaBtn('Servicios')}
+                            style={activeCategorias.includes('Servicios') ? styles.categoriaBtnActive : styles.categoriaBtn}
+                        >
+                            {activeCategorias.includes('Servicios') ? (
+                                <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                    <CloseIcon width={16} height={16} style={{ marginRight: 6, }} />
+                                    <Text style={styles.textCategoriaBtnActive}>Servicios</Text>
+                                </View>
+                            ) : (
+                                <Text style={styles.textCategoriaBtn}>Servicios</Text>
+                            )}
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => toggleCategoriaBtn('Productos')}
+                            style={activeCategorias.includes('Productos') ? styles.categoriaBtnActive : styles.categoriaBtn}
+                        >
+                            {activeCategorias.includes('Productos') ? (
+                                <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                                    <CloseIcon width={16} height={16} style={{ marginRight: 6, }} />
+                                    <Text style={styles.textCategoriaBtnActive}>Productos</Text>
+                                </View>
+                            ) : (
+                                <Text style={styles.textCategoriaBtn}>Productos</Text>
+                            )}
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.containerIcons}>
+                        <TouchableOpacity>
+                            <FilterIcon width={22} height={22} />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <AgendarIcon width={22} height={22} />
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 {filteredItems.length > 0 ? (
                     <ScrollView>
                         <StoreBannerCard cards={productCards}/>
-                        <View style={styles.consultationsContainer}>
+                        <View style={styles.productsContainer}>
                             {filteredItems.map((item, index) => (
-                                <TouchableOpacity onPress={() => handleSelectCard(item)} key={`${item.id}_${index}`} style={styles.consultation}>
-                                    <Image source={item.image} style={styles.consultationImage} />
-                                    <View style={styles.consultationInfo}>
-                                        <Text style={styles.consultationTitle}>{item.title}</Text>
-                                        <TouchableOpacity onPress={() => handleSelectCard(item)} style={styles.agendarBtn}>
-                                            <CalendarEditIcon style={styles.iconAgendarBtn} width={16} height={16} />
-                                            <Text style={styles.textAgendarBtn}>
-                                                Agendar
+                                <TouchableOpacity onPress={() => handleSelectProduct(item)} key={`${item.id}_${index}`} style={styles.product}>
+                                    <Image source={item.image} style={styles.productImage} />
+                                    <TouchableOpacity onPress={() => handleSelectProduct(item)} style={styles.agregarBtn}>
+                                        <AgregarIcon width={27} height={27} />
+                                    </TouchableOpacity>
+                                    <View style={styles.productInfo}>
+                                        <Text style={styles.productCategory}>{item.type}</Text>
+                                        <Text style={styles.productTitle}>{item.title}</Text>
+                                        <Text style={styles.productPriceBefore}>Antes ${setNumber(item.price_old)}</Text>
+                                        <Text style={styles.productPrice}>${setNumber(item.price)}</Text>
+                                        <TouchableOpacity onPress={() => handleSelectProduct(item)} style={styles.comprarBtn}>
+                                            <Text style={styles.textComprarBtn}>
+                                                Comprar
                                             </Text>
+                                            <AgendarWhiteIcon width={16} height={16} />
                                         </TouchableOpacity>
                                     </View>
                                 </TouchableOpacity>
@@ -157,6 +225,11 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         top: 20
+    },
+    topBar: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
     },
     containerCategoriaBtn: {
         flexDirection: 'row',
@@ -190,51 +263,88 @@ const styles = StyleSheet.create({
         paddingTop: 2,
         color: 'black',
     },
+    containerIcons: {
+        flexDirection: 'row',
+        gap: 10,
+        marginRight: 16,
+    },
     title: {
         fontSize: 18,
         fontFamily: MyFont.medium,
         color: MyColors.secondary,
         marginBottom: 8,
     },
-    consultationsContainer: {
+    productsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'space-between', // O 'center', según el diseño.
+        justifyContent: 'space-between',
+        marginTop: 20,
         marginBottom: 300,
     },
-    consultation: {
+    product: {
+        position: 'relative',
         flexBasis: '50%',
         marginBottom: 10,
         overflow: 'hidden',
         padding: 10,
     },
-    consultationInfo: {
+    productInfo: {
         
     },
-    consultationImage: {
+    productImage: {
         width: '100%',
         height: 160,
         borderRadius: 15,
+        marginBottom: 10,
     },
-
-    consultationTitle: {
+    productCategory: {
+        fontSize: 16,
+        fontFamily: MyFont.regular,
+        color: '#C0C0C0',
+        marginBottom: 4,
+    },
+    productTitle: {
         fontSize: 18,
-        fontFamily: MyFont.medium,
-        color: '#404040',
-        marginBottom: 30,
+        fontFamily: MyFont.bold,
+        color: '#000000',
+        marginBottom: 14,
     },
-    // Estilos boton agendar:
-    agendarBtn: {
+    productPriceBefore: {
+        fontSize: 14,
+        fontFamily: MyFont.regular,
+        color: '#909090',
+    },
+    productPrice: {
+        fontSize: 21,
+        fontFamily: MyFont.medium,
+        color: '#00D0B1',
+    },
+    // Estilos boton comprar:
+    comprarBtn: {
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
+        backgroundColor: '#000000',
+        padding: 15,
+        marginTop: 15,
+        gap: 8,
+        borderRadius: 14,
     },
-    iconAgendarBtn: {
-        marginRight: 10,
-    },
-    textAgendarBtn: {
+    textComprarBtn: {
         fontSize: 13,
         fontFamily: MyFont.regular,
+        color: '#ffffff',
+    },
+    agregarBtn: {
+        position: 'absolute',
+        top: 16,
+        right: 18,
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(265, 265, 265, 0.3)',
+        padding: 3,
+        borderRadius: 18,
     },
     noResultsContainer: {
         flex: 1,
