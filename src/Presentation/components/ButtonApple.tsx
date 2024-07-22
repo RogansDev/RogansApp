@@ -30,24 +30,50 @@ const ButtonApple = (props: any) => {
                 ],
             });
 
+            const desiredLength = 48; 
+            let userId = credential?.identityToken;
+            if (userId.length > desiredLength) {
+            userId = userId.substring(0, desiredLength);
+            }
+
             const apple = {
-                google_id: credential?.identityToken,
+                google_id: userId,
                 email: credential?.email,
                 urlphoto: '',
-                idToken: credential?.identityToken,
+                idToken: userId,
                 name: credential?.fullName?.familyName 
             }
             distpach(setGoogleInfo(apple));
+
             try {
+
+                let key;
+                let value;
+
+                if (credential.email != null && credential.email != '' && credential.email != undefined) {
+                    key = 'email';
+                    value = credential.email;
+                } else {
+                    key = 'user_id';
+                    value = userId
+                }
+
+                console.log('key', key);
+                console.log('value', value);
+
+                
                 const userQuery = query(
-                    collection(db, "users"),
-                    where("email", "==", credential.email)
+                  collection(db, "users"),
+                  where(key, '==', value) 
                 );
-                const querySnapshot = await getDocs(userQuery);
+                
+                const querySnapshot = await getDocs(userQuery);                
                 let selectedEmail: any;
+
                 querySnapshot.forEach((doc) => {
                     selectedEmail = doc.data();
                 });
+                
                 if (selectedEmail) {
                     const user: any = {
                         user_id: selectedEmail?.user_id,

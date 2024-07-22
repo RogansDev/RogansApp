@@ -28,7 +28,7 @@ const Loading = () => {
                 } catch (error) {
                     navigation.navigate('Login');
                 }
-            } else if (email && googleId) {
+            } else if (googleId) {
                 try {
                     await handleGoogleLogin(googleId);
                 } catch (error) {

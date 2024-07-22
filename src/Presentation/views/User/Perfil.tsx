@@ -22,87 +22,59 @@ const Perfil = () => {
     const { Forget, UserIcon, Camara, CloseIcon, GalleryAdd, TrashIcon, TickCircleWhiteicon } = Icons;
     const { name, lastname, document, email, phone, user_id, birthdate, role } = useSelector((state: any) => state.user);
     const { handleDeleteAccount, loading: firebaseLoading } = useRegisterFirebase();
-
     const [loading, setLoading] = useState(false);
-
     const [modalEliminarCuenta, setModalEliminarCuenta] = useState(false);
-
     const [modalCerrarSesion, setModalCerrarSesion] = useState(false);
-
     const { image, base64Image, pickImage, convertImageToFirebaseUrl } = useImagePicker();
-
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
-
     const [isModalVisible, setModalVisible] = useState(false);
-
     const PopUpCerrarSesionRef = useRef(null);
 
-
     const handleSessionClose = async () => {
-
         try {
             await deleteCredentials("email");
             await deleteCredentials("password");
             await deleteCredentials("googleToken");
             await GoogleSignin.signOut();
-
             dispatch(setClearUserInfo(""));
             dispatch(setClearCalendaryInfo(""));
-
         } catch (error) {
             console.log('error......', error);
         }
-
     };
-
-
     const handleDeleteUser = async () => {
-
         try {
-
             await deleteCredentials("email");
             await deleteCredentials("password");
             await deleteCredentials("googleToken");
             await GoogleSignin.signOut();
-
             dispatch(setClearUserInfo(""));
             dispatch(setClearCalendaryInfo(""));
-
-
             const userQuery = query(
                 collection(db, "users"),
                 where("user_id", "==", user_id)
             );
-
             const querySnapshot = await getDocs(userQuery);
             const firstDoc = querySnapshot.docs[0];
             handleDeleteAccount(firstDoc.id);
-
         } catch (error) {
             console.log('error:::::::', error);
         }
-
-
     }
 
     const handlePhoto = async () => {
         setLoading(true);
-
         try {
             const userQuery = query(
                 collection(db, "users"),
                 where("user_id", "==", user_id)
             );
-
             const querySnapshot = await getDocs(userQuery);
-
             if (!querySnapshot.empty) {
                 const firstDoc = querySnapshot.docs[0];
                 const usersDocument = doc(db, 'users', firstDoc.id);
-
                 try {
                     const imageUrl = await convertImageToFirebaseUrl(image);
-
                     const user = {
                         user_id,
                         email,
@@ -114,7 +86,6 @@ const Perfil = () => {
                         phone,
                         birthdate
                     };
-
                     await updateDoc(usersDocument, user);
                     dispatch(setUserInfo(user));
                     setLoading(false);
@@ -135,27 +106,19 @@ const Perfil = () => {
         }
     }
 
-    const abrirPopUp = () => {
-        if (PopUpCerrarSesionRef.current) {
-            PopUpCerrarSesionRef.current.togglePopUp();
-        }
-    };
-
     useEffect(() => {
         GoogleSignin.configure({
-          webClientId: "488356227805-7ta65ngc1negegfpuev60gu9o9d4pp84.apps.googleusercontent.com",
-          androidClientId: "488356227805-bgsi99ubhrnfqs5bst425h4d39clourr.apps.googleusercontent.com",
+            webClientId: "488356227805-7ta65ngc1negegfpuev60gu9o9d4pp84.apps.googleusercontent.com",
+            androidClientId: "488356227805-bgsi99ubhrnfqs5bst425h4d39clourr.apps.googleusercontent.com",
         });
-      }, []);
-
+    }, []);
     return (
         <>
             <Modal
                 animationType="slide"
                 transparent={true}
                 visible={isModalVisible}
-                onRequestClose={() => setModalVisible(false)}
-            >
+                onRequestClose={() => setModalVisible(false)}>
                 <View style={styles.modalContainer}>
                     <TouchableOpacity
                         style={styles.overlay}
@@ -252,15 +215,12 @@ const Perfil = () => {
                 animationType="fade"
                 transparent={true}
                 visible={modalCerrarSesion}
-                onRequestClose={() => setModalCerrarSesion(false)}
-            >
+                onRequestClose={() => setModalCerrarSesion(false)}>
                 <TouchableOpacity
                     style={styles.modalFade}
                     onPress={() => setModalCerrarSesion(false)}
-                    activeOpacity={1} // Esto asegura que el área transparente también responda al toque
-                >
+                    activeOpacity={1}>
                     <View style={styles.modalContainer2}>
-
                         <View style={styles.modalContent}>
                             <View>
                                 <TouchableOpacity style={styles.cerrarBtn} onPress={() => setModalCerrarSesion(false)}>
@@ -281,20 +241,17 @@ const Perfil = () => {
                                     <CloseIcon width={16} height={16} />
                                 </TouchableOpacity>
                             </View>
-
                         </View>
                     </View>
                 </TouchableOpacity>
             </Modal>
-
             <View style={styles.container}>
                 <ScrollView style={styles.scrollContainer}>
                     <Text style={styles.title}>Perfil</Text>
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 30, }}>
                         <TouchableOpacity
                             style={{ overflow: 'hidden', width: 150, height: 150, justifyContent: 'center', alignItems: 'center', }}
-                            onPress={() => setModalVisible(true)}
-                        >
+                            onPress={() => setModalVisible(true)}>
                             {image ? (
                                 <Image
                                     source={{ uri: image }}
@@ -381,7 +338,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FCFCFC',
         position: "relative",
-
     },
     scrollContainer: {
         position: "relative",

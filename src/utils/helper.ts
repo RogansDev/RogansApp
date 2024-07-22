@@ -6,4 +6,13 @@ export function obtenerFechaActual(): string {
     return `${dia}/${mes}/${año}`;
 }
 
+export const obtenerCodigoLongitudSeis = () => {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let codigo = '';
+    for (let i = 0; i < 6; i++) {
+        codigo += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+    }
+    return codigo;
+}
+
 

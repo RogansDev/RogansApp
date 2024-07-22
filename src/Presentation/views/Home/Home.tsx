@@ -42,7 +42,7 @@ useEffect(() => {
   handleStatusCode(user_id);
   getServices();
   getPopups();
-  handleGestionToken();
+  handleGestionToken(); // no se esta ejecutando
 }, [])
 
 useEffect(() => {
@@ -124,7 +124,7 @@ const handleSelectCard = async (card: any, link: any) => {
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Hola {name}</Text>
+            <Text style={styles.title}>HOLA {name}.</Text>
           </View>
           <TouchableOpacity style={{overflow: 'hidden',}} onPress={() => navigation.navigate("Perfil")}>
             <UserTwo width={20} height={20} />
