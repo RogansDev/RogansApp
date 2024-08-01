@@ -11,6 +11,8 @@ import SearchBarStore from '../../../Presentation/components/SearchBarStore';
 import Icons from '../../../Presentation/theme/Icons';
 import { consultCards, procedureCards } from '../Servicios/ServicesData';
 import StoreBannerCard from '../../../Presentation/components/StoreBannerCard';
+import ButtonDropdown from '../../../Presentation/components/buttons/ButtonDropdown';
+import Input from '../../../Presentation/components/inputs/Input';
 
 const productCards = [
     {
@@ -135,6 +137,15 @@ const Tienda = () => {
         }
     };
 
+    const handlePress = () => {
+        console.log("Dropdown pressed!");
+    };
+
+    const options = [
+        { label: "Option 1", onPress: () => console.log("Option 1 selected") },
+        { label: "Option 2", onPress: () => console.log("Option 2 selected") },
+    ];
+
     return (
         <View style={styles.container}>
             <FloatingMenu chatVisible={chatVisible} setChatVisible={setChatVisible} />
@@ -183,6 +194,8 @@ const Tienda = () => {
                 </View>
                 {filteredItems.length > 0 ? (
                     <ScrollView>
+                        <ButtonDropdown text="Select Option" icon={AgendarIcon} iconSize={{ width: 22, height: 22 }} options={options} pressAction={handlePress} disabled={false} />
+                        <Input placeholder="Input"/>
                         <StoreBannerCard cards={productCards}/>
                         <View style={styles.productsContainer}>
                             {filteredItems.map((item, index) => (

@@ -5,7 +5,7 @@ export default {
     },
     "name": "RogansApp",
     "slug": "RogansApp",
-    "version": "1.3.7",
+    "version": "1.3.8",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
