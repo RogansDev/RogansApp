@@ -117,6 +117,15 @@ export const MyStyles = StyleSheet.create({
       backgroundColor: MyColors.verde[1],
       borderRadius: 10,
   },
+  buttonDropdown: {
+    flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 10,
+      padding: 12,
+      backgroundColor: MyColors.verde[1],
+      borderRadius: 10,
+  },
   buttonEnabled: {
     backgroundColor: MyColors.verde[1],
   },
@@ -133,13 +142,23 @@ export const MyStyles = StyleSheet.create({
   textButtonDisabled: {
       color: MyFontColors.primaryButton,
   },
+  inputContainer: {
+      position: 'relative',
+      marginVertical: 20,
+      height: 60,
+  },
+  inputDropdownContainer: {
+      position: 'relative',
+      marginVertical: 20,
+      height: 60,
+  },
   input: {
+    height: '100%',
       borderWidth: 1,
       borderColor: MyColors.neutroDark[2],
       borderRadius: 12,
-      paddingHorizontal: 10,
-      paddingVertical: 16,
-      marginVertical: 12,
+      paddingHorizontal: 13,
+      paddingBottom: 5,
       fontFamily: MyFont.regular,
       fontSize: MyFont.size[7],
   },
@@ -152,11 +171,20 @@ export const MyStyles = StyleSheet.create({
       elevation: 5,
   },
   inputError: {
-      borderColor: MyColors.error[1],
-      shadowColor: MyColors.error[1],
+      borderColor: MyColors.error[2],
+      shadowColor: MyColors.error[2],
       shadowOpacity: 0.8,
       shadowRadius: 10,
       elevation: 5,
+  },
+  InputErrorTextContainer: {
+    position: 'absolute',
+    top: 65,
+    flexDirection: 'row',
+    gap: 3,
+  },
+  InputErrorText: {
+    color: MyColors.error[2],
   },
   inputDisabled: {
       backgroundColor: '#f0f0f0',
