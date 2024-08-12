@@ -12,7 +12,7 @@ import Icons from '../../../Presentation/theme/Icons';
 import { consultCards, procedureCards } from '../Servicios/ServicesData';
 import StoreBannerCard from '../../../Presentation/components/StoreBannerCard';
 import ButtonDropdown from '../../../Presentation/components/buttons/ButtonDropdown';
-import Input from '../../../Presentation/components/inputs/Input';
+import PhoneInput from '../../../Presentation/components/inputs/PhoneInput';
 
 const productCards = [
     {
@@ -142,9 +142,35 @@ const Tienda = () => {
     };
 
     const options = [
-        { label: "Option 1", onPress: () => console.log("Option 1 selected") },
-        { label: "Option 2", onPress: () => console.log("Option 2 selected") },
-    ];
+        { 
+          label: 'Option 1', 
+          value: "Prueba 1" 
+        },
+        { 
+            label: 'Option 2', 
+            value: "Prueba 2" 
+        },
+        { 
+            label: 'Option 2', 
+            value: "Prueba 2" 
+        },
+        { 
+            label: 'Option 2', 
+            value: "Prueba 2" 
+        },
+        { 
+            label: 'Option 2', 
+            value: "Prueba 2" 
+        },
+        { 
+            label: 'Option 2', 
+            value: "Prueba 2" 
+        },
+        { 
+            label: 'Option 2', 
+            value: "Prueba 2" 
+        },
+      ];
 
     return (
         <View style={styles.container}>
@@ -194,8 +220,9 @@ const Tienda = () => {
                 </View>
                 {filteredItems.length > 0 ? (
                     <ScrollView>
-                        <ButtonDropdown text="Select Option" icon={AgendarIcon} iconSize={{ width: 22, height: 22 }} options={options} pressAction={handlePress} disabled={false} />
-                        <Input placeholder="Input"/>
+
+                        <PhoneInput />
+
                         <StoreBannerCard cards={productCards}/>
                         <View style={styles.productsContainer}>
                             {filteredItems.map((item, index) => (
