@@ -110,6 +110,16 @@ import SueciaIcon from '../../../assets/icons/flags/flag-suecia.svg';
 import SurinamIcon from '../../../assets/icons/flags/flag-surinam.svg';
 import UruguayIcon from '../../../assets/icons/flags/flag-uruguay.svg';
 import VenezuelaIcon from '../../../assets/icons/flags/flag-venezuela.svg';
+import Main from '../../../assets/icons/main.svg';
+import Call from '../../../assets/icons/call.svg';
+import AgendarBlackIcon from '../../../assets/icons/agendar-black.svg';
+import UbicacionVerde from '../../../assets/icons/ubicacion-verde.svg';
+import Calendar from '../../../assets/icons/calendar-app.svg';
+import CalendarVerde from '../../../assets/icons/calendario-ver.svg';
+import CalendarAddVerde from '../../../assets/icons/calendar-add-verde.svg';
+import PhoneApp from '../../../assets/icons/phone.svg';
+import Audifonos from '../../../assets/icons/audifonos.svg';
+import Referidos from '../../../assets/icons/referidos.svg';
 
 const Icons = {
   LogoWhite,
@@ -224,6 +234,16 @@ const Icons = {
   SurinamIcon,
   UruguayIcon,
   VenezuelaIcon,
+  Main,
+  Call,
+  AgendarBlackIcon,
+  UbicacionVerde,
+  Calendar,
+  CalendarVerde,
+  CalendarAddVerde,
+  PhoneApp,
+  Audifonos,
+  Referidos,
 };
 
 export default Icons;
