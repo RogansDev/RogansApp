@@ -20,12 +20,13 @@ const useServices = () => {
             setLoadingServices(false);
         } else {
             const data = await getDocs(servicesCollection);
+            // @ts-ignore
             setServicess(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
             setLoadingServices(false);
         }
 
     }
-
+// @ts-ignore
     const deleteServices = async (id) => {
 
         const servicesDoc = doc(db, "services", id);

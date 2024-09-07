@@ -5,36 +5,45 @@ import { db } from '../firebase';
 import { useSelector } from 'react-redux';
 
 const useTokenPush = () => {
+
   const { name, user_id, email, document, 
     role, urlphoto,lastname, phone, birthdate,
-   } = useSelector((state: any) => state.user)
+   } = useSelector((state: any) => state.user);
   async function registerForPushNotificationsAsync() {
     let token = (await Notifications.getExpoPushTokenAsync()).data;
     return token;
   }
 
   const handleGestionToken = async () => {
+
+    console.log('me ejecuto');
     const token = await registerForPushNotificationsAsync();
-    console.log('token', token)
-    if (!token) return;
-    const tokensRef = query(
-      collection(db, "users"),
-      where("token", "==", token)
-    );
     const plataforma = Platform.OS;
-    const querySnapshot = await getDocs(tokensRef);
-    if (querySnapshot.empty) {
-      /// start token
-      try {
-        const userQuery = query(
-          collection(db, "users"),
-          where("user_id", "==", user_id)
-        );
-        const querySnapshot = await getDocs(userQuery);
-        if (!querySnapshot.empty) {
-          const firstDoc = querySnapshot.docs[0];
-          const usersDocument = doc(db, 'users', firstDoc.id);
-          try {
+    console.log('token', token)
+    console.log('plataforma', plataforma)
+
+
+    try {
+      const userQuery = query(
+        collection(db, "users"),
+        where("user_id", "==", user_id)
+      );
+      const querySnapshot = await getDocs(userQuery);      
+
+      if (querySnapshot.empty) {
+        console.log('usuario no encontrado')
+      } else {
+        let usuario;
+        querySnapshot.forEach((doc) => {
+          usuario = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+          console.log('Usuario encontrado:', JSON.stringify(usuario, null, 5));
+                  
+        });
+        // @ts-ignore
+        if(!usuario[0].token){
+          // @ts-ignore
+          const usersDocument = doc(db, 'users', usuario[0].id);
+          
             const user = {
               user_id: user_id ?? '',
               email: email ?? '',
@@ -50,19 +59,14 @@ const useTokenPush = () => {
             };
             await updateDoc(usersDocument, user);
             console.log('token OK');
-          } catch (error) {
-            console.error(error);
-          }
-        } else {
-          console.log('token not saved update');
-        }
-      } catch (error) {
-        console.error(error);
+          
+
+        }  
       }
-      /// end token 
-    } else {
-      console.log('token not saved');
+    } catch (error) {
+      console.log('error', error);
     }
+
   };
   return { handleGestionToken };
 };

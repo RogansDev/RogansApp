@@ -12,14 +12,14 @@ import { db } from '../../firebase';
 import { saveCredentials } from '../../services/credentials';
 import { setUserInfo } from '../../state/ProfileSlice';
 
-const ButtonApple = (props: any) => {
+const ButtonApple = ({ onPress }: { onPress: () => void }) => {
 
     const { Apple } = Icons;
-    const { title = 'Continuar con Apple' } = props;
     const [error, setError] = useState();
     const [loading, setloading] = useState(false);
     const distpach = useDispatch();
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
+    
 
     const handleOnPress = async () => {
         try {
@@ -29,42 +29,28 @@ const ButtonApple = (props: any) => {
                     AppleAuthentication.AppleAuthenticationScope.EMAIL,
                 ],
             });
+            console.log('credential', credential);
 
-            const desiredLength = 48; 
-            let userId = credential?.identityToken;
-            if (userId.length > desiredLength) {
-            userId = userId.substring(0, desiredLength);
+            if(credential.email === null){
+                console.log(':::::::::::soy null:::::::::::::');
+                // un alert 
             }
-
+            // sera obligatorio traer el email para iniciar sesion con apple
             const apple = {
-                google_id: userId,
-                email: credential?.email,
+                google_id: credential.email,
+                email: credential.email,
                 urlphoto: '',
-                idToken: userId,
+                idToken: credential.email,
                 name: credential?.fullName?.familyName 
             }
+            console.log('apple', apple);
             distpach(setGoogleInfo(apple));
 
             try {
-
-                let key;
-                let value;
-
-                if (credential.email != null && credential.email != '' && credential.email != undefined) {
-                    key = 'email';
-                    value = credential.email;
-                } else {
-                    key = 'user_id';
-                    value = userId
-                }
-
-                console.log('key', key);
-                console.log('value', value);
-
                 
                 const userQuery = query(
                   collection(db, "users"),
-                  where(key, '==', value) 
+                  where('email', '==', credential.email) 
                 );
                 
                 const querySnapshot = await getDocs(userQuery);                
@@ -112,10 +98,10 @@ const ButtonApple = (props: any) => {
         }
     }
     return (
-        <Pressable style={styles.button} onPress={handleOnPress}>
+        <Pressable style={styles.button} onPress={onPress}>
             <View style={styles.view}>
                 <Apple width={30} height={24} color={'white'} />
-                <Text style={styles.text}>{title}</Text>
+                <Text style={styles.text}>Continuar con Apple</Text>
             </View>
         </Pressable>
     )

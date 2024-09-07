@@ -3,7 +3,8 @@ import {
   View,
   Text,
   StyleSheet,
-  Platform
+  Platform,
+  Alert
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import SingLogin from "../../../Presentation/components/SingLogin";
@@ -17,10 +18,20 @@ import { RootParamList } from "../../../utils/RootParamList";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import GoogleButton from "../../components/ButtonGoogle";
 import ButtonApple from "../../components/ButtonApple";
+import ShowAlertPreview from "../../components/appleAlert/ShowAlertPreview";
+import { useDispatch } from "react-redux";
+import * as AppleAuthentication from 'expo-apple-authentication';
+import { db } from "../../../firebase";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { saveCredentials } from "../../../services/credentials";
+import { setUserInfo } from "../../../state/ProfileSlice";
+import { setGoogleInfo } from "../../../state/GoogleDataSlice";
+import ShowRegisterMessage from "../../components/appleAlert/ShowRegisterMessage";
 
 const Login = () => {
   const { email, password, onChange } = UseViewModel();
   const { handleLogin, loading } = useRegisterFirebase();
+    const distpach = useDispatch();
 
   const {
     LogoBlack,
@@ -33,6 +44,85 @@ const Login = () => {
   } = Icons;
 
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible2, setModalVisible2] = useState(false);
+  const [appleLoginPending, setAppleLoginPending] = useState(false);
+
+  const handleAppleLogin = async () => {
+    setModalVisible(true);
+  };
+
+  const handleContinue = async () => {
+    setModalVisible(false);
+    setAppleLoginPending(true);
+    try {
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+
+      if (credential.email === null) {
+        setModalVisible2(true)
+        return;
+      }
+
+      const apple = {
+        google_id: credential.email,
+        email: credential.email,
+        urlphoto: '',
+        idToken: credential.email,
+        name: credential?.fullName?.familyName 
+      }
+      distpach(setGoogleInfo(apple));
+      // Handle apple login logic here
+      const userQuery = query(
+        collection(db, "users"),
+        where('email', '==', credential.email) 
+      );
+
+      const querySnapshot = await getDocs(userQuery);
+      let selectedEmail: any;
+
+      querySnapshot.forEach((doc) => {
+        selectedEmail = doc.data();
+      });
+
+      if (selectedEmail) {
+        const user: any = {
+          user_id: selectedEmail?.user_id,
+          email: selectedEmail?.email,
+          role: selectedEmail?.role,
+          urlphoto: selectedEmail?.urlphoto == "" ? apple.urlphoto : selectedEmail?.urlphoto,
+          document: selectedEmail?.document,
+          name: selectedEmail?.name,
+          lastname: selectedEmail?.lastname,
+          phone: selectedEmail?.phone,
+          birthdate: selectedEmail?.birthdate,
+          logged: true
+        }
+        await saveCredentials('email', selectedEmail.email);
+        await saveCredentials('googleToken', selectedEmail.user_id);
+        distpach(setUserInfo(user));
+        setAppleLoginPending(false);
+      } else {
+        setAppleLoginPending(false);
+        navigation.navigate("GoogleRegister");
+      }
+    } catch (error: any) {
+      console.log('error........................', error);
+      Alert.alert(`No se pudo ingresar error ${error}`);
+      setAppleLoginPending(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+  const handleCancel2 = () => {
+    setModalVisible2(false);
+  };
 
   useEffect(() => {
     const obtenerDatos = async () => {
@@ -59,6 +149,14 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
+      <ShowAlertPreview 
+        visible={modalVisible}
+        onContinue={handleContinue}
+        onCancel={handleCancel} />
+        <ShowRegisterMessage 
+        visible={modalVisible2}
+        onCancel={handleCancel2}
+        />
       <View style={styles.logoContainer}>
         <LogoBlack width={140} height={100} />
       </View>
@@ -114,7 +212,7 @@ const Login = () => {
         {Platform.OS === 'ios' &&
           <View style={styles.contentLoginGoogle}>
             <View style={{ alignSelf: 'center' }}>
-              <ButtonApple />
+              <ButtonApple onPress={handleAppleLogin}/>
             </View>
           </View>}
         <View style={styles.containerUpdate}>
