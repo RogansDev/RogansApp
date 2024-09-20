@@ -20,6 +20,7 @@ import useServices from "../../../hooks/useServices";
 import usePopUp from "../../../hooks/usePopUp";
 import HomeBannesrs from "../../components/HomeBanners";
 import useTokenPush from "../../../hooks/useTokenPush";
+import ServicioCard from "../../components/Servicios/ServicioCard";
 
 const Home = () => {
   const { UserTwo, Arrow, QuestionIcon, CloseIcon } = Icons;
@@ -59,7 +60,7 @@ useEffect(() => {
   }
 }, [popUpInfo]);
 
-const handleSelectCard = async (card: any, link: any) => {    
+const handleSelectCard = async (card: any, link: any) => {
   dispatch(setCalendaryInfo({
     ...calendaryState,
     selectedCard: card
@@ -77,7 +78,7 @@ const handleSelectCard = async (card: any, link: any) => {
           <TouchableOpacity
               style={styles.modalFade}
               onPress={() => setModalPopUp(false)}
-              activeOpacity={1} // Esto asegura que el área transparente también responda al toque
+              activeOpacity={1}
           >
               <View style={styles.modalContainer2}>
                   <View style={[styles.modalContent, {width: IMAGE_WIDTH, height: IMAGE_HEIGHT}]}>
@@ -124,7 +125,7 @@ const handleSelectCard = async (card: any, link: any) => {
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>HOLA {name}.</Text>
+            <Text style={styles.title}>Hola, {name}</Text>
           </View>
           <TouchableOpacity style={{overflow: 'hidden',}} onPress={() => navigation.navigate("Perfil")}>
             <UserTwo width={20} height={20} />
@@ -167,6 +168,11 @@ const handleSelectCard = async (card: any, link: any) => {
             <QuestionIcon width={16} height={16} />
           </TouchableOpacity>
         </View>
+
+         <ServicioCard text='Mejora tu vida' greenText='sexual'/>
+
+         <ServicioCard text='Haz que tu cabello' greenText='crezca'/>
+
         {/* texto de consultas y botton de mas consultas */}
         <View style={styles.section}>
           <Text style={styles.titleSection}>Consultas{"\n"}para ti</Text>
@@ -251,7 +257,7 @@ const styles = StyleSheet.create({
     height: 60,
   },
   roundedImage: {
-    borderRadius: 30, // La mitad del tamaño de la imagen para hacerla redonda
+    borderRadius: 30,
   },
   modalFade: {
     flex: 1,

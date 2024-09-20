@@ -120,6 +120,10 @@ import CalendarAddVerde from '../../../assets/icons/calendar-add-verde.svg';
 import PhoneApp from '../../../assets/icons/phone.svg';
 import Audifonos from '../../../assets/icons/audifonos.svg';
 import Referidos from '../../../assets/icons/referidos.svg';
+import MoreVertical from '../../../assets/icons/more-vertical.svg';
+import Editar3Icon from '../../../assets/icons/editar-3.svg';
+import DocumentoIcon from '../../../assets/icons/documento.svg';
+import MeetingIcon from '../../../assets/icons/video.svg';
 
 const Icons = {
   LogoWhite,
@@ -244,6 +248,10 @@ const Icons = {
   PhoneApp,
   Audifonos,
   Referidos,
+  MoreVertical,
+  Editar3Icon,
+  DocumentoIcon,
+  MeetingIcon,
 };
 
 export default Icons;

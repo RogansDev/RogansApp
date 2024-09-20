@@ -80,6 +80,7 @@ export const MyColors = {
       3: '#AEF0E7',
       4: '#B5F1E9',
       5: '#BCF2EB',
+      6: '#F0FFFD',
     }
 }
 
@@ -247,7 +248,6 @@ export const MyStyles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
     padding: 12,
     borderRadius: 10,
     gap: 8,

@@ -10,6 +10,7 @@ import Icons from '../theme/Icons';
 import UChatWebView from './UChatWebView';
 import CitaBox from './Citas/CitaBox';
 import CircleButton from './buttons/CircleButton';
+import CitaCard from './Citas/CitaCard';
 
 const FloatingMenu = ({ chatVisible, setChatVisible }: any) => {
   const { InicioIcon, ServiciosIcon, MiAgendaIcon, Headphone, InicioBlack, ServiciosBlack, MiAgendaBlack, CloseIcon, CalendarVerde, CalendarAddVerde, AgendarIcon, PhoneApp, Audifonos, Referidos, AgendarBlackIcon, Main, Call } = Icons;
@@ -46,24 +47,24 @@ const FloatingMenu = ({ chatVisible, setChatVisible }: any) => {
         visible={telemedicinaVisible}
         onRequestClose={() => setTelemedicinaVisible(!telemedicinaVisible)}
       >
-        <View style={styles.uchatContainer}>
+        <View style={styles.MiAgendaContainer}>
           <TouchableOpacity onPress={() => setTelemedicinaVisible(!telemedicinaVisible)} style={{ position: 'absolute', top: 12, left: 15, flexDirection: 'row', gap: 6, alignItems: 'center', }}>
               <CloseIcon width={16} height={16} />
               <Text style={MyFontStyles.text_sm}>Cerrar</Text>
             </TouchableOpacity>
-          <ScrollView>
+          <ScrollView style={styles.MiAgendaScrollView}>
             <View>
               <Text style={MyFontStyles.title_1}>Mi agenda</Text>
               <Text style={MyFontStyles.title_2}>Mi agenda y telemedicina</Text>
             </View>
-            <CitaBox />
-            <View style={{flexDirection: 'row'}}>
+            <CitaBox estadoCita='agendada' backgroundColor={MyColors.verdeDark[6]} />
+            <View style={{flexDirection: 'row', marginBottom: 40}}>
               <CircleButton text="Agendar cita" width="auto" icon={CalendarAddVerde} iconSize={{width: 22, height: 22}} />
-              <CircleButton text="Ver Citas" width="auto" icon={CalendarVerde} iconSize={{width: 22, height: 22}} />
+              <CircleButton text="Ver Citas" width="auto" icon={CalendarVerde} iconSize={{width: 22, height: 22}} pressAction={() => {navigation.navigate("MisCitas"), setTelemedicinaVisible(!telemedicinaVisible)}} />
             </View>
             <View>
               <Text style={MyFontStyles.title_2}>Atención 24/7</Text>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row', marginBottom: 40}}>
                 <CircleButton text="Llamanos" width="auto" backgroundColor={MyColors.fondo[2]} icon={PhoneApp} iconSize={{width: 22, height: 22}} />
                 <CircleButton text="Chat en vivo" width="auto" backgroundColor={MyColors.fondo[2]} icon={Audifonos} iconSize={{width: 22, height: 22}} />
               </View>
@@ -94,11 +95,11 @@ const FloatingMenu = ({ chatVisible, setChatVisible }: any) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("MiAgenda")}
-            style={isActive('MiAgenda') ? styles.activeMenuItem : styles.menuItem}>
-            {isActive('MiAgenda') ? <MiAgendaBlack style={styles.menuIcon} width={20} height={20} /> : <MiAgendaIcon style={styles.menuIcon} width={20} height={20} />}
-            <View style={isActive('MiAgenda') ? styles.activeTextBorder : styles.textBorder}>
-              <Text style={isActive('MiAgenda') ? styles.activeMenuText : styles.menuText}>Historial</Text>
+            onPress={() => navigation.navigate("MiHistorial")}
+            style={isActive('MiHistorial') ? styles.activeMenuItem : styles.menuItem}>
+            {isActive('MiHistorial') ? <MiAgendaBlack style={styles.menuIcon} width={20} height={20} /> : <MiAgendaIcon style={styles.menuIcon} width={20} height={20} />}
+            <View style={isActive('MiHistorial') ? styles.activeTextBorder : styles.textBorder}>
+              <Text style={isActive('MiHistorial') ? styles.activeMenuText : styles.menuText}>Historial</Text>
             </View>
           </TouchableOpacity>
 
@@ -120,11 +121,11 @@ const FloatingMenu = ({ chatVisible, setChatVisible }: any) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate("Servicios")}
-            style={isActive('Servicios') ? styles.activeMenuItem : styles.menuItem}>
-            {isActive('Servicios') ? <ServiciosBlack style={styles.menuIcon} width={20} height={20} /> : <ServiciosIcon style={styles.menuIcon} width={20} height={20} />}
-            <View style={isActive('Servicios') ? styles.activeTextBorder : styles.textBorder}>
-              <Text style={isActive('Servicios') ? styles.activeMenuText : styles.menuText}>Programas</Text>
+            onPress={() => navigation.navigate("Programas")}
+            style={isActive('Programas') ? styles.activeMenuItem : styles.menuItem}>
+            {isActive('Programas') ? <ServiciosBlack style={styles.menuIcon} width={20} height={20} /> : <ServiciosIcon style={styles.menuIcon} width={20} height={20} />}
+            <View style={isActive('Programas') ? styles.activeTextBorder : styles.textBorder}>
+              <Text style={isActive('Programas') ? styles.activeMenuText : styles.menuText}>Programas</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -216,6 +217,28 @@ const styles = StyleSheet.create({
   activeMenuItem: {
     alignItems: 'center',
     width: 100,
+  },
+  MiAgendaContainer: {
+    position: 'absolute',
+    width: '100%',
+    height: '93%',
+    bottom: 0,
+    zIndex: 20,
+    backgroundColor: 'white',
+    paddingTop: 40,
+    paddingBottom: 10,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    // Sombras para Android
+    elevation: 10,
+    // Sombras para iOS
+    shadowColor: "black",
+    shadowOffset: { width: 4, height: 1 },
+    shadowOpacity: 0.6,
+    shadowRadius: 10,
+  },
+  MiAgendaScrollView: {
+    paddingHorizontal: 16,
   },
   uchatContainer: {
     position: 'absolute',

@@ -53,6 +53,8 @@ target 'RogansApp' do
     :flipper_configuration => flipper_config
   )
 
+  pod 'react-native-video', :path => '../node_modules/react-native-video'
+
   post_install do |installer|
     react_native_post_install(
       installer,
