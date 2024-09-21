@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  Platform
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import SingLogin from "../../../Presentation/components/SingLogin";
@@ -11,26 +10,15 @@ import UseViewModel from "./ViewModel/LoginViewModel";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from "../../theme/Icons";
 import CustomTextInput from "../../components/CustomTextInput";
-import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import GoogleButton from "../../components/ButtonGoogle";
-import ButtonApple from "../../components/ButtonApple";
-
+import { useCellPhone } from "../../../hooks/useCellPhone";
 const Login = () => {
-  const { email, password, onChange } = UseViewModel();
-  const { handleLogin, loading } = useRegisterFirebase();
+  const { phone, onChange } = UseViewModel();
+  const { loginWithPhone, loading } = useCellPhone();
 
-  const {
-    LogoBlack,
-    LineGray,
-    Google,
-    Facebook,
-    Apple,
-    UpdatePassword,
-    Arrow,
-  } = Icons;
+  const {LogoBlack} = Icons;
 
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
@@ -63,25 +51,14 @@ const Login = () => {
         <LogoBlack width={140} height={100} />
       </View>
       <View style={styles.form}>
-        {/* imput de login */}
         <CustomTextInput
-          title="Nombre de usuario"
-          placeholder="Correo electronico"
-          value={email}
-          keyboardType="email-address"
+          title="Numero de celular"
+          placeholder="numero de telefono"
+          value={phone}
+          keyboardType="phone-pad"
           onChangeText={onChange}
           secureTextEntry={false}
-          property="email" />
-        {/* Input de contraseña */}
-        <CustomTextInput
-          title="Contraseña"
-          placeholder="Ingresa tu contraseña"
-          value={password}
-          onChangeText={onChange}
-          keyboardType="default"
-          secureTextEntry={true}
-          property="password"
-        />
+          property="phone" />
 
         <View style={{ marginTop: 20 }}>
           {loading ?
@@ -96,40 +73,8 @@ const Login = () => {
               textAlign: 'center',
               overflow: 'hidden'
             }}> Cargando... </Text>
-            : <SingLogin text="Ingresar" onPress={() => { handleLogin(email, password) }} />}
-        </View>
-        <View style={styles.containerUpdate}>
-          <UpdatePassword width={30} height={24} />
-          <Text
-            style={styles.textUpdate}
-            onPress={() => navigation.navigate("ModalVerifitCode")}>
-            Olvide mi contraseña
-          </Text>
-        </View>
-        <View style={styles.contentLoginGoogle}>
-          <View style={{ alignSelf: 'center' }}>
-            <GoogleButton />
-          </View>
-        </View>
-        {Platform.OS === 'ios' &&
-          <View style={styles.contentLoginGoogle}>
-            <View style={{ alignSelf: 'center' }}>
-              <ButtonApple />
-            </View>
-          </View>}
-        <View style={styles.containerUpdate}>
-          <Arrow width={30} height={24} color={'black'} />
-          <Text
-            style={styles.textUpdate}
-            onPress={() => navigation.navigate("register")}>
-            Registrarme
-          </Text>
-        </View>
-        <View style={styles.loginAuthe}>
-          <Google width={30} height={30} />
-          <Facebook width={30} height={30} />
-          <Apple />
-        </View>
+            : <SingLogin text="Ingresar" onPress={() => { loginWithPhone(phone) }} />}
+        </View>   
       </View>
     </View>
   );

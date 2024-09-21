@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 const LoginViewModel = () => {
 
   const [ values, setValues ] = useState({
-      email: "",
-      password: "",
+      phone: "",
   });
 
   const onChange = (property: string, value: any) => {
