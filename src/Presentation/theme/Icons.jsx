@@ -78,6 +78,52 @@ import TrashGreyIcon from '../../../assets/icons/trash-grey.svg';
 import BriefCaseIcon from '../../../assets/icons/briefcase.svg';
 import GpsIcon from '../../../assets/icons/gps.svg';
 import StarIcon from '../../../assets/icons/star.svg';
+import ErrorAlert from '../../../assets/icons/error-alert.svg';
+import ArrowDropdown from '../../../assets/icons/arrow-dropdown.svg';
+import AlemaniaIcon from '../../../assets/icons/flags/flag-alemania.svg';
+import ArgentinaIcon from '../../../assets/icons/flags/flag-argentina.svg';
+import BoliviaIcon from '../../../assets/icons/flags/flag-bolivia.svg';
+import BrasilIcon from '../../../assets/icons/flags/flag-brasil.svg';
+import CanadaIcon from '../../../assets/icons/flags/flag-canada.svg';
+import ChileIcon from '../../../assets/icons/flags/flag-chile.svg';
+import ColombiaIcon from '../../../assets/icons/flags/flag-colombia.svg';
+import CostaricaIcon from '../../../assets/icons/flags/flag-costa-rica.svg';
+import CubaIcon from '../../../assets/icons/flags/flag-cuba.svg';
+import CurazaoIcon from '../../../assets/icons/flags/flag-curazao.svg';
+import EcuadorIcon from '../../../assets/icons/flags/flag-ecuador.svg';
+import ElsalvadorIcon from '../../../assets/icons/flags/flag-el-salvador.svg';
+import EspañaIcon from '../../../assets/icons/flags/flag-espana.svg';
+import EstadosunidosIcon from '../../../assets/icons/flags/flag-estados-unidos.svg';
+import FranciaIcon from '../../../assets/icons/flags/flag-francia.svg';
+import GuatemalaIcon from '../../../assets/icons/flags/flag-guatemala.svg';
+import GuayanafrancesaIcon from '../../../assets/icons/flags/flag-guayana-francesa.svg';
+import GuyanaIcon from '../../../assets/icons/flags/flag-guyana.svg';
+import HondurasIcon from '../../../assets/icons/flags/flag-honduras.svg';
+import IndonesiaIcon from '../../../assets/icons/flags/flag-indonesia.svg';
+import IrlandaIcon from '../../../assets/icons/flags/flag-irlanda.svg';
+import MexicoIcon from '../../../assets/icons/flags/flag-mexico.svg';
+import NicaraguaIcon from '../../../assets/icons/flags/flag-nicaragua.svg';
+import PanamaIcon from '../../../assets/icons/flags/flag-panama.svg';
+import ParaguayIcon from '../../../assets/icons/flags/flag-paraguay.svg';
+import PeruIcon from '../../../assets/icons/flags/flag-peru.svg';
+import SueciaIcon from '../../../assets/icons/flags/flag-suecia.svg';
+import SurinamIcon from '../../../assets/icons/flags/flag-surinam.svg';
+import UruguayIcon from '../../../assets/icons/flags/flag-uruguay.svg';
+import VenezuelaIcon from '../../../assets/icons/flags/flag-venezuela.svg';
+import Main from '../../../assets/icons/main.svg';
+import Call from '../../../assets/icons/call.svg';
+import AgendarBlackIcon from '../../../assets/icons/agendar-black.svg';
+import UbicacionVerde from '../../../assets/icons/ubicacion-verde.svg';
+import Calendar from '../../../assets/icons/calendar-app.svg';
+import CalendarVerde from '../../../assets/icons/calendario-ver.svg';
+import CalendarAddVerde from '../../../assets/icons/calendar-add-verde.svg';
+import PhoneApp from '../../../assets/icons/phone.svg';
+import Audifonos from '../../../assets/icons/audifonos.svg';
+import Referidos from '../../../assets/icons/referidos.svg';
+import MoreVertical from '../../../assets/icons/more-vertical.svg';
+import Editar3Icon from '../../../assets/icons/editar-3.svg';
+import DocumentoIcon from '../../../assets/icons/documento.svg';
+import MeetingIcon from '../../../assets/icons/video.svg';
 
 const Icons = {
   LogoWhite,
@@ -160,6 +206,52 @@ const Icons = {
   BriefCaseIcon,
   GpsIcon,
   StarIcon,
+  ErrorAlert,
+  ArrowDropdown,
+  AlemaniaIcon,
+  ArgentinaIcon,
+  BoliviaIcon,
+  BrasilIcon,
+  CanadaIcon,
+  ChileIcon,
+  ColombiaIcon,
+  CostaricaIcon,
+  CubaIcon,
+  CurazaoIcon,
+  EcuadorIcon,
+  ElsalvadorIcon,
+  EspañaIcon,
+  EstadosunidosIcon,
+  FranciaIcon,
+  GuatemalaIcon,
+  GuayanafrancesaIcon,
+  GuyanaIcon,
+  HondurasIcon,
+  IndonesiaIcon,
+  IrlandaIcon,
+  MexicoIcon,
+  NicaraguaIcon,
+  PanamaIcon,
+  ParaguayIcon,
+  PeruIcon,
+  SueciaIcon,
+  SurinamIcon,
+  UruguayIcon,
+  VenezuelaIcon,
+  Main,
+  Call,
+  AgendarBlackIcon,
+  UbicacionVerde,
+  Calendar,
+  CalendarVerde,
+  CalendarAddVerde,
+  PhoneApp,
+  Audifonos,
+  Referidos,
+  MoreVertical,
+  Editar3Icon,
+  DocumentoIcon,
+  MeetingIcon,
 };
 
 export default Icons;
