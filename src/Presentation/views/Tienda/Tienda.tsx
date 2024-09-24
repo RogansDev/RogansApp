@@ -11,8 +11,7 @@ import SearchBarStore from '../../../Presentation/components/SearchBarStore';
 import Icons from '../../../Presentation/theme/Icons';
 import { consultCards, procedureCards } from '../Servicios/ServicesData';
 import StoreBannerCard from '../../../Presentation/components/StoreBannerCard';
-import ButtonDropdown from '../../../Presentation/components/buttons/ButtonDropdown';
-import PhoneInput from '../../../Presentation/components/inputs/PhoneInput';
+import CircleButton from '../../../Presentation/components/buttons/CircleButton';
 
 const productCards = [
     {
@@ -221,7 +220,7 @@ const Tienda = () => {
                 {filteredItems.length > 0 ? (
                     <ScrollView>
 
-                        <PhoneInput />
+                        <CircleButton text="Boton" icon={AgendarIcon} />
 
                         <StoreBannerCard cards={productCards}/>
                         <View style={styles.productsContainer}>

@@ -5,10 +5,15 @@ import * as Font from 'expo-font';
 export const fetchFonts = async () => {
     try {
       await Font.loadAsync({
+        'Poppins-Thin': require('../../../assets/fonts/Poppins/Poppins-Thin.ttf'),
+        'Poppins-ExtraLight': require('../../../assets/fonts/Poppins/Poppins-ExtraLight.ttf'),
         'Poppins-Light': require('../../../assets/fonts/Poppins/Poppins-Light.ttf'),
         'Poppins-Regular': require('../../../assets/fonts/Poppins/Poppins-Regular.ttf'),
         'Poppins-Medium': require('../../../assets/fonts/Poppins/Poppins-Medium.ttf'),
+        'Poppins-SemiBold': require('../../../assets/fonts/Poppins/Poppins-SemiBold.ttf'),
         'Poppins-Bold': require('../../../assets/fonts/Poppins/Poppins-Bold.ttf'),
+        'Poppins-ExtraBold': require('../../../assets/fonts/Poppins/Poppins-ExtraBold.ttf'),
+        'Poppins-Black': require('../../../assets/fonts/Poppins/Poppins-Black.ttf'),
       });
       console.log("Fuente cargada correctamente");
     } catch (error) {
@@ -24,6 +29,14 @@ export const MyColors = {
     buttonColor: '#fff',
     gray: '#CECECE',
     black: '#000000',
+    white: '#FFFFFF',
+
+    fondo: {
+      1: '#EDF1F7',
+      2: '#F3F6FC',
+      3: '#FCFCFC',
+      4: '#FFFFFF',
+    },
 
     verde: {
       1: '#00D0B1',
@@ -60,6 +73,15 @@ export const MyColors = {
       2: '#C03744',
       3: '#E4626F',
     },
+    verdeDark: {
+      1: '#9FEDE2',
+      1_20: 'rgba(159, 237, 226, 0.2)',
+      2: '#A7EEE5',
+      3: '#AEF0E7',
+      4: '#B5F1E9',
+      5: '#BCF2EB',
+      6: '#F0FFFD',
+    }
 }
 
 export const MyFont = {
@@ -67,6 +89,18 @@ export const MyFont = {
     regular: 'Poppins-Regular',
     medium: 'Poppins-Medium',
     bold: 'Poppins-Bold',
+
+    Poppins: {
+      100: 'Poppins-Thin',
+      200: 'Poppins-ExtraLight',
+      300: 'Poppins-Light',
+      400: 'Poppins-Regular',
+      500: 'Poppins-Medium',
+      600: 'Poppins-SemiBold',
+      700: 'Poppins-Bold',
+      800: 'Poppins-ExtraBold',
+      900: 'Poppins-Black',
+    },
 
     size: {
       1: 54,
@@ -106,6 +140,26 @@ export const MyFontColors = {
   gray: '#CECECE',
   black: '#000000'
 }
+
+export const MyFontStyles = StyleSheet.create({
+  title_1: {
+    fontSize: MyFont.size[4],
+    color: MyColors.black,
+    fontFamily: MyFont.Poppins[600],
+    marginBottom: 20,
+  },
+  title_2: {
+    fontSize: MyFont.size[6],
+    color: MyColors.neutro[2],
+    fontFamily: MyFont.Poppins[500],
+    marginBottom: 20,
+  },
+  text_sm: {
+    fontSize: MyFont.size[7],
+    color: MyColors.neutro[1],
+    fontFamily: MyFont.regular,
+  }
+});
 
 export const MyStyles = StyleSheet.create({
   button: {
@@ -189,5 +243,35 @@ export const MyStyles = StyleSheet.create({
   inputDisabled: {
       backgroundColor: '#f0f0f0',
       borderColor: '#ccc',
+  },
+  circleButton: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 10,
+    gap: 8,
+  },
+  circleButtonBg: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 25,
+  },
+  circleButtonEnabled: {
+  },
+  circleButtonDisabled: {
+      backgroundColor: MyColors.neutroDark[2],
+  },
+  textCircleButton: {
+    fontSize: MyFont.size[7],
+    fontFamily: MyFont.regular,
+  },
+  textCircleButtonEnabled: {
+      color: MyColors.neutro[3],
+  },
+  textCircleButtonDisabled: {
+    color: MyColors.neutroDark[4],
   },
 });
