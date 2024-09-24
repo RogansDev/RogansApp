@@ -1,4 +1,4 @@
-import { AppRegistry } from 'react-native';
-import App from './App'; // Asegúrate de que el camino al componente App es correcto.
+import { registerRootComponent } from 'expo';
+import App from './App'; // Asegúrate de que la ruta a 'App' sea correcta
 
-AppRegistry.registerComponent('RogansApp', () => App);
+registerRootComponent(App);
