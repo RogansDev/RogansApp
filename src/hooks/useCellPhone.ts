@@ -41,6 +41,7 @@ export const useCellPhone = () => {
         };
         distpach(setUserInfo(user));
         setLoading(false);
+
         sendSmsPhoneFirebase(phone);
       } else {
         sendSmsPhoneFirebase(phone);
@@ -51,7 +52,7 @@ export const useCellPhone = () => {
       setLoading(false);
     }
   };
-  const savePhone = () => {};
+  const savePhone = async (phone, code) => {};
   const getPhoneFirebase = () => {};
   const getPhoneLocal = () => {};
   const setPhoneLocal = () => {};
@@ -59,6 +60,7 @@ export const useCellPhone = () => {
     console.log("to", to);
     const code = 123456;
     const body = `Su codigo de ingreso es ${code}`;
+
     try {
       const response = await fetch("http://192.168.100.34:3000/send-sms", {
         method: "POST",
@@ -71,6 +73,7 @@ export const useCellPhone = () => {
       const result = await response.json();
       if (result.success) {
         console.log("Mensaje enviado con éxito", result);
+        await savePhone(to, code);
       } else {
         console.log("Error enviando el mensaje: " + result.message);
       }
