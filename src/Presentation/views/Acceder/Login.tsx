@@ -1,49 +1,68 @@
-import React, { useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import SingLogin from "../../../Presentation/components/SingLogin";
-import UseViewModel from "./ViewModel/LoginViewModel";
-import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
-import Icons from "../../theme/Icons";
-import CustomTextInput from "../../components/CustomTextInput";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootParamList } from "../../../utils/RootParamList";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import React, { useEffect, useState } from "react";
+import {
+  Alert,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import SingLogin from "../../../Presentation/components/SingLogin";
+import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
+import { americanCountries } from "../../../constants/countries";
 import { useCellPhone } from "../../../hooks/useCellPhone";
+import { RootParamList } from "../../../utils/RootParamList";
+import CustomTextInput from "../../components/CustomTextInput";
+import Icons from "../../theme/Icons";
+import UseViewModel from "./ViewModel/LoginViewModel";
+
 const Login = () => {
   const { phone, onChange } = UseViewModel();
   const { loginWithPhone, loading } = useCellPhone();
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [showCountries, setShowCountry] = useState(false);
 
-  const {LogoBlack} = Icons;
+  const { LogoBlack } = Icons;
 
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
   useEffect(() => {
     const obtenerDatos = async () => {
       try {
-        const poiñlk = await AsyncStorage.getItem('@xqtes');
-        const mnbjhg = await AsyncStorage.getItem('@asdqwe');
+        const poiñlk = await AsyncStorage.getItem("@xqtes");
+        const mnbjhg = await AsyncStorage.getItem("@asdqwe");
 
         if (poiñlk !== null && mnbjhg !== null) {
+          const emailWithoutQuotes = poiñlk.replace(/['"]+/g, "");
+          const passwordWithoutQuotes = mnbjhg.replace(/['"]+/g, "");
 
-          const emailWithoutQuotes = poiñlk.replace(/['"]+/g, '');
-          const passwordWithoutQuotes = mnbjhg.replace(/['"]+/g, '');
-
-          onChange('password', passwordWithoutQuotes);
-          onChange('email', emailWithoutQuotes);
+          onChange("password", passwordWithoutQuotes);
+          onChange("email", emailWithoutQuotes);
         }
-
       } catch (error) {
-        console.error('Error al obtener datos de AsyncStorage:', error);
+        console.error("Error al obtener datos de AsyncStorage:", error);
       }
     };
 
     obtenerDatos();
-  }, [])
+  }, []);
+
+  const renderItem = ({ item }: any) => (
+    <TouchableOpacity
+      style={styles.countryItem}
+      onPress={() => {
+        setSelectedCountry(item);
+        setShowCountry(false);
+      }}
+    >
+      <Text style={styles.countryText}>
+        {item.country} ({item.code})
+      </Text>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
@@ -51,30 +70,71 @@ const Login = () => {
         <LogoBlack width={140} height={100} />
       </View>
       <View style={styles.form}>
-        <CustomTextInput
-          title="Numero de celular"
-          placeholder="numero de telefono"
-          value={phone}
-          keyboardType="phone-pad"
-          onChangeText={onChange}
-          secureTextEntry={false}
-          property="phone" />
+        {showCountries && (
+          <FlatList
+            data={americanCountries}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.code}
+          />
+        )}
+        {!showCountries && (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => setShowCountry(!showCountries)}
+              style={{ width: "20%" }}
+            >
+              <Text>{selectedCountry ? selectedCountry.code : "COD PAIS"}</Text>
+            </TouchableOpacity>
+            <View style={{ width: "80%" }}>
+              <CustomTextInput
+                title="Numero de celular"
+                placeholder="numero de telefono"
+                value={phone}
+                keyboardType="phone-pad"
+                onChangeText={onChange}
+                secureTextEntry={false}
+                property="phone"
+              />
+            </View>
+          </View>
+        )}
 
         <View style={{ marginTop: 20 }}>
-          {loading ?
-            <Text style={{
-              backgroundColor: 'black',
-              color: 'white',
-              width: '100%',
-              padding: 14,
-              fontSize: 13,
-              fontFamily: MyFont.regular,
-              borderRadius: 10,
-              textAlign: 'center',
-              overflow: 'hidden'
-            }}> Cargando... </Text>
-            : <SingLogin text="Ingresar" onPress={() => { loginWithPhone(phone) }} />}
-        </View>   
+          {loading ? (
+            <Text
+              style={{
+                backgroundColor: "black",
+                color: "white",
+                width: "100%",
+                padding: 14,
+                fontSize: 13,
+                fontFamily: MyFont.regular,
+                borderRadius: 10,
+                textAlign: "center",
+                overflow: "hidden",
+              }}
+            >
+              {" "}
+              Cargando...{" "}
+            </Text>
+          ) : (
+            <SingLogin
+              text="Ingresar"
+              onPress={() => {
+                if (selectedCountry) {
+                  loginWithPhone(selectedCountry.code + phone);
+                } else {
+                  Alert.alert("DEBES ELEGIR UN CODIGO DE PAIS");
+                }
+              }}
+            />
+          )}
+        </View>
       </View>
     </View>
   );
@@ -160,9 +220,9 @@ const styles = StyleSheet.create({
     fontFamily: MyFont.regular,
   },
   contentLoginGoogle: {
-    width: '100%',
-    justifyContent: 'center',
-    marginTop: 3
+    width: "100%",
+    justifyContent: "center",
+    marginTop: 3,
   },
   lineContent: {
     display: "flex",
@@ -180,16 +240,29 @@ const styles = StyleSheet.create({
   },
   contenedor: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'black',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "black",
   },
   texto: {
-    color: 'white',
+    color: "white",
     fontSize: 20,
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: "white",
     padding: 10,
+  },
+  selectedText: {
+    fontSize: 16,
+    marginBottom: 20,
+    color: "green",
+  },
+  countryItem: {
+    padding: 15,
+    borderBottomWidth: 1,
+    borderColor: "#ddd",
+  },
+  countryText: {
+    fontSize: 16,
   },
 });
 
