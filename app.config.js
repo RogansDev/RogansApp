@@ -15,6 +15,7 @@ export default {
       "backgroundColor": "#FCFCFC"
     },
     "plugins": [
+      "@config-plugins/react-native-webrtc",
       ["@react-native-google-signin/google-signin"],
       [
         "expo-build-properties",
