@@ -1,9 +1,0 @@
-{
-  "platforms": ["ios", "tvos", "android", "web"],
-  "ios": {
-    "modules": ["Rogans_moduleModule"]
-  },
-  "android": {
-    "modules": ["expo.modules.rogans_module.Rogans_moduleModule"]
-  }
-}
