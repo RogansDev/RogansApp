@@ -16,6 +16,7 @@ export default {
     },
     "plugins": [
       ["@react-native-google-signin/google-signin"],
+      "@config-plugins/react-native-webrtc",
       [
         "expo-build-properties",
         {

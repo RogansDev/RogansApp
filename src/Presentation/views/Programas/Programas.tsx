@@ -1,18 +1,17 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import Video from 'react-native-video';
 
 const Programas = () => {
     return (
         <View style={styles.container}>
-            <Video
+            {/*<Video
                 source={require('../../../../assets/video/video.mp4')}
                 style={styles.video}
                 controls={false}
                 resizeMode="cover"
                 repeat={true} 
                 paused={false} 
-            />
+            />*/}
         </View>
     );
 };

@@ -58,6 +58,8 @@
     </dict>
     <key>NSCameraUsageDescription</key>
     <string>Esta aplicación utiliza la cámara para agregar la foto de perfil de los usuarios</string>
+    <key>NSFaceIDUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your Face ID biometric data.</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to access your microphone</string>
     <key>NSPhotoLibraryUsageDescription</key>
