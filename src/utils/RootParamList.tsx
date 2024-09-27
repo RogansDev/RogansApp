@@ -31,4 +31,7 @@ export type RootParamList = {
   Tienda: undefined;
   Producto: undefined;
   ConfirmarCompra: undefined;
+  MisCitas: undefined;
+  MiHistorial: undefined;
+  Programas: undefined;
 };

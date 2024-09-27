@@ -24,6 +24,9 @@ import Pagos from "../Presentation/views/Pasarela/Pagos";
 import Tienda from "../Presentation/views/Tienda/Tienda";
 import Producto from "../Presentation/views/Tienda/Producto";
 import ConfirmarCompra from "../Presentation/views/Tienda/ConfirmarCompra";
+import MisCitas from "../Presentation/views/Agendamiento/MisCitas";
+import MiHistorial from "../Presentation/views/Historial/MiHistorial";
+import Programas from "../Presentation/views/Programas/Programas";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 
@@ -344,6 +347,66 @@ function PrivateScreen() {
       <Stack.Screen
         name="ConfirmarCompra"
         component={ConfirmarCompra}
+        options={({ navigation, route }) => ({
+          ...Platform.select({
+            ios: {
+              headerShown: true,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
+            },
+            android: {
+              headerShown: false,
+            }
+          }),
+          headerTransparent: false,
+        })}
+      />
+      <Stack.Screen
+        name="MisCitas"
+        component={MisCitas}
+        options={({ navigation, route }) => ({
+          ...Platform.select({
+            ios: {
+              headerShown: true,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
+            },
+            android: {
+              headerShown: false,
+            }
+          }),
+          headerTransparent: false,
+        })}
+      />
+      <Stack.Screen
+        name="MiHistorial"
+        component={MiHistorial}
+        options={({ navigation, route }) => ({
+          ...Platform.select({
+            ios: {
+              headerShown: true,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
+            },
+            android: {
+              headerShown: false,
+            }
+          }),
+          headerTransparent: false,
+        })}
+      />
+      <Stack.Screen
+        name="Programas"
+        component={Programas}
         options={({ navigation, route }) => ({
           ...Platform.select({
             ios: {
