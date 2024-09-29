@@ -1,9 +1,5 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -14,22 +10,20 @@ import SingLogin from "../../../Presentation/components/SingLogin";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { americanCountries } from "../../../constants/countries";
 import { useCellPhone } from "../../../hooks/useCellPhone";
-import { RootParamList } from "../../../utils/RootParamList";
 import CustomTextInput from "../../components/CustomTextInput";
+import VerifyCodeComponent from "../../components/modalVerifiCodePhone";
 import Icons from "../../theme/Icons";
 import UseViewModel from "./ViewModel/LoginViewModel";
 
 const Login = () => {
   const { phone, onChange } = UseViewModel();
-  const { loginWithPhone, loading } = useCellPhone();
+  const { loginWithPhone, loading, showModal } = useCellPhone();
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [showCountries, setShowCountry] = useState(false);
 
   const { LogoBlack } = Icons;
 
-  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
-
-  useEffect(() => {
+  /* useEffect(() => {
     const obtenerDatos = async () => {
       try {
         const poiñlk = await AsyncStorage.getItem("@xqtes");
@@ -48,7 +42,7 @@ const Login = () => {
     };
 
     obtenerDatos();
-  }, []);
+  }, []); */
 
   const renderItem = ({ item }: any) => (
     <TouchableOpacity
@@ -63,6 +57,10 @@ const Login = () => {
       </Text>
     </TouchableOpacity>
   );
+
+  if (showModal) {
+    return <VerifyCodeComponent />;
+  }
 
   return (
     <View style={styles.container}>
@@ -86,9 +84,19 @@ const Login = () => {
           >
             <TouchableOpacity
               onPress={() => setShowCountry(!showCountries)}
-              style={{ width: "20%" }}
+              style={{
+                width: "20%",
+                borderWidth: 1,
+                borderColor: "#000",
+                padding: 14,
+                borderRadius: 10,
+                alignItems: "center",
+                justifyContent: "center",
+                marginRight: 5,
+              }}
             >
-              <Text>{selectedCountry ? selectedCountry.code : "COD PAIS"}</Text>
+              {/* @ts-ignore*/}
+              <Text>{selectedCountry ? selectedCountry.code : "Pais"}</Text>
             </TouchableOpacity>
             <View style={{ width: "80%" }}>
               <CustomTextInput
@@ -127,8 +135,10 @@ const Login = () => {
               text="Ingresar"
               onPress={() => {
                 if (selectedCountry) {
+                  //@ts-ignore
                   loginWithPhone(selectedCountry.code + phone);
                 } else {
+                  //@ts-ignore
                   Alert.alert("DEBES ELEGIR UN CODIGO DE PAIS");
                 }
               }}
