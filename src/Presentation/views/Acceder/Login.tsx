@@ -23,27 +23,6 @@ const Login = () => {
 
   const { LogoBlack } = Icons;
 
-  /* useEffect(() => {
-    const obtenerDatos = async () => {
-      try {
-        const poiñlk = await AsyncStorage.getItem("@xqtes");
-        const mnbjhg = await AsyncStorage.getItem("@asdqwe");
-
-        if (poiñlk !== null && mnbjhg !== null) {
-          const emailWithoutQuotes = poiñlk.replace(/['"]+/g, "");
-          const passwordWithoutQuotes = mnbjhg.replace(/['"]+/g, "");
-
-          onChange("password", passwordWithoutQuotes);
-          onChange("email", emailWithoutQuotes);
-        }
-      } catch (error) {
-        console.error("Error al obtener datos de AsyncStorage:", error);
-      }
-    };
-
-    obtenerDatos();
-  }, []); */
-
   const renderItem = ({ item }: any) => (
     <TouchableOpacity
       style={styles.countryItem}

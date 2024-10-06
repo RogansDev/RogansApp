@@ -1,5 +1,4 @@
 export const agendarCita = (datosCita) => {
-  console.log('Datos de la cita:', datosCita);
 
   return fetch('https://rogansya.com/rogans-app/index.php?accion=agendar', {
       method: 'POST',
@@ -15,7 +14,6 @@ export const agendarCita = (datosCita) => {
       return response.json();
   })
   .then(data => {
-    console.log('Respuesta del servidor:', data);
     return data;
   })
   .catch(error => {

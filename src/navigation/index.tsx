@@ -6,9 +6,6 @@ import PublicScreen from "./PublicScreen";
 
 const Navigation = () => {
   const { logged } = useSelector((state: any) => state.authorization);
-  const { user } = useSelector((state: any) => state);
-
-  console.log("user", JSON.stringify(user, null, 5));
 
   const linking = {
     prefixes: ["https://rogansapp.page.link", "rogansapp://"],

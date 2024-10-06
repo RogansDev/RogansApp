@@ -1,23 +1,25 @@
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { useState } from "react";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import { useDispatch } from "react-redux";
 import { db } from "../firebase";
+import { saveCredentials } from "../services/credentials";
 import { setAuthorizationInfo } from "../state/AuthorizationSlice";
 import { setUserInfo } from "../state/ProfileSlice";
 import {
   obtenerCodigoLongitudSeisNumerico,
   obtenerFechaActual,
 } from "../utils/helper";
+import useTokenPush from "./useTokenPush";
 
 export const useCellPhone = () => {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const distpach = useDispatch();
+  const { registerForPushNotificationsAsync } = useTokenPush();
 
   const loginWithPhone = async (phone: string) => {
     setLoading(true);
-    console.log("phone....", phone);
 
     try {
       const phoneRef = query(
@@ -31,24 +33,27 @@ export const useCellPhone = () => {
       querySnapshot.forEach((doc) => {
         selectedProfile = doc.data();
       });
-      console.log("selectedProfile", selectedProfile);
       if (selectedProfile) {
         const user = {
-          user_id: selectedProfile.user_id,
-          email: selectedProfile.email,
-          role: selectedProfile.role,
-          urlphoto: selectedProfile.urlphoto,
-          document: selectedProfile.document,
-          name: selectedProfile.name,
-          lastname: selectedProfile.lastname,
-          phone: selectedProfile.phone,
-          birthdate: selectedProfile.birthdate,
+          user_id: selectedProfile?.user_id ?? "",
+          email: selectedProfile?.email ?? "",
+          role: selectedProfile?.role ?? "",
+          urlphoto: selectedProfile?.urlphoto ?? "",
+          document: selectedProfile?.document ?? "",
+          name: selectedProfile?.name ?? "",
+          lastname: selectedProfile?.lastname ?? "",
+          phone: selectedProfile?.phone ?? "",
+          birthdate: selectedProfile?.birthdate ?? "",
+          token: selectedProfile?.token ?? "",
+          plataforma: selectedProfile?.plataforma ?? "",
           logged: true,
         };
         distpach(setUserInfo(user));
         setLoading(false);
         sendSmsPhoneFirebase(phone);
       } else {
+        const plataforma = Platform.OS;
+        const token = await registerForPushNotificationsAsync();
         const user = {
           user_id: "",
           email: "",
@@ -58,6 +63,8 @@ export const useCellPhone = () => {
           name: "",
           lastname: "",
           phone: phone,
+          plataforma: plataforma,
+          token: token ?? "",
           birthdate: "",
           logged: true,
         };
@@ -72,13 +79,6 @@ export const useCellPhone = () => {
     }
   };
   const savePhone = async (phoneSave: string, codeSave: string) => {
-    console.log(
-      "guardo...",
-      "\n phoneSave",
-      phoneSave,
-      "\n codeSave",
-      codeSave
-    );
     const collectionRef = collection(db, "phoneCode");
     const fecha = obtenerFechaActual();
 
@@ -99,7 +99,6 @@ export const useCellPhone = () => {
   const setPhoneLocal = () => {};
 
   const sendSmsPhoneFirebase = async (to: string) => {
-    console.log("to", to);
     const code = obtenerCodigoLongitudSeisNumerico();
     const body = `Su codigo de ingreso a Rogans es ${code}`;
 
@@ -114,7 +113,6 @@ export const useCellPhone = () => {
 
       const result = await response.json();
       if (result.success) {
-        console.log("Mensaje enviado con éxito", result);
         await savePhone(to, code);
         setShowModal(true);
       } else {
@@ -126,7 +124,6 @@ export const useCellPhone = () => {
     }
   };
   const getCodePhoneFirebase = async (code: string, phone: string) => {
-    console.log("getCodePhoneFirebase", "\n code", code, "\n phone", phone);
     const fechaActual = obtenerFechaActual();
     setLoading(true);
     try {
@@ -140,13 +137,18 @@ export const useCellPhone = () => {
       const querySnapshot = await getDocs(phoneCodeQuery);
       let selectedCode: any;
       querySnapshot.forEach((doc) => {
-        console.log(doc.data());
         selectedCode = doc.data();
       });
-      console.log("selectedCode", selectedCode);
+
       if (selectedCode) {
-        console.log("vengo por aqui ....");
-        distpach(setAuthorizationInfo(true));
+        await saveCredentials("phoneToken", phone);
+        await saveCredentials("authToken", "true");
+
+        const auth = {
+          logged: true,
+          phone: phone,
+        };
+        distpach(setAuthorizationInfo(auth));
         setShowModal(false);
       } else {
         setShowModal(false);

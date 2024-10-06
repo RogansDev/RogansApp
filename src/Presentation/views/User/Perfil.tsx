@@ -60,8 +60,8 @@ const Perfil = () => {
 
   const handleSessionClose = async () => {
     try {
-      await deleteCredentials("email");
-      await deleteCredentials("password");
+      await deleteCredentials("phoneToken");
+      await deleteCredentials("authToken");
       await deleteCredentials("googleToken");
       await GoogleSignin.signOut();
       dispatch(setClearUserInfo(""));
@@ -73,8 +73,8 @@ const Perfil = () => {
   };
   const handleDeleteUser = async () => {
     try {
-      await deleteCredentials("email");
-      await deleteCredentials("password");
+      await deleteCredentials("phoneToken");
+      await deleteCredentials("auToken");
       await deleteCredentials("googleToken");
       await GoogleSignin.signOut();
       dispatch(setClearUserInfo(""));
