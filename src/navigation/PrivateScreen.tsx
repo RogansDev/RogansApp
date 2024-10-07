@@ -27,6 +27,8 @@ import ConfirmarCompra from "../Presentation/views/Tienda/ConfirmarCompra";
 import MisCitas from "../Presentation/views/Agendamiento/MisCitas";
 import MiHistorial from "../Presentation/views/Historial/MiHistorial";
 import Programas from "../Presentation/views/Programas/Programas";
+import Teleconsulta from "../Presentation/views/Telemedicina/Teleconsulta";
+import Agendamiento from "../Presentation/views/Telemedicina/Agendamiento";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 
@@ -421,6 +423,34 @@ function PrivateScreen() {
               headerShown: false,
             }
           }),
+          headerTransparent: false,
+        })}
+      />
+      <Stack.Screen
+        name="Teleconsulta"
+        component={Teleconsulta}
+        options={({ navigation, route }) => ({
+          ...Platform.select({
+            ios: {
+              headerShown: true,
+              headerTitle: '',
+              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+              headerTintColor: '#00D0B1',
+              headerTitleAlign: 'left',
+              headerShadowVisible: false,
+            },
+            android: {
+              headerShown: false,
+            }
+          }),
+          headerTransparent: false,
+        })}
+      />
+      <Stack.Screen
+        name="Agendamiento"
+        component={Agendamiento}
+        options={({ navigation, route }) => ({
+          headerShown: false,
           headerTransparent: false,
         })}
       />

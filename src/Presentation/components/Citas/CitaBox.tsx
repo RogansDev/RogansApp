@@ -1,13 +1,17 @@
 import React, { useState, useRef } from "react";
 import { Text, View, Image, TouchableOpacity, Animated } from "react-native";
 import { MyStyles, MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
-import Icons from '../../theme/Icons'; 
+import Icons from '../../theme/Icons';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-const CitaBox = ({ estadoCita, backgroundColor }: { estadoCita: string, backgroundColor?: string }) => {
+const CitaBox = ({ estadoCita, backgroundColor, sidesMargin = 0 }: { estadoCita: string, backgroundColor?: string, sidesMargin: any }) => {
     const { UbicacionVerde, Calendar, MoreVertical, Editar3Icon, InfoIcon, MeetingIcon } = Icons;
     const [menuVisible, setMenuVisible] = useState(false);
     const slideAnim = useRef(new Animated.Value(0)).current;
     const opacityAnim = useRef(new Animated.Value(0)).current;
+
+    const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
     const colorMapping: { [key: string]: string } = {
         agendada: MyColors.warning[2],
@@ -57,7 +61,7 @@ const CitaBox = ({ estadoCita, backgroundColor }: { estadoCita: string, backgrou
     };
 
     return (
-        <View style={[Styles.citaBoxContainer, { backgroundColor: backgroundColor || 'white' }]}>
+        <View style={[Styles.citaBoxContainer, { backgroundColor: backgroundColor || 'white', marginHorizontal: sidesMargin }]}>
             <View
                 style={[
                     Styles.leftLine,
@@ -102,7 +106,7 @@ const CitaBox = ({ estadoCita, backgroundColor }: { estadoCita: string, backgrou
                 )}
             </View>
             <View style={Styles.detailsSection}>
-                <TouchableOpacity style={Styles.iconContainer}>
+                <TouchableOpacity onPress={() => navigation.navigate("Teleconsulta")} style={Styles.iconContainer}>
                     <MeetingIcon width={16} height={16} />
                     <Text style={[Styles.detailsText, {color: MyColors.verde[2]}]}>Ingresar a tu cita virtual</Text>
                 </TouchableOpacity>
@@ -126,11 +130,15 @@ const CitaBox = ({ estadoCita, backgroundColor }: { estadoCita: string, backgrou
 }
 
 import { StyleSheet } from "react-native";
+import navigation from "../../../navigation";
+import { RootParamList } from "../../../utils/RootParamList";
 
 export const Styles = StyleSheet.create({
     citaBoxContainer: {
         flexDirection: 'column',
-        padding: 10,
+        paddingHorizontal: 10,
+        paddingTop: 13,
+        paddingBottom: 17,
         borderRadius: 10,
         marginBottom: 10,
         shadowColor: MyColors.neutro[2],
@@ -154,7 +162,7 @@ export const Styles = StyleSheet.create({
         marginBottom: 10,
         marginLeft: 20,
         position: 'relative', 
-        zIndex: 10, 
+        zIndex: 10,
     },
     profileImage: {
         width: 40,

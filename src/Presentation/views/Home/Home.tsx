@@ -13,6 +13,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { consultCards, procedureCards } from '../Servicios/ServicesData';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCalendaryInfo } from '../../../state/CalendarySlice';
+import { setMedicalLineInfo } from '../../../state/MedicalLineSlice';
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../../utils/RootParamList";
 import usePromotions from "../../../hooks/usePromotions";
@@ -21,9 +22,11 @@ import usePopUp from "../../../hooks/usePopUp";
 import HomeBannesrs from "../../components/HomeBanners";
 import useTokenPush from "../../../hooks/useTokenPush";
 import ServicioCard from "../../components/Servicios/ServicioCard";
+import ButtonOne from "../../components/buttons/ButtonOne";
+import ButtonTwo from "../../components/buttons/ButtonTwo";
 
 const Home = () => {
-  const { UserTwo, Arrow, QuestionIcon, CloseIcon } = Icons;
+  const { UserTwo, Arrow, QuestionIcon, CloseIcon, CalendarioNumeroVerde, AutodiagnosticoBlack, Logo, CalendarWhiteIcon } = Icons;
   const {handleStatusCode} = usePromotions();
   const {getServices} = useServices();
   const {getPopups, popups} = usePopUp();
@@ -38,6 +41,7 @@ const Home = () => {
   const IMAGE_HEIGHT = IMAGE_WIDTH * 0.9;
   const dispatch = useDispatch();
   const calendaryState = useSelector((state : any) => state.calendary);
+  const MedicalLineState = useSelector((state : any) => state.medicalLine);
 
 useEffect(() => {
   handleStatusCode(user_id);
@@ -67,6 +71,15 @@ const handleSelectCard = async (card: any, link: any) => {
   }));  
   navigation.navigate(link);
 };
+
+const handleMedicalLine = async (linea: any) => {
+  dispatch(setMedicalLineInfo({
+    ...MedicalLineState,
+    lineaMedica: linea
+  }));
+  navigation.navigate('Agendamiento');
+};
+
   return (
     <View style={styles.container}>
       <FloatingMenu chatVisible={chatVisible} setChatVisible={setChatVisible} />
@@ -132,7 +145,7 @@ const handleSelectCard = async (card: any, link: any) => {
           </TouchableOpacity>
         </View>
         {/* ICONOS DE HEADER */}
-        <View style={styles.containerNavBtn}>
+       {/* <View style={styles.containerNavBtn}>
           <View style={{position: 'absolute', width: 50, height: 1, backgroundColor: '#444444', top: 0, left: 15,}} />
           <TouchableOpacity onPress={() => navigation.navigate("ListaDeProcedimientos")} style={styles.navBtn}>
             <Text style={styles.textNavBtn}>
@@ -149,36 +162,53 @@ const handleSelectCard = async (card: any, link: any) => {
               Mi Agenda
             </Text>
           </TouchableOpacity>
-          {/*<TouchableOpacity onPress={() => navigation.navigate("Pagos")} style={styles.navBtn}>
+          <TouchableOpacity onPress={() => navigation.navigate("Pagos")} style={styles.navBtn}>
             <Text style={styles.textNavBtn}>
               Pago
             </Text>
-          </TouchableOpacity>*/}
+          </TouchableOpacity>
+
           <TouchableOpacity onPress={() => navigation.navigate("Tienda")} style={styles.navBtn}>
             <Text style={styles.textNavBtn}>
               Tienda
             </Text>
           </TouchableOpacity>
-        </View>
+        </View>*/}
+        
         <HomeBannesrs />
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#404040', borderRadius: 18, paddingVertical: 12, paddingHorizontal: 15, marginTop: 30, marginBottom: 20, marginHorizontal: 15,}}>
-          <Text style={{fontFamily: MyFont.regular, fontSize: 16, lineHeight: 18, color: '#FFFFFF',}}>Realiza tu{`\n`}consulta en vivo {`\n`}gratis</Text>
-          <TouchableOpacity onPress={() => setChatVisible(true)} style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 4, backgroundColor: '#FFFFFF', paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12,}}>
-            <Text style={{fontFamily: MyFont.regular, fontSize: 12, color: '#444444',}}>Consulta ahora</Text>
-            <QuestionIcon width={16} height={16} />
-          </TouchableOpacity>
+
+        <View style={styles.agendamientoBox}>
+          <View style={{flexDirection: 'row', alignItems: 'center', gap: 12,}}>
+            <Image source={require('../../../../assets/doctora.png')} style={styles.agendamientoBoxImage} />
+            <View>
+              <Text style={{fontFamily: MyFont.regular, fontSize: MyFont.size[6], color: MyColors.white,}}>Agenda y autodiagnostícate</Text>
+              <Text style={{fontFamily: MyFont.bold, fontSize: MyFont.size[4], color: MyColors.white,}}>Consigue más info</Text>
+              <Text style={{fontFamily: MyFont.regular, fontSize: MyFont.size[6], color: MyColors.white,}}>Pick up where you left off.</Text>
+            </View>
+          </View>
+          <View style={{flexDirection: 'row', justifyContent: 'center',}}>
+            {/*<ButtonTwo text='Autodiagnóstico' icon={AutodiagnosticoBlack} width={145} />*/}
+            <ButtonOne text='Agenda ahora' icon={CalendarioNumeroVerde} pressAction={() => {handleMedicalLine('')}} />
+          </View>
         </View>
 
-         <ServicioCard text='Mejora tu vida' greenText='sexual'/>
+        <View style={{paddingHorizontal: 16,}}>
+          <Text style={{fontFamily: MyFont.medium, fontSize: 30, color: MyColors.verde[4],}}>Cuidate con nosotros</Text>
+          <Text style={{fontFamily: MyFont.regular, fontSize: 15, color: MyColors.neutro[4], marginBottom: 20,}}>Encuentra el servicio médico perfecto para ti</Text>
+          <ServicioCard pressAction={() => {handleMedicalLine('capilar')}} title='Adiós' titleColored='calvicie' titleColor='#00D0B1' text='Recupera tu cabello' imageUrl='diagnosis-alopecia' />
+          <ServicioCard pressAction={() => {handleMedicalLine('facial')}} title='Renueva tu' titleColored='rostro' titleColor='#AD50E8' text='Tratamientos de rejuvenecimiento.' imageUrl='diagnosis-facial' />
+          <ServicioCard pressAction={() => {handleMedicalLine('corporal')}} title='Cuida tu' titleColored='cuerpo' titleColor='#eda145' text='Bienestar de nutrición' imageUrl='diagnosis-nutricion' />
+          <ServicioCard pressAction={() => {handleMedicalLine('sexual')}} title='Ten buen' titleColored='sexo' titleColor='#FF8290' text='Mejora tu vida íntima.' imageUrl='diagnosis-sexual' />
+          <ServicioCard pressAction={() => {handleMedicalLine('psicologia')}} title='Encuentra' titleColored='calma' titleColor='#518BFF' text='El bienestar comienza en tu mente.' imageUrl='diagnosis-psicologia' />
+          <ServicioCard pressAction={() => {handleMedicalLine('adn')}} title='Predice con' titleColored='ADN' titleColor='#5e5f61' text='Predicción avanzada y precisa.' imageUrl='diagnosis-adn' />
+        </View>
 
-         <ServicioCard text='Haz que tu cabello' greenText='crezca'/>
+         
 
-        {/* texto de consultas y botton de mas consultas */}
-        <View style={styles.section}>
+        {/*<View style={styles.section}>
           <Text style={styles.titleSection}>Consultas{"\n"}para ti</Text>
           <ButtonConsultationList />
         </View>
-        {/* cards de consultas capilares */}
         <View style={{ marginBottom: 50 }}>
           <ConsultCard cards={consultCards} />
         </View>
@@ -188,12 +218,13 @@ const handleSelectCard = async (card: any, link: any) => {
         </View>
         <View style={{ marginBottom: 30 }}>
           <ProcedureCard cards={procedureCards} />
-        </View>
-        <View style={{ marginBottom: 150, alignItems: 'center', }}>
+        </View>*/}
+        <View style={{ marginTop: 40, marginBottom: 150, alignItems: 'center', }}>
           <TouchableOpacity onPress={() => WebBrowser.openBrowserAsync('https://rogansya.com/rogans-app/legal/')} style={{ flexDirection: 'row', alignItems: 'center', gap: 8, }}>
             <Text style={{ fontFamily: MyFont.medium, fontSize: 16, }}>Términos y condiciones</Text>
             <Arrow width={16} height={16} />
           </TouchableOpacity>
+          <Logo style={{marginTop: 30}} width={80} height={40}/>
         </View>
       </ScrollView>
     </View>
@@ -291,6 +322,28 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: MyFont.regular,
   },
+  agendamientoBox: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    backgroundColor: MyColors.verde[5],
+    borderRadius: 18,
+    paddingTop: 18,
+    paddingBottom: 22,
+    paddingHorizontal: 20,
+    marginTop: 30,
+    marginBottom: 30,
+    marginHorizontal: 15,
+    shadowColor: MyColors.neutro[2],
+    shadowOffset: { width: 20, height: 15 },
+    shadowOpacity: 0.1,
+    shadowRadius: 15,
+    elevation: 15,
+    gap: 8,
+  },
+  agendamientoBoxImage: {
+    width: 60,
+    height: 60,
+  }
 });
 
 export default Home;

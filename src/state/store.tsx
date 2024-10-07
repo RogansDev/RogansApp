@@ -7,7 +7,7 @@ import SpecialitySlice from './SpecialitySlice'
 import ServicesSlice from './ServicesSlice'
 import PopUpSlice from './PopUpSlice'
 import GoogleDataSlice from './GoogleDataSlice'
-
+import MedicalLineSlice from './MedicalLineSlice'
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +18,7 @@ export const store = configureStore({
     promotions: PromotionSlice,
     speciality: SpecialitySlice,
     services: ServicesSlice,
-    popups: PopUpSlice
+    popups: PopUpSlice,
+    medicalLine: MedicalLineSlice,
   },
 })

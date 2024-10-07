@@ -124,6 +124,11 @@ import MoreVertical from '../../../assets/icons/more-vertical.svg';
 import Editar3Icon from '../../../assets/icons/editar-3.svg';
 import DocumentoIcon from '../../../assets/icons/documento.svg';
 import MeetingIcon from '../../../assets/icons/video.svg';
+import Logo from '../../../assets/logo.svg';
+import DiagnosticoVerde from '../../../assets/icons/disgnosticoVerde.svg';
+import AutodiagnosticoBlack from '../../../assets/icons/autodiagnostico-virtual.svg';
+import CalendarioNumeroWhite from '../../../assets/icons/calendar-white-numero.svg';
+import CalendarioNumeroVerde from '../../../assets/icons/calendar-verde-numero.svg';
 
 const Icons = {
   LogoWhite,
@@ -252,6 +257,11 @@ const Icons = {
   Editar3Icon,
   DocumentoIcon,
   MeetingIcon,
+  Logo,
+  DiagnosticoVerde,
+  AutodiagnosticoBlack,
+  CalendarioNumeroWhite,
+  CalendarioNumeroVerde,
 };
 
 export default Icons;

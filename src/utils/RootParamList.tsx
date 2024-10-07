@@ -34,4 +34,6 @@ export type RootParamList = {
   MisCitas: undefined;
   MiHistorial: undefined;
   Programas: undefined;
+  Teleconsulta: undefined;
+  Agendamiento: undefined;
 };

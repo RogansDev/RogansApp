@@ -141,31 +141,53 @@ const useRegisterFirebase = () => {
     };
 
     const handleLogin = async (email: any, password: any) => {
-
-
         setLoading(true);
-
+    
+        // Bypass de autenticación en modo de desarrollo
+        if (__DEV__) {
+            const devEmail = "test@test.com";
+            const devPassword = "123456";
+    
+            // Verificar si las credenciales coinciden con las que configuraste para desarrollo
+            if (email === devEmail && password === devPassword) {
+                const user = {
+                    user_id: "test-user-id",
+                    email: devEmail,
+                    role: "client",
+                    urlphoto: "",
+                    document: "123456789",
+                    name: "Test User",
+                    lastname: "User",
+                    phone: "5555555555",
+                    birthdate: "1990-01-01",
+                    logged: true,
+                };
+                await saveCredentials('email', devEmail);
+                await saveCredentials('password', devPassword);
+                distpach(setUserInfo(user));
+                setLoading(false);
+                Alert.alert("Inicio de sesión simulado en modo desarrollo");
+                return;
+            }
+        }
+    
+        // Si no es entorno de desarrollo, continuar con el login real de Firebase
         try {
             await signInWithEmailAndPassword(auth, email, password)
                 .then(async (userCredential) => {
-
                     try {
                         const profileQuery = query(
                             collection(db, "users"),
                             where("user_id", "==", userCredential.user.uid)
                         );
-
+    
                         const querySnapshot = await getDocs(profileQuery);
-
                         let selectedProfile: any;
-
                         querySnapshot.forEach((doc) => {
                             selectedProfile = doc.data();
-
                         });
-                        // SI EXISTE EN FIRESTORE LO MUESTRA
+    
                         if (selectedProfile) {
-
                             const user = {
                                 user_id: selectedProfile.user_id,
                                 email: selectedProfile.email,
@@ -176,47 +198,34 @@ const useRegisterFirebase = () => {
                                 lastname: selectedProfile.lastname,
                                 phone: selectedProfile.phone,
                                 birthdate: selectedProfile.birthdate,
-                                logged: true
-                            }
+                                logged: true,
+                            };
                             await saveCredentials('email', email);
                             await saveCredentials('password', password);
-
                             distpach(setUserInfo(user));
                             setLoading(false);
-
                         } else {
                             setLoading(false);
-                            console.log('usuario no existe .', selectedProfile)
-                            Alert.alert('usuario no existe!');
+                            Alert.alert("usuario no existe!");
                         }
-
                     } catch (error) {
                         setLoading(false);
                         setError(error.message);
-                        console.log("err", error)
-                        console.log("err aqui", error.message)
-                        Alert.alert('Ocurrio un error!');
+                        Alert.alert("Ocurrio un error!");
                     }
-
-
                 })
                 .catch((error) => {
                     setLoading(false);
-                    console.log("error", error)
-                    console.log("error", error.message)
                     setError(error.message);
-                    Alert.alert('Ocurrio un error!');
-                })
-
+                    Alert.alert("Ocurrio un error!");
+                });
         } catch (error) {
             setLoading(false);
-            console.log("errerer", error)
-            console.log("errerer", error.message)
             setError(error.message);
-            Alert.alert('Ocurrio un error!');
-
+            Alert.alert("Ocurrio un error!");
         }
     };
+    
     const handleUpdatePassword = async (email: any, password: any, newPassword: any) => {
         setLoading(true);
 
