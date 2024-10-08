@@ -21,6 +21,8 @@ export const useCellPhone = () => {
   const loginWithPhone = async (phone: string) => {
     setLoading(true);
 
+    console.log("primero consulto si el phone existe", phone);
+
     try {
       const phoneRef = query(
         collection(db, "users"),
@@ -34,6 +36,7 @@ export const useCellPhone = () => {
         selectedProfile = doc.data();
       });
       if (selectedProfile) {
+        console.log("phone existe", JSON.stringify(selectedProfile, null, 5));
         const user = {
           user_id: selectedProfile?.user_id ?? "",
           email: selectedProfile?.email ?? "",
@@ -49,9 +52,10 @@ export const useCellPhone = () => {
           logged: true,
         };
         distpach(setUserInfo(user));
+        await sendSmsPhoneFirebase(phone);
         setLoading(false);
-        sendSmsPhoneFirebase(phone);
       } else {
+        console.log("phone no existe");
         const plataforma = Platform.OS;
         const token = await registerForPushNotificationsAsync();
         const user = {
@@ -69,8 +73,8 @@ export const useCellPhone = () => {
           logged: true,
         };
         distpach(setUserInfo(user));
+        await sendSmsPhoneFirebase(phone);
         setLoading(false);
-        sendSmsPhoneFirebase(phone);
       }
       setLoading(false);
     } catch (error) {
@@ -81,7 +85,7 @@ export const useCellPhone = () => {
   const savePhone = async (phoneSave: string, codeSave: string) => {
     const collectionRef = collection(db, "phoneCode");
     const fecha = obtenerFechaActual();
-
+    console.log("guardo el codigo generado");
     try {
       const objetc = {
         phone: phoneSave,
@@ -102,6 +106,9 @@ export const useCellPhone = () => {
     const code = obtenerCodigoLongitudSeisNumerico();
     const body = `Su codigo de ingreso a Rogans es ${code}`;
 
+    console.log("manejo el envio de SMS y guardo el codigo");
+    console.log("code", code, "body", body);
+
     try {
       const response = await fetch("http://192.168.100.34:3000/send-sms", {
         method: "POST",
@@ -114,7 +121,7 @@ export const useCellPhone = () => {
       const result = await response.json();
       if (result.success) {
         await savePhone(to, code);
-        setShowModal(true);
+        setShowModal(true); // muestro el input para el codigo
       } else {
         console.log("Error enviando el mensaje: " + result.message);
         Alert.alert("No se pudo enviar el mensaje!");
@@ -126,6 +133,12 @@ export const useCellPhone = () => {
   const getCodePhoneFirebase = async (code: string, phone: string) => {
     const fechaActual = obtenerFechaActual();
     setLoading(true);
+    console.log(
+      "escribo el code",
+      code,
+      "y debe ser el mismo dia",
+      fechaActual
+    );
     try {
       const phoneCodeQuery = query(
         collection(db, "phoneCode"),
@@ -141,6 +154,7 @@ export const useCellPhone = () => {
       });
 
       if (selectedCode) {
+        console.log("codigo correcto, entro a la app");
         await saveCredentials("phoneToken", phone);
         await saveCredentials("authToken", "true");
 
@@ -151,6 +165,7 @@ export const useCellPhone = () => {
         distpach(setAuthorizationInfo(auth));
         setShowModal(false);
       } else {
+        console.log("codigo incorrecto, no entro a la app");
         setShowModal(false);
         Alert.alert("Codigo incorrecto ingresado");
       }
