@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, Modal, StyleSheet, Platform, ScrollView, Alert } from 'react-native';
 import { Linking } from 'react-native';
 import { MyColors, MyFont, MyFontStyles } from '../theme/AppTheme';
@@ -13,8 +13,10 @@ import CircleButton from './buttons/CircleButton';
 import CitaCard from './Citas/CitaCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMedicalLineInfo } from '../../state/MedicalLineSlice';
+import { format, parseISO } from 'date-fns';
+import { es } from 'date-fns/locale/es';
 
-const FloatingMenu = ({ chatVisible, setChatVisible }: any) => {
+const FloatingMenu = ({ chatVisible, setChatVisible, triggerSuccessModal }: any) => {
   const { InicioIcon, InicioGreen, ServiciosIcon, MiAgendaIcon, MiAgendaGreen, Headphone, InicioBlack, ServiciosBlack, MiAgendaBlack, CloseIcon, CalendarVerde, CalendarAddVerde, AgendarIcon, PhoneApp, Audifonos, Referidos, AgendarBlackIcon, Main, Call } = Icons;
 
   const currentRoute = useCurrentRoute();
@@ -22,6 +24,8 @@ const FloatingMenu = ({ chatVisible, setChatVisible }: any) => {
 
   const dispatch = useDispatch();
   const MedicalLineState = useSelector((state : any) => state.medicalLine);
+  const user = useSelector( (state : any) => state.user);
+  const telUsuario =  user.phone;
 
   const [telemedicinaVisible, setTelemedicinaVisible] = useState(false);
 
@@ -46,6 +50,75 @@ const FloatingMenu = ({ chatVisible, setChatVisible }: any) => {
   const handleChat = () => {
     setTelemedicinaVisible(!telemedicinaVisible);
     setChatVisible(!chatVisible);
+  };
+
+  React.useEffect(() => {
+    if (triggerSuccessModal) {
+      triggerSuccessModal(showSuccessModalFor3Seconds);
+    }
+  }, [triggerSuccessModal]);
+
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
+
+  const showSuccessModalFor3Seconds = () => {
+    setSuccessModalVisible(true);
+    setTimeout(() => {
+      navigation.navigate('MisCitas');
+    }, 500);
+    setTimeout(() => {
+      setSuccessModalVisible(false);
+    }, 3000);
+  };
+
+  const obtenerCitas = async (telefono: any) => {
+      try {
+          const response = await fetch(`https://roganscare.com:5520/citas/telefono/${telefono}/mas-cercana`);
+          const data = await response.json();
+          return data;
+      } catch (error) {
+          console.error('Error al obtener citas:', error);
+      }
+  };
+
+  const formatearFecha = (fechaIsoString: any) => {
+    if (!fechaIsoString) return '';
+    const fecha = parseISO(fechaIsoString);
+    return format(fecha, "hh:mm a | dd 'de' MMMM 'de' yyyy", { locale: es });
+  };
+
+  const [proximaCita, setProximaCita]:any = useState(null);
+
+  useEffect(() => {
+      obtenerCitas(telUsuario).then(data => {
+        console.log(data.message);
+        if(data.message) {
+          setProximaCita(null);
+        } else {
+          setProximaCita(data);
+        }
+      });
+  }, [telUsuario]);
+
+  const nombreLinea = (linea: any) => {
+    let nombreCompleto;
+
+    if (linea === 'Capilar') {
+        nombreCompleto = 'Cuidado del cabello';
+    } else if (linea === 'Facial') {
+        nombreCompleto = 'Cuidado de la piel';
+    } else if (linea === 'Sexual') {
+        nombreCompleto = 'Salud sexual';
+    } else if (linea === 'Psicología') {
+        nombreCompleto = 'Psicología';
+    } else if (linea === 'Nutricion') {
+        nombreCompleto = 'Nutricion';
+    } else if (linea === 'Adn') {
+        nombreCompleto = 'Medicina predictiva | ADN';
+    } else {
+        nombreCompleto = linea;
+    }
+
+    return nombreCompleto;
   };
 
   return (
@@ -81,7 +154,20 @@ const FloatingMenu = ({ chatVisible, setChatVisible }: any) => {
               <Text style={MyFontStyles.title_1}>Mi agenda</Text>
               <Text style={MyFontStyles.title_2}>Mi agenda y telemedicina</Text>
             </View>
-            <CitaBox estadoCita='agendada' backgroundColor={MyColors.verdeDark[6]} sidesMargin={16} />
+            {
+                proximaCita !== null ? (
+                    <CitaBox
+                        tituloCita={nombreLinea(proximaCita.linea_medica)}
+                        modalidad={proximaCita.modalidad}
+                        fecha={formatearFecha(proximaCita.fecha_cita)}
+                        estadoCita={proximaCita.estado}
+                        sidesMargin={16}
+                        lineaMedica={proximaCita.linea_medica}
+                    />
+                ) : (
+                    ''
+                )
+            }
             <View style={{flexDirection: 'row', marginBottom: 40, paddingHorizontal: 16}}>
               <CircleButton pressAction={() => {handleMedicalLine('')}} text="Agendar cita" width="auto" icon={CalendarAddVerde} iconSize={{width: 22, height: 22}} />
               <CircleButton text="Ver Citas" width="auto" icon={CalendarVerde} iconSize={{width: 22, height: 22}} pressAction={() => {navigation.navigate("MisCitas"), setTelemedicinaVisible(!telemedicinaVisible)}} />
@@ -102,6 +188,20 @@ const FloatingMenu = ({ chatVisible, setChatVisible }: any) => {
           </ScrollView>
         </View>
         <TouchableOpacity onPress={() => setTelemedicinaVisible(!telemedicinaVisible)} style={styles.uchatOverlay} />
+      </Modal>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={successModalVisible}
+        onRequestClose={() => setSuccessModalVisible(false)}
+      >
+        <View style={styles.successModalContainer}>
+          <View style={styles.successModal}>
+            <Text style={styles.successModalText}>¡Listo!</Text>
+            <Text style={styles.successModalText2}>Tu cita ha sido agendada con exito</Text>
+          </View>
+        </View>
       </Modal>
 
       <View style={styles.menuContainer}>
@@ -129,11 +229,11 @@ const FloatingMenu = ({ chatVisible, setChatVisible }: any) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate("MiHistorial")}
-            style={isActive('MiHistorial') ? styles.activeMenuItem : styles.menuItem}>
-            {isActive('MiHistorial') ? <MiAgendaGreen style={styles.menuIcon} width={20} height={20} /> : <MiAgendaBlack style={styles.menuIcon} width={20} height={20} />}
-            <View style={isActive('MiHistorial') ? styles.activeTextBorder : styles.textBorder}>
-              <Text style={isActive('MiHistorial') ? styles.activeMenuText : styles.menuText}>Historial</Text>
+            onPress={() => navigation.navigate("MisCitas")}
+            style={isActive('MisCitas') ? styles.activeMenuItem : styles.menuItem}>
+            {isActive('MisCitas') ? <MiAgendaGreen style={styles.menuIcon} width={20} height={20} /> : <MiAgendaBlack style={styles.menuIcon} width={20} height={20} />}
+            <View style={isActive('MisCitas') ? styles.activeTextBorder : styles.textBorder}>
+              <Text style={isActive('MisCitas') ? styles.activeMenuText : styles.menuText}>Mis citas</Text>
             </View>
           </TouchableOpacity>
           
@@ -309,7 +409,35 @@ const styles = StyleSheet.create({
   chatText: {
     color: '#FFFFFF',
     fontFamily: MyFont.regular,
-  }
+  },
+  successModalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  successModal: {
+    width: 260,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+    elevation: 10,
+  },
+  successModalText: {
+    fontSize: MyFont.size[3],
+    fontFamily: MyFont.medium,
+    textAlign: 'center',
+    marginBottom: 8,
+    color: MyColors.verde[2],
+  },
+  successModalText2: {
+    fontSize: MyFont.size[5],
+    fontFamily: MyFont.regular,
+    textAlign: 'center',
+    marginBottom: 10,
+    color: MyColors.neutro[2],
+  },
 });
 
 export default FloatingMenu;

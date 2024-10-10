@@ -4,11 +4,7 @@ import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Dimensions, Image
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import { useNavigation } from '@react-navigation/native';
 import FloatingMenu from '../../../Presentation/components/FloatingMenu';
-import ConsultCard from '../../../Presentation/components/ConsultCard';
-import ProcedureCard from '../../../Presentation/components/ProcedureCard';
-import ButtonConsultationList from '../../../Presentation/components/BottomMasConsultas';
 import Icons from '../../../Presentation/theme/Icons';
-import ButtonProcedureList from '../../components/BottomMasProcedimientos';
 import * as WebBrowser from 'expo-web-browser';
 import { consultCards, procedureCards } from '../Servicios/ServicesData';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,7 +19,9 @@ import HomeBannesrs from "../../components/HomeBanners";
 import useTokenPush from "../../../hooks/useTokenPush";
 import ServicioCard from "../../components/Servicios/ServicioCard";
 import ButtonOne from "../../components/buttons/ButtonOne";
-import ButtonTwo from "../../components/buttons/ButtonTwo";
+import { format, parseISO } from 'date-fns';
+import { es } from 'date-fns/locale/es';
+import CitaBoxShort from "../../components/Citas/CitaBoxShort";
 
 const Home = () => {
   const { UserTwo, Arrow, QuestionIcon, CloseIcon, CalendarioNumeroVerde, AutodiagnosticoBlack, Logo, CalendarWhiteIcon } = Icons;
@@ -32,7 +30,7 @@ const Home = () => {
   const {getPopups, popups} = usePopUp();
   const {handleGestionToken} = useTokenPush();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
-  const { name, user_id } = useSelector((state: any) => state.user)
+  const { name, phone, user_id } = useSelector((state: any) => state.user);
   const [chatVisible, setChatVisible] = useState(false);
   const [modalPopUp, setModalPopUp] = useState(false);
   const [popUpInfo, setPopUpInfo]: any = useState({});
@@ -79,6 +77,66 @@ const handleMedicalLine = async (linea: any) => {
   }));
   navigation.navigate('Agendamiento');
 };
+const obtenerCitas = async (telefono: any) => {
+  try {
+      const response = await fetch(`https://roganscare.com:5520/citas/telefono/${telefono}/mas-cercana`);
+      const data = await response.json();
+      return data;
+  } catch (error) {
+        console.error('Error al obtener citas:', error);
+    }
+  };
+
+  const formatearFecha = (fechaIsoString: any) => {
+      if (!fechaIsoString) return '';
+
+      const horaCompleta = fechaIsoString.slice(11, 16);
+      const horas = parseInt(horaCompleta.slice(0, 2), 10);
+      const minutos = horaCompleta.slice(3, 5);
+      
+      const ampm = horas >= 12 ? 'PM' : 'AM';
+      const horas12 = horas % 12 === 0 ? 12 : horas % 12;
+
+      const fecha = new Date(fechaIsoString.slice(0, 10));
+      const fechaFormateada = format(fecha, "dd 'de' MMMM 'de' yyyy", { locale: es });
+
+      return `${horas12}:${minutos} ${ampm} | ${fechaFormateada}`;
+  };
+
+  const [proximaCita, setProximaCita]:any = useState(null);
+
+  useEffect(() => {
+    obtenerCitas(phone).then(data => {
+      console.log(data.message);
+      if(data.message) {
+        setProximaCita(null);
+      } else {
+        setProximaCita(data);
+      }
+    });
+  }, [phone]);
+
+  const nombreLinea = (linea: any) => {
+  let nombreCompleto;
+
+  if (linea === 'Capilar') {
+      nombreCompleto = 'Cuidado del cabello';
+  } else if (linea === 'Facial') {
+      nombreCompleto = 'Cuidado de la piel';
+  } else if (linea === 'Sexual') {
+      nombreCompleto = 'Salud sexual';
+  } else if (linea === 'Psicología') {
+      nombreCompleto = 'Psicología';
+  } else if (linea === 'Nutricion') {
+      nombreCompleto = 'Nutricion';
+  } else if (linea === 'Adn') {
+      nombreCompleto = 'Medicina predictiva | ADN';
+  } else {
+      nombreCompleto = linea;
+  }
+
+  return nombreCompleto;
+  };
 
   return (
     <View style={styles.container}>
@@ -174,6 +232,24 @@ const handleMedicalLine = async (linea: any) => {
             </Text>
           </TouchableOpacity>
         </View>*/}
+
+        {
+            proximaCita !== null ? (
+              <View style={{gap: 10, marginBottom: 20,}}>
+                <Text style={{fontFamily: MyFont.regular, fontSize: MyFont.size[5], color: MyColors.neutro[4], paddingHorizontal: 16,}}>Tu próxima cita</Text>
+                <CitaBoxShort
+                    tituloCita={nombreLinea(proximaCita.linea_medica)}
+                    modalidad={proximaCita.modalidad}
+                    fecha={formatearFecha(proximaCita.fecha_cita)}
+                    estadoCita={proximaCita.estado}
+                    sidesMargin={16}
+                    lineaMedica={proximaCita.linea_medica}
+                />
+              </View>
+            ) : (
+                ''
+            )
+        }
         
         <HomeBannesrs />
 

@@ -12,28 +12,20 @@ import { es } from 'date-fns/locale/es';
 import { Linking } from 'react-native';
 import CitaBox from '../../../Presentation/components/Citas/CitaBox';
 
-const obtenerCitas = async (cedula: any) => {
-    try {
-      const response = await fetch(`https://rogansya.com/rogans-app/index.php?accion=obtenerPorCedula&cedula=${cedula}`);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error al obtener citas:', error);
-    }
-  };
 
 const capitalize = (str: any) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const formatearFecha = (fechaIsoString: any) => {
-    const fecha = parseISO(fechaIsoString);
-    return {
-        diaSemana: capitalize(format(fecha, 'EEEE', { locale: es })),
-        numeroDia: format(fecha, 'dd'),
-        mes: capitalize(format(fecha, 'MMMM', { locale: es })),
-        hora: format(fecha, 'HH:mm')
-    };
+// Función para obtener las citas desde el backend propio
+const obtenerCitas = async (telefono: any) => {
+    try {
+        const response = await fetch(`https://roganscare.com:5520/citas/telefono/${telefono}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error al obtener citas:', error);
+    }
 };
 
 const MisCitas = () => {
@@ -58,45 +50,8 @@ const MisCitas = () => {
     const [cargando, setCargando] = useState(true);
     const [chatVisible, setChatVisible] = useState(false);
     const [citasNoCanceladas, setCitasNoCanceladas] = useState<Cita[]>([]);
-    const [citasCanceladas, setCitasCanceladas] = useState<Cita[]>([]);
-
-    useEffect(() => {
-        obtenerCitas(cedulaUsuario).then(data => {
-            if (data && data.length > 0) {
-                const citasOrdenadas = data.sort((a: any, b: any) => new Date(b.fecha_que_agendo).getTime() - new Date(a.fecha_que_agendo).getTime());
-                setCitas(citasOrdenadas);
-            } else {
-                setCitas([]);
-            }
-            setCargando(false);
-        });
-        
-        console.log(citas);
-        
-    }, []);
+    const [citasCanceladas, setCitasCanceladas] = useState<Cita[]>([]); 
     
-    useEffect(() => {
-        let fechaActual = new Date();
-    
-        fechaActual.setHours(fechaActual.getHours() - 5);
-    
-        const noCanceladas = citas.filter(cita => {
-            const fechaCita = new Date(cita.fecha_que_agendo);
-            return (cita.status === 'Confirmado' || cita.status === 'Pendiente') && fechaCita >= fechaActual;
-        });
-    
-        const canceladas = citas.filter(cita => {
-            const fechaCita = new Date(cita.fecha_que_agendo);
-            return (cita.status === 'Cancelado' || cita.status === 'Finalizada' || fechaCita < fechaActual);
-        });
-    
-        setCitasNoCanceladas(noCanceladas);
-        setCitasCanceladas(canceladas);
-    }, [citas]);
-    
-    
-    
-
     const { DollarIcon, ClockIcon, CloseIcon, TickCircleWhiteicon, TrashIcon, InfoIcon, VirtualIcon, ProfileIcon } = Icons;
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
@@ -132,14 +87,65 @@ const MisCitas = () => {
         return ('$' + caracteres.reverse().join(''));
     }
 
-    const openGoogleMeet = async (link: any) => {
-        try {
-            await Linking.openURL(link);
-        } catch (error) {
-            console.error('No se pudo abrir el enlace:', error);
-        }
+    const formatearFecha = (fechaIsoString: any) => {
+        if (!fechaIsoString) return '';
+  
+        const horaCompleta = fechaIsoString.slice(11, 16);
+        const horas = parseInt(horaCompleta.slice(0, 2), 10);
+        const minutos = horaCompleta.slice(3, 5);
+        
+        const ampm = horas >= 12 ? 'PM' : 'AM';
+        const horas12 = horas % 12 === 0 ? 12 : horas % 12;
+  
+        const fecha = new Date(fechaIsoString.slice(0, 10));
+        const fechaFormateada = format(fecha, "dd 'de' MMMM 'de' yyyy", { locale: es });
+  
+        return `${horas12}:${minutos} ${ampm} | ${fechaFormateada}`;
     };
+
+    const [proximasCitas, setProximasCitas] = useState([]);
+    const [citasAnteriores, setCitasAnteriores] = useState([]);
+
+    useEffect(() => {
+        // Llamar a la función obtenerCitas con el teléfono del usuario
+        obtenerCitas(telUsuario).then(data => {
+            if (data && data.length > 0) {
+                const citasAgendadas = data.filter((cita: any) => cita.estado === 'agendada');
+                const otrasCitas = data.filter((cita: any) => cita.estado !== 'agendada');
+                console.log(citasAgendadas[0].fecha_cita);
+                
+
+                setProximasCitas(citasAgendadas);
+                
+                setCitasAnteriores(otrasCitas);
+            } else {
+                setCitasAnteriores([]);
+            }
+            setCargando(false);
+        });
+    }, [telUsuario]);
+
+    const nombreLinea = (linea: any) => {
+        let nombreCompleto;
     
+        if (linea === 'Capilar') {
+            nombreCompleto = 'Cuidado del cabello';
+        } else if (linea === 'Facial') {
+            nombreCompleto = 'Cuidado de la piel';
+        } else if (linea === 'Sexual') {
+            nombreCompleto = 'Salud sexual';
+        } else if (linea === 'Psicología') {
+            nombreCompleto = 'Psicología';
+        } else if (linea === 'Nutricion') {
+            nombreCompleto = 'Nutricion';
+        } else if (linea === 'Adn') {
+            nombreCompleto = 'Medicina predictiva | ADN';
+        } else {
+            nombreCompleto = linea;
+        }
+    
+        return nombreCompleto;
+    };
 
     return (
         <View style={styles.container}>
@@ -148,13 +154,39 @@ const MisCitas = () => {
                 <View style={styles.content}>
                     <Text style={MyFontStyles.title_1}>Mis citas</Text>
                     <Text style={MyFontStyles.title_2}>Próxima cita</Text>
-                    <CitaBox estadoCita='agendada' />
+                    {
+                         proximasCitas.length > 0 ? proximasCitas.map((cita: any, index: number) => (
+                            <CitaBox
+                                index={index}
+                                tituloCita={nombreLinea(cita.linea_medica)}
+                                modalidad={cita.modalidad}
+                                fecha={formatearFecha(cita.fecha_cita)}
+                                estadoCita={cita.estado}
+                                sidesMargin={0}
+                                lineaMedica={cita.linea_medica}
+                            />
+                        )) : (
+                            <Text>No tienes citas próximas</Text>
+                        )
+                    }
                 </View>
                 <View style={[styles.content, {marginBottom: 200,}]}>
                     <Text style={MyFontStyles.title_1}>Mis citas anteriores</Text>
-                    <CitaBox estadoCita='no_asistida' />
-                    <CitaBox estadoCita='no_asistida' />
-                    <CitaBox estadoCita='asistida' />
+                    {
+                        citasAnteriores.length > 0 ? citasAnteriores.map((cita: any, index: number) => (
+                            <CitaBox
+                                key={index}
+                                tituloCita={nombreLinea(cita.linea_medica)}
+                                modalidad={cita.modalidad}
+                                fecha={formatearFecha(cita.fecha_cita)}
+                                estadoCita={cita.estado}
+                                sidesMargin={0}
+                                lineaMedica={cita.linea_medica}
+                            />
+                        )) : (
+                            <Text>No tienes citas anteriores</Text>
+                        )
+                    }
                 </View>
             </ScrollView>
 

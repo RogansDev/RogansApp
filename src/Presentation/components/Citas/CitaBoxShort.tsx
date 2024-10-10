@@ -90,10 +90,8 @@ const CitaBox = ({ tituloCita, modalidad, fecha, estadoCita, lineaMedica, backgr
                 ]}
             ></View>
             <View style={Styles.citaBoxContent}>
-                <Image source={imagenCita(lineaMedica)} style={Styles.profileImage} />
                 <View style={Styles.textContainer}>
                     <Text style={Styles.title}>{tituloCita}</Text>
-                    <Text style={Styles.subTitle}>Cita</Text>
                 </View>
                 {/*<TouchableOpacity style={Styles.moreIconContainer} onPress={toggleMenu}>
                     <MoreVertical width={20} height={20} color={MyColors.neutroDark[4]} />
@@ -126,21 +124,20 @@ const CitaBox = ({ tituloCita, modalidad, fecha, estadoCita, lineaMedica, backgr
                     </Animated.View>
                 )}*/}
             </View>
-            {modalidad === 'Virtual' ? (
-                <View style={Styles.detailsSection}>
-                    <TouchableOpacity onPress={() => navigation.navigate("Teleconsulta")} style={Styles.iconContainer}>
-                        <MeetingIcon width={16} height={16} />
-                        <Text style={[Styles.detailsText, {color: MyColors.verde[2]}]}>Ingresar a tu cita virtual</Text>
-                    </TouchableOpacity>
-                </View>
-            ):''}
-            
+
             <View style={Styles.detailsSection}>
-                <Text style={Styles.detailsTitle}>Detalles</Text>
                 <View style={Styles.iconRow}>
-                    <View style={Styles.iconContainer}>
-                        <UbicacionVerde width={16} height={16} />
-                        <Text style={Styles.detailsText}>{modalidad}</Text>
+                    <View style={{flexDirection: 'row',}}>
+                        <View style={Styles.iconContainer}>
+                            <UbicacionVerde width={16} height={16} />
+                            <Text style={Styles.detailsText}>{modalidad}</Text>
+                        </View>
+                        {modalidad === 'Virtual' ? (
+                            <TouchableOpacity onPress={() => navigation.navigate("Teleconsulta")} style={Styles.iconContainer}>
+                                <MeetingIcon width={16} height={16} />
+                                <Text style={[Styles.detailsText, {color: MyColors.verde[2]}]}>Ingresar a tu cita ahora</Text>
+                            </TouchableOpacity>
+                        ):''}
                     </View>
                     <View style={Styles.iconContainer}>
                         <Calendar width={16} height={16} />
@@ -178,7 +175,6 @@ export const Styles = StyleSheet.create({
     citaBoxContent: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 10,
         marginLeft: 20,
         position: 'relative', 
         zIndex: 10,
@@ -191,7 +187,7 @@ export const Styles = StyleSheet.create({
     },
     textContainer: {
         flexDirection: 'column',
-        flex: 1, 
+        flex: 1,
     },
     title: {
         fontSize: 18,
@@ -217,11 +213,11 @@ export const Styles = StyleSheet.create({
     iconRow: {
         flexDirection: 'column', 
         alignItems: 'flex-start',
-        gap: 3,
+        gap: 6,
     },
     iconContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         marginRight: 15, 
     },
     detailsText: {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Animated, Alert } from 'react-native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootParamList } from '../../../utils/RootParamList';
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
@@ -12,10 +12,14 @@ import { useSelector } from 'react-redux';
 
 const Agendamiento = () => {
     const [chatVisible, setChatVisible] = useState(false);
+    const [lineaMedica, setLineaMedica] = useState('');
     const [showCategories, setShowCategories] = useState(true);
     const [showCalendar, setShowCalendar] = useState(false);
     const { ArrowLeft, CalendarWhiteIcon } = Icons;
     const MedicalLineState = useSelector((state: any) => state.medicalLine);
+    const { name, user_id, phone } = useSelector((state: any) => state.user);
+    const [selectedDate, setSelectedDate] = useState(null); // Fecha seleccionada en el calendario
+    const [selectedModality, setSelectedModality] = useState(null);
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
@@ -29,8 +33,34 @@ const Agendamiento = () => {
 
     const animationDuration = 300;
 
+    useFocusEffect(
+        React.useCallback(() => {
+            // Resetear el estado cuando la pantalla entra en foco
+            setChatVisible(false);
+            setLineaMedica('');
+            setShowCategories(true);
+            setShowCalendar(false);
+            setSelectedDate(null);
+            setSelectedModality(null);
+
+            // Animación inicial de las categorías
+            Animated.timing(opacityCategoryAnim, {
+                toValue: 1,
+                duration: animationDuration,
+                useNativeDriver: true,
+            }).start();
+
+            Animated.timing(translateYCategoryAnim, {
+                toValue: 0,
+                duration: animationDuration,
+                useNativeDriver: true,
+            }).start();
+        }, [])
+    );
+
     useEffect(() => {
         if (MedicalLineState.lineaMedica !== '') {
+            setLineaMedica(MedicalLineState.lineaMedica);
             // Si hay una línea médica seleccionada, saltar directamente al calendario
             setShowCategories(false);
             setShowCalendar(true);
@@ -48,6 +78,7 @@ const Agendamiento = () => {
                 useNativeDriver: true,
             }).start();
         } else {
+            setLineaMedica('');
             // Mostrar las categorías al cargar
             Animated.timing(opacityCategoryAnim, {
                 toValue: 1,
@@ -63,7 +94,8 @@ const Agendamiento = () => {
         }
     }, [MedicalLineState]);
 
-    const handleCategorySelect = () => {
+    const handleCategorySelect = (linea: any) => {
+        setLineaMedica(linea);
         // Oculta los botones de categorías y muestra el calendario
         Animated.timing(opacityCategoryAnim, {
             toValue: 0,
@@ -93,7 +125,7 @@ const Agendamiento = () => {
 
     const handleBackFromCalendar = () => {
         if(MedicalLineState.lineaMedica !== '') {
-            navigation.goBack()
+            navigation.goBack();
         } else {
             // Si se quiere volver atrás desde el calendario
             Animated.timing(opacityCalendarAnim, {
@@ -124,9 +156,62 @@ const Agendamiento = () => {
         }
     };
 
+    const formatDateForMySQL = (date:any) => {
+        return date.toISOString().slice(0, 19).replace('T', ' ');
+    };
+
+    const handleAgendar = () => {    
+        const agendamientoData = {
+            telefono: phone,
+            linea_medica: lineaMedica,
+            tipo: 'Consulta médica',
+            modalidad: selectedModality,
+            fecha_cita: selectedDate,
+            fecha_agendamiento: formatDateForMySQL(new Date()),
+            estado: 'agendada',
+        };
+    
+        fetch('https://roganscare.com:5520/citas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(agendamientoData),
+        })
+        .then((response) => {
+            if (!response.ok) {
+                return response.json().then((data) => {
+                    throw new Error(`Error: ${data.error || 'Hubo un problema con la solicitud'}`);
+                });
+            }
+            return response.json();
+        })
+        .then((data) => {
+            handleOpenSuccessModal()
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            Alert.alert('Error', `Hubo un error al agendar la cita`);
+        });
+    };
+
+    const modalTriggerRef:any = useRef(null);
+
+    const handleOpenSuccessModal = () => {
+        if (modalTriggerRef.current) {
+          modalTriggerRef.current();
+        }
+      };
+
     return (
         <View style={styles.container}>
-            <FloatingMenu chatVisible={chatVisible} setChatVisible={setChatVisible} />
+            <FloatingMenu
+                chatVisible={chatVisible}
+                setChatVisible={setChatVisible}
+                triggerSuccessModal={(trigger: any) => {
+                modalTriggerRef.current = trigger;
+                }}
+            />
             <ScrollView style={styles.scrollContainer}>
                 <View style={styles.content}>
                     {showCalendar ? (
@@ -139,8 +224,8 @@ const Agendamiento = () => {
                                 <ArrowLeft width={16} height={16} />
                                 <Text style={{fontFamily: MyFont.regular, fontSize: MyFont.size[5], color: MyColors.verde[2],}}>Atrás</Text>
                             </TouchableOpacity>
-                            <Calendario />
-                            <ButtonIcon text="Agendar" icon={CalendarWhiteIcon} />
+                            <Calendario onDateSelected={setSelectedDate} onModalitySelected={setSelectedModality} />
+                            <ButtonIcon text="Agendar" icon={CalendarWhiteIcon} pressAction={handleAgendar} />
                         </Animated.View>
                     ) : (
                         <Animated.View style={{
@@ -153,25 +238,25 @@ const Agendamiento = () => {
                                 <ArrowLeft width={16} height={16} />
                                 <Text style={{fontFamily: MyFont.regular, fontSize: MyFont.size[5], color: MyColors.verde[2],}}>Atrás</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={handleCategorySelect}>
+                            <TouchableOpacity onPress={() => {handleCategorySelect('Capilar')}}>
                                 <Text style={styles.buttonText}>Cuidado del cabello</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={handleCategorySelect}>
+                            <TouchableOpacity onPress={() => {handleCategorySelect('Facial')}}>
                                 <Text style={styles.buttonText}>Cuidado de la piel</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={handleCategorySelect}>
+                            <TouchableOpacity onPress={() => {handleCategorySelect('Sexual')}}>
                                 <Text style={styles.buttonText}>Rendimiento sexual</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={handleCategorySelect}>
+                            <TouchableOpacity onPress={() => {handleCategorySelect('Psicologia')}}>
                                 <Text style={styles.buttonText}>Psicología</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={handleCategorySelect}>
+                            <TouchableOpacity onPress={() => {handleCategorySelect('Nutricion')}}>
                                 <Text style={styles.buttonText}>Nutrición</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={handleCategorySelect}>
+                            <TouchableOpacity onPress={() => {handleCategorySelect('Adn')}}>
                                 <Text style={styles.buttonText}>Medicina predictiva | ADN</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={handleCategorySelect}>
+                            <TouchableOpacity onPress={() => {handleCategorySelect('Medicina-general')}}>
                                 <Text style={styles.buttonText}>Consulta médica general</Text>
                             </TouchableOpacity>
                         </Animated.View>

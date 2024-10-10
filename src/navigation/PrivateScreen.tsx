@@ -430,19 +430,12 @@ function PrivateScreen() {
         name="Teleconsulta"
         component={Teleconsulta}
         options={({ navigation, route }) => ({
-          ...Platform.select({
-            ios: {
-              headerShown: true,
-              headerTitle: '',
-              headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
-              headerTintColor: '#00D0B1',
-              headerTitleAlign: 'left',
-              headerShadowVisible: false,
-            },
-            android: {
-              headerShown: false,
-            }
-          }),
+          headerShown: true,
+          headerTitle: '',
+          headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+          headerTintColor: '#00D0B1',
+          headerTitleAlign: 'left',
+          headerShadowVisible: false,
           headerTransparent: false,
         })}
       />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { setMedicalLineInfo } from '../../../state/MedicalLineSlice';
 import { View, ScrollView, Text, Image, TouchableOpacity, Modal, StyleSheet, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -15,16 +16,7 @@ import TratamientoBox from '../../../Presentation/components/Historial/Tratamien
 import ComprasBox from '../../../Presentation/components/Historial/ComprasBox';
 import FormulasMedicasBox from '../../../Presentation/components/Historial/FormulasMedicasBox';
 import ExamenesBox from '../../../Presentation/components/Historial/ExamenesBox';
-
-const obtenerCitas = async (cedula: any) => {
-    try {
-      const response = await fetch(`https://rogansya.com/rogans-app/index.php?accion=obtenerPorCedula&cedula=${cedula}`);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error al obtener citas:', error);
-    }
-  };
+import CircleButton from '../../components/buttons/CircleButton';
 
 const capitalize = (str: any) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -58,68 +50,18 @@ const MiHistorial = () => {
         meet: string;
     }
 
+    const dispatch = useDispatch();
+    const MedicalLineState = useSelector((state : any) => state.medicalLine);
+
     const [citas, setCitas] = useState<Cita[]>([]);
     const [cargando, setCargando] = useState(true);
     const [chatVisible, setChatVisible] = useState(false);
     const [citasNoCanceladas, setCitasNoCanceladas] = useState<Cita[]>([]);
     const [citasCanceladas, setCitasCanceladas] = useState<Cita[]>([]);
-
-    useEffect(() => {
-        obtenerCitas(cedulaUsuario).then(data => {
-            if (data && data.length > 0) {
-                const citasOrdenadas = data.sort((a: any, b: any) => new Date(b.fecha_que_agendo).getTime() - new Date(a.fecha_que_agendo).getTime());
-                setCitas(citasOrdenadas);
-            } else {
-                setCitas([]);
-            }
-            setCargando(false);
-        });
-        
-        console.log(citas);
-        
-    }, []);
     
-    useEffect(() => {
-        let fechaActual = new Date();
-    
-        fechaActual.setHours(fechaActual.getHours() - 5);
-    
-        const noCanceladas = citas.filter(cita => {
-            const fechaCita = new Date(cita.fecha_que_agendo);
-            return (cita.status === 'Confirmado' || cita.status === 'Pendiente') && fechaCita >= fechaActual;
-        });
-    
-        const canceladas = citas.filter(cita => {
-            const fechaCita = new Date(cita.fecha_que_agendo);
-            return (cita.status === 'Cancelado' || cita.status === 'Finalizada' || fechaCita < fechaActual);
-        });
-    
-        setCitasNoCanceladas(noCanceladas);
-        setCitasCanceladas(canceladas);
-    }, [citas]);
-    
-    
-    
-
-    const { DollarIcon, ClockIcon, CloseIcon, TickCircleWhiteicon, TrashIcon, InfoIcon, VirtualIcon, ProfileIcon } = Icons;
+    const { DollarIcon, CalendarVerde, CloseIcon, TickCircleWhiteicon, CalendarAddVerde, InfoIcon, VirtualIcon, ProfileIcon } = Icons;
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
-
-    const cancelarCita = async (cedula: any, fecha: any) => {
-        console.log(fecha);
-        
-        try {
-            const response = await fetch(`https://rogansya.com/rogans-app/index.php?accion=cancelar&cedula=${cedula}&fecha=${fecha}`);
-            const data = await response.json();
-            if (data.mensaje === "Cita cancelada exitosamente") {
-                navigation.navigate("CitaCancelada");
-            } else {
-                console.log("Error o cita no encontrada");
-            }
-        } catch (error) {
-            console.error('Error al cancelar cita:', error);
-        }
-    };
 
     function formatearPrecio(numeroStr: any) {
         if (!/^\d+$/.test(numeroStr)) {
@@ -143,8 +85,76 @@ const MiHistorial = () => {
             console.error('No se pudo abrir el enlace:', error);
         }
     };
-    
 
+    const obtenerCitas = async (telefono: any) => {
+        try {
+            const response = await fetch(`https://roganscare.com:5520/citas/telefono/${telefono}/mas-cercana`);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error al obtener citas:', error);
+        }
+    };
+  
+    const formatearFecha = (fechaIsoString: any) => {
+        if (!fechaIsoString) return '';
+  
+        const horaCompleta = fechaIsoString.slice(11, 16);
+        const horas = parseInt(horaCompleta.slice(0, 2), 10);
+        const minutos = horaCompleta.slice(3, 5);
+        
+        const ampm = horas >= 12 ? 'PM' : 'AM';
+        const horas12 = horas % 12 === 0 ? 12 : horas % 12;
+  
+        const fecha = new Date(fechaIsoString.slice(0, 10));
+        const fechaFormateada = format(fecha, "dd 'de' MMMM 'de' yyyy", { locale: es });
+  
+        return `${horas12}:${minutos} ${ampm} | ${fechaFormateada}`;
+    };
+  
+    const [proximaCita, setProximaCita]:any = useState(null);
+  
+    useEffect(() => {
+        obtenerCitas(telUsuario).then(data => {
+          console.log(data.message);
+          if(data.message) {
+            setProximaCita(null);
+          } else {
+            setProximaCita(data);
+          }
+        });
+    }, [telUsuario]);
+  
+    const nombreLinea = (linea: any) => {
+      let nombreCompleto;
+  
+      if (linea === 'Capilar') {
+          nombreCompleto = 'Cuidado del cabello';
+      } else if (linea === 'Facial') {
+          nombreCompleto = 'Cuidado de la piel';
+      } else if (linea === 'Sexual') {
+          nombreCompleto = 'Salud sexual';
+      } else if (linea === 'Psicología') {
+          nombreCompleto = 'Psicología';
+      } else if (linea === 'Nutricion') {
+          nombreCompleto = 'Nutricion';
+      } else if (linea === 'Adn') {
+          nombreCompleto = 'Medicina predictiva | ADN';
+      } else {
+          nombreCompleto = linea;
+      }
+  
+      return nombreCompleto;
+    };
+
+    const handleMedicalLine = async (linea: any) => {
+        dispatch(setMedicalLineInfo({
+          ...MedicalLineState,
+          lineaMedica: linea
+        }));
+        navigation.navigate('Agendamiento');
+    };
+    
     return (
         <View style={styles.container}>
             <FloatingMenu chatVisible={chatVisible} setChatVisible={setChatVisible} />
@@ -152,7 +162,24 @@ const MiHistorial = () => {
                 <View style={styles.content}>
                     <Text style={MyFontStyles.title_1}>Mi Historial</Text>
                     <Text style={MyFontStyles.title_2}>Citas</Text>
-                    <CitaBox estadoCita='agendada' />
+                    {
+                        proximaCita !== null ? (
+                            <CitaBox
+                                tituloCita={nombreLinea(proximaCita.linea_medica)}
+                                modalidad={proximaCita.modalidad}
+                                fecha={formatearFecha(proximaCita.fecha_cita)}
+                                estadoCita={proximaCita.estado}
+                                sidesMargin={0}
+                                lineaMedica={proximaCita.linea_medica}
+                            />
+                        ) : (
+                            ''
+                        )
+                    }
+                </View>
+                <View style={{flexDirection: 'row', marginBottom: 40, paddingHorizontal: 16}}>
+                    <CircleButton pressAction={() => {handleMedicalLine('')}} text="Agendar cita" width="auto" icon={CalendarAddVerde} iconSize={{width: 22, height: 22}} />
+                    <CircleButton text="Ver Citas" width="auto" icon={CalendarVerde} iconSize={{width: 22, height: 22}} pressAction={() => {navigation.navigate("MisCitas")}} />
                 </View>
                 <View style={[styles.content]}>
                     <Text style={MyFontStyles.title_2}>Tratamientos</Text>
@@ -207,16 +234,7 @@ const MiHistorial = () => {
                                     <Text style={[styles.textModal, {color: 'white',}]}>No, conservar</Text>
                                     <TickCircleWhiteicon width={16} height={16}/>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.siCancelarBtn} onPress={() => {
-                                    cancelarCita(cedulaUsuario, cancelacion).then(response => {
-                                            console.log(response);
-                                            setModalVisible(false);
-                                        });
-                                    }}
-                                >
-                                    <Text style={styles.textModal}>Si, cancelar cita</Text>
-                                    <TrashIcon width={16} height={16}/>
-                                </TouchableOpacity>
+                                
                             </View>
                         </View>
                     </View>
