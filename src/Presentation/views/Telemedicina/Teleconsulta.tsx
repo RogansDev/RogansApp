@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import navigation from "../../../navigation";
 import { RootParamList } from "../../../utils/RootParamList";
+import { useDispatch, useSelector } from 'react-redux';
 
 const Teleconsulta = () => {
   const [loading, setLoading] = useState(true);
@@ -12,11 +13,13 @@ const Teleconsulta = () => {
 
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
+  const { name, phone, user_id } = useSelector((state: any) => state.user);
+
   const userInfo = {
-    document: '303030',
-    namesUser: 'PruebaApp',
+    document: {phone},
+    namesUser: {name},
     indicativeUser: '+57',
-    phoneUser: '3142282855',
+    phoneUser: {phone},
   };
 
   const url = `https://roganscare.com/videosdk-app/?document=${userInfo.document}&namesUser=${userInfo.namesUser}&indicativeUser=${userInfo.indicativeUser}&phoneUser=${userInfo.phoneUser}`;
