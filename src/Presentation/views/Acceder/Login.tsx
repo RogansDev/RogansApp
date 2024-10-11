@@ -1,61 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  View,
-  Text,
+  FlatList,
   StyleSheet,
-  Platform
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import SingLogin from "../../../Presentation/components/SingLogin";
-import UseViewModel from "./ViewModel/LoginViewModel";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
-import Icons from "../../theme/Icons";
+import { americanCountries } from "../../../constants/countries";
+import { useCellPhone } from "../../../hooks/useCellPhone";
 import CustomTextInput from "../../components/CustomTextInput";
-import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootParamList } from "../../../utils/RootParamList";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import GoogleButton from "../../components/ButtonGoogle";
-import ButtonApple from "../../components/ButtonApple";
+import VerifyCodeComponent from "../../components/modalVerifiCodePhone";
+import Icons from "../../theme/Icons";
+import UseViewModel from "./ViewModel/LoginViewModel";
 
 const Login = () => {
-  const { email, password, onChange } = UseViewModel();
-  const { handleLogin, loading } = useRegisterFirebase();
+  const { phone, onChange } = UseViewModel();
+  const { loginWithPhone, loading, showModal } = useCellPhone();
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [showCountries, setShowCountry] = useState(false);
 
-  const {
-    LogoBlack,
-    LineGray,
-    Google,
-    Facebook,
-    Apple,
-    UpdatePassword,
-    Arrow,
-  } = Icons;
+  const { LogoBlack } = Icons;
 
-  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
+  const renderItem = ({ item }: any) => (
+    <TouchableOpacity
+      style={styles.countryItem}
+      onPress={() => {
+        setSelectedCountry(item);
+        setShowCountry(false);
+      }}
+    >
+      <Text style={styles.countryText}>
+        {item.country} ({item.code})
+      </Text>
+    </TouchableOpacity>
+  );
 
-  useEffect(() => {
-    const obtenerDatos = async () => {
-      try {
-        const poiñlk = await AsyncStorage.getItem('@xqtes');
-        const mnbjhg = await AsyncStorage.getItem('@asdqwe');
-
-        if (poiñlk !== null && mnbjhg !== null) {
-
-          const emailWithoutQuotes = poiñlk.replace(/['"]+/g, '');
-          const passwordWithoutQuotes = mnbjhg.replace(/['"]+/g, '');
-
-          onChange('password', passwordWithoutQuotes);
-          onChange('email', emailWithoutQuotes);
-        }
-
-      } catch (error) {
-        console.error('Error al obtener datos de AsyncStorage:', error);
-      }
-    };
-
-    obtenerDatos();
-  }, [])
+  if (showModal) {
+    return <VerifyCodeComponent />;
+  }
 
   return (
     <View style={styles.container}>
@@ -63,72 +47,82 @@ const Login = () => {
         <LogoBlack width={140} height={100} />
       </View>
       <View style={styles.form}>
-        {/* imput de login */}
-        <CustomTextInput
-          title="Nombre de usuario"
-          placeholder="Correo electronico"
-          value={email}
-          keyboardType="email-address"
-          onChangeText={onChange}
-          secureTextEntry={false}
-          property="email" />
-        {/* Input de contraseña */}
-        <CustomTextInput
-          title="Contraseña"
-          placeholder="Ingresa tu contraseña"
-          value={password}
-          onChangeText={onChange}
-          keyboardType="default"
-          secureTextEntry={true}
-          property="password"
-        />
+        {showCountries && (
+          <FlatList
+            data={americanCountries}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.code}
+          />
+        )}
+        {!showCountries && (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => setShowCountry(!showCountries)}
+              style={{
+                width: "20%",
+                borderWidth: 1,
+                borderColor: "#000",
+                padding: 14,
+                borderRadius: 10,
+                alignItems: "center",
+                justifyContent: "center",
+                marginRight: 5,
+              }}
+            >
+              {/* @ts-ignore*/}
+              <Text>{selectedCountry ? selectedCountry.code : "Pais"}</Text>
+            </TouchableOpacity>
+            <View style={{ width: "80%" }}>
+              <CustomTextInput
+                title="Numero de celular"
+                placeholder="numero de telefono"
+                value={phone}
+                keyboardType="phone-pad"
+                onChangeText={onChange}
+                secureTextEntry={false}
+                property="phone"
+              />
+            </View>
+          </View>
+        )}
 
         <View style={{ marginTop: 20 }}>
-          {loading ?
-            <Text style={{
-              backgroundColor: 'black',
-              color: 'white',
-              width: '100%',
-              padding: 14,
-              fontSize: 13,
-              fontFamily: MyFont.regular,
-              borderRadius: 10,
-              textAlign: 'center',
-              overflow: 'hidden'
-            }}> Cargando... </Text>
-            : <SingLogin text="Ingresar" onPress={() => { handleLogin(email, password) }} />}
-        </View>
-        <View style={styles.containerUpdate}>
-          <UpdatePassword width={30} height={24} />
-          <Text
-            style={styles.textUpdate}
-            onPress={() => navigation.navigate("ModalVerifitCode")}>
-            Olvide mi contraseña
-          </Text>
-        </View>
-        <View style={styles.contentLoginGoogle}>
-          <View style={{ alignSelf: 'center' }}>
-            <GoogleButton />
-          </View>
-        </View>
-        {Platform.OS === 'ios' &&
-          <View style={styles.contentLoginGoogle}>
-            <View style={{ alignSelf: 'center' }}>
-              <ButtonApple />
-            </View>
-          </View>}
-        <View style={styles.containerUpdate}>
-          <Arrow width={30} height={24} color={'black'} />
-          <Text
-            style={styles.textUpdate}
-            onPress={() => navigation.navigate("register")}>
-            Registrarme
-          </Text>
-        </View>
-        <View style={styles.loginAuthe}>
-          <Google width={30} height={30} />
-          <Facebook width={30} height={30} />
-          <Apple />
+          {loading ? (
+            <Text
+              style={{
+                backgroundColor: "black",
+                color: "white",
+                width: "100%",
+                padding: 14,
+                fontSize: 13,
+                fontFamily: MyFont.regular,
+                borderRadius: 10,
+                textAlign: "center",
+                overflow: "hidden",
+              }}
+            >
+              {" "}
+              Cargando...{" "}
+            </Text>
+          ) : (
+            <SingLogin
+              text="Ingresar"
+              onPress={() => {
+                if (selectedCountry) {
+                  //@ts-ignore
+                  loginWithPhone(selectedCountry.code + phone);
+                } else {
+                  //@ts-ignore
+                  Alert.alert("DEBES ELEGIR UN CODIGO DE PAIS");
+                }
+              }}
+            />
+          )}
         </View>
       </View>
     </View>
@@ -215,9 +209,9 @@ const styles = StyleSheet.create({
     fontFamily: MyFont.regular,
   },
   contentLoginGoogle: {
-    width: '100%',
-    justifyContent: 'center',
-    marginTop: 3
+    width: "100%",
+    justifyContent: "center",
+    marginTop: 3,
   },
   lineContent: {
     display: "flex",
@@ -235,16 +229,29 @@ const styles = StyleSheet.create({
   },
   contenedor: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'black',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "black",
   },
   texto: {
-    color: 'white',
+    color: "white",
     fontSize: 20,
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: "white",
     padding: 10,
+  },
+  selectedText: {
+    fontSize: 16,
+    marginBottom: 20,
+    color: "green",
+  },
+  countryItem: {
+    padding: 15,
+    borderBottomWidth: 1,
+    borderColor: "#ddd",
+  },
+  countryText: {
+    fontSize: 16,
   },
 });
 

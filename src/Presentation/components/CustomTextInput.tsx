@@ -45,9 +45,6 @@ const CustomTextInput = ({
       secureTextEntry={secureTextEntry}
       onChangeText={(text) => onChangeText(property, text)}
       autoCapitalize="none"
-      // quiero el Eye al final del campo, de color Negro 
-      // cuyando secureTextEntry sea true y gris cuando sea false
-      // EL click cambia el valor de secureTextEntry
     />
     
   </View>

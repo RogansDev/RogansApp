@@ -80,7 +80,10 @@ export const MyColors = {
       3: '#AEF0E7',
       4: '#B5F1E9',
       5: '#BCF2EB',
+<<<<<<< HEAD
       6: '#F0FFFD',
+=======
+>>>>>>> send-sms-validate
     }
 }
 
@@ -181,6 +184,15 @@ export const MyStyles = StyleSheet.create({
       backgroundColor: MyColors.verde[1],
       borderRadius: 10,
   },
+  buttonDropdown: {
+    flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 10,
+      padding: 12,
+      backgroundColor: MyColors.verde[1],
+      borderRadius: 10,
+  },
   buttonEnabled: {
     backgroundColor: MyColors.verde[1],
   },
@@ -249,6 +261,10 @@ export const MyStyles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+<<<<<<< HEAD
+=======
+    marginTop: 10,
+>>>>>>> send-sms-validate
     padding: 12,
     borderRadius: 10,
     gap: 8,
@@ -275,6 +291,7 @@ export const MyStyles = StyleSheet.create({
   textCircleButtonDisabled: {
     color: MyColors.neutroDark[4],
   },
+<<<<<<< HEAD
   buttonOne: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -331,4 +348,6 @@ export const MyStyles = StyleSheet.create({
   textButtonDisabledTwo: {
     color: MyColors.neutroDark[4],
   },
+=======
+>>>>>>> send-sms-validate
 });
