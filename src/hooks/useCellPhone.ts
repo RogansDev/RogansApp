@@ -110,7 +110,7 @@ export const useCellPhone = () => {
     console.log("code", code, "body", body);
 
     try {
-      const response = await fetch("http://192.168.100.34:3000/send-sms", {
+      const response = await fetch("https://roganscare.com:5500/send-sms", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
