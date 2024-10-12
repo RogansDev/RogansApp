@@ -62,14 +62,6 @@
     <string>Allow $(PRODUCT_NAME) to access your microphone</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Necesitamos acceder a la galería para seleccionar imágenes.</string>
-<<<<<<< HEAD
-    <key>UIBackgroundModes</key>
-    <array>
-      <string>audio</string>
-      <string>picture-in-picture</string>
-    </array>
-=======
->>>>>>> send-sms-validate
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>
     <key>UIRequiredDeviceCapabilities</key>

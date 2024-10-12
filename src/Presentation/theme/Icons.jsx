@@ -120,7 +120,6 @@ import CalendarAddVerde from '../../../assets/icons/calendar-add-verde.svg';
 import PhoneApp from '../../../assets/icons/phone.svg';
 import Audifonos from '../../../assets/icons/audifonos.svg';
 import Referidos from '../../../assets/icons/referidos.svg';
-<<<<<<< HEAD
 import MoreVertical from '../../../assets/icons/more-vertical.svg';
 import Editar3Icon from '../../../assets/icons/editar-3.svg';
 import DocumentoIcon from '../../../assets/icons/documento.svg';
@@ -130,8 +129,6 @@ import DiagnosticoVerde from '../../../assets/icons/disgnosticoVerde.svg';
 import AutodiagnosticoBlack from '../../../assets/icons/autodiagnostico-virtual.svg';
 import CalendarioNumeroWhite from '../../../assets/icons/calendar-white-numero.svg';
 import CalendarioNumeroVerde from '../../../assets/icons/calendar-verde-numero.svg';
-=======
->>>>>>> send-sms-validate
 
 const Icons = {
   LogoWhite,
@@ -256,7 +253,6 @@ const Icons = {
   PhoneApp,
   Audifonos,
   Referidos,
-<<<<<<< HEAD
   MoreVertical,
   Editar3Icon,
   DocumentoIcon,
@@ -266,8 +262,6 @@ const Icons = {
   AutodiagnosticoBlack,
   CalendarioNumeroWhite,
   CalendarioNumeroVerde,
-=======
->>>>>>> send-sms-validate
 };
 
 export default Icons;

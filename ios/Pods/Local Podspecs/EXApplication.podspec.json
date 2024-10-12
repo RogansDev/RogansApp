@@ -1,6 +1,6 @@
 {
   "name": "EXApplication",
-  "version": "5.8.3",
+  "version": "5.8.4",
   "summary": "A universal module that gets native application information such as its ID, app name, and build version at runtime",
   "description": "A universal module that gets native application information such as its ID, app name, and build version at runtime",
   "license": "MIT",
@@ -23,6 +23,11 @@
   "pod_target_xcconfig": {
     "DEFINES_MODULE": "YES",
     "SWIFT_COMPILATION_MODE": "wholemodule"
+  },
+  "resource_bundles": {
+    "ExpoApplication_privacy": [
+      "PrivacyInfo.xcprivacy"
+    ]
   },
   "source_files": "**/*.{h,m,swift}",
   "swift_version": "5.4"

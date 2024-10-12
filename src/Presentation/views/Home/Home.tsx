@@ -196,7 +196,15 @@ const obtenerCitas = async (telefono: any) => {
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Hola, {name}</Text>
+            <Text style={styles.title}>
+              {name !== '' ? (
+                'Hola, ' + name
+              ):(
+                'Bienvenido a Rogans'
+              )
+
+              }
+            </Text>
           </View>
           <TouchableOpacity style={{overflow: 'hidden',}} onPress={() => navigation.navigate("Perfil")}>
             <UserTwo width={20} height={20} />
@@ -257,9 +265,9 @@ const obtenerCitas = async (telefono: any) => {
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 12,}}>
             <Image source={require('../../../../assets/doctora.png')} style={styles.agendamientoBoxImage} />
             <View>
-              <Text style={{fontFamily: MyFont.regular, fontSize: MyFont.size[6], color: MyColors.white,}}>Agenda y autodiagnostícate</Text>
-              <Text style={{fontFamily: MyFont.bold, fontSize: MyFont.size[4], color: MyColors.white,}}>Consigue más info</Text>
-              <Text style={{fontFamily: MyFont.regular, fontSize: MyFont.size[6], color: MyColors.white,}}>Pick up where you left off.</Text>
+              <Text style={{fontFamily: MyFont.regular, fontSize: MyFont.size[6], color: MyColors.white,}}>Agenda tu cita ahora</Text>
+              <Text style={{fontFamily: MyFont.bold, fontSize: MyFont.size[4], color: MyColors.white,}}>Consulta medica</Text>
+              <Text style={{fontFamily: MyFont.regular, fontSize: MyFont.size[6], color: MyColors.white,}}>Con los mejores especialistas</Text>
             </View>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'center',}}>

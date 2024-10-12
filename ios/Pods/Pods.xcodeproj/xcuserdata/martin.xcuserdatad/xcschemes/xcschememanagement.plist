@@ -29,6 +29,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>EXApplication-ExpoApplication_privacy.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>EXApplication.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -170,11 +175,6 @@
 			<false/>
 		</dict>
 		<key>FBReactNativeSpec.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>GTMAppAuth-GTMAppAuth_Privacy.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

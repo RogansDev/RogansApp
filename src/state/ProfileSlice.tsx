@@ -11,6 +11,9 @@ const initialState = {
     lastname:null,
     phone:null,
     birthdate:null,
+    createdAt: null,
+    plataforma: null,
+    token: null,
     logged:false
 };
 
@@ -27,7 +30,11 @@ const ProfileSlice = createSlice({
         name,
         lastname,
         phone,
-        birthdate, } = action.payload;
+        birthdate,
+        createdAt,
+        plataforma,
+        token,
+      } = action.payload;
       state.user_id = user_id;
       state.email = email;
       state.role = role;
@@ -37,6 +44,9 @@ const ProfileSlice = createSlice({
       state.name = name;
       state.birthdate = birthdate;
       state.lastname=lastname;
+      state.createdAt = createdAt;
+      state.plataforma = plataforma;
+      state.token = token;
       state.logged=true
     },
     setClearUserInfo: (state, action) => {
@@ -48,6 +58,9 @@ const ProfileSlice = createSlice({
         state.phone =null;
         state.name =null;
         state.birthdate =null;
+        state.createdAt =null;
+        state.plataforma =null;
+        state.token =null;
         state.lastname=null;
         state.logged=false
     },

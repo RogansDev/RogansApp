@@ -86,9 +86,7 @@ typedef NS_ERROR_ENUM(kGIDSignInErrorDomain, GIDSignInErrorCode) {
 /// @return `YES` if there is a previous user sign-in saved in keychain.
 - (BOOL)hasPreviousSignIn;
 
-/// Attempts to restore a previous user sign-in without interaction. 
-///
-/// Restores user from the local cache and refreshes tokens if they have expired (>1 hour).
+/// Attempts to restore a previous user sign-in without interaction.
 ///
 /// @param completion The block that is called on completion.  This block will be called asynchronously
 ///     on the main queue.
@@ -113,7 +111,7 @@ typedef NS_ERROR_ENUM(kGIDSignInErrorDomain, GIDSignInErrorCode) {
 /// starting up, (e.g in `application:didFinishLaunchingWithOptions:`); instead use the
 /// `restorePreviousSignInWithCompletion:` method to restore a previous sign-in.
 ///
-/// @param presentingViewController The view controller used to present `SFSafariViewController` on
+/// @param presentingViewController The view controller used to present `SFSafariViewContoller` on
 ///     iOS 9 and 10 and to supply `presentationContextProvider` for `ASWebAuthenticationSession` on
 ///     iOS 13+.
 /// @param completion The optional block that is called on completion.  This block will
@@ -131,7 +129,7 @@ typedef NS_ERROR_ENUM(kGIDSignInErrorDomain, GIDSignInErrorCode) {
 /// starting up, (e.g in `application:didFinishLaunchingWithOptions:`); instead use the
 /// `restorePreviousSignInWithCompletion:` method to restore a previous sign-in.
 ///
-/// @param presentingViewController The view controller used to present `SFSafariViewController` on
+/// @param presentingViewController The view controller used to present `SFSafariViewContoller` on
 ///     iOS 9 and 10 and to supply `presentationContextProvider` for `ASWebAuthenticationSession` on
 ///     iOS 13+.
 /// @param hint An optional hint for the authorization server, for example the user's ID or email
@@ -152,7 +150,7 @@ typedef NS_ERROR_ENUM(kGIDSignInErrorDomain, GIDSignInErrorCode) {
 /// starting up, (e.g in `application:didFinishLaunchingWithOptions:`); instead use the
 /// `restorePreviousSignInWithCompletion:` method to restore a previous sign-in.
 ///
-/// @param presentingViewController The view controller used to present `SFSafariViewController` on
+/// @param presentingViewController The view controller used to present `SFSafariViewContoller` on
 ///     iOS 9 and 10.
 /// @param hint An optional hint for the authorization server, for example the user's ID or email
 ///     address, to be prefilled if possible.

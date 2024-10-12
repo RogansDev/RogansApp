@@ -160,7 +160,9 @@ const Agendamiento = () => {
         return date.toISOString().slice(0, 19).replace('T', ' ');
     };
 
-    const handleAgendar = () => {    
+    const handleAgendar = () => {  
+        console.log(selectedModality);
+          
         const agendamientoData = {
             telefono: phone,
             linea_medica: lineaMedica,

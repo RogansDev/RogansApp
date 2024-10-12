@@ -15,6 +15,8 @@ const Loading = () => {
     const checkLogin = async () => {
       const email = await getCredentials("phoneToken");
       const password = await getCredentials("authToken");
+      console.log(email, password);
+      
       const googleId = await getCredentials("googleToken");
       await fetchFonts();
 

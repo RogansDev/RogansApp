@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useRef } from "react";
 import { Text, View, Image, TouchableOpacity, Animated } from "react-native";
 import { MyStyles, MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
@@ -136,44 +135,16 @@ const CitaBox = ({ tituloCita, modalidad, fecha, estadoCita, lineaMedica, backgr
                 </View>
             ):''}
             
-=======
-import React from "react";
-import { Text, View, Image } from "react-native";
-import { MyStyles, MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
-import Icons from '../../theme/Icons'; 
-
-const CitaBox = ({}: any) => {
-    const { UbicacionVerde, Calendar } = Icons;
-
-    return (
-        <View style={Styles.citaBoxContainer}>
-            <View style={Styles.leftLine}></View>
-            <View style={Styles.citaBoxContent}>
-                <Image source={{ uri: 'url_de_la_imagen' }} style={Styles.profileImage} />
-                <View style={Styles.textContainer}>
-                    <Text style={Styles.title}>Botox</Text>
-                    <Text style={Styles.subTitle}>Kits/Citas</Text>
-                </View>
-            </View>
->>>>>>> send-sms-validate
             <View style={Styles.detailsSection}>
                 <Text style={Styles.detailsTitle}>Detalles</Text>
                 <View style={Styles.iconRow}>
                     <View style={Styles.iconContainer}>
                         <UbicacionVerde width={16} height={16} />
-<<<<<<< HEAD
                         <Text style={Styles.detailsText}>{modalidad}</Text>
                     </View>
                     <View style={Styles.iconContainer}>
                         <Calendar width={16} height={16} />
                         <Text style={Styles.detailsText}>{fecha}</Text>
-=======
-                        <Text style={Styles.detailsText}>Virtual</Text>
-                    </View>
-                    <View style={Styles.iconContainer}>
-                        <Calendar width={16} height={16} />
-                        <Text style={Styles.detailsText}>28 Ago 2024 - 8:00 a.m.</Text>
->>>>>>> send-sms-validate
                     </View>
                 </View>
             </View>
@@ -181,7 +152,6 @@ const CitaBox = ({}: any) => {
     );
 }
 
-<<<<<<< HEAD
 export const Styles = StyleSheet.create({
     citaBoxContainer: {
         flexDirection: 'column',
@@ -195,26 +165,10 @@ export const Styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 15,
         elevation: 15,
-=======
-import { StyleSheet } from "react-native";
-
-export const Styles = StyleSheet.create({
-    citaBoxContainer: {
-        flexDirection: 'column',
-        padding: 10,
-        borderRadius: 10,
-        marginBottom: 10,
-        elevation: 5,
-        backgroundColor: 'rgba(159, 237, 226, 0.2)', 
->>>>>>> send-sms-validate
         position: 'relative',
     },
     leftLine: {
         width: 4,
-<<<<<<< HEAD
-=======
-        backgroundColor: MyColors.verde[1],
->>>>>>> send-sms-validate
         position: 'absolute',
         left: 10,
         top: 15,
@@ -225,7 +179,6 @@ export const Styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 10,
-<<<<<<< HEAD
         marginLeft: 20,
         position: 'relative', 
         zIndex: 10,
@@ -233,21 +186,12 @@ export const Styles = StyleSheet.create({
     profileImage: {
         width: 50,
         height: 50,
-=======
-    },
-    profileImage: {
-        width: 40,
-        height: 40,
->>>>>>> send-sms-validate
         borderRadius: 20,
         marginRight: 10,
     },
     textContainer: {
         flexDirection: 'column',
-<<<<<<< HEAD
         flex: 1, 
-=======
->>>>>>> send-sms-validate
     },
     title: {
         fontSize: 18,
@@ -262,45 +206,28 @@ export const Styles = StyleSheet.create({
     detailsSection: {
         marginTop: 10,
         marginLeft: 20,
-<<<<<<< HEAD
         flexDirection: 'column', 
-=======
-        flexDirection: 'column', // Mantiene "Detalles" alineado arriba
->>>>>>> send-sms-validate
     },
     detailsTitle: {
         fontSize: 13,
         color: MyColors.neutroDark[4],
         fontFamily: MyFont.regular,
-<<<<<<< HEAD
         marginBottom: 5, 
     },
     iconRow: {
         flexDirection: 'column', 
         alignItems: 'flex-start',
         gap: 3,
-=======
-        marginBottom: 5, // Espacio entre "Detalles" y los iconos
-    },
-    iconRow: {
-        flexDirection: 'row', // Asegura que "Virtual" y la fecha estén en la misma fila
-        alignItems: 'center',
->>>>>>> send-sms-validate
     },
     iconContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-<<<<<<< HEAD
         marginRight: 15, 
-=======
-        marginRight: 15, // Espacio entre los íconos y sus textos
->>>>>>> send-sms-validate
     },
     detailsText: {
         fontSize: 13,
         color: MyColors.neutro[2],
         fontFamily: MyFont.regular,
-<<<<<<< HEAD
         marginLeft: 5,  
         lineHeight: 16, 
     },
@@ -328,10 +255,6 @@ export const Styles = StyleSheet.create({
         fontSize: 16,
         color: MyColors.neutro[1],
         fontFamily: MyFont.Poppins[400],
-=======
-        marginLeft: 5,  // Espacio entre el ícono y el texto
-        lineHeight: 16,  // Alinea el texto con la altura del ícono
->>>>>>> send-sms-validate
     },
 });
 

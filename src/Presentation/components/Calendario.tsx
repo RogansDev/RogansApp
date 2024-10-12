@@ -211,7 +211,10 @@ const Calendario = ({ onDateSelected, onModalitySelected }: any) => {
         <View style={styles.pickerContainer}>
           <Text>Modalidad</Text>
           <RNPickerSelect
-            onValueChange={(value) => setModalidad(value)}
+            onValueChange={(value) => {
+              setModalidad(value);
+              onModalitySelected(value);
+            }}
             value={modalidad}
             items={[
               { label: 'Presencial', value: 'Presencial' },

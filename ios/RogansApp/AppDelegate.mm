@@ -3,11 +3,6 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
 
-<<<<<<< HEAD
-#import "PiPModule.h"
-
-=======
->>>>>>> send-sms-validate
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

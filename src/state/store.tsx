@@ -7,12 +7,9 @@ import SpecialitySlice from './SpecialitySlice'
 import ServicesSlice from './ServicesSlice'
 import PopUpSlice from './PopUpSlice'
 import GoogleDataSlice from './GoogleDataSlice'
-<<<<<<< HEAD
 import MedicalLineSlice from './MedicalLineSlice'
-=======
 import AuthorizationSlice from './AuthorizationSlice'
 
->>>>>>> send-sms-validate
 
 export const store = configureStore({
   reducer: {

@@ -1,6 +1,6 @@
 {
   "name": "react-native-clarity",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "summary": "A plugin to provide the Clarity experience for the React Native applications.",
   "homepage": "https://clarity.microsoft.com/",
   "license": "MIT",
@@ -10,7 +10,7 @@
   },
   "source": {
     "git": "https://msasg.visualstudio.com/Clarity/_git/clarity-react-native.git",
-    "tag": "2.2.1"
+    "tag": "2.3.0"
   },
   "source_files": "ios/**/*.{h,m,mm}",
   "dependencies": {

@@ -1,7 +1,7 @@
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { useState } from "react";
 import { Alert, Platform } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { db } from "../firebase";
 import { saveCredentials } from "../services/credentials";
 import { setAuthorizationInfo } from "../state/AuthorizationSlice";
@@ -14,6 +14,7 @@ import useTokenPush from "./useTokenPush";
 
 export const useCellPhone = () => {
   const [loading, setLoading] = useState(false);
+  const [isNew, setIsNew] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const distpach = useDispatch();
   const { registerForPushNotificationsAsync } = useTokenPush();
@@ -21,7 +22,44 @@ export const useCellPhone = () => {
   const loginWithPhone = async (phone: string) => {
     setLoading(true);
 
-    console.log("primero consulto si el phone existe", phone);
+    // Verificar si es el número de testing
+    if (phone === '+571122334455') {
+
+      const plataforma = Platform.OS;
+      const token = await registerForPushNotificationsAsync();
+      const user = {
+        user_id: "",
+        email: "",
+        role: "",
+        urlphoto: "",
+        document: "",
+        name: "",
+        lastname: "",
+        phone: phone,
+        plataforma: plataforma,
+        token: token,
+        birthdate: "",
+        logged: true,
+      };
+      distpach(setUserInfo(user));
+      await saveCredentials("phoneToken", phone);
+      await saveCredentials("authToken", "true");
+      const collectionRef = collection(db, "users");
+      console.log(user);
+      await addDoc(collectionRef, user);
+      // Marcar como autenticado
+      const auth = {
+        logged: true,
+        phone: phone,
+      };
+      distpach(setAuthorizationInfo(auth));
+      
+      setLoading(false);
+      console.log("Número de testing detectado, omitiendo verificación de código");
+      return;
+    }
+
+    console.log("Primero consulto si el phone existe", phone);
 
     try {
       const phoneRef = query(
@@ -47,6 +85,7 @@ export const useCellPhone = () => {
           lastname: selectedProfile?.lastname ?? "",
           phone: selectedProfile?.phone ?? "",
           birthdate: selectedProfile?.birthdate ?? "",
+          createdAt: selectedProfile?.createdAt ?? "",
           token: selectedProfile?.token ?? "",
           plataforma: selectedProfile?.plataforma ?? "",
           logged: true,
@@ -58,6 +97,7 @@ export const useCellPhone = () => {
         console.log("phone no existe");
         const plataforma = Platform.OS;
         const token = await registerForPushNotificationsAsync();
+        const fechaActual = obtenerFechaActual();
         const user = {
           user_id: "",
           email: "",
@@ -67,6 +107,7 @@ export const useCellPhone = () => {
           name: "",
           lastname: "",
           phone: phone,
+          createdAt: fechaActual,
           plataforma: plataforma,
           token: token ?? "",
           birthdate: "",
@@ -74,6 +115,7 @@ export const useCellPhone = () => {
         };
         distpach(setUserInfo(user));
         await sendSmsPhoneFirebase(phone);
+        setIsNew(true);
         setLoading(false);
       }
       setLoading(false);
@@ -82,6 +124,7 @@ export const useCellPhone = () => {
       setLoading(false);
     }
   };
+
   const savePhone = async (phoneSave: string, codeSave: string) => {
     const collectionRef = collection(db, "phoneCode");
     const fecha = obtenerFechaActual();
@@ -98,6 +141,7 @@ export const useCellPhone = () => {
       console.log(error, error);
     }
   };
+
   const getPhoneFirebase = () => {};
   const getPhoneLocal = () => {};
   const setPhoneLocal = () => {};
@@ -130,6 +174,7 @@ export const useCellPhone = () => {
       console.error("Error:", error);
     }
   };
+
   const getCodePhoneFirebase = async (code: string, phone: string) => {
     const fechaActual = obtenerFechaActual();
     setLoading(true);
@@ -158,12 +203,20 @@ export const useCellPhone = () => {
         await saveCredentials("phoneToken", phone);
         await saveCredentials("authToken", "true");
 
+        if (isNew) {
+          const collectionRef = collection(db, "users");
+          const user = useSelector((state: any) => state.user);
+          console.log(user);
+          await addDoc(collectionRef, user);
+        }
+
         const auth = {
           logged: true,
           phone: phone,
         };
         distpach(setAuthorizationInfo(auth));
         setShowModal(false);
+        setIsNew(false);
       } else {
         console.log("codigo incorrecto, no entro a la app");
         setShowModal(false);
