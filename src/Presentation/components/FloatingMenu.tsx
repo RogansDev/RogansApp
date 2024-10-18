@@ -17,7 +17,7 @@ import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale/es';
 
 const FloatingMenu = ({ chatVisible, setChatVisible, triggerSuccessModal }: any) => {
-  const { InicioIcon, InicioGreen, ServiciosIcon, MiAgendaIcon, MiAgendaGreen, Headphone, InicioBlack, ServiciosBlack, MiAgendaBlack, CloseIcon, CalendarVerde, CalendarAddVerde, AgendarIcon, PhoneApp, Audifonos, Referidos, AgendarBlackIcon, Main, Call } = Icons;
+  const { InicioIcon, InicioGreen, ServiciosIcon, MiAgendaIcon, MiAgendaGreen, UserGreen, InicioBlack, ServiciosBlack, MiAgendaBlack, CloseIcon, CalendarVerde, CalendarAddVerde, AgendarIcon, PhoneApp, Audifonos, Referidos, AgendarBlackIcon, Main, Call } = Icons;
 
   const currentRoute = useCurrentRoute();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
@@ -80,11 +80,23 @@ const FloatingMenu = ({ chatVisible, setChatVisible, triggerSuccessModal }: any)
       }
   };
 
-  const formatearFecha = (fechaIsoString: any) => {
+  const formatearFecha = (fechaIsoString: string) => {
     if (!fechaIsoString) return '';
-    const fecha = parseISO(fechaIsoString);
-    return format(fecha, "hh:mm a | dd 'de' MMMM 'de' yyyy", { locale: es });
-  };
+
+    const [year, month, day] = fechaIsoString.slice(0, 10).split('-').map(Number);
+    const [hour, minute] = fechaIsoString.slice(11, 16).split(':').map(Number);
+
+    // Crear la fecha en UTC para evitar desfases
+    const fecha = new Date(Date.UTC(year, month - 1, day, hour, minute));
+
+    const opcionesFecha = { day: '2-digit', month: 'long', year: 'numeric' } as const;
+    const fechaFormateada = fecha.toLocaleDateString('es-ES', opcionesFecha);
+
+    const horas12 = hour % 12 === 0 ? 12 : hour % 12;
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+
+    return `${horas12}:${minute.toString().padStart(2, '0')} ${ampm} | ${fechaFormateada}`;
+};
 
   const [proximaCita, setProximaCita]:any = useState(null);
 
@@ -185,6 +197,12 @@ const FloatingMenu = ({ chatVisible, setChatVisible, triggerSuccessModal }: any)
                 <CircleButton text="Referidos" width="auto" backgroundColor={MyColors.fondo[2]} icon={Referidos} iconSize={{width: 22, height: 22}} />
               </View>
             </View>*/}
+            <View style={{paddingHorizontal: 16}}>
+              <Text style={MyFontStyles.title_2}>Mi Cuenta</Text>
+              <View style={{flexDirection: 'row'}}>
+                <CircleButton text="Mis datos" width="auto" backgroundColor={MyColors.fondo[2]} icon={UserGreen} iconSize={{width: 22, height: 22}} pressAction={() => {navigation.navigate("Perfil"), setTelemedicinaVisible(!telemedicinaVisible)}} />
+              </View>
+            </View>
           </ScrollView>
         </View>
         <TouchableOpacity onPress={() => setTelemedicinaVisible(!telemedicinaVisible)} style={styles.uchatOverlay} />
@@ -224,7 +242,7 @@ const FloatingMenu = ({ chatVisible, setChatVisible, triggerSuccessModal }: any)
             style={styles.mainMenuItem}>
             <Main style={styles.menuIcon} width={26} height={26} />
             <View style={styles.textBorder}>
-              <Text style={styles.mainMenuText}>Mi Agenda</Text>
+              <Text style={styles.mainMenuText}>Mi Perfil</Text>
             </View>
           </TouchableOpacity>
 

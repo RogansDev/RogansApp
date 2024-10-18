@@ -129,6 +129,7 @@ import DiagnosticoVerde from '../../../assets/icons/disgnosticoVerde.svg';
 import AutodiagnosticoBlack from '../../../assets/icons/autodiagnostico-virtual.svg';
 import CalendarioNumeroWhite from '../../../assets/icons/calendar-white-numero.svg';
 import CalendarioNumeroVerde from '../../../assets/icons/calendar-verde-numero.svg';
+import UserGreen from '../../../assets/icons/usuario-verde.svg';
 
 const Icons = {
   LogoWhite,
@@ -262,6 +263,7 @@ const Icons = {
   AutodiagnosticoBlack,
   CalendarioNumeroWhite,
   CalendarioNumeroVerde,
+  UserGreen,
 };
 
 export default Icons;

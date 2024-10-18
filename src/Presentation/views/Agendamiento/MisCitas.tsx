@@ -87,21 +87,24 @@ const MisCitas = () => {
         return ('$' + caracteres.reverse().join(''));
     }
 
-    const formatearFecha = (fechaIsoString: any) => {
+    const formatearFecha = (fechaIsoString: string) => {
         if (!fechaIsoString) return '';
-  
-        const horaCompleta = fechaIsoString.slice(11, 16);
-        const horas = parseInt(horaCompleta.slice(0, 2), 10);
-        const minutos = horaCompleta.slice(3, 5);
-        
-        const ampm = horas >= 12 ? 'PM' : 'AM';
-        const horas12 = horas % 12 === 0 ? 12 : horas % 12;
-  
-        const fecha = new Date(fechaIsoString.slice(0, 10));
-        const fechaFormateada = format(fecha, "dd 'de' MMMM 'de' yyyy", { locale: es });
-  
-        return `${horas12}:${minutos} ${ampm} | ${fechaFormateada}`;
+    
+        const [year, month, day] = fechaIsoString.slice(0, 10).split('-').map(Number);
+        const [hour, minute] = fechaIsoString.slice(11, 16).split(':').map(Number);
+    
+        // Crear la fecha en UTC para evitar desfases
+        const fecha = new Date(Date.UTC(year, month - 1, day, hour, minute));
+    
+        const opcionesFecha = { day: '2-digit', month: 'long', year: 'numeric' } as const;
+        const fechaFormateada = fecha.toLocaleDateString('es-ES', opcionesFecha);
+    
+        const horas12 = hour % 12 === 0 ? 12 : hour % 12;
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+    
+        return `${horas12}:${minute.toString().padStart(2, '0')} ${ampm} | ${fechaFormateada}`;
     };
+    
 
     const [proximasCitas, setProximasCitas] = useState([]);
     const [citasAnteriores, setCitasAnteriores] = useState([]);

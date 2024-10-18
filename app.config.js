@@ -5,7 +5,7 @@ export default {
     },
     "name": "RogansApp",
     "slug": "RogansApp",
-    "version": "1.3.8",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,9 +20,9 @@ export default {
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 34,
-            "targetSdkVersion": 34,
-            "buildToolsVersion": "34.0.0"
+            "compileSdkVersion": 40,
+            "targetSdkVersion": 40,
+            "buildToolsVersion": "40.0.0"
           },
           "ios": {
             "useFrameworks": "static",

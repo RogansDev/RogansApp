@@ -16,6 +16,7 @@ import {
   doc,
   getDocs,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { useState } from "react";
@@ -514,6 +515,79 @@ const useRegisterFirebase = () => {
     }
   };
 
+  const handleUpdateName = async (phone: string, newName: string, newLastname: string) => {
+    try {
+      const userRef = query(collection(db, "users"), where("phone", "==", phone));
+      const querySnapshot = await getDocs(userRef);
+
+      if (querySnapshot.empty) {
+        Alert.alert("Usuario no encontrado");
+        return;
+      }
+
+      let userId: string | undefined;
+      querySnapshot.forEach((doc) => {
+        userId = doc.id; // Obtener el ID del documento
+      });
+
+      if (!userId) {
+        Alert.alert("No se pudo encontrar el usuario");
+        return;
+      }
+
+      const userDocRef = doc(db, "users", userId);
+      await updateDoc(userDocRef, { 
+        name: newName, 
+        lastname: newLastname 
+      });
+
+    } catch (error: any) {
+      console.error("Error al actualizar la información:", error);
+      Alert.alert("No se pudo guardar la información.");
+    }
+  };
+
+  const handleUpdateUserInfo = async (
+    phone: string,
+    newName: string,
+    newLastname: string,
+    newDocument: string,
+    newEmail: string
+  ) => {
+    try {
+      const userRef = query(collection(db, "users"), where("phone", "==", phone));
+      const querySnapshot = await getDocs(userRef);
+  
+      if (querySnapshot.empty) {
+        Alert.alert("Usuario no encontrado");
+        return;
+      }
+  
+      let userId: string | undefined;
+      querySnapshot.forEach((doc) => {
+        userId = doc.id; // Obtener el ID del documento
+      });
+  
+      if (!userId) {
+        Alert.alert("No se pudo encontrar el usuario");
+        return;
+      }
+  
+      const userDocRef = doc(db, "users", userId);
+      await updateDoc(userDocRef, {
+        name: newName,
+        lastname: newLastname,
+        document: newDocument,
+        email: newEmail,
+      });
+  
+      Alert.alert("Información actualizada correctamente");
+    } catch (error: any) {
+      console.error("Error al actualizar la información:", error);
+      Alert.alert("No se pudo guardar la información.");
+    }
+  };
+
   return {
     handleLogin,
     handleRegister,
@@ -525,6 +599,8 @@ const useRegisterFirebase = () => {
     handleDeleteAccount,
     handleGoogleLogin,
     handleLoginWithPhone,
+    handleUpdateName,
+    handleUpdateUserInfo,
   };
 };
 

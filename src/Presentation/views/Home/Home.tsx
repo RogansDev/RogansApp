@@ -87,21 +87,24 @@ const obtenerCitas = async (telefono: any) => {
     }
   };
 
-  const formatearFecha = (fechaIsoString: any) => {
-      if (!fechaIsoString) return '';
+  const formatearFecha = (fechaIsoString: string) => {
+    if (!fechaIsoString) return '';
 
-      const horaCompleta = fechaIsoString.slice(11, 16);
-      const horas = parseInt(horaCompleta.slice(0, 2), 10);
-      const minutos = horaCompleta.slice(3, 5);
-      
-      const ampm = horas >= 12 ? 'PM' : 'AM';
-      const horas12 = horas % 12 === 0 ? 12 : horas % 12;
+    const [year, month, day] = fechaIsoString.slice(0, 10).split('-').map(Number);
+    const [hour, minute] = fechaIsoString.slice(11, 16).split(':').map(Number);
 
-      const fecha = new Date(fechaIsoString.slice(0, 10));
-      const fechaFormateada = format(fecha, "dd 'de' MMMM 'de' yyyy", { locale: es });
+    // Crear la fecha en UTC para evitar desfases
+    const fecha = new Date(Date.UTC(year, month - 1, day, hour, minute));
 
-      return `${horas12}:${minutos} ${ampm} | ${fechaFormateada}`;
-  };
+    const opcionesFecha = { day: '2-digit', month: 'long', year: 'numeric' } as const;
+    const fechaFormateada = fecha.toLocaleDateString('es-ES', opcionesFecha);
+
+    const horas12 = hour % 12 === 0 ? 12 : hour % 12;
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+
+    return `${horas12}:${minute.toString().padStart(2, '0')} ${ampm} | ${fechaFormateada}`;
+};
+
 
   const [proximaCita, setProximaCita]:any = useState(null);
 
@@ -286,8 +289,6 @@ const obtenerCitas = async (telefono: any) => {
           <ServicioCard pressAction={() => {handleMedicalLine('psicologia')}} title='Encuentra' titleColored='calma' titleColor='#518BFF' text='El bienestar comienza en tu mente.' imageUrl='diagnosis-psicologia' />
           <ServicioCard pressAction={() => {handleMedicalLine('adn')}} title='Predice con' titleColored='ADN' titleColor='#5e5f61' text='Predicción avanzada y precisa.' imageUrl='diagnosis-adn' />
         </View>
-
-         
 
         {/*<View style={styles.section}>
           <Text style={styles.titleSection}>Consultas{"\n"}para ti</Text>

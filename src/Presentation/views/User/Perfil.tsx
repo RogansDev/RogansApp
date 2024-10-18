@@ -20,9 +20,11 @@ import {
   Text,
   TouchableOpacity,
   View,
+  TextInput,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { MyFont } from "../../../Presentation/theme/AppTheme";
+import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from "../../../Presentation/theme/Icons";
 import { db } from "../../../firebase";
 import useImagePicker from "../../../hooks/useImagePicker";
@@ -44,10 +46,11 @@ const Perfil = () => {
     GalleryAdd,
     TrashIcon,
     TickCircleWhiteicon,
+    Editar2Icon,
   } = Icons;
   const { name, lastname, document, email, phone, user_id, birthdate, role } =
     useSelector((state: any) => state.user);
-  const { handleDeleteAccount, loading: firebaseLoading } =
+  const { handleUpdateUserInfo, handleDeleteAccount, loading: firebaseLoading } =
     useRegisterFirebase();
   const [loading, setLoading] = useState(false);
   const [modalEliminarCuenta, setModalEliminarCuenta] = useState(false);
@@ -57,6 +60,12 @@ const Perfil = () => {
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
   const [isModalVisible, setModalVisible] = useState(false);
   const PopUpCerrarSesionRef = useRef(null);
+
+  const [isEditModalVisible, setEditModalVisible] = useState(false);
+  const [newName, setNewName] = useState(name);
+  const [newLastname, setNewLastname] = useState(lastname);
+  const [newDocument, setNewDocument] = useState(document);
+  const [newEmail, setNewEmail] = useState(email);
 
   const handleSessionClose = async () => {
     try {
@@ -143,6 +152,36 @@ const Perfil = () => {
         "488356227805-bgsi99ubhrnfqs5bst425h4d39clourr.apps.googleusercontent.com",
     });
   }, []);
+
+  const handleSave = async () => {
+    setLoading(true);
+
+    if (newName && newLastname && newDocument && newEmail) {
+      try {
+        await handleUpdateUserInfo(phone, newName, newLastname, newDocument, newEmail);
+
+        dispatch(
+          setUserInfo({
+            name: newName,
+            lastname: newLastname,
+            document: newDocument,
+            email: newEmail,
+            phone,
+            user_id,
+          })
+        );
+
+        setLoading(false);
+        setEditModalVisible(false)
+      } catch (error) {
+        console.error('Error al actualizar la información:', error);
+        Alert.alert('No se pudo guardar la información.');
+      }
+    } else {
+      Alert.alert('Por favor, complete todos los campos.');
+    }
+  };
+
   return (
     <>
       <Modal
@@ -345,9 +384,68 @@ const Perfil = () => {
           </View>
         </TouchableOpacity>
       </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isEditModalVisible}
+        onRequestClose={() => setEditModalVisible(false)}
+      >
+        <TouchableWithoutFeedback onPress={() => setEditModalVisible(false)}>
+          <View style={styles.modalContainer3}>
+            <View style={styles.modalContent3}>
+              <Text style={styles.modalTitle}>Editar Perfil</Text>
+
+              <TextInput
+                style={styles.input}
+                placeholder="Nombre"
+                value={newName}
+                onChangeText={setNewName}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Apellido"
+                value={newLastname}
+                onChangeText={setNewLastname}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Documento"
+                value={newDocument}
+                onChangeText={setNewDocument}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Correo"
+                value={newEmail}
+                onChangeText={setNewEmail}
+                autoCapitalize="none"
+              />
+
+              <View style={{flexDirection: 'row', justifyContent: 'space-between',}}>
+                <TouchableOpacity
+                  style={styles.saveButton}
+                  onPress={handleSave}
+                >
+                  <Text style={styles.saveButtonText}>{loading ? 'Guardando...' : 'Guardar'}</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => setEditModalVisible(false)}
+                  style={{ marginTop: 10 }}
+                >
+                  <Text style={styles.cancelButtonText}>Cancelar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+
+
       <View style={styles.container}>
         <ScrollView style={styles.scrollContainer}>
-          <Text style={styles.title}>Perfil</Text>
+          <Text style={styles.title}>Mis Datos</Text>
           <View
             style={{
               justifyContent: "center",
@@ -388,7 +486,7 @@ const Perfil = () => {
                 }}
               >
                 <Text style={styles.subtitleInfo}>Nombre</Text>
-                <Text style={styles.titleInfo}>{name + " " + lastname}</Text>
+                <Text style={styles.titleInfo}>{name === '' ? 'Sin especificar' : name + " " + lastname}</Text>
               </View>
             </View>
             <View style={styles.info}>
@@ -401,7 +499,7 @@ const Perfil = () => {
                 }}
               >
                 <Text style={styles.subtitleInfo}>Documento de identidad</Text>
-                <Text style={styles.titleInfo}>{document}</Text>
+                <Text style={styles.titleInfo}>{document === '' ? 'Sin espefificar' : document}</Text>
               </View>
             </View>
             <View style={styles.info}>
@@ -427,61 +525,75 @@ const Perfil = () => {
                 }}
               >
                 <Text style={styles.subtitleInfo}>Correo</Text>
-                <Text style={styles.titleInfo}>{email}</Text>
+                <Text style={styles.titleInfo}>{email === '' ? 'Sin especificar' : email}</Text>
               </View>
             </View>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 40,
-              }}
-            >
-              <TouchableOpacity
-                style={{ flexDirection: "row", gap: 5 }}
-                onPress={() => navigation.navigate("PassUpdatekeyDash")}
-              >
-                <Forget width={16} height={16} />
-                <Text>Cambiar mi contraseña</Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 30,
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  setModalCerrarSesion(true);
+            
+            <View style={{gap: 15,}}>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
-                style={{ flexDirection: "row", gap: 5 }}
               >
-                <CloseIcon width={16} height={16} />
-                <Text>Cerrar sesión</Text>
-              </TouchableOpacity>
-            </View>
-            {/**deberiamos ponerle un modal preguntando si esta segura de que quiere dar de baja su registro */}
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: 30,
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  setModalEliminarCuenta(true);
+                <TouchableOpacity
+                  style={{ flexDirection: "row", gap: 5 }}
+                  onPress={() => setEditModalVisible(true)}
+                >
+                  <Editar2Icon width={16} height={16} />
+                  <Text>Editar datos</Text>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
-                style={{ flexDirection: "row", gap: 5 }}
               >
-                <TrashIcon width={16} height={16} />
-                <Text>
-                  {firebaseLoading ? "Cargando...." : "Eliminar cuenta"}
-                </Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ flexDirection: "row", gap: 5 }}
+                  onPress={() => navigation.navigate("PassUpdatekeyDash")}
+                >
+                  <Forget width={16} height={16} />
+                  <Text>Cambiar mi contraseña</Text>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalCerrarSesion(true);
+                  }}
+                  style={{ flexDirection: "row", gap: 5 }}
+                >
+                  <CloseIcon width={16} height={16} />
+                  <Text>Cerrar sesión</Text>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalEliminarCuenta(true);
+                  }}
+                  style={{ flexDirection: "row", gap: 5 }}
+                >
+                  <TrashIcon width={16} height={16} />
+                  <Text>
+                    {firebaseLoading ? "Cargando...." : "Eliminar cuenta"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
+
           </View>
         </ScrollView>
       </View>
@@ -625,8 +737,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  modalContainer3: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
   modalContent: {
     backgroundColor: "white",
+    maxWidth: 360,
+    padding: 16,
+    borderRadius: 16,
+  },
+  modalContent3: {
+    backgroundColor: "white",
+    width: "80%",
     maxWidth: 360,
     padding: 16,
     borderRadius: 16,
@@ -662,6 +787,49 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     borderRadius: 10,
   },
+  editButton: {
+    backgroundColor: "#007bff",
+    padding: 10,
+    borderRadius: 10,
+    alignItems: "center",
+    marginVertical: 10,
+    marginHorizontal: 16,
+  },
+  editButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontFamily: MyFont.regular,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontFamily: MyFont.bold,
+    marginBottom: 10,
+  },
+  input: {
+    width: "100%",
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+    padding: 8,
+    marginVertical: 10,
+    fontSize: 16,
+    fontFamily: MyFont.regular,
+  },
+  saveButton: {
+    backgroundColor: MyColors.verde[2],
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  saveButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontFamily: MyFont.regular,
+  },
+  cancelButtonText: {
+    color: MyColors.neutro[1],
+    fontFamily: MyFont.regular,
+  },  
 });
 
 export default Perfil;

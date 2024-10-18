@@ -26,7 +26,7 @@ export const useCellPhone = () => {
     if (phone === '+571122334455') {
 
       const plataforma = Platform.OS;
-      const token = await registerForPushNotificationsAsync();
+      //const token = await registerForPushNotificationsAsync();
       const user = {
         user_id: "",
         email: "",
@@ -37,7 +37,7 @@ export const useCellPhone = () => {
         lastname: "",
         phone: phone,
         plataforma: plataforma,
-        token: token,
+        token: "",
         birthdate: "",
         logged: true,
       };
@@ -96,7 +96,7 @@ export const useCellPhone = () => {
       } else {
         console.log("phone no existe");
         const plataforma = Platform.OS;
-        const token = await registerForPushNotificationsAsync();
+        //const token = await registerForPushNotificationsAsync();
         const fechaActual = obtenerFechaActual();
         const user = {
           user_id: "",
@@ -109,14 +109,18 @@ export const useCellPhone = () => {
           phone: phone,
           createdAt: fechaActual,
           plataforma: plataforma,
-          token: token ?? "",
+          token: "",
           birthdate: "",
           logged: true,
         };
         distpach(setUserInfo(user));
+        console.log('distpach');
         await sendSmsPhoneFirebase(phone);
+        console.log('enviar mensaje');
         setIsNew(true);
+        console.log('Is New');
         setLoading(false);
+        console.log('Loading false');
       }
       setLoading(false);
     } catch (error) {
