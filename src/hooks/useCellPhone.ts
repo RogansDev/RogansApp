@@ -70,9 +70,24 @@ export const useCellPhone = () => {
       });
 
       if (selectedProfile) {
+        const user = {
+          user_id: selectedProfile.user_id,
+          email: selectedProfile.email,
+          role: selectedProfile.role,
+          urlphoto: selectedProfile.urlphoto,
+          document: selectedProfile.document,
+          name: selectedProfile.name,
+          lastname: selectedProfile.lastname,
+          phone: selectedProfile.phone,
+          birthdate: selectedProfile.birthdate,
+          token: selectedProfile.token,
+          plataforma: selectedProfile.plataforma,
+        }
         // Si el número ya existe en Firebase, enviar el código
         console.log("El teléfono existe:", selectedProfile);
-        // Código para iniciar sesión...
+
+        dispatch(setUserInfo(user));
+        await sendSmsPhoneFirebase(phone);
         setLoading(false);
       } else {
         // Crear el usuario usando el nuevo hook

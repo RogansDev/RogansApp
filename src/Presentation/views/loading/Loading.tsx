@@ -6,7 +6,7 @@ import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
 import { getCredentials, deleteCredentials } from "../../../services/credentials";
 import { RootParamList } from "../../../utils/RootParamList";
 import { fetchFonts } from "../../theme/AppTheme";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setClearUserInfo, setUserInfo } from "../../../state/ProfileSlice";
 import { setClearAuthorizationInfo } from "../../../state/AuthorizationSlice";
 import { setClearCalendaryInfo } from "../../../state/CalendarySlice";
@@ -17,6 +17,10 @@ const Loading = () => {
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
   const { handleLoginWithPhone, handleGoogleLogin } = useRegisterFirebase();
   const dispatch = useDispatch();
+
+  const state = useSelector(state => state);
+  console.log("state", state);
+  
 
   const handleSessionClose = async () => {
     try {
@@ -45,15 +49,7 @@ const Loading = () => {
         
         if (phoneToken && authToken) {
           console.log("Iniciando sesión con teléfono...");
-          const success:any = await handleLoginWithPhone(phoneToken);
-          if (success) {
-            console.log("Inicio de sesión exitoso");
-            navigation.navigate("Home");
-          } else {
-            console.log("Inicio de sesión fallido, redirigiendo a Login");
-            handleSessionClose();
-            navigation.navigate("Login");
-          }
+          await handleLoginWithPhone(phoneToken);
         } else if (googleToken) {
           handleSessionClose();
           navigation.navigate("Login");
@@ -70,7 +66,7 @@ const Loading = () => {
     };
 
     checkLogin();
-  }, []);
+  }, [state.authorization.logged]);
 
   return (
     <View style={styles.container}>

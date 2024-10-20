@@ -23,13 +23,15 @@ import { useState } from "react";
 import { Alert, Platform } from "react-native";
 import { useDispatch } from "react-redux";
 import { db, firebaseConfig } from "../firebase/index";
-import { getCredentials, saveCredentials } from "../services/credentials";
-import { setAuthorizationInfo } from "../state/AuthorizationSlice";
+import { deleteCredentials, getCredentials, saveCredentials } from "../services/credentials";
+import { setAuthorizationInfo, setClearAuthorizationInfo } from "../state/AuthorizationSlice";
 import { setClearUserInfo, setUserInfo } from "../state/ProfileSlice";
 import { RootParamList } from "../utils/RootParamList";
 import { obtenerCodigoLongitudSeis, obtenerFechaActual } from "../utils/helper";
 import { sendEmailCodePromotion } from "./useEmail";
 import useNotificationPush from "./useNotificationPush";
+import { setClearCalendaryInfo } from "../state/CalendarySlice";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 const useRegisterFirebase = () => {
   const app = initializeApp(firebaseConfig);
@@ -484,7 +486,9 @@ const useRegisterFirebase = () => {
       if (querySnapshot.empty) {
         console.log("No se encontró ningún usuario con el teléfono:", phone);
         setLoading(false); // Desactivar el loading antes de mostrar la alerta
+        handleSessionClose();
         Alert.alert("El usuario no existe. Por favor regístrate primero.");
+        navigation.navigate("Login");
         return; // Salir de la función si el usuario no existe
       }
   
@@ -521,14 +525,30 @@ const useRegisterFirebase = () => {
   
         distpach(setAuthorizationInfo(auth));
         } else {
-        console.log("No se encontró ningún perfil asociado.");
-        Alert.alert("No se pudo encontrar el perfil del usuario.");
+          handleSessionClose();
+          console.log("No se encontró ningún perfil asociado.");
+          Alert.alert("No se pudo encontrar el perfil del usuario.");
       }
     } catch (error) {
+      handleSessionClose();
       console.log("Error al intentar iniciar sesión:", error);
       Alert.alert("Ocurrió un error al intentar iniciar sesión.");
     } finally {
       setLoading(false); // Asegurarse de ocultar el loading al final
+    }
+  };
+
+  const handleSessionClose = async () => {
+    try {
+      await deleteCredentials("phoneToken");
+      await deleteCredentials("authToken");
+      await deleteCredentials("googleToken");
+      await GoogleSignin.signOut();
+      distpach(setClearUserInfo(""));
+      distpach(setClearCalendaryInfo(""));
+      distpach(setClearAuthorizationInfo(false));
+    } catch (error) {
+      console.log("error......", error);
     }
   };
 
