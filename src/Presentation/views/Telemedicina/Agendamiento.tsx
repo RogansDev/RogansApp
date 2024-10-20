@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Animated, Alert } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Animated, Alert, Platform } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootParamList } from '../../../utils/RootParamList';
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#FCFCFC",
         position: "relative",
-        paddingTop: 20,
+        paddingTop: Platform.OS === 'android' ? 20 : 50,
         paddingHorizontal: 16,
     },
     scrollContainer: {

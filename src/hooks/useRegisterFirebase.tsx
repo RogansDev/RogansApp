@@ -658,7 +658,6 @@ const useRegisterFirebase = () => {
 
       await addDoc(collection(db, "users"), newUser);
       distpach(setUserInfo(newUser));
-      Alert.alert("Usuario creado exitosamente.");
       return true;
     } catch (error) {
       console.error("Error al crear el usuario:", error);

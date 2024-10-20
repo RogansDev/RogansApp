@@ -7,7 +7,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootParamList } from "../../utils/RootParamList";
 import { consultCards, procedureCards } from '../views/Servicios/ServicesData';
 import useServices from "../../hooks/useServices";
-
+import { setMedicalLineInfo } from '../../state/MedicalLineSlice';
 
 const HomeBanners = () => {  
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
@@ -22,6 +22,8 @@ const HomeBanners = () => {
   const IMAGE_WIDTH = viewportWidth * 0.8;
   const IMAGE_HEIGHT = IMAGE_WIDTH * 1.05;
   const ITEM_MARGIN_RIGHT = 15;
+
+  const MedicalLineState = useSelector((state : any) => state.medicalLine);
 
   useEffect(() => {
     getServices();    
@@ -67,6 +69,14 @@ const HomeBanners = () => {
     navigation.navigate(link);
   };
 
+  const handleMedicalLine = async (linea: any) => {
+    dispatch(setMedicalLineInfo({
+      ...MedicalLineState,
+      lineaMedica: linea
+    }));
+    navigation.navigate('Agendamiento');
+  };
+
   return (
     <View style={{ flex: 1, paddingLeft: 15 }}>
       <FlatList
@@ -96,6 +106,9 @@ const HomeBanners = () => {
             } else if (linkParts[0] === 'web') {
               const url = linkParts[1];
               Linking.openURL(url).catch(err => console.error('An error occurred', err));
+            } else if (linkParts[0] === 'consulta') {
+              const ruta = linkParts[1];
+              handleMedicalLine(ruta);
             } else {
               console.error('Unrecognized link format');
             }

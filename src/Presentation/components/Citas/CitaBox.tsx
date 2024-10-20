@@ -70,7 +70,7 @@ const CitaBox = ({ tituloCita, modalidad, fecha, estadoCita, lineaMedica, backgr
             return require('../../../../assets/citas/facial-cita.png');
         } else if (linea === 'Sexual') {
             return require('../../../../assets/citas/sexual-cita.png');
-        } else if (linea === 'Psicología') {
+        } else if (linea === 'Psicologia') {
             return require('../../../../assets/citas/psicologia-cita.png');
         } else if (linea === 'Nutricion') {
             return require('../../../../assets/citas/nutricion-cita.png');

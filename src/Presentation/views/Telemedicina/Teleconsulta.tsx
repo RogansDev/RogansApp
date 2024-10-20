@@ -90,12 +90,14 @@ const Teleconsulta = () => {
         <TextInput
           style={styles.input}
           placeholder="Nombre"
+          placeholderTextColor="#666"
           value={newName}
           onChangeText={setNewName}
         />
         <TextInput
           style={styles.input}
           placeholder="Apellido"
+          placeholderTextColor="#666"
           value={newLastname}
           onChangeText={setNewLastname}
         />
@@ -160,7 +162,8 @@ const styles = StyleSheet.create({
   input: {
     width: '82%',
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: MyColors.neutro[3],
+    color: MyColors.neutro[1],
     borderRadius: 8,
     padding: 12,
     marginBottom: 20,

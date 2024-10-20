@@ -77,6 +77,7 @@ const handleMedicalLine = async (linea: any) => {
   }));
   navigation.navigate('Agendamiento');
 };
+
 const obtenerCitas = async (telefono: any) => {
   try {
       const response = await fetch(`https://roganscare.com:5520/citas/telefono/${telefono}/mas-cercana`);
@@ -282,12 +283,12 @@ const obtenerCitas = async (telefono: any) => {
         <View style={{paddingHorizontal: 16,}}>
           <Text style={{fontFamily: MyFont.medium, fontSize: 30, color: MyColors.verde[4],}}>Cuidate con nosotros</Text>
           <Text style={{fontFamily: MyFont.regular, fontSize: 15, color: MyColors.neutro[4], marginBottom: 20,}}>Encuentra el servicio médico perfecto para ti</Text>
-          <ServicioCard pressAction={() => {handleMedicalLine('capilar')}} title='Adiós' titleColored='calvicie' titleColor='#00D0B1' text='Recupera tu cabello' imageUrl='diagnosis-alopecia' />
-          <ServicioCard pressAction={() => {handleMedicalLine('facial')}} title='Renueva tu' titleColored='rostro' titleColor='#AD50E8' text='Tratamientos de rejuvenecimiento.' imageUrl='diagnosis-facial' />
-          <ServicioCard pressAction={() => {handleMedicalLine('corporal')}} title='Cuida tu' titleColored='cuerpo' titleColor='#eda145' text='Bienestar de nutrición' imageUrl='diagnosis-nutricion' />
-          <ServicioCard pressAction={() => {handleMedicalLine('sexual')}} title='Ten buen' titleColored='sexo' titleColor='#FF8290' text='Mejora tu vida íntima.' imageUrl='diagnosis-sexual' />
-          <ServicioCard pressAction={() => {handleMedicalLine('psicologia')}} title='Encuentra' titleColored='calma' titleColor='#518BFF' text='El bienestar comienza en tu mente.' imageUrl='diagnosis-psicologia' />
-          <ServicioCard pressAction={() => {handleMedicalLine('adn')}} title='Predice con' titleColored='ADN' titleColor='#5e5f61' text='Predicción avanzada y precisa.' imageUrl='diagnosis-adn' />
+          <ServicioCard pressAction={() => {handleMedicalLine('Capilar')}} title='Adiós' titleColored='calvicie' titleColor='#00D0B1' text='Recupera tu cabello' imageUrl='diagnosis-alopecia' />
+          <ServicioCard pressAction={() => {handleMedicalLine('Facial')}} title='Renueva tu' titleColored='rostro' titleColor='#AD50E8' text='Tratamientos de rejuvenecimiento.' imageUrl='diagnosis-facial' />
+          <ServicioCard pressAction={() => {handleMedicalLine('Corporal')}} title='Cuida tu' titleColored='cuerpo' titleColor='#eda145' text='Bienestar de nutrición' imageUrl='diagnosis-nutricion' />
+          <ServicioCard pressAction={() => {handleMedicalLine('Sexual')}} title='Ten buen' titleColored='sexo' titleColor='#FF8290' text='Mejora tu vida íntima.' imageUrl='diagnosis-sexual' />
+          <ServicioCard pressAction={() => {handleMedicalLine('Psicologia')}} title='Encuentra' titleColored='calma' titleColor='#518BFF' text='El bienestar comienza en tu mente.' imageUrl='diagnosis-psicologia' />
+          <ServicioCard pressAction={() => {handleMedicalLine('Adn')}} title='Predice con' titleColored='ADN' titleColor='#5e5f61' text='Predicción avanzada y precisa.' imageUrl='diagnosis-adn' />
         </View>
 
         {/*<View style={styles.section}>
@@ -327,7 +328,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
-    paddingTop: Platform.OS === 'android' ? 10 : 10,
+    paddingTop: Platform.OS === 'android' ? 10 : 30,
     marginVertical: 30,
   },
   titleContainer: {

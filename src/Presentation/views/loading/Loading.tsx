@@ -18,7 +18,7 @@ const Loading = () => {
   const { handleLoginWithPhone, handleGoogleLogin } = useRegisterFirebase();
   const dispatch = useDispatch();
 
-  const state = useSelector(state => state);
+  const state:any = useSelector(state => state);
   console.log("state", state);
   
 

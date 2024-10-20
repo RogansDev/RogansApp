@@ -137,10 +137,10 @@ const MisCitas = () => {
             nombreCompleto = 'Cuidado de la piel';
         } else if (linea === 'Sexual') {
             nombreCompleto = 'Salud sexual';
-        } else if (linea === 'Psicología') {
+        } else if (linea === 'Psicologia') {
             nombreCompleto = 'Psicología';
         } else if (linea === 'Nutricion') {
-            nombreCompleto = 'Nutricion';
+            nombreCompleto = 'Nutrición';
         } else if (linea === 'Adn') {
             nombreCompleto = 'Medicina predictiva | ADN';
         } else {
