@@ -11,22 +11,23 @@ import {
   obtenerFechaActual,
 } from "../utils/helper";
 import useTokenPush from "./useTokenPush";
+import useRegisterFirebase from "./useRegisterFirebase";
 
 export const useCellPhone = () => {
   const [loading, setLoading] = useState(false);
-  const [isNew, setIsNew] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const distpach = useDispatch();
+  const [isNew, setIsNew] = useState(false); // Para saber si es un nuevo usuario
+  const [showModal, setShowModal] = useState(false); // Para mostrar el input de código
+  const dispatch = useDispatch();
   const { registerForPushNotificationsAsync } = useTokenPush();
+  const { createUser } = useRegisterFirebase();
 
+  // Función para iniciar sesión con teléfono
   const loginWithPhone = async (phone: string) => {
     setLoading(true);
 
     // Verificar si es el número de testing
     if (phone === '+571122334455') {
-
       const plataforma = Platform.OS;
-      //const token = await registerForPushNotificationsAsync();
       const user = {
         user_id: "",
         email: "",
@@ -41,98 +42,60 @@ export const useCellPhone = () => {
         birthdate: "",
         logged: true,
       };
-      distpach(setUserInfo(user));
+
+      dispatch(setUserInfo(user)); // Guardar información del usuario
       await saveCredentials("phoneToken", phone);
       await saveCredentials("authToken", "true");
-      const collectionRef = collection(db, "users");
-      console.log(user);
-      await addDoc(collectionRef, user);
-      // Marcar como autenticado
-      const auth = {
-        logged: true,
-        phone: phone,
-      };
-      distpach(setAuthorizationInfo(auth));
-      
+
+      // Guardar el usuario de testing en Firebase
+      await addDoc(collection(db, "users"), user);
+
+      // Autenticación en Redux
+      dispatch(setAuthorizationInfo({ logged: true, phone: phone }));
+
       setLoading(false);
       console.log("Número de testing detectado, omitiendo verificación de código");
       return;
     }
 
-    console.log("Primero consulto si el phone existe", phone);
+    console.log("Consultando si el teléfono existe en Firebase", phone);
 
     try {
-      const phoneRef = query(
-        collection(db, "users"),
-        where("phone", "==", phone)
-      );
-
+      const phoneRef = query(collection(db, "users"), where("phone", "==", phone));
       const querySnapshot = await getDocs(phoneRef);
       let selectedProfile: any;
 
       querySnapshot.forEach((doc) => {
         selectedProfile = doc.data();
       });
+
       if (selectedProfile) {
-        console.log("phone existe", JSON.stringify(selectedProfile, null, 5));
-        const user = {
-          user_id: selectedProfile?.user_id ?? "",
-          email: selectedProfile?.email ?? "",
-          role: selectedProfile?.role ?? "",
-          urlphoto: selectedProfile?.urlphoto ?? "",
-          document: selectedProfile?.document ?? "",
-          name: selectedProfile?.name ?? "",
-          lastname: selectedProfile?.lastname ?? "",
-          phone: selectedProfile?.phone ?? "",
-          birthdate: selectedProfile?.birthdate ?? "",
-          createdAt: selectedProfile?.createdAt ?? "",
-          token: selectedProfile?.token ?? "",
-          plataforma: selectedProfile?.plataforma ?? "",
-          logged: true,
-        };
-        distpach(setUserInfo(user));
-        await sendSmsPhoneFirebase(phone);
+        // Si el número ya existe en Firebase, enviar el código
+        console.log("El teléfono existe:", selectedProfile);
+        // Código para iniciar sesión...
         setLoading(false);
       } else {
-        console.log("phone no existe");
-        const plataforma = Platform.OS;
-        //const token = await registerForPushNotificationsAsync();
-        const fechaActual = obtenerFechaActual();
-        const user = {
-          user_id: "",
-          email: "",
-          role: "",
-          urlphoto: "",
-          document: "",
-          name: "",
-          lastname: "",
-          phone: phone,
-          createdAt: fechaActual,
-          plataforma: plataforma,
-          token: "",
-          birthdate: "",
-          logged: true,
-        };
-        distpach(setUserInfo(user));
-        console.log('distpach');
-        await sendSmsPhoneFirebase(phone);
-        console.log('enviar mensaje');
-        setIsNew(true);
-        console.log('Is New');
+        // Crear el usuario usando el nuevo hook
+        console.log("El teléfono no existe, creando usuario...");
+        const userCreated = await createUser(phone);
+
+        if (userCreated) {
+          await sendSmsPhoneFirebase(phone); // Enviar código de verificación
+          setIsNew(true); // Marcar que es un nuevo usuario
+        }
+
         setLoading(false);
-        console.log('Loading false');
       }
-      setLoading(false);
     } catch (error) {
-      console.log("error", error);
+      console.log("Error al consultar el teléfono:", error);
       setLoading(false);
     }
   };
 
+  // Función para guardar el código y el teléfono en Firebase
   const savePhone = async (phoneSave: string, codeSave: string) => {
     const collectionRef = collection(db, "phoneCode");
     const fecha = obtenerFechaActual();
-    console.log("guardo el codigo generado");
     try {
       const objetc = {
         phone: phoneSave,
@@ -146,17 +109,12 @@ export const useCellPhone = () => {
     }
   };
 
-  const getPhoneFirebase = () => {};
-  const getPhoneLocal = () => {};
-  const setPhoneLocal = () => {};
-
+  // Función para enviar SMS con el código de verificación
   const sendSmsPhoneFirebase = async (to: string) => {
-    const code = obtenerCodigoLongitudSeisNumerico();
-    const body = `Su codigo de ingreso a Rogans es ${code}`;
+    const code = obtenerCodigoLongitudSeisNumerico(); // Generar código de 6 dígitos
+    const body = `Su código de ingreso a Rogans es ${code}`;
 
-    console.log("manejo el envio de SMS y guardo el codigo");
-    console.log("code", code, "body", body);
-
+    console.log("Enviando SMS y guardando el código");
     try {
       const response = await fetch("https://roganscare.com:5500/send-sms", {
         method: "POST",
@@ -168,26 +126,22 @@ export const useCellPhone = () => {
 
       const result = await response.json();
       if (result.success) {
-        await savePhone(to, code);
-        setShowModal(true); // muestro el input para el codigo
+        await savePhone(to, code); // Guardar código y teléfono en Firebase
+        setShowModal(true); // Mostrar input para código
       } else {
         console.log("Error enviando el mensaje: " + result.message);
         Alert.alert("No se pudo enviar el mensaje!");
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error al enviar el SMS:", error);
     }
   };
 
+  // Función para verificar el código ingresado
   const getCodePhoneFirebase = async (code: string, phone: string) => {
     const fechaActual = obtenerFechaActual();
     setLoading(true);
-    console.log(
-      "escribo el code",
-      code,
-      "y debe ser el mismo dia",
-      fechaActual
-    );
+
     try {
       const phoneCodeQuery = query(
         collection(db, "phoneCode"),
@@ -195,40 +149,34 @@ export const useCellPhone = () => {
         where("phone", "==", phone),
         where("fecha", "==", fechaActual)
       );
-      //
       const querySnapshot = await getDocs(phoneCodeQuery);
       let selectedCode: any;
+
       querySnapshot.forEach((doc) => {
         selectedCode = doc.data();
       });
 
       if (selectedCode) {
-        console.log("codigo correcto, entro a la app");
+        console.log("Código correcto, iniciando sesión...");
         await saveCredentials("phoneToken", phone);
         await saveCredentials("authToken", "true");
 
         if (isNew) {
-          const collectionRef = collection(db, "users");
-          const user = useSelector((state: any) => state.user);
-          console.log(user);
-          await addDoc(collectionRef, user);
+          const user = useSelector((state: any) => state.user.data);
+          console.log("Guardando nuevo usuario en Firebase:", user);
+          await addDoc(collection(db, "users"), user); // Guardar nuevo usuario
         }
 
-        const auth = {
-          logged: true,
-          phone: phone,
-        };
-        distpach(setAuthorizationInfo(auth));
+        dispatch(setAuthorizationInfo({ logged: true, phone: phone }));
         setShowModal(false);
-        setIsNew(false);
+        setIsNew(false); // Resetear estado de nuevo usuario
       } else {
-        console.log("codigo incorrecto, no entro a la app");
-        setShowModal(false);
-        Alert.alert("Codigo incorrecto ingresado");
+        console.log("Código incorrecto.");
+        Alert.alert("Código incorrecto.");
       }
       setLoading(false);
     } catch (error) {
-      console.log("error", error);
+      console.log("Error al verificar el código:", error);
       setShowModal(false);
       setLoading(false);
     }
@@ -237,9 +185,6 @@ export const useCellPhone = () => {
   return {
     loginWithPhone,
     savePhone,
-    getPhoneFirebase,
-    getPhoneLocal,
-    setPhoneLocal,
     sendSmsPhoneFirebase,
     getCodePhoneFirebase,
     loading,

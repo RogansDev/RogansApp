@@ -20,7 +20,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useState } from "react";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import { useDispatch } from "react-redux";
 import { db, firebaseConfig } from "../firebase/index";
 import { getCredentials, saveCredentials } from "../services/credentials";
@@ -110,7 +110,7 @@ const useRegisterFirebase = () => {
                             codigo,
                             props.name
                           );
-                          // navigation.navigate('Login')
+                          // navigation.navigate('Login');
                           sendNotificationRegisterSuccess(
                             "Rogans",
                             `Bienvenido a Rogans  ${props.name}`,
@@ -214,6 +214,7 @@ const useRegisterFirebase = () => {
               setLoading(false);
               console.log("usuario no existe .", selectedProfile);
               Alert.alert("usuario no existe!");
+              navigation.navigate('Login');
             }
           } catch (error: any) {
             setLoading(false);
@@ -455,6 +456,7 @@ const useRegisterFirebase = () => {
         setLoading(false);
         console.log("usuario no existe .", selectedProfile);
         Alert.alert("usuario no existe!");
+        navigation.navigate('Login');
       }
     } catch (error: any) {
       setLoading(false);
@@ -466,21 +468,34 @@ const useRegisterFirebase = () => {
   };
 
   const handleLoginWithPhone = async (phone: string) => {
-    console.log(phone);
-    
+    console.log("Teléfono ingresado:", phone);
+    setLoading(true); // Mostrar loading al inicio
+  
     try {
       const phoneRef = query(
         collection(db, "users"),
         where("phone", "==", phone)
       );
-
+  
       const querySnapshot = await getDocs(phoneRef);
       let selectedProfile: any;
-
+  
+      // Verificar si hay resultados para el teléfono proporcionado
+      if (querySnapshot.empty) {
+        console.log("No se encontró ningún usuario con el teléfono:", phone);
+        setLoading(false); // Desactivar el loading antes de mostrar la alerta
+        Alert.alert("El usuario no existe. Por favor regístrate primero.");
+        return; // Salir de la función si el usuario no existe
+      }
+  
+      // Iterar sobre los resultados para encontrar el perfil
       querySnapshot.forEach((doc) => {
         selectedProfile = doc.data();
       });
+  
       if (selectedProfile) {
+        console.log("Perfil seleccionado:", selectedProfile);
+  
         const user = {
           user_id: selectedProfile.user_id,
           email: selectedProfile.email,
@@ -495,23 +510,25 @@ const useRegisterFirebase = () => {
           plataforma: selectedProfile.plataforma,
           logged: true,
         };
+  
+        // Guardar información del usuario en el store de Redux
         distpach(setUserInfo(user));
-        setLoading(false);
+  
         const auth = {
           logged: true,
           phone: phone,
         };
+  
         distpach(setAuthorizationInfo(auth));
-      } else {
-        Alert.alert("Inicie sesion con su telefono");
-        console.log('loading antes');
-        setLoading(false);
-        console.log('loading despues');
+        } else {
+        console.log("No se encontró ningún perfil asociado.");
+        Alert.alert("No se pudo encontrar el perfil del usuario.");
       }
-      setLoading(false);
     } catch (error) {
-      console.log("error", error);
-      setLoading(false);
+      console.log("Error al intentar iniciar sesión:", error);
+      Alert.alert("Ocurrió un error al intentar iniciar sesión.");
+    } finally {
+      setLoading(false); // Asegurarse de ocultar el loading al final
     }
   };
 
@@ -522,6 +539,7 @@ const useRegisterFirebase = () => {
 
       if (querySnapshot.empty) {
         Alert.alert("Usuario no encontrado");
+        navigation.navigate('Login');
         return;
       }
 
@@ -532,6 +550,7 @@ const useRegisterFirebase = () => {
 
       if (!userId) {
         Alert.alert("No se pudo encontrar el usuario");
+        navigation.navigate('Login');
         return;
       }
 
@@ -560,6 +579,7 @@ const useRegisterFirebase = () => {
   
       if (querySnapshot.empty) {
         Alert.alert("Usuario no encontrado");
+        navigation.navigate('Login');
         return;
       }
   
@@ -570,6 +590,7 @@ const useRegisterFirebase = () => {
   
       if (!userId) {
         Alert.alert("No se pudo encontrar el usuario");
+        navigation.navigate('Login');
         return;
       }
   
@@ -588,6 +609,44 @@ const useRegisterFirebase = () => {
     }
   };
 
+  const createUser = async (phone: string) => {
+    try {
+      const phoneRef = query(collection(db, "users"), where("phone", "==", phone));
+      const querySnapshot = await getDocs(phoneRef);
+
+      if (!querySnapshot.empty) {
+        Alert.alert("El usuario ya existe.");
+        return false;
+      }
+
+      const fechaActual = obtenerFechaActual();
+      const newUser = {
+        user_id: "",
+        email: "",
+        role: "",
+        urlphoto: "",
+        document: "",
+        name: "",
+        lastname: "",
+        phone: phone,
+        createdAt: fechaActual,
+        plataforma: Platform.OS,
+        token: "",
+        birthdate: "",
+        logged: true,
+      };
+
+      await addDoc(collection(db, "users"), newUser);
+      distpach(setUserInfo(newUser));
+      Alert.alert("Usuario creado exitosamente.");
+      return true;
+    } catch (error) {
+      console.error("Error al crear el usuario:", error);
+      Alert.alert("No se pudo crear el usuario.");
+      return false;
+    }
+  };
+
   return {
     handleLogin,
     handleRegister,
@@ -601,6 +660,7 @@ const useRegisterFirebase = () => {
     handleLoginWithPhone,
     handleUpdateName,
     handleUpdateUserInfo,
+    createUser,
   };
 };
 

@@ -20,9 +20,9 @@ export default {
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 40,
-            "targetSdkVersion": 40,
-            "buildToolsVersion": "40.0.0"
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0"
           },
           "ios": {
             "useFrameworks": "static",
@@ -58,7 +58,7 @@ export default {
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
       ],
-      "versionCode": 26
+      "versionCode": 30
     },
     "web": {
       "favicon": "./assets/favicon.png"

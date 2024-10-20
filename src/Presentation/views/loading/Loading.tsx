@@ -3,37 +3,69 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useEffect } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import useRegisterFirebase from "../../../hooks/useRegisterFirebase";
-import { getCredentials } from "../../../services/credentials";
+import { getCredentials, deleteCredentials } from "../../../services/credentials";
 import { RootParamList } from "../../../utils/RootParamList";
 import { fetchFonts } from "../../theme/AppTheme";
+import { useDispatch } from "react-redux";
+import { setClearUserInfo, setUserInfo } from "../../../state/ProfileSlice";
+import { setClearAuthorizationInfo } from "../../../state/AuthorizationSlice";
+import { setClearCalendaryInfo } from "../../../state/CalendarySlice";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+
 
 const Loading = () => {
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
   const { handleLoginWithPhone, handleGoogleLogin } = useRegisterFirebase();
+  const dispatch = useDispatch();
+
+  const handleSessionClose = async () => {
+    try {
+      await deleteCredentials("phoneToken");
+      await deleteCredentials("authToken");
+      await deleteCredentials("googleToken");
+      await GoogleSignin.signOut();
+      dispatch(setClearUserInfo(""));
+      dispatch(setClearCalendaryInfo(""));
+      dispatch(setClearAuthorizationInfo(false));
+    } catch (error) {
+      console.log("error......", error);
+    }
+  };
 
   useEffect(() => {
     const checkLogin = async () => {
-      const email = await getCredentials("phoneToken");
-      const password = await getCredentials("authToken");
-      console.log(email, password);
-      
-      const googleId = await getCredentials("googleToken");
-      await fetchFonts();
+      try {
+        const phoneToken = await getCredentials("phoneToken");
+        const authToken = await getCredentials("authToken");
+        const googleToken = await getCredentials("googleToken");
 
-      if (email && password) {
-        try {
-          await handleLoginWithPhone(email);
-        } catch (error) {
+        console.log("Tokens encontrados:", { phoneToken, authToken, googleToken });
+        
+        await fetchFonts();
+        
+        if (phoneToken && authToken) {
+          console.log("Iniciando sesión con teléfono...");
+          const success:any = await handleLoginWithPhone(phoneToken);
+          if (success) {
+            console.log("Inicio de sesión exitoso");
+            navigation.navigate("Home");
+          } else {
+            console.log("Inicio de sesión fallido, redirigiendo a Login");
+            handleSessionClose();
+            navigation.navigate("Login");
+          }
+        } else if (googleToken) {
+          handleSessionClose();
+          navigation.navigate("Login");
+        } else {
+          console.log("No hay credenciales guardadas, navegando a la pantalla de inicio de sesión...");
+          handleSessionClose();
           navigation.navigate("Login");
         }
-      } else if (googleId) {
-        try {
-          await handleGoogleLogin(googleId);
-        } catch (error) {
-          navigation.navigate("Login");
-        }
-      } else {
-        navigation.navigate("Regresar");
+      } catch (error) {
+        console.log("Error durante la verificación del inicio de sesión:", error);
+        handleSessionClose();
+        navigation.navigate("Login");
       }
     };
 

@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Alert,
 } from "react-native";
 import SingLogin from "../../../Presentation/components/SingLogin";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
@@ -118,7 +119,7 @@ const Login = () => {
                   loginWithPhone(selectedCountry.code + phone);
                 } else {
                   //@ts-ignore
-                  Alert.alert("DEBES ELEGIR UN CODIGO DE PAIS");
+                  Alert.alert("Debes elegir el indicativo de tu pais");
                 }
               }}
             />

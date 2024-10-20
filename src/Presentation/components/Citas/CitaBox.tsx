@@ -18,8 +18,8 @@ const CitaBox = ({ tituloCita, modalidad, fecha, estadoCita, lineaMedica, backgr
 
     const colorMapping: { [key: string]: string } = {
         agendada: MyColors.warning[2],
-        no_asistida: MyColors.verde[1],
-        asistida: MyColors.error[2],
+        asistida: MyColors.verde[1],
+        no_asistida: MyColors.error[2],
     };
 
     const openMenu = () => {
@@ -126,7 +126,7 @@ const CitaBox = ({ tituloCita, modalidad, fecha, estadoCita, lineaMedica, backgr
                     </Animated.View>
                 )}*/}
             </View>
-            {modalidad === 'Virtual' ? (
+            {modalidad === 'Virtual' && estadoCita === 'agendada' ? (
                 <View style={Styles.detailsSection}>
                     <TouchableOpacity onPress={() => navigation.navigate("Teleconsulta")} style={Styles.iconContainer}>
                         <MeetingIcon width={16} height={16} />
