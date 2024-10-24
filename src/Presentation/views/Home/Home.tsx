@@ -80,7 +80,8 @@ const handleMedicalLine = async (linea: any) => {
 
 const obtenerCitas = async (telefono: any) => {
   try {
-      const response = await fetch(`https://roganscare.com:5520/citas/telefono/${telefono}/mas-cercana`);
+    const encodedTelefono = encodeURIComponent(telefono);
+    const response = await fetch(`https://roganscare.com/app-api/index.php/citas?telefono=${encodedTelefono}`);
       const data = await response.json();
       return data;
   } catch (error) {

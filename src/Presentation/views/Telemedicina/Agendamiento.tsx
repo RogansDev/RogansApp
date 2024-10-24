@@ -173,7 +173,7 @@ const Agendamiento = () => {
             estado: 'agendada',
         };
     
-        fetch('https://roganscare.com:5520/citas', {
+        fetch('https://roganscare.com/app-api/index.php/citas', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
