@@ -1,8 +1,8 @@
-import React, { useState ,useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 // import { getEventTypes } from '../';
 import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Dimensions, Image, Modal, Platform, Linking } from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import FloatingMenu from '../../../Presentation/components/FloatingMenu';
 import Icons from '../../../Presentation/theme/Icons';
 import * as WebBrowser from 'expo-web-browser';
@@ -81,13 +81,26 @@ const handleMedicalLine = async (linea: any) => {
 const obtenerCitas = async (telefono: any) => {
   try {
     const encodedTelefono = encodeURIComponent(telefono);
-    const response = await fetch(`https://roganscare.com/app-api/index.php/citas?telefono=${encodedTelefono}`);
+    const response = await fetch(`https://roganscare.com/app-api/index.php/citas/telefono/${encodedTelefono}/mas-cercana`);
       const data = await response.json();
       return data;
   } catch (error) {
         console.error('Error al obtener citas:', error);
     }
-  };
+};
+
+useFocusEffect(
+  useCallback(() => {
+    obtenerCitas(phone).then(data => {
+      console.log(data.message);
+      if (data.message) {
+        setProximaCita(null);
+      } else {
+        setProximaCita(data);
+      }
+    });
+  }, [])
+);
 
   const formatearFecha = (fechaIsoString: string) => {
     if (!fechaIsoString) return '';

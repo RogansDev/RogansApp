@@ -213,7 +213,9 @@ const Calendario = ({ onDateSelected, onModalitySelected }: any) => {
           <RNPickerSelect
             onValueChange={(value) => {
               setModalidad(value);
-              onModalitySelected(value);
+            }}
+            onClose={ () => {
+              onModalitySelected(modalidad);
             }}
             value={modalidad}
             items={[

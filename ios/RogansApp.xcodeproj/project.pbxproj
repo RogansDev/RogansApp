@@ -11,11 +11,11 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		554231FC29D143E899F27F7B /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689DD18C77DE47EDB0935A47 /* noop-file.swift */; };
-		5B11AE3CB7A4B8201CA9A4ED /* Pods_RogansApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F1A2A9E62C1B5BFC68AF482 /* Pods_RogansApp.framework */; };
-		A47CA18607034B36A7BE04AC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4ED564F86C934CC6A0148DA7 /* GoogleService-Info.plist */; };
+		8566138E8F3C3724239C2937 /* Pods_RogansApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 872821D09091DCECA3A5E88D /* Pods_RogansApp.framework */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		C1E9AB69A12347DFBBDF7F80 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5F1C6816A674761A8B877A8 /* GoogleService-Info.plist */; };
+		C53472FD77984E988AB57FD4 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1F762894C34CB49D428FBC /* noop-file.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,14 +25,14 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RogansApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RogansApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RogansApp/main.m; sourceTree = "<group>"; };
-		4ED564F86C934CC6A0148DA7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "RogansApp/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		689DD18C77DE47EDB0935A47 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "RogansApp/noop-file.swift"; sourceTree = "<group>"; };
+		1695E1BD3A1A418EAC7F441F /* RogansApp-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "RogansApp-Bridging-Header.h"; path = "RogansApp/RogansApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		3C1F762894C34CB49D428FBC /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "RogansApp/noop-file.swift"; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-RogansApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RogansApp.debug.xcconfig"; path = "Target Support Files/Pods-RogansApp/Pods-RogansApp.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-RogansApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RogansApp.release.xcconfig"; path = "Target Support Files/Pods-RogansApp/Pods-RogansApp.release.xcconfig"; sourceTree = "<group>"; };
-		7F1A2A9E62C1B5BFC68AF482 /* Pods_RogansApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RogansApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		872821D09091DCECA3A5E88D /* Pods_RogansApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RogansApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = RogansApp/SplashScreen.storyboard; sourceTree = "<group>"; };
-		BB1F5F22CC444A6A8074297A /* RogansApp-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "RogansApp-Bridging-Header.h"; path = "RogansApp/RogansApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
+		D5F1C6816A674761A8B877A8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "RogansApp/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-RogansApp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -42,7 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B11AE3CB7A4B8201CA9A4ED /* Pods_RogansApp.framework in Frameworks */,
+				8566138E8F3C3724239C2937 /* Pods_RogansApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,9 +59,9 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				4ED564F86C934CC6A0148DA7 /* GoogleService-Info.plist */,
-				689DD18C77DE47EDB0935A47 /* noop-file.swift */,
-				BB1F5F22CC444A6A8074297A /* RogansApp-Bridging-Header.h */,
+				D5F1C6816A674761A8B877A8 /* GoogleService-Info.plist */,
+				3C1F762894C34CB49D428FBC /* noop-file.swift */,
+				1695E1BD3A1A418EAC7F441F /* RogansApp-Bridging-Header.h */,
 			);
 			name = RogansApp;
 			sourceTree = "<group>";
@@ -70,7 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				7F1A2A9E62C1B5BFC68AF482 /* Pods_RogansApp.framework */,
+				872821D09091DCECA3A5E88D /* Pods_RogansApp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -147,13 +147,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RogansApp" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				008B184C0AC8B7E91B261F9D /* [Expo] Configure project */,
+				9EA329224C2453C1EFDC323E /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				E0657DB9C35DEA6B432EA18F /* [CP] Embed Pods Frameworks */,
+				94536A68AADB26A648ECB2D8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -203,32 +203,13 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				A47CA18607034B36A7BE04AC /* GoogleService-Info.plist in Resources */,
+				C1E9AB69A12347DFBBDF7F80 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		008B184C0AC8B7E91B261F9D /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-RogansApp/expo-configure-project.sh\"\n";
-		};
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -310,7 +291,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RogansApp/Pods-RogansApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E0657DB9C35DEA6B432EA18F /* [CP] Embed Pods Frameworks */ = {
+		94536A68AADB26A648ECB2D8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -328,6 +309,25 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RogansApp/Pods-RogansApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		9EA329224C2453C1EFDC323E /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-RogansApp/expo-configure-project.sh\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -338,7 +338,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
-				554231FC29D143E899F27F7B /* noop-file.swift in Sources */,
+				C53472FD77984E988AB57FD4 /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
