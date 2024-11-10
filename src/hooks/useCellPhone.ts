@@ -12,6 +12,7 @@ import {
 } from "../utils/helper";
 import useTokenPush from "./useTokenPush";
 import useRegisterFirebase from "./useRegisterFirebase";
+import DeviceInfo from 'react-native-device-info';
 
 export const useCellPhone = () => {
   const [loading, setLoading] = useState(false);
@@ -92,7 +93,17 @@ export const useCellPhone = () => {
       } else {
         // Crear el usuario usando el nuevo hook
         console.log("El teléfono no existe, creando usuario...");
-        const userCreated = await createUser(phone);
+
+        const getToken = async () => {
+          let token = "";
+          const isEmulator = await DeviceInfo.isEmulator();
+        
+          token = isEmulator ? "" : await registerForPushNotificationsAsync();
+          return token;
+        };
+
+        const tokenPush = await getToken();
+        const userCreated = await createUser(phone, tokenPush);
 
         if (userCreated) {
           await sendSmsPhoneFirebase(phone); // Enviar código de verificación

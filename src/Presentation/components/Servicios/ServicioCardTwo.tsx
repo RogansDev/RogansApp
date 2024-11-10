@@ -3,8 +3,8 @@ import { Text, TouchableOpacity, StyleSheet, Image, View } from 'react-native';
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../theme/Icons';
 
-const ServicioBox = ({title, text, imageUrl, pressAction = () => {}}:any) => {
-    const { Arrow, ArrowWhiteIcon } = Icons;
+const ServicioBox = ({title, text, titleColored, titleColor, imageUrl, pressAction = () => {}}:any) => {
+    const { Arrow } = Icons;
 
     const getImageSource = (imageUrl: string) => {
         switch (imageUrl) {
@@ -31,13 +31,13 @@ const ServicioBox = ({title, text, imageUrl, pressAction = () => {}}:any) => {
             <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', alignItems: 'center'}}>
                 <View>
                     <Text style={styles.title}>
-                        {title}
+                        {title} <Text style={{color: titleColor,}}>{titleColored}</Text>
                     </Text>
                     <Text style={styles.text}>
                         {text}
                     </Text>
                 </View>
-                <ArrowWhiteIcon width={20} height={20} style={styles.icon} />
+                <Arrow width={20} height={20} style={styles.icon} />
             </View>
         </TouchableOpacity>
     );
@@ -50,18 +50,19 @@ const styles = StyleSheet.create({
         paddingVertical: 8, 
         paddingHorizontal: 15, 
         borderRadius: 10, 
+        borderColor: '#E2E2E2', 
+        borderWidth: 1,
         marginBottom: 15,
-        backgroundColor: MyColors.verde[3],
     },
     title: {
         fontSize: MyFont.size[4],
         fontFamily: MyFont.medium,
-        color: '#FFFFFF',
+        color: MyColors.neutroDark[4],
     },
     text: {
         fontSize: MyFont.size[8],
         fontFamily: MyFont.medium,
-        color: '#FFFFFF',
+        color: MyColors.neutroDark[4],
     },
     linkText: {
         color: MyColors.verde[3], 
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         marginRight: 10,
-        borderRadius: 15,
+        borderRadius: 30,
     },
 });
 

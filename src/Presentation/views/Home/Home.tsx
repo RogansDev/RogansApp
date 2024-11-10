@@ -22,6 +22,7 @@ import ButtonOne from "../../components/buttons/ButtonOne";
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale/es';
 import CitaBoxShort from "../../components/Citas/CitaBoxShort";
+import ServicioCardTwo from "../../components/Servicios/ServicioCardTwo";
 
 const Home = () => {
   const { UserTwo, Arrow, QuestionIcon, CloseIcon, CalendarioNumeroVerde, AutodiagnosticoBlack, Logo, CalendarWhiteIcon } = Icons;
@@ -195,7 +196,7 @@ useFocusEffect(
                         } else {
                           console.error('Unrecognized link format');
                         }
-                        setModalPopUp(false)
+                        setModalPopUp(false);
                       }}>
                       {
                         popUpInfo && (
@@ -214,15 +215,15 @@ useFocusEffect(
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>
-              {name !== '' ? (
-                'Hola, ' + name
+            {name !== '' ? (
+                <>
+                  <Text style={styles.title}>Hola,</Text>
+                  <Text style={styles.title2}>{name}</Text>
+                </>
               ):(
-                'Bienvenido a Rogans'
+                <Text style={styles.title3}>Bienvenido a Rogans</Text>
               )
-
-              }
-            </Text>
+            }
           </View>
           <TouchableOpacity style={{overflow: 'hidden',}} onPress={() => navigation.navigate("Perfil")}>
             <UserTwo width={20} height={20} />
@@ -258,10 +259,12 @@ useFocusEffect(
             </Text>
           </TouchableOpacity>
         </View>*/}
+        
+        <HomeBannesrs />
 
         {
             proximaCita !== null ? (
-              <View style={{gap: 10, marginBottom: 20,}}>
+              <View style={{gap: 10, marginTop: 40,}}>
                 <Text style={{fontFamily: MyFont.regular, fontSize: MyFont.size[5], color: MyColors.neutro[4], paddingHorizontal: 16,}}>Tu próxima cita</Text>
                 <CitaBoxShort
                     tituloCita={nombreLinea(proximaCita.linea_medica)}
@@ -276,33 +279,28 @@ useFocusEffect(
                 ''
             )
         }
-        
-        <HomeBannesrs />
+
+        <View style={{paddingHorizontal: 16, marginTop: 40,}}>
+          <ServicioCard pressAction={() => {handleMedicalLine('Capilar')}} title='Adiós calvicie' text='Recupera tu cabello' imageUrl='diagnosis-alopecia' />
+          <ServicioCardTwo pressAction={() => {handleMedicalLine('Facial')}} title='Renueva tu' titleColored='rostro' titleColor='#AD50E8' text='Tratamientos de rejuvenecimiento.' imageUrl='diagnosis-facial' />
+          <ServicioCardTwo pressAction={() => {handleMedicalLine('Corporal')}} title='Cuida tu' titleColored='cuerpo' titleColor='#eda145' text='Bienestar de nutrición' imageUrl='diagnosis-nutricion' />
+          <ServicioCardTwo pressAction={() => {handleMedicalLine('Sexual')}} title='Ten buen' titleColored='sexo' titleColor='#FF8290' text='Mejora tu vida íntima.' imageUrl='diagnosis-sexual' />
+          <ServicioCardTwo pressAction={() => {handleMedicalLine('Psicologia')}} title='Encuentra' titleColored='calma' titleColor='#518BFF' text='El bienestar comienza en tu mente.' imageUrl='diagnosis-psicologia' />
+          <ServicioCardTwo pressAction={() => {handleMedicalLine('Adn')}} title='Predice con' titleColored='ADN' titleColor='#5e5f61' text='Predicción avanzada y precisa.' imageUrl='diagnosis-adn' />
+        </View>
 
         <View style={styles.agendamientoBox}>
-          <View style={{flexDirection: 'row', alignItems: 'center', gap: 12,}}>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12,}}>
             <Image source={require('../../../../assets/doctora.png')} style={styles.agendamientoBoxImage} />
             <View>
-              <Text style={{fontFamily: MyFont.regular, fontSize: MyFont.size[6], color: MyColors.white,}}>Agenda tu cita ahora</Text>
-              <Text style={{fontFamily: MyFont.bold, fontSize: MyFont.size[4], color: MyColors.white,}}>Consulta medica</Text>
-              <Text style={{fontFamily: MyFont.regular, fontSize: MyFont.size[6], color: MyColors.white,}}>Con los mejores especialistas</Text>
+              <Text style={{fontFamily: MyFont.medium, fontSize: 36, color: MyColors.white,}}>Adiós calvicie</Text>
+              <Text style={{fontFamily: MyFont.regular, fontSize: 15, color: MyColors.white, lineHeight: 19,}}>Agenda y autodiagnosticate</Text>
             </View>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'center',}}>
             {/*<ButtonTwo text='Autodiagnóstico' icon={AutodiagnosticoBlack} width={145} />*/}
             <ButtonOne text='Agenda ahora' icon={CalendarioNumeroVerde} pressAction={() => {handleMedicalLine('')}} />
           </View>
-        </View>
-
-        <View style={{paddingHorizontal: 16,}}>
-          <Text style={{fontFamily: MyFont.medium, fontSize: 30, color: MyColors.verde[4],}}>Cuidate con nosotros</Text>
-          <Text style={{fontFamily: MyFont.regular, fontSize: 15, color: MyColors.neutro[4], marginBottom: 20,}}>Encuentra el servicio médico perfecto para ti</Text>
-          <ServicioCard pressAction={() => {handleMedicalLine('Capilar')}} title='Adiós' titleColored='calvicie' titleColor='#00D0B1' text='Recupera tu cabello' imageUrl='diagnosis-alopecia' />
-          <ServicioCard pressAction={() => {handleMedicalLine('Facial')}} title='Renueva tu' titleColored='rostro' titleColor='#AD50E8' text='Tratamientos de rejuvenecimiento.' imageUrl='diagnosis-facial' />
-          <ServicioCard pressAction={() => {handleMedicalLine('Corporal')}} title='Cuida tu' titleColored='cuerpo' titleColor='#eda145' text='Bienestar de nutrición' imageUrl='diagnosis-nutricion' />
-          <ServicioCard pressAction={() => {handleMedicalLine('Sexual')}} title='Ten buen' titleColored='sexo' titleColor='#FF8290' text='Mejora tu vida íntima.' imageUrl='diagnosis-sexual' />
-          <ServicioCard pressAction={() => {handleMedicalLine('Psicologia')}} title='Encuentra' titleColored='calma' titleColor='#518BFF' text='El bienestar comienza en tu mente.' imageUrl='diagnosis-psicologia' />
-          <ServicioCard pressAction={() => {handleMedicalLine('Adn')}} title='Predice con' titleColored='ADN' titleColor='#5e5f61' text='Predicción avanzada y precisa.' imageUrl='diagnosis-adn' />
         </View>
 
         {/*<View style={styles.section}>
@@ -349,6 +347,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
+    fontSize: 25,
+    fontFamily: MyFont.regular,
+  },
+  title2: {
+    fontSize: 36,
+    fontFamily: MyFont.bold,
+    lineHeight: 44,
+  },
+  title3: {
     fontSize: 25,
     fontFamily: MyFont.bold,
   },
@@ -427,8 +434,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: MyColors.verde[5],
     borderRadius: 18,
-    paddingTop: 18,
-    paddingBottom: 22,
+    paddingTop: 28,
+    paddingBottom: 32,
     paddingHorizontal: 20,
     marginTop: 30,
     marginBottom: 30,
@@ -441,8 +448,9 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   agendamientoBoxImage: {
-    width: 60,
-    height: 60,
+    width: 70,
+    height: 70,
+    marginTop: 10,
   }
 });
 

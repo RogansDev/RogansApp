@@ -19,6 +19,8 @@ const capitalize = (str: any) => {
 
 // Función para obtener las citas desde el backend propio
 const obtenerCitas = async (telefono: any) => {
+    console.log(encodeURIComponent(telefono));
+    
     try {
         const encodedTelefono = encodeURIComponent(telefono);
         const response = await fetch(`https://roganscare.com/app-api/index.php/citas?telefono=${encodedTelefono}`);
@@ -33,7 +35,7 @@ const MisCitas = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [cancelacion, setCancelacion] = useState<string | null>(null);
     const user = useSelector( (state : any) => state.user);
-    const telUsuario =  user.phone;
+    const { name, user_id, phone } = useSelector((state: any) => state.user);
     const cedulaUsuario = user.document;
 
     interface Cita {
@@ -112,12 +114,10 @@ const MisCitas = () => {
 
     useEffect(() => {
         // Llamar a la función obtenerCitas con el teléfono del usuario
-        obtenerCitas(telUsuario).then(data => {
+        obtenerCitas(phone).then(data => {
             if (data && data.length > 0) {
                 const citasAgendadas = data.filter((cita: any) => cita.estado === 'agendada');
-                const otrasCitas = data.filter((cita: any) => cita.estado !== 'agendada');
-                console.log(citasAgendadas[0].fecha_cita);
-                
+                const otrasCitas = data.filter((cita: any) => cita.estado !== 'agendada');                
 
                 setProximasCitas(citasAgendadas);
                 
@@ -127,7 +127,7 @@ const MisCitas = () => {
             }
             setCargando(false);
         });
-    }, [telUsuario]);
+    }, []);
 
     const nombreLinea = (linea: any) => {
         let nombreCompleto;
