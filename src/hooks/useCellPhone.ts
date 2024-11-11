@@ -12,6 +12,7 @@ import {
 } from "../utils/helper";
 import useTokenPush from "./useTokenPush";
 import useRegisterFirebase from "./useRegisterFirebase";
+import DeviceInfo from 'react-native-device-info';
 
 export const useCellPhone = () => {
   const [loading, setLoading] = useState(false);

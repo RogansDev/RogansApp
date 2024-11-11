@@ -54,11 +54,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>EXFont.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>EXImageLoader.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -140,6 +135,11 @@
 			<false/>
 		</dict>
 		<key>ExpoFileSystem.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>ExpoFont.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -235,6 +235,16 @@
 			<false/>
 		</dict>
 		<key>RNDateTimePicker.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>RNDeviceInfo-RNDeviceInfoPrivacyInfo.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>RNDeviceInfo.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
