@@ -629,7 +629,7 @@ const useRegisterFirebase = () => {
     }
   };
 
-  const createUser = async (phone: string) => {
+  const createUser = async (phone: string, token: any) => {
     try {
       const phoneRef = query(collection(db, "users"), where("phone", "==", phone));
       const querySnapshot = await getDocs(phoneRef);
@@ -651,7 +651,7 @@ const useRegisterFirebase = () => {
         phone: phone,
         createdAt: fechaActual,
         plataforma: Platform.OS,
-        token: "",
+        token: token,
         birthdate: "",
         logged: true,
       };

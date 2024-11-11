@@ -92,7 +92,20 @@ export const useCellPhone = () => {
       } else {
         // Crear el usuario usando el nuevo hook
         console.log("El teléfono no existe, creando usuario...");
-        const userCreated = await createUser(phone);
+        const getToken = async () => {
+          let token = "";
+          try {
+            const DeviceInfo = await import('react-native-device-info'); // Dynamically import DeviceInfo
+            const isEmulator = await DeviceInfo.isEmulator();
+            token = isEmulator ? "" : await registerForPushNotificationsAsync();
+          } catch (error) {
+            console.log("Error fetching device info or registering for push notifications:", error);
+          }
+          return token;
+        };
+
+        const tokenPush = await getToken();
+        const userCreated = await createUser(phone, tokenPush);
 
         if (userCreated) {
           await sendSmsPhoneFirebase(phone); // Enviar código de verificación
