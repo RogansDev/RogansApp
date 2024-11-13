@@ -68,7 +68,7 @@ const Login = () => {
                 width: "20%",
                 borderWidth: 1,
                 borderColor: "#000",
-                padding: 14,
+                padding: 11,
                 borderRadius: 10,
                 alignItems: "center",
                 justifyContent: "center",
@@ -76,12 +76,12 @@ const Login = () => {
               }}
             >
               {/* @ts-ignore*/}
-              <Text>{selectedCountry ? selectedCountry.code : "Pais"}</Text>
+              <Text style={{fontFamily: MyFont.regular}}>{selectedCountry ? selectedCountry.code : "Pais"}</Text>
             </TouchableOpacity>
             <View style={{ width: "80%" }}>
               <CustomTextInput
-                title="Numero de celular"
-                placeholder="numero de telefono"
+                title="Número de celular"
+                placeholder="Ingresa tu número de celular"
                 value={phone}
                 keyboardType="phone-pad"
                 onChangeText={onChange}

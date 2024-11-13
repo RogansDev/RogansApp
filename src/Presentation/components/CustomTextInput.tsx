@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         padding: 2,
         backgroundColor: "white",
         zIndex: 10,
-        
+        fontFamily: MyFont.regular,
       },
       text1TitleModalButton: {
         fontSize: 11,

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Text, View, Image, TouchableOpacity, Animated } from "react-native";
 import { MyStyles, MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../theme/Icons';
@@ -7,12 +7,15 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { StyleSheet } from "react-native";
 import navigation from "../../../navigation";
 import { RootParamList } from "../../../utils/RootParamList";
+import { parse } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 const CitaBox = ({ tituloCita, modalidad, fecha, estadoCita, lineaMedica, backgroundColor, sidesMargin = 0 }:any ) => {
     const { UbicacionVerde, Calendar, MoreVertical, Editar3Icon, InfoIcon, MeetingIcon } = Icons;
     const [menuVisible, setMenuVisible] = useState(false);
     const slideAnim = useRef(new Animated.Value(0)).current;
     const opacityAnim = useRef(new Animated.Value(0)).current;
+    const [isJoinable, setIsJoinable] = useState(false);
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
@@ -81,6 +84,35 @@ const CitaBox = ({ tituloCita, modalidad, fecha, estadoCita, lineaMedica, backgr
         }
     };
 
+    useEffect(() => {
+        const checkJoinableStatus = () => {
+            try {
+                const [timePart, datePart] = fecha.split("|").map((part: any) => part.trim());
+                const formattedDateString = `${datePart} ${timePart}`;
+                
+                // Ajuste del formato
+                const appointmentDateTime:any = parse(formattedDateString, 'dd \'de\' MMMM \'de\' yyyy h:mm a', new Date(), { locale: es });
+        
+                if (isNaN(appointmentDateTime)) {
+                    console.error("Fecha de cita no válida:", formattedDateString);
+                    return;
+                }
+        
+                const currentTime = new Date();
+                const timeDifference = (appointmentDateTime.getTime() - currentTime.getTime()) / (1000 * 60);
+                setIsJoinable(timeDifference <= 5);
+        
+            } catch (error) {
+                console.error("Error al procesar la fecha de la cita:", error);
+            }
+        };        
+
+        checkJoinableStatus();
+        const intervalId = setInterval(checkJoinableStatus, 60000); // Revisar cada minuto
+
+        return () => clearInterval(intervalId);
+    }, [fecha]);
+
     return (
         <View style={[Styles.citaBoxContainer, { backgroundColor: backgroundColor || 'white', marginHorizontal: sidesMargin }]}>
             <View
@@ -126,14 +158,19 @@ const CitaBox = ({ tituloCita, modalidad, fecha, estadoCita, lineaMedica, backgr
                     </Animated.View>
                 )}*/}
             </View>
-            {modalidad === 'Virtual' && estadoCita === 'agendada' ? (
+            {modalidad === 'Virtual' && isJoinable && (
                 <View style={Styles.detailsSection}>
-                    <TouchableOpacity onPress={() => navigation.navigate("Teleconsulta")} style={Styles.iconContainer}>
-                        <MeetingIcon width={16} height={16} />
-                        <Text style={[Styles.detailsText, {color: MyColors.verde[2]}]}>Ingresar a tu cita virtual</Text>
-                    </TouchableOpacity>
+                    <TouchableOpacity
+                    onPress={() => navigation.navigate("Teleconsulta")}
+                    style={Styles.iconContainer}
+                >
+                    <MeetingIcon width={16} height={16} />
+                    <Text style={[Styles.detailsText, { color: MyColors.verde[2] }]}>
+                        Ingresar a tu cita ahora
+                    </Text>
+                </TouchableOpacity>
                 </View>
-            ):''}
+            )}
             
             <View style={Styles.detailsSection}>
                 <Text style={Styles.detailsTitle}>Detalles</Text>
