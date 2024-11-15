@@ -14,7 +14,6 @@ import EXConstants
 import ExpoDevice
 import EASClient
 import ExpoFileSystem
-import ExpoFont
 import ExpoImagePicker
 import ExpoKeepAwake
 import ExpoSecureStore
@@ -37,7 +36,6 @@ public class ExpoModulesProvider: ModulesProvider {
       DeviceModule.self,
       EASClientModule.self,
       FileSystemModule.self,
-      FontLoaderModule.self,
       ImagePickerModule.self,
       KeepAwakeModule.self,
       SecureStoreModule.self,
@@ -60,7 +58,6 @@ public class ExpoModulesProvider: ModulesProvider {
       DeviceModule.self,
       EASClientModule.self,
       FileSystemModule.self,
-      FontLoaderModule.self,
       ImagePickerModule.self,
       KeepAwakeModule.self,
       SecureStoreModule.self,

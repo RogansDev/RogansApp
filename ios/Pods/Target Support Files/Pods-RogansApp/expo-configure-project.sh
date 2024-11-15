@@ -47,4 +47,4 @@ with_node \
   generate-modules-provider  \
   --target "/Users/martin/Documents/Rogans/App/RogansApp/ios/Pods/Target Support Files/Pods-RogansApp/ExpoModulesProvider.swift" \
   --platform "apple" \
-  --packages "@react-native-google-signin/google-signin" "expo-apple-authentication" "expo-application" "expo-av" "expo-constants" "expo-dev-launcher" "expo-dev-menu" "expo-device" "expo-eas-client" "expo-file-system" "expo-font" "expo-image-picker" "expo-keep-awake" "expo-secure-store" "expo-updates" "expo-web-browser"
+  --packages "@react-native-google-signin/google-signin" "expo-apple-authentication" "expo-application" "expo-av" "expo-constants" "expo-dev-launcher" "expo-dev-menu" "expo-device" "expo-eas-client" "expo-file-system" "expo-image-picker" "expo-keep-awake" "expo-secure-store" "expo-updates" "expo-web-browser"

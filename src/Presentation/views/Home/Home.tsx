@@ -121,7 +121,6 @@ useFocusEffect(
     return `${horas12}:${minute.toString().padStart(2, '0')} ${ampm} | ${fechaFormateada}`;
 };
 
-
   const [proximaCita, setProximaCita]:any = useState(null);
 
   useEffect(() => {

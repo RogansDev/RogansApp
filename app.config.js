@@ -5,7 +5,7 @@ export default {
     },
     "name": "RogansApp",
     "slug": "RogansApp",
-    "version": "2.0.3",
+    "version": "2.0.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -32,6 +32,7 @@ export default {
       ],
       "expo-apple-authentication",
       "@react-native-google-signin/google-signin",
+      "expo-font"
     ],
     "assetBundlePatterns": [
       "**/*"
@@ -58,7 +59,7 @@ export default {
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
       ],
-      "versionCode": 33
+      "versionCode": 35
     },
     "web": {
       "favicon": "./assets/favicon.png"
