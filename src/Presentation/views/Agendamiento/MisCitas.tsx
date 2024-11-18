@@ -23,7 +23,7 @@ const obtenerCitas = async (telefono: any) => {
     
     try {
         const encodedTelefono = encodeURIComponent(telefono);
-        const response = await fetch(`https://roganscare.com/app-api/index.php/citas?telefono=${encodedTelefono}`);
+        const response = await fetch(`https://rogansya.com/rogans-app/citas/index.php/citas?telefono=${encodedTelefono}`);
         const data = await response.json();
         return data;
     } catch (error) {
@@ -144,6 +144,8 @@ const MisCitas = () => {
             nombreCompleto = 'Nutrición';
         } else if (linea === 'Adn') {
             nombreCompleto = 'Medicina predictiva | ADN';
+        } else if (linea === 'Corporal') {
+            nombreCompleto = 'Nutricion';
         } else {
             nombreCompleto = linea;
         }

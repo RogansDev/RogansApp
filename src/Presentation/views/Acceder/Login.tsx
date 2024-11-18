@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   Alert,
+  Image,
 } from "react-native";
 import SingLogin from "../../../Presentation/components/SingLogin";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
@@ -32,11 +33,18 @@ const Login = () => {
         setShowCountry(false);
       }}
     >
-      <Text style={styles.countryText}>
-        {item.country} ({item.code})
-      </Text>
+      <View style={styles.countryItemContent}>
+        <Image
+          source={{ uri: item.flag }}
+          style={styles.flagImage}
+          resizeMode="contain"
+        />
+        <Text style={styles.countryText}>
+          {item.country} ({item.code})
+        </Text>
+      </View>
     </TouchableOpacity>
-  );
+  );  
 
   if (showModal) {
     return <VerifyCodeComponent />;
@@ -64,20 +72,19 @@ const Login = () => {
           >
             <TouchableOpacity
               onPress={() => setShowCountry(!showCountries)}
-              style={{
-                width: "20%",
-                borderWidth: 1,
-                borderColor: "#000",
-                padding: 11,
-                borderRadius: 10,
-                alignItems: "center",
-                justifyContent: "center",
-                marginRight: 5,
-              }}
+              style={styles.countrySelector}
             >
-              {/* @ts-ignore*/}
-              <Text style={{fontFamily: MyFont.regular}}>{selectedCountry ? selectedCountry.code : "Pais"}</Text>
+              {selectedCountry ? (
+                <Image
+                  source={{ uri: selectedCountry.flag }}
+                  style={styles.selectedFlagImage}
+                  resizeMode="contain"
+                />
+              ) : (
+                <Text style={{ fontFamily: MyFont.regular }}>País</Text>
+              )}
             </TouchableOpacity>
+
             <View style={{ width: "80%" }}>
               <CustomTextInput
                 title="Número de celular"
@@ -253,6 +260,31 @@ const styles = StyleSheet.create({
   },
   countryText: {
     fontSize: 16,
+  },
+  countryItemContent: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  flagImage: {
+    width: 20,
+    height: 20,
+    marginRight: 10,
+    objectFit: 'cover',
+    borderRadius: 10,
+  },
+  selectedFlagImage: {
+    width: 20,
+    height: 20,
+  },
+  countrySelector: {
+    width: "20%",
+    borderWidth: 1,
+    borderColor: "#000",
+    padding: 11,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 5,
   },
 });
 

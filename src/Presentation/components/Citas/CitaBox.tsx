@@ -77,6 +77,8 @@ const CitaBox = ({ tituloCita, modalidad, fecha, estadoCita, lineaMedica, backgr
             return require('../../../../assets/citas/psicologia-cita.png');
         } else if (linea === 'Nutricion') {
             return require('../../../../assets/citas/nutricion-cita.png');
+        } else if (linea === 'Corporal') {
+            return require('../../../../assets/citas/nutricion-cita.png');
         } else if (linea === 'Adn') {
             return require('../../../../assets/citas/adn-cita.png');
         } else {

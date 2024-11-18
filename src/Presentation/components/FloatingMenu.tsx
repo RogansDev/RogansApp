@@ -73,7 +73,7 @@ const FloatingMenu = ({ chatVisible, setChatVisible, triggerSuccessModal }: any)
   const obtenerCitas = async (telefono: any) => {
       try {
         const encodedTelefono = encodeURIComponent(telefono);
-        const response = await fetch(`https://roganscare.com/app-api/index.php/citas/telefono/${encodedTelefono}/mas-cercana`);
+        const response = await fetch(`https://rogansya.com/rogans-app/citas/index.php/citas/telefono/${encodedTelefono}/mas-cercana`);
           const data = await response.json();
           return data;
       } catch (error) {
@@ -125,6 +125,8 @@ const FloatingMenu = ({ chatVisible, setChatVisible, triggerSuccessModal }: any)
         nombreCompleto = 'Psicología';
     } else if (linea === 'Nutricion') {
         nombreCompleto = 'Nutricion';
+    } else if (linea === 'Corporal') {
+      nombreCompleto = 'Nutricion';
     } else if (linea === 'Adn') {
         nombreCompleto = 'Medicina predictiva | ADN';
     } else {
