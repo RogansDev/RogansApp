@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { View, ScrollView, Text, Image, TouchableOpacity, Modal, StyleSheet, Platform } from 'react-native';
+import { View, ScrollView, Text, Image, TouchableOpacity, Modal, StyleSheet, Platform, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootParamList } from '../../../utils/RootParamList';
@@ -11,7 +11,7 @@ import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale/es';
 import { Linking } from 'react-native';
 import CitaBox from '../../../Presentation/components/Citas/CitaBox';
-
+import axios from 'axios';
 
 const capitalize = (str: any) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -19,15 +19,13 @@ const capitalize = (str: any) => {
 
 // Función para obtener las citas desde el backend propio
 const obtenerCitas = async (telefono: any) => {
-    console.log(encodeURIComponent(telefono));
-    
     try {
         const encodedTelefono = encodeURIComponent(telefono);
-        const response = await fetch(`https://rogansya.com/rogans-app/citas/index.php/citas?telefono=${encodedTelefono}`);
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error al obtener citas:', error);
+        const response = await axios.get(`https://rogansya.com/rogans-app/citas/index.php/citas?telefono=${encodedTelefono}`);
+        return response.data;
+    } catch (error: any) {
+        console.error('Error al obtener citas con axios:', error);
+        Alert.alert('Error', `No se pudo obtener las citas: ${error.message}`);
     }
 };
 

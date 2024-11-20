@@ -29,6 +29,7 @@ import MiHistorial from "../Presentation/views/Historial/MiHistorial";
 import Programas from "../Presentation/views/Programas/Programas";
 import Teleconsulta from "../Presentation/views/Telemedicina/Teleconsulta";
 import Agendamiento from "../Presentation/views/Telemedicina/Agendamiento";
+import Diagnostico from "../Presentation/views/Diganosticos/Diagnostico";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 
@@ -444,6 +445,19 @@ function PrivateScreen() {
         component={Agendamiento}
         options={({ navigation, route }) => ({
           headerShown: false,
+          headerTransparent: false,
+        })}
+      />
+      <Stack.Screen
+        name="Diagnostico"
+        component={Diagnostico}
+        options={({ navigation, route }) => ({
+          headerShown: true,
+          headerTitle: '',
+          headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+          headerTintColor: '#00D0B1',
+          headerTitleAlign: 'left',
+          headerShadowVisible: false,
           headerTransparent: false,
         })}
       />
