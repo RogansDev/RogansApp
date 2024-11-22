@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setMedicalLineInfo } from '../../state/MedicalLineSlice';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale/es';
+import axios from 'axios';
 
 const FloatingMenu = ({ chatVisible, setChatVisible, triggerSuccessModal }: any) => {
   const { InicioIcon, InicioGreen, ServiciosIcon, MiAgendaIcon, MiAgendaGreen, UserGreen, InicioBlack, ServiciosBlack, MiAgendaBlack, CloseIcon, CalendarVerde, CalendarAddVerde, AgendarIcon, PhoneApp, Audifonos, Referidos, AgendarBlackIcon, Main, Call } = Icons;
@@ -71,14 +72,28 @@ const FloatingMenu = ({ chatVisible, setChatVisible, triggerSuccessModal }: any)
   };
 
   const obtenerCitas = async (telefono: any) => {
-      try {
-        const encodedTelefono = encodeURIComponent(telefono);
-        const response = await fetch(`https://rogansya.com/rogans-app/citas/index.php/citas/telefono/${encodedTelefono}/mas-cercana`);
-          const data = await response.json();
-          return data;
-      } catch (error) {
-          console.error('Error al obtener citas:', error);
+    try {
+      const encodedTelefono = encodeURIComponent(telefono);
+      const response = await axios.get(`https://rogansya.com/rogans-app/citas/index.php/citas/telefono/${encodedTelefono}/mas-cercana`);
+      return response.data;
+    } catch (error: any) {
+      console.error('Error al obtener citas:', error);
+      if (error.response) {
+        // El servidor respondió con un código de estado fuera del rango 2xx
+        console.log('Datos del error:', error.response.data);
+        console.log('Estado del error:', error.response.status);
+        console.log('Encabezados del error:', error.response.headers);
+        Alert.alert('Error', `Error del servidor: ${error.response.data.error || 'Error desconocido'}`);
+      } else if (error.request) {
+        // La solicitud fue hecha pero no se recibió respuesta
+        console.log('Solicitud del error:', error.request);
+        Alert.alert('Error', 'No se recibió respuesta del servidor.');
+      } else {
+        // Algo ocurrió al configurar la solicitud
+        console.log('Mensaje de error:', error.message);
+        Alert.alert('Error', `Error al configurar la solicitud: ${error.message}`);
       }
+    }
   };
 
   const formatearFecha = (fechaIsoString: string) => {

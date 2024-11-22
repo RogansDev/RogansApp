@@ -9,6 +9,7 @@ import FloatingMenu from '../../../Presentation/components/FloatingMenu';
 import Calendario from '../../components/Calendario';
 import ButtonIcon from '../../components/buttons/ButtonIcon';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const Agendamiento = () => {
     const [chatVisible, setChatVisible] = useState(false);
@@ -173,28 +174,14 @@ const Agendamiento = () => {
             estado: 'agendada',
         };
     
-        fetch('https://rogansya.com/rogans-app/citas/index.php/citas', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(agendamientoData),
-        })
-        .then((response) => {
-            if (!response.ok) {
-                return response.json().then((data) => {
-                    throw new Error(`Error: ${data.error || 'Hubo un problema con la solicitud'}`);
-                });
-            }
-            return response.json();
-        })
-        .then((data) => {
-            handleOpenSuccessModal()
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            Alert.alert('Error', `Hubo un error al agendar la cita`);
-        });
+        axios.post('https://rogansya.com/rogans-app/citas/index.php/citas', agendamientoData)
+            .then((response) => {
+                handleOpenSuccessModal();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                Alert.alert('Error', `Hubo un error al agendar la cita: ${error.message}`);
+            });
     };
 
     const modalTriggerRef:any = useRef(null);

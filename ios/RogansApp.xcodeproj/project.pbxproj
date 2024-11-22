@@ -10,12 +10,12 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		310327610478483F858697F5 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFD35F3D3654A5FA9A6A3A9 /* noop-file.swift */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		7262D1DC312B360B9CB803A7 /* Pods_RogansApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF0D097AE6730B7B9D36C211 /* Pods_RogansApp.framework */; };
-		93A351DB1E1D405C884C0F6D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A47141C179C0499F96BAC95B /* GoogleService-Info.plist */; };
+		41C5221A794A13B3CAF5D8E8 /* Pods_RogansApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0AE1275EE7642A5F9336103 /* Pods_RogansApp.framework */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		F0A014B1743D463BBF65C6AD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C7FD828D56474B0397493DF3 /* GoogleService-Info.plist */; };
+		FB6B16FE1F18466DB77C934B /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99090A071D7A42E2B815C615 /* noop-file.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,15 +25,15 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RogansApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RogansApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RogansApp/main.m; sourceTree = "<group>"; };
-		20B0F62D82B14745A260D41C /* RogansApp-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "RogansApp-Bridging-Header.h"; path = "RogansApp/RogansApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		2FFD35F3D3654A5FA9A6A3A9 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "RogansApp/noop-file.swift"; sourceTree = "<group>"; };
+		1B415BA286D443468B04298D /* RogansApp-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "RogansApp-Bridging-Header.h"; path = "RogansApp/RogansApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-RogansApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RogansApp.debug.xcconfig"; path = "Target Support Files/Pods-RogansApp/Pods-RogansApp.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-RogansApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RogansApp.release.xcconfig"; path = "Target Support Files/Pods-RogansApp/Pods-RogansApp.release.xcconfig"; sourceTree = "<group>"; };
-		A47141C179C0499F96BAC95B /* GoogleService-Info.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "RogansApp/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		99090A071D7A42E2B815C615 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "RogansApp/noop-file.swift"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = RogansApp/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
+		C7FD828D56474B0397493DF3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "RogansApp/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D0AE1275EE7642A5F9336103 /* Pods_RogansApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RogansApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		EF0D097AE6730B7B9D36C211 /* Pods_RogansApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RogansApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-RogansApp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -42,7 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7262D1DC312B360B9CB803A7 /* Pods_RogansApp.framework in Frameworks */,
+				41C5221A794A13B3CAF5D8E8 /* Pods_RogansApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,9 +59,9 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				A47141C179C0499F96BAC95B /* GoogleService-Info.plist */,
-				2FFD35F3D3654A5FA9A6A3A9 /* noop-file.swift */,
-				20B0F62D82B14745A260D41C /* RogansApp-Bridging-Header.h */,
+				C7FD828D56474B0397493DF3 /* GoogleService-Info.plist */,
+				99090A071D7A42E2B815C615 /* noop-file.swift */,
+				1B415BA286D443468B04298D /* RogansApp-Bridging-Header.h */,
 			);
 			name = RogansApp;
 			sourceTree = "<group>";
@@ -70,7 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				EF0D097AE6730B7B9D36C211 /* Pods_RogansApp.framework */,
+				D0AE1275EE7642A5F9336103 /* Pods_RogansApp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -147,13 +147,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RogansApp" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				DF9BFB66D3B87ED42A822B97 /* [Expo] Configure project */,
+				A3DA2803A681B6CF466D649E /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				F831A639FFFD91071E3F884D /* [CP] Embed Pods Frameworks */,
+				E4A7EE816C9548A81835023B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -203,7 +203,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				93A351DB1E1D405C884C0F6D /* GoogleService-Info.plist in Resources */,
+				F0A014B1743D463BBF65C6AD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,7 +293,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RogansApp/Pods-RogansApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DF9BFB66D3B87ED42A822B97 /* [Expo] Configure project */ = {
+		A3DA2803A681B6CF466D649E /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -312,7 +312,7 @@
 			shellPath = /bin/sh;
 			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-RogansApp/expo-configure-project.sh\"\n";
 		};
-		F831A639FFFD91071E3F884D /* [CP] Embed Pods Frameworks */ = {
+		E4A7EE816C9548A81835023B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -340,7 +340,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
-				310327610478483F858697F5 /* noop-file.swift in Sources */,
+				FB6B16FE1F18466DB77C934B /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
