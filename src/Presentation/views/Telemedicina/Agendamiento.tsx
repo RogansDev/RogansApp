@@ -10,6 +10,7 @@ import Calendario from '../../components/Calendario';
 import ButtonIcon from '../../components/buttons/ButtonIcon';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { socket } from '../../../services/socket';
 
 const Agendamiento = () => {
     const [chatVisible, setChatVisible] = useState(false);
@@ -161,27 +162,28 @@ const Agendamiento = () => {
         return date.toISOString().slice(0, 19).replace('T', ' ');
     };
 
-    const handleAgendar = () => {  
+    const handleAgendar = () => {
         console.log(selectedModality);
-          
+    
+        // Datos del agendamiento
         const agendamientoData = {
             telefono: phone,
             linea_medica: lineaMedica,
             tipo: 'Consulta médica',
             modalidad: selectedModality,
             fecha_cita: selectedDate,
-            fecha_agendamiento: formatDateForMySQL(new Date()),
-            estado: 'agendada',
-        };
-    
-        axios.post('https://rogansya.com/rogans-app/citas/index.php/citas', agendamientoData)
-            .then((response) => {
-                handleOpenSuccessModal();
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                Alert.alert('Error', `Hubo un error al agendar la cita: ${error.message}`);
-            });
+        };    
+        // Emitir el evento al servidor
+        socket.emit('crearCita', agendamientoData, (response: any) => {
+            // Manejar la respuesta del servidor
+            if (response.success) {
+                Alert.alert('Agendamiento ok');
+                handleOpenSuccessModal(); // Mostrar el modal de éxito
+            } else {
+                console.error('Error:', response.error);
+                Alert.alert('Error', `Hubo un error al agendar la cita: ${response.error}`);
+            }
+        });
     };
 
     const modalTriggerRef:any = useRef(null);
