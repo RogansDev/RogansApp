@@ -1,3 +1,4 @@
+import * as Notifications from "expo-notifications";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { useState } from "react";
 import { Alert, Platform } from "react-native";
@@ -10,16 +11,13 @@ import {
   obtenerCodigoLongitudSeisNumerico,
   obtenerFechaActual,
 } from "../utils/helper";
-import useTokenPush from "./useTokenPush";
 import useRegisterFirebase from "./useRegisterFirebase";
-import DeviceInfo from 'react-native-device-info';
 
 export const useCellPhone = () => {
   const [loading, setLoading] = useState(false);
   const [isNew, setIsNew] = useState(false); // Para saber si es un nuevo usuario
   const [showModal, setShowModal] = useState(false); // Para mostrar el input de código
   const dispatch = useDispatch();
-  const { registerForPushNotificationsAsync } = useTokenPush();
   const { createUser } = useRegisterFirebase();
 
   // Función para iniciar sesión con teléfono
@@ -27,7 +25,7 @@ export const useCellPhone = () => {
     setLoading(true);
 
     // Verificar si es el número de testing
-    if (phone === '+571122334455') {
+    if (phone === "+571122334455") {
       const plataforma = Platform.OS;
       const user = {
         user_id: "",
@@ -55,14 +53,19 @@ export const useCellPhone = () => {
       dispatch(setAuthorizationInfo({ logged: true, phone: phone }));
 
       setLoading(false);
-      console.log("Número de testing detectado, omitiendo verificación de código");
+      console.log(
+        "Número de testing detectado, omitiendo verificación de código"
+      );
       return;
     }
 
     console.log("Consultando si el teléfono existe en Firebase", phone);
 
     try {
-      const phoneRef = query(collection(db, "users"), where("phone", "==", phone));
+      const phoneRef = query(
+        collection(db, "users"),
+        where("phone", "==", phone)
+      );
       const querySnapshot = await getDocs(phoneRef);
       let selectedProfile: any;
 
@@ -83,7 +86,7 @@ export const useCellPhone = () => {
           birthdate: selectedProfile.birthdate,
           token: selectedProfile.token,
           plataforma: selectedProfile.plataforma,
-        }
+        };
         // Si el número ya existe en Firebase, enviar el código
         console.log("El teléfono existe:", selectedProfile);
 
@@ -96,11 +99,16 @@ export const useCellPhone = () => {
         const getToken = async () => {
           let token = "";
           try {
-            const DeviceInfo = await import('react-native-device-info'); // Dynamically import DeviceInfo
+            const DeviceInfo = await import("react-native-device-info"); // Dynamically import DeviceInfo
             const isEmulator = await DeviceInfo.isEmulator();
-            token = isEmulator ? "" : await registerForPushNotificationsAsync();
+            token = isEmulator
+              ? ""
+              : (await Notifications.getDevicePushTokenAsync()).data;
           } catch (error) {
-            console.log("Error fetching device info or registering for push notifications:", error);
+            console.log(
+              "Error fetching device info or registering for push notifications:",
+              error
+            );
           }
           return token;
         };
