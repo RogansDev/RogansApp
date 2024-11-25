@@ -1,5 +1,7 @@
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import * as Notifications from "expo-notifications";
 import { initializeApp } from "firebase/app";
 import {
   EmailAuthProvider,
@@ -23,15 +25,21 @@ import { useState } from "react";
 import { Alert, Platform } from "react-native";
 import { useDispatch } from "react-redux";
 import { db, firebaseConfig } from "../firebase/index";
-import { deleteCredentials, getCredentials, saveCredentials } from "../services/credentials";
-import { setAuthorizationInfo, setClearAuthorizationInfo } from "../state/AuthorizationSlice";
+import {
+  deleteCredentials,
+  getCredentials,
+  saveCredentials,
+} from "../services/credentials";
+import {
+  setAuthorizationInfo,
+  setClearAuthorizationInfo,
+} from "../state/AuthorizationSlice";
+import { setClearCalendaryInfo } from "../state/CalendarySlice";
 import { setClearUserInfo, setUserInfo } from "../state/ProfileSlice";
 import { RootParamList } from "../utils/RootParamList";
 import { obtenerCodigoLongitudSeis, obtenerFechaActual } from "../utils/helper";
 import { sendEmailCodePromotion } from "./useEmail";
 import useNotificationPush from "./useNotificationPush";
-import { setClearCalendaryInfo } from "../state/CalendarySlice";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 const useRegisterFirebase = () => {
   const app = initializeApp(firebaseConfig);
@@ -216,7 +224,7 @@ const useRegisterFirebase = () => {
               setLoading(false);
               console.log("usuario no existe .", selectedProfile);
               Alert.alert("usuario no existe!");
-              navigation.navigate('Login');
+              navigation.navigate("Login");
             }
           } catch (error: any) {
             setLoading(false);
@@ -458,7 +466,7 @@ const useRegisterFirebase = () => {
         setLoading(false);
         console.log("usuario no existe .", selectedProfile);
         Alert.alert("usuario no existe!");
-        navigation.navigate('Login');
+        navigation.navigate("Login");
       }
     } catch (error: any) {
       setLoading(false);
@@ -472,16 +480,16 @@ const useRegisterFirebase = () => {
   const handleLoginWithPhone = async (phone: string) => {
     console.log("Teléfono ingresado:", phone);
     setLoading(true); // Mostrar loading al inicio
-  
+
     try {
       const phoneRef = query(
         collection(db, "users"),
         where("phone", "==", phone)
       );
-  
+
       const querySnapshot = await getDocs(phoneRef);
       let selectedProfile: any;
-  
+
       // Verificar si hay resultados para el teléfono proporcionado
       if (querySnapshot.empty) {
         console.log("No se encontró ningún usuario con el teléfono:", phone);
@@ -491,15 +499,15 @@ const useRegisterFirebase = () => {
         navigation.navigate("Login");
         return; // Salir de la función si el usuario no existe
       }
-  
+
       // Iterar sobre los resultados para encontrar el perfil
       querySnapshot.forEach((doc) => {
         selectedProfile = doc.data();
       });
-  
+
       if (selectedProfile) {
         console.log("Perfil seleccionado:", selectedProfile);
-  
+
         const user = {
           user_id: selectedProfile.user_id,
           email: selectedProfile.email,
@@ -514,20 +522,20 @@ const useRegisterFirebase = () => {
           plataforma: selectedProfile.plataforma,
           logged: true,
         };
-  
+
         // Guardar información del usuario en el store de Redux
         distpach(setUserInfo(user));
-  
+
         const auth = {
           logged: true,
           phone: phone,
         };
-  
+
         distpach(setAuthorizationInfo(auth));
-        } else {
-          handleSessionClose();
-          console.log("No se encontró ningún perfil asociado.");
-          Alert.alert("No se pudo encontrar el perfil del usuario.");
+      } else {
+        handleSessionClose();
+        console.log("No se encontró ningún perfil asociado.");
+        Alert.alert("No se pudo encontrar el perfil del usuario.");
       }
     } catch (error) {
       handleSessionClose();
@@ -552,14 +560,21 @@ const useRegisterFirebase = () => {
     }
   };
 
-  const handleUpdateName = async (phone: string, newName: string, newLastname: string) => {
+  const handleUpdateName = async (
+    phone: string,
+    newName: string,
+    newLastname: string
+  ) => {
     try {
-      const userRef = query(collection(db, "users"), where("phone", "==", phone));
+      const userRef = query(
+        collection(db, "users"),
+        where("phone", "==", phone)
+      );
       const querySnapshot = await getDocs(userRef);
 
       if (querySnapshot.empty) {
         Alert.alert("Usuario no encontrado");
-        navigation.navigate('Login');
+        navigation.navigate("Login");
         return;
       }
 
@@ -570,16 +585,17 @@ const useRegisterFirebase = () => {
 
       if (!userId) {
         Alert.alert("No se pudo encontrar el usuario");
-        navigation.navigate('Login');
+        navigation.navigate("Login");
         return;
       }
 
       const userDocRef = doc(db, "users", userId);
-      await updateDoc(userDocRef, { 
-        name: newName, 
-        lastname: newLastname 
+      const token = (await Notifications.getDevicePushTokenAsync()).data;
+      await updateDoc(userDocRef, {
+        name: newName,
+        lastname: newLastname,
+        token: token,
       });
-
     } catch (error: any) {
       console.error("Error al actualizar la información:", error);
       Alert.alert("No se pudo guardar la información.");
@@ -591,37 +607,41 @@ const useRegisterFirebase = () => {
     newName: string,
     newLastname: string,
     newDocument: string,
-    newEmail: string
+    newEmail: string,
+    token: string
   ) => {
     try {
-      const userRef = query(collection(db, "users"), where("phone", "==", phone));
+      const userRef = query(
+        collection(db, "users"),
+        where("phone", "==", phone)
+      );
       const querySnapshot = await getDocs(userRef);
-  
       if (querySnapshot.empty) {
         Alert.alert("Usuario no encontrado");
-        navigation.navigate('Login');
+        navigation.navigate("Login");
         return;
       }
-  
+
       let userId: string | undefined;
       querySnapshot.forEach((doc) => {
         userId = doc.id; // Obtener el ID del documento
       });
-  
+
       if (!userId) {
         Alert.alert("No se pudo encontrar el usuario");
-        navigation.navigate('Login');
+        navigation.navigate("Login");
         return;
       }
-  
+
       const userDocRef = doc(db, "users", userId);
       await updateDoc(userDocRef, {
         name: newName,
         lastname: newLastname,
         document: newDocument,
         email: newEmail,
+        token: token,
       });
-  
+
       Alert.alert("Información actualizada correctamente");
     } catch (error: any) {
       console.error("Error al actualizar la información:", error);
@@ -631,7 +651,10 @@ const useRegisterFirebase = () => {
 
   const createUser = async (phone: string, token: any) => {
     try {
-      const phoneRef = query(collection(db, "users"), where("phone", "==", phone));
+      const phoneRef = query(
+        collection(db, "users"),
+        where("phone", "==", phone)
+      );
       const querySnapshot = await getDocs(phoneRef);
 
       if (!querySnapshot.empty) {
