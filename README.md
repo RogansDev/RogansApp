@@ -148,3 +148,18 @@ savePaymentDetails(user_id, 'carlosd.rogansya@gmail.com', 4500, 'pago por mercad
 import useMercadoPago from "../../../hooks/useMercadoPago";
 
 
+### uso del hook para el envio de notificaciones 
+
+import * as Notifications from "expo-notifications"; // se importa como traer las notificaciones
+
+const token = (await Notifications.getDevicePushTokenAsync()).data;
+const titulo = "Titulo de la notificacioes"
+const body = "Cuerpo de las notificaciones"
+
+try {
+  sendNotificationPush(token, titulo, body);
+} catch (error) {
+  console.log(error);
+}
+
+

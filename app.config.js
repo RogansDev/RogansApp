@@ -44,7 +44,7 @@ export default {
         "NSCameraUsageDescription": "Esta aplicación utiliza la cámara para agregar la foto de perfil de los usuarios",
         "NSPhotoLibraryUsageDescription": "Necesitamos acceder a la galería para seleccionar imágenes."
       },
-      "googleServicesFile": process.env.GOOGLE_SERVICES_INFOPLIST || "./GoogleService-Info.plist",
+      "googleServicesFile": "./GoogleService-Info.plist",
       "usesAppleSignIn": true
     },
     "android": {
@@ -52,7 +52,7 @@ export default {
         "foregroundImage": "./assets/adaptiveIcon.png",
         "backgroundColor": "#FCFCFC"
       },
-      "googleServicesFile": process.env.GOOGLE_SERVICES_JSON || "./google-services.json",
+      "googleServicesFile":"./google-services.json",
       "package": "com.rogansdev.RogansApp",
       "permissions": [
         "CAMERA",

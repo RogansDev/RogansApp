@@ -1,30 +1,44 @@
 // Importaciones necesarias
-import React, { useState, useEffect, useCallback } from "react";
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Dimensions, Image, Modal, Platform, Linking, Alert } from "react-native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import axios from "axios";
+import * as Notifications from "expo-notifications";
+import * as WebBrowser from "expo-web-browser";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  Alert,
+  Dimensions,
+  Image,
+  Linking,
+  Modal,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import FloatingMenu from "../../../Presentation/components/FloatingMenu";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import FloatingMenu from '../../../Presentation/components/FloatingMenu';
-import Icons from '../../../Presentation/theme/Icons';
-import * as WebBrowser from 'expo-web-browser';
-import { consultCards } from '../Servicios/ServicesData';
-import { useDispatch, useSelector } from 'react-redux';
-import { setCalendaryInfo } from '../../../state/CalendarySlice';
-import { setMedicalLineInfo } from '../../../state/MedicalLineSlice';
-import { RootParamList } from "../../../utils/RootParamList";
+import Icons from "../../../Presentation/theme/Icons";
+import useApiService from "../../../hooks/useApiService";
+import usePopUp from "../../../hooks/usePopUp";
 import usePromotions from "../../../hooks/usePromotions";
 import useServices from "../../../hooks/useServices";
-import usePopUp from "../../../hooks/usePopUp";
-import HomeBannesrs from "../../components/HomeBanners";
 import useTokenPush from "../../../hooks/useTokenPush";
-import ServicioCard from "../../components/Servicios/ServicioCard";
-import ButtonOne from "../../components/buttons/ButtonOne";
+import { setCalendaryInfo } from "../../../state/CalendarySlice";
+import { setMedicalLineInfo } from "../../../state/MedicalLineSlice";
+import { RootParamList } from "../../../utils/RootParamList";
 import CitaBoxShort from "../../components/Citas/CitaBoxShort";
+import HomeBannesrs from "../../components/HomeBanners";
+import ServicioCard from "../../components/Servicios/ServicioCard";
 import ServicioCardTwo from "../../components/Servicios/ServicioCardTwo";
-import axios from 'axios';
+import ButtonOne from "../../components/buttons/ButtonOne";
+import { consultCards } from "../Servicios/ServicesData";
 
 // Definición del tipo de navegación
-type HomeScreenNavigationProp = StackNavigationProp<RootParamList, 'Home'>;
+type HomeScreenNavigationProp = StackNavigationProp<RootParamList, "Home">;
 
 const Home = () => {
   const { UserTwo, Arrow, CloseIcon, CalendarioNumeroVerde, Logo } = Icons;
@@ -37,13 +51,14 @@ const Home = () => {
   const [chatVisible, setChatVisible] = useState(false);
   const [modalPopUp, setModalPopUp] = useState(false);
   const [popUpInfo, setPopUpInfo]: any = useState({});
-  const viewportWidth = Dimensions.get('window').width;
+  const viewportWidth = Dimensions.get("window").width;
   const IMAGE_WIDTH = viewportWidth * 0.8;
   const IMAGE_HEIGHT = IMAGE_WIDTH * 0.9;
   const dispatch = useDispatch();
   const calendaryState = useSelector((state: any) => state.calendary);
   const MedicalLineState = useSelector((state: any) => state.medicalLine);
   const [proximaCita, setProximaCita]: any = useState(null);
+  const { sendNotificationPush } = useApiService();
 
   useEffect(() => {
     handleStatusCode(user_id);
@@ -65,71 +80,85 @@ const Home = () => {
   }, [popUpInfo]);
 
   const handleSelectCard = async (card: any, link: any) => {
-    dispatch(setCalendaryInfo({
-      ...calendaryState,
-      selectedCard: card
-    }));
+    dispatch(
+      setCalendaryInfo({
+        ...calendaryState,
+        selectedCard: card,
+      })
+    );
     navigation.navigate(link);
   };
 
   const handleMedicalLine = async (linea: string) => {
-    dispatch(setMedicalLineInfo({
-      ...MedicalLineState,
-      lineaMedica: linea
-    }));
-    navigation.navigate('Agendamiento');
+    dispatch(
+      setMedicalLineInfo({
+        ...MedicalLineState,
+        lineaMedica: linea,
+      })
+    );
+    navigation.navigate("Agendamiento");
   };
 
   // Función para manejar el diagnóstico y navegar al WebView con la URL correspondiente
   const handleDiagnostico = (tipo: string) => {
-    let url = '';
-  
-    if (tipo === 'Capilar') {
+    let url = "";
+
+    if (tipo === "Capilar") {
       url = `https://rogansya.com/diagnostico-alopecia?environment=app&phone=${phone}`;
-    } else if (tipo === 'Facial') {
+    } else if (tipo === "Facial") {
       url = `https://rogansya.com/diagnostico-rejuvenecimiento-facial?environment=app&phone=${phone}`;
-    } else if (tipo === 'Corporal') {
+    } else if (tipo === "Corporal") {
       url = `https://rogansya.com/diagnostico-corporal?environment=app&phone=${phone}`;
-    } else if (tipo === 'Sexual') {
+    } else if (tipo === "Sexual") {
       url = `https://rogansya.com/diagnostico-rendimiento-sexual?environment=app&phone=${phone}`;
-    } else if (tipo === 'Psicologia') {
+    } else if (tipo === "Psicologia") {
       url = `https://rogansya.com/diagnostico-psicologia?environment=app&phone=${phone}`;
     }
-  
-    console.log('handleDiagnostico llamado con tipo:', tipo);
-    console.log('Navegando a Diagnostico con url:', url);
-  
-    navigation.navigate('Diagnostico', { url });
+
+    console.log("handleDiagnostico llamado con tipo:", tipo);
+    console.log("Navegando a Diagnostico con url:", url);
+
+    navigation.navigate("Diagnostico", { url });
   };
 
   const obtenerCitas = async (telefono: any) => {
     try {
       const encodedTelefono = encodeURIComponent(telefono);
-      const response = await axios.get(`https://rogansya.com/rogans-app/citas/index.php/citas/telefono/${encodedTelefono}/mas-cercana`);
+      const response = await axios.get(
+        `https://rogansya.com/rogans-app/citas/index.php/citas/telefono/${encodedTelefono}/mas-cercana`
+      );
       return response.data;
     } catch (error: any) {
-      console.error('Error al obtener citas:', error);
+      console.error("Error al obtener citas:", error);
       if (error.response) {
         // El servidor respondió con un código de estado fuera del rango 2xx
-        console.log('Datos del error:', error.response.data);
-        console.log('Estado del error:', error.response.status);
-        console.log('Encabezados del error:', error.response.headers);
-        Alert.alert('Error', `Error del servidor: ${error.response.data.error || 'Error desconocido'}`);
+        console.log("Datos del error:", error.response.data);
+        console.log("Estado del error:", error.response.status);
+        console.log("Encabezados del error:", error.response.headers);
+        Alert.alert(
+          "Error",
+          `Error del servidor: ${
+            error.response.data.error || "Error desconocido"
+          }`
+        );
       } else if (error.request) {
         // La solicitud fue hecha pero no se recibió respuesta
-        console.log('Solicitud del error:', error.request);
-        Alert.alert('Error', 'No se recibió respuesta del servidor.');
+        console.log("Solicitud del error:", error.request);
+        Alert.alert("Error", "No se recibió respuesta del servidor.");
       } else {
         // Algo ocurrió al configurar la solicitud
-        console.log('Mensaje de error:', error.message);
-        Alert.alert('Error', `Error al configurar la solicitud: ${error.message}`);
+        console.log("Mensaje de error:", error.message);
+        Alert.alert(
+          "Error",
+          `Error al configurar la solicitud: ${error.message}`
+        );
       }
     }
   };
 
   useFocusEffect(
     useCallback(() => {
-      obtenerCitas(phone).then(data => {
+      obtenerCitas(phone).then((data) => {
         if (data.message) {
           setProximaCita(null);
         } else {
@@ -140,42 +169,61 @@ const Home = () => {
   );
 
   const formatearFecha = (fechaIsoString: string) => {
-    if (!fechaIsoString) return '';
+    if (!fechaIsoString) return "";
 
-    const [year, month, day] = fechaIsoString.slice(0, 10).split('-').map(Number);
-    const [hour, minute] = fechaIsoString.slice(11, 16).split(':').map(Number);
+    const [year, month, day] = fechaIsoString
+      .slice(0, 10)
+      .split("-")
+      .map(Number);
+    const [hour, minute] = fechaIsoString.slice(11, 16).split(":").map(Number);
 
     const fecha = new Date(Date.UTC(year, month - 1, day, hour, minute));
 
-    const opcionesFecha = { day: '2-digit', month: 'long', year: 'numeric' } as const;
-    const fechaFormateada = fecha.toLocaleDateString('es-ES', opcionesFecha);
+    const opcionesFecha = {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    } as const;
+    const fechaFormateada = fecha.toLocaleDateString("es-ES", opcionesFecha);
 
     const horas12 = hour % 12 === 0 ? 12 : hour % 12;
-    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const ampm = hour >= 12 ? "PM" : "AM";
 
-    return `${horas12}:${minute.toString().padStart(2, '0')} ${ampm} | ${fechaFormateada}`;
+    return `${horas12}:${minute
+      .toString()
+      .padStart(2, "0")} ${ampm} | ${fechaFormateada}`;
   };
 
   const nombreLinea = (linea: any) => {
     let nombreCompleto;
 
-    if (linea === 'Capilar') {
-      nombreCompleto = 'Cuidado del cabello';
-    } else if (linea === 'Facial') {
-      nombreCompleto = 'Cuidado de la piel';
-    } else if (linea === 'Sexual') {
-      nombreCompleto = 'Salud sexual';
-    } else if (linea === 'Psicología') {
-      nombreCompleto = 'Psicología';
-    } else if (linea === 'Nutricion' || linea === 'Corporal') {
-      nombreCompleto = 'Nutrición';
-    } else if (linea === 'Adn') {
-      nombreCompleto = 'Medicina predictiva | ADN';
+    if (linea === "Capilar") {
+      nombreCompleto = "Cuidado del cabello";
+    } else if (linea === "Facial") {
+      nombreCompleto = "Cuidado de la piel";
+    } else if (linea === "Sexual") {
+      nombreCompleto = "Salud sexual";
+    } else if (linea === "Psicología") {
+      nombreCompleto = "Psicología";
+    } else if (linea === "Nutricion" || linea === "Corporal") {
+      nombreCompleto = "Nutrición";
+    } else if (linea === "Adn") {
+      nombreCompleto = "Medicina predictiva | ADN";
     } else {
       nombreCompleto = linea;
     }
 
     return nombreCompleto;
+  };
+
+  const handlePush = async () => {
+    const token2 = (await Notifications.getDevicePushTokenAsync()).data;
+    console.log("token2", token2);
+    try {
+      sendNotificationPush(token2, "Titulo test", "Test body"); // este es el hook creado para enviar notificaciones push
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -185,48 +233,66 @@ const Home = () => {
         animationType="fade"
         transparent={true}
         visible={modalPopUp}
-        onRequestClose={() => setModalPopUp(false)}>
+        onRequestClose={() => setModalPopUp(false)}
+      >
         <TouchableOpacity
           style={styles.modalFade}
           onPress={() => setModalPopUp(false)}
           activeOpacity={1}
         >
           <View style={styles.modalContainer2}>
-            <View style={[styles.modalContent, { width: IMAGE_WIDTH, height: IMAGE_HEIGHT }]}>
-              <TouchableOpacity style={styles.cerrarBtn} onPress={() => setModalPopUp(false)}>
+            <View
+              style={[
+                styles.modalContent,
+                { width: IMAGE_WIDTH, height: IMAGE_HEIGHT },
+              ]}
+            >
+              <TouchableOpacity
+                style={styles.cerrarBtn}
+                onPress={() => setModalPopUp(false)}
+              >
                 <CloseIcon width={16} height={16} />
                 <Text style={styles.textModal}>Cerrar</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => {
-                const linkParts = popUpInfo.description.split('?');
-                if (linkParts[0] === 'nav') {
-                  navigation.navigate(linkParts[1]);
-                } else if (linkParts[0] === 'service') {
-                  const cardIndex = parseInt(linkParts[1].replace('consultCards[', '').replace(']', ''), 10);
-                  const selectedCard = consultCards[cardIndex];
-                  const screenName = linkParts[2];
+              <TouchableOpacity
+                onPress={() => {
+                  const linkParts = popUpInfo.description.split("?");
+                  if (linkParts[0] === "nav") {
+                    navigation.navigate(linkParts[1]);
+                  } else if (linkParts[0] === "service") {
+                    const cardIndex = parseInt(
+                      linkParts[1]
+                        .replace("consultCards[", "")
+                        .replace("]", ""),
+                      10
+                    );
+                    const selectedCard = consultCards[cardIndex];
+                    const screenName = linkParts[2];
 
-                  if (selectedCard && screenName) {
-                    handleSelectCard(selectedCard, screenName);
+                    if (selectedCard && screenName) {
+                      handleSelectCard(selectedCard, screenName);
+                    } else {
+                      console.error(
+                        "Invalid link format or undefined card/screen"
+                      );
+                    }
+                  } else if (linkParts[0] === "web") {
+                    const url = linkParts[1];
+                    Linking.openURL(url).catch((err) =>
+                      console.error("An error occurred", err)
+                    );
                   } else {
-                    console.error('Invalid link format or undefined card/screen');
+                    console.error("Unrecognized link format");
                   }
-                } else if (linkParts[0] === 'web') {
-                  const url = linkParts[1];
-                  Linking.openURL(url).catch(err => console.error('An error occurred', err));
-                } else {
-                  console.error('Unrecognized link format');
-                }
-                setModalPopUp(false);
-              }}>
-                {
-                  popUpInfo && (
-                    <Image
-                      source={{ uri: popUpInfo.url_imagen }}
-                      style={{ width: '100%', height: '100%', zIndex: 10 }}
-                    />
-                  )
-                }
+                  setModalPopUp(false);
+                }}
+              >
+                {popUpInfo && (
+                  <Image
+                    source={{ uri: popUpInfo.url_imagen }}
+                    style={{ width: "100%", height: "100%", zIndex: 10 }}
+                  />
+                )}
               </TouchableOpacity>
             </View>
           </View>
@@ -236,17 +302,19 @@ const Home = () => {
       <ScrollView>
         <View style={styles.header}>
           <View style={styles.titleContainer}>
-            {name !== '' ? (
+            {name !== "" ? (
               <>
                 <Text style={styles.title}>Hola,</Text>
                 <Text style={styles.title2}>{name}</Text>
               </>
             ) : (
               <Text style={styles.title3}>Bienvenido a Rogans</Text>
-            )
-            }
+            )}
           </View>
-          <TouchableOpacity style={{ overflow: 'hidden', }} onPress={() => navigation.navigate("Perfil")}>
+          <TouchableOpacity
+            style={{ overflow: "hidden" }}
+            onPress={() => navigation.navigate("Perfil")}
+          >
             <UserTwo width={20} height={20} />
           </TouchableOpacity>
         </View>
@@ -254,8 +322,17 @@ const Home = () => {
         <HomeBannesrs />
 
         {proximaCita !== null && (
-          <View style={{ gap: 10, marginTop: 40, }}>
-            <Text style={{ fontFamily: MyFont.regular, fontSize: MyFont.size[5], color: MyColors.neutro[4], paddingHorizontal: 16, }}>Tu próxima cita</Text>
+          <View style={{ gap: 10, marginTop: 40 }}>
+            <Text
+              style={{
+                fontFamily: MyFont.regular,
+                fontSize: MyFont.size[5],
+                color: MyColors.neutro[4],
+                paddingHorizontal: 16,
+              }}
+            >
+              Tu próxima cita
+            </Text>
             <CitaBoxShort
               tituloCita={nombreLinea(proximaCita.linea_medica)}
               modalidad={proximaCita.modalidad}
@@ -267,9 +344,18 @@ const Home = () => {
           </View>
         )}
 
-          <View style={{ gap: 10, marginTop: 40, }}>
-            <Text style={{ fontFamily: MyFont.regular, fontSize: MyFont.size[5], color: MyColors.neutro[4], paddingHorizontal: 16, }}>Reliza un autodiagnóstico:</Text>
-          </View>
+        <View style={{ gap: 10, marginTop: 40 }}>
+          <Text
+            style={{
+              fontFamily: MyFont.regular,
+              fontSize: MyFont.size[5],
+              color: MyColors.neutro[4],
+              paddingHorizontal: 16,
+            }}
+          >
+            Reliza un autodiagnóstico:
+          </Text>
+        </View>
 
         {/* Sección de Servicios que llevan al Agendamiento 
         <View style={{ paddingHorizontal: 16, marginTop: 20, }}>
@@ -283,29 +369,107 @@ const Home = () => {
         */}
 
         {/* Sección de Diagnósticos que abren el WebView */}
-        <View style={{ paddingHorizontal: 16, marginTop: 20, }}>
-          <ServicioCard pressAction={() => { handleDiagnostico('Capilar') }} title='Adiós calvicie' text='Recupera tu cabello' imageUrl='diagnosis-alopecia' />
-          <ServicioCardTwo pressAction={() => { handleDiagnostico('Facial') }} title='Renueva tu' titleColored='rostro' titleColor='#AD50E8' text='Tratamientos de rejuvenecimiento.' imageUrl='diagnosis-facial' />
-          <ServicioCardTwo pressAction={() => { handleDiagnostico('Sexual') }} title='Ten buen' titleColored='sexo' titleColor='#FF8290' text='Mejora tu vida íntima.' imageUrl='diagnosis-sexual' />
-          <ServicioCardTwo pressAction={() => { handleDiagnostico('Psicologia') }} title='Encuentra' titleColored='calma' titleColor='#518BFF' text='El bienestar comienza en tu mente.' imageUrl='diagnosis-psicologia' />
+        <View style={{ paddingHorizontal: 16, marginTop: 20 }}>
+          <ServicioCard
+            pressAction={() => {
+              handleDiagnostico("Capilar");
+            }}
+            title="Adiós calvicie"
+            text="Recupera tu cabello"
+            imageUrl="diagnosis-alopecia"
+          />
+          <ServicioCardTwo
+            pressAction={() => {
+              handleDiagnostico("Facial");
+            }}
+            title="Renueva tu"
+            titleColored="rostro"
+            titleColor="#AD50E8"
+            text="Tratamientos de rejuvenecimiento."
+            imageUrl="diagnosis-facial"
+          />
+          <ServicioCardTwo
+            pressAction={() => {
+              handleDiagnostico("Sexual");
+            }}
+            title="Ten buen"
+            titleColored="sexo"
+            titleColor="#FF8290"
+            text="Mejora tu vida íntima."
+            imageUrl="diagnosis-sexual"
+          />
+          <ServicioCardTwo
+            pressAction={() => {
+              handleDiagnostico("Psicologia");
+            }}
+            title="Encuentra"
+            titleColored="calma"
+            titleColor="#518BFF"
+            text="El bienestar comienza en tu mente."
+            imageUrl="diagnosis-psicologia"
+          />
         </View>
 
         <View style={styles.agendamientoBox}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12, }}>
-            <Image source={require('../../../../assets/doctora.png')} style={styles.agendamientoBoxImage} />
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 12,
+            }}
+          >
+            <Image
+              source={require("../../../../assets/doctora.png")}
+              style={styles.agendamientoBoxImage}
+            />
             <View>
-              <Text style={{ fontFamily: MyFont.medium, fontSize: 36, color: MyColors.white, }}>Adiós calvicie</Text>
-              <Text style={{ fontFamily: MyFont.regular, fontSize: 15, color: MyColors.white, lineHeight: 19, }}>Agenda y autodiagnostícate</Text>
+              <Text
+                style={{
+                  fontFamily: MyFont.medium,
+                  fontSize: 36,
+                  color: MyColors.white,
+                }}
+              >
+                Adiós calvicie
+              </Text>
+              <Text
+                style={{
+                  fontFamily: MyFont.regular,
+                  fontSize: 15,
+                  color: MyColors.white,
+                  lineHeight: 19,
+                }}
+              >
+                Agenda y autodiagnostícate
+              </Text>
             </View>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
-            <ButtonOne text='Agenda ahora' icon={CalendarioNumeroVerde} pressAction={() => { handleMedicalLine('Capilar') }} />
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <ButtonOne
+              text="Agenda ahora"
+              icon={CalendarioNumeroVerde}
+              pressAction={() => {
+                handleMedicalLine("Capilar");
+              }}
+            />
           </View>
         </View>
 
-        <View style={{ marginTop: 40, marginBottom: 150, alignItems: 'center', }}>
-          <TouchableOpacity onPress={() => WebBrowser.openBrowserAsync('https://rogansya.com/rogans-app/legal/')} style={{ flexDirection: 'row', alignItems: 'center', gap: 8, }}>
-            <Text style={{ fontFamily: MyFont.medium, fontSize: 16, }}>Términos y condiciones</Text>
+        <View
+          style={{ marginTop: 40, marginBottom: 150, alignItems: "center" }}
+        >
+          <TouchableOpacity
+            onPress={() =>
+              WebBrowser.openBrowserAsync(
+                "https://rogansya.com/rogans-app/legal/"
+              )
+            }
+            style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
+          >
+            <Text style={{ fontFamily: MyFont.medium, fontSize: 16 }}>
+              Términos y condiciones
+            </Text>
             <Arrow width={16} height={16} />
           </TouchableOpacity>
           <Logo style={{ marginTop: 30 }} width={80} height={40} />
@@ -326,7 +490,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
-    paddingTop: Platform.OS === 'android' ? 10 : 30,
+    paddingTop: Platform.OS === "android" ? 10 : 30,
     marginVertical: 30,
   },
   titleContainer: {
@@ -346,7 +510,7 @@ const styles = StyleSheet.create({
     fontFamily: MyFont.bold,
   },
   containerNavBtn: {
-    position: 'relative',
+    position: "relative",
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,
@@ -354,13 +518,11 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     gap: 18,
   },
-  navBtn: {
-    
-  },
+  navBtn: {},
   textNavBtn: {
     fontSize: 12,
     fontFamily: MyFont.regular,
-    color: '#444444',
+    color: "#444444",
   },
   section: {
     flex: 1,
@@ -385,39 +547,39 @@ const styles = StyleSheet.create({
   },
   modalFade: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
   modalContainer2: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContent: {
-    position: 'relative',
+    position: "relative",
     borderRadius: 20,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   cerrarBtn: {
-    position: 'absolute',
+    position: "absolute",
     top: 13,
     left: 13,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
     zIndex: 20,
-    backgroundColor: 'rgba(265, 265, 265, 0.5)',
+    backgroundColor: "rgba(265, 265, 265, 0.5)",
     paddingVertical: 3,
     paddingHorizontal: 6,
     borderRadius: 14,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   textModal: {
     fontSize: 13,
     fontFamily: MyFont.regular,
   },
   agendamientoBox: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    flexDirection: "column",
+    justifyContent: "space-between",
     backgroundColor: MyColors.verde[5],
     borderRadius: 18,
     paddingTop: 28,
@@ -437,7 +599,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     marginTop: 10,
-  }
+  },
 });
 
 export default Home;

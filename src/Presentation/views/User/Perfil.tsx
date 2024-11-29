@@ -1,6 +1,7 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import * as Notifications from "expo-notifications";
 import {
   collection,
   doc,
@@ -18,10 +19,10 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
   TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
@@ -50,8 +51,11 @@ const Perfil = () => {
   } = Icons;
   const { name, lastname, document, email, phone, user_id, birthdate, role } =
     useSelector((state: any) => state.user);
-  const { handleUpdateUserInfo, handleDeleteAccount, loading: firebaseLoading } =
-    useRegisterFirebase();
+  const {
+    handleUpdateUserInfo,
+    handleDeleteAccount,
+    loading: firebaseLoading,
+  } = useRegisterFirebase();
   const [loading, setLoading] = useState(false);
   const [modalEliminarCuenta, setModalEliminarCuenta] = useState(false);
   const [modalCerrarSesion, setModalCerrarSesion] = useState(false);
@@ -111,6 +115,7 @@ const Perfil = () => {
       if (!querySnapshot.empty) {
         const firstDoc = querySnapshot.docs[0];
         const usersDocument = doc(db, "users", firstDoc.id);
+        const token = (await Notifications.getDevicePushTokenAsync()).data;
         try {
           const imageUrl = await convertImageToFirebaseUrl(image);
           const user = {
@@ -123,6 +128,7 @@ const Perfil = () => {
             lastname,
             phone,
             birthdate,
+            token,
           };
           await updateDoc(usersDocument, user);
           dispatch(setUserInfo(user));
@@ -155,10 +161,17 @@ const Perfil = () => {
 
   const handleSave = async () => {
     setLoading(true);
-
+    const token = (await Notifications.getDevicePushTokenAsync()).data;
     if (newName && newLastname && newDocument && newEmail) {
       try {
-        await handleUpdateUserInfo(phone, newName, newLastname, newDocument, newEmail);
+        await handleUpdateUserInfo(
+          phone,
+          newName,
+          newLastname,
+          newDocument,
+          newEmail,
+          token
+        );
 
         dispatch(
           setUserInfo({
@@ -166,19 +179,20 @@ const Perfil = () => {
             lastname: newLastname,
             document: newDocument,
             email: newEmail,
+            token: token,
             phone,
             user_id,
           })
         );
 
         setLoading(false);
-        setEditModalVisible(false)
+        setEditModalVisible(false);
       } catch (error) {
-        console.error('Error al actualizar la información:', error);
-        Alert.alert('No se pudo guardar la información.');
+        console.error("Error al actualizar la información:", error);
+        Alert.alert("No se pudo guardar la información.");
       }
     } else {
-      Alert.alert('Por favor, complete todos los campos.');
+      Alert.alert("Por favor, complete todos los campos.");
     }
   };
 
@@ -422,12 +436,19 @@ const Perfil = () => {
                 autoCapitalize="none"
               />
 
-              <View style={{flexDirection: 'row', justifyContent: 'space-between',}}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
                 <TouchableOpacity
                   style={styles.saveButton}
                   onPress={handleSave}
                 >
-                  <Text style={styles.saveButtonText}>{loading ? 'Guardando...' : 'Guardar'}</Text>
+                  <Text style={styles.saveButtonText}>
+                    {loading ? "Guardando..." : "Guardar"}
+                  </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -441,7 +462,6 @@ const Perfil = () => {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-
 
       <View style={styles.container}>
         <ScrollView style={styles.scrollContainer}>
@@ -486,7 +506,9 @@ const Perfil = () => {
                 }}
               >
                 <Text style={styles.subtitleInfo}>Nombre</Text>
-                <Text style={styles.titleInfo}>{name === '' ? 'Sin especificar' : name + " " + lastname}</Text>
+                <Text style={styles.titleInfo}>
+                  {name === "" ? "Sin especificar" : name + " " + lastname}
+                </Text>
               </View>
             </View>
             <View style={styles.info}>
@@ -499,7 +521,9 @@ const Perfil = () => {
                 }}
               >
                 <Text style={styles.subtitleInfo}>Documento de identidad</Text>
-                <Text style={styles.titleInfo}>{document === '' ? 'Sin espefificar' : document}</Text>
+                <Text style={styles.titleInfo}>
+                  {document === "" ? "Sin espefificar" : document}
+                </Text>
               </View>
             </View>
             <View style={styles.info}>
@@ -525,11 +549,13 @@ const Perfil = () => {
                 }}
               >
                 <Text style={styles.subtitleInfo}>Correo</Text>
-                <Text style={styles.titleInfo}>{email === '' ? 'Sin especificar' : email}</Text>
+                <Text style={styles.titleInfo}>
+                  {email === "" ? "Sin especificar" : email}
+                </Text>
               </View>
             </View>
-            
-            <View style={{gap: 15,}}>
+
+            <View style={{ gap: 15 }}>
               <View
                 style={{
                   justifyContent: "center",
@@ -593,7 +619,6 @@ const Perfil = () => {
                 </TouchableOpacity>
               </View>
             </View>
-
           </View>
         </ScrollView>
       </View>
@@ -741,7 +766,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
     backgroundColor: "white",
@@ -829,7 +854,7 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     color: MyColors.neutro[1],
     fontFamily: MyFont.regular,
-  },  
+  },
 });
 
 export default Perfil;
