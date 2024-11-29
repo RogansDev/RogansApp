@@ -177,7 +177,6 @@ const Agendamiento = () => {
         socket.emit('crearCita', agendamientoData, (response: any) => {
             // Manejar la respuesta del servidor
             if (response.success) {
-                Alert.alert('Agendamiento ok');
                 handleOpenSuccessModal(); // Mostrar el modal de éxito
             } else {
                 console.error('Error:', response.error);

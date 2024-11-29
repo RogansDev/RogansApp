@@ -209,12 +209,20 @@ const FloatingMenu = ({ chatVisible, setChatVisible, triggerSuccessModal }: any)
                 <CircleButton pressAction={() => {handleChat()}} text="Chat en vivo" width="auto" backgroundColor={MyColors.fondo[2]} icon={Audifonos} iconSize={{width: 22, height: 22}} />
               </View>
             </View>
-            {/*<View>
+            {/*
+            <View style={{paddingHorizontal: 16}}>
               <Text style={MyFontStyles.title_2}>Comparte y ganá</Text>
               <View style={{flexDirection: 'row'}}>
                 <CircleButton text="Referidos" width="auto" backgroundColor={MyColors.fondo[2]} icon={Referidos} iconSize={{width: 22, height: 22}} />
               </View>
-            </View>*/}
+            </View>
+            */}
+            <View style={{paddingHorizontal: 16}}>
+              <Text style={MyFontStyles.title_2}>Mi historial</Text>
+              <View style={{flexDirection: 'row'}}>
+                <CircleButton text="Mi historial" width="auto" backgroundColor={MyColors.fondo[2]} icon={Referidos} iconSize={{width: 22, height: 22}} pressAction={() => {navigation.navigate("MiHistorial"), setTelemedicinaVisible(!telemedicinaVisible)}} />
+              </View>
+            </View>
             <View style={{paddingHorizontal: 16}}>
               <Text style={MyFontStyles.title_2}>Mi Cuenta</Text>
               <View style={{flexDirection: 'row'}}>
