@@ -9,7 +9,11 @@ const Navigation = () => {
   const { logged } = useSelector((state: any) => state.authorization);
 
   const linking = {
-    prefixes: ["rogansapp://", "https://rogansya.com/app"],
+    prefixes: [
+      "rogansapp://",
+      "https://rogansya.com/app",
+      "https://roganscare.com:5500/app",
+    ],
     config: {
       screens: {
         PublicScreen: "login",
@@ -20,23 +24,27 @@ const Navigation = () => {
   };
 
   useEffect(() => {
-    const handleDeepLink = (event: { url: string }) => {
+    const handleDeepLink = async (event: { url: string }) => {
       console.log("Received URL:", event.url);
-      // Aquí puedes agregar lógica adicional para manejar el deep link
+
+      // Parsea la URL y navega según sea necesario
+      const route = await linking.parse(event.url);
+      if (route) {
+        console.log("route", route);
+      }
     };
 
-    Linking.addEventListener("url", handleDeepLink);
+    const subscription = Linking.addEventListener("url", handleDeepLink);
 
     // Manejar links iniciales
     Linking.getInitialURL().then((url) => {
       if (url) {
-        console.log("Initial URL:", url);
-        // Manejar el URL inicial si es necesario
+        handleDeepLink({ url });
       }
     });
 
     return () => {
-      Linking.removeEventListener("url", handleDeepLink);
+      subscription.remove();
     };
   }, []);
 
