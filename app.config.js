@@ -5,6 +5,7 @@ export default {
     },
     "name": "RogansApp",
     "slug": "RogansApp",
+    "scheme": "rogansapp",
     "version": "2.1.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -45,7 +46,11 @@ export default {
         "NSPhotoLibraryUsageDescription": "Necesitamos acceder a la galería para seleccionar imágenes."
       },
       "googleServicesFile": "./GoogleService-Info.plist",
-      "usesAppleSignIn": true
+      "usesAppleSignIn": true,
+      "associatedDomains": [
+        "applinks:rogansya.com", 
+        "applinks:192.168.100.3", 
+        "applinks:rogans-admin.netlify.app"]
     },
     "android": {
       "adaptiveIcon": {
