@@ -47,7 +47,10 @@ export default {
       },
       "googleServicesFile": "./GoogleService-Info.plist",
       "usesAppleSignIn": true,
-      "associatedDomains": ["applinks:rogansya.com", "applinks:192.168.100.3"]
+      "associatedDomains": [
+        "applinks:rogansya.com", 
+        "applinks:192.168.100.3", 
+        "applinks:rogans-admin.netlify.app"]
     },
     "android": {
       "adaptiveIcon": {

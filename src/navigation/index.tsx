@@ -13,6 +13,7 @@ const Navigation = () => {
       "rogansapp://",
       "https://rogansya.com/app",
       "https://roganscare.com:5500/app",
+      "https://rogans-admin.netlify.app/app",
     ],
     config: {
       screens: {
