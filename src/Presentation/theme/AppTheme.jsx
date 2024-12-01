@@ -158,7 +158,13 @@ export const MyFontStyles = StyleSheet.create({
     fontSize: MyFont.size[7],
     color: MyColors.neutro[1],
     fontFamily: MyFont.regular,
-  }
+  },
+  title_h2: {
+    fontSize: MyFont.size[5],
+    color: MyColors.neutro[3],
+    fontFamily: MyFont.Poppins[400],
+    marginBottom: 20,
+  },
 });
 
 export const MyStyles = StyleSheet.create({
@@ -171,6 +177,16 @@ export const MyStyles = StyleSheet.create({
       backgroundColor: MyColors.verde[1],
       borderRadius: 10,
       gap: 8,
+  },
+  buttonSmall: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    padding: 6,
+    backgroundColor: MyColors.verde[4],
+    borderRadius: 10,
+    gap: 8,
   },
   buttonDropdown: {
     flexDirection: 'row',
@@ -192,6 +208,9 @@ export const MyStyles = StyleSheet.create({
   },
   buttonEnabled: {
     backgroundColor: MyColors.verde[1],
+  },
+  buttonEnabledSmall: {
+    backgroundColor: MyColors.verde[3],
   },
   buttonDisabled: {
       backgroundColor: MyColors.neutroDark[2],

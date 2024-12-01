@@ -112,7 +112,7 @@ const Home = () => {
     } else if (tipo === "Sexual") {
       url = `https://rogansya.com/diagnostico-rendimiento-sexual?environment=app&phone=${phone}`;
     } else if (tipo === "Psicologia") {
-      url = `https://rogansya.com/diagnostico-psicologia?environment=app&phone=${phone}`;
+      url = `https://rogansya.com/diagnostico-psicologia-en-linea?environment=app&phone=${phone}`;
     }
 
     console.log("handleDiagnostico llamado con tipo:", tipo);
@@ -450,7 +450,7 @@ const Home = () => {
               text="Agenda ahora"
               icon={CalendarioNumeroVerde}
               pressAction={() => {
-                handleMedicalLine("Capilar");
+                handleMedicalLine("");
               }}
             />
           </View>

@@ -2,25 +2,38 @@ import React from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../theme/Icons';
+import ButtonSmall from "../buttons/ButtonSmall";
 
 const FormulasMedicasBox = ({ pdfTitle, consultationDate, issue }: { pdfTitle: string, consultationDate: string, issue: string }) => {
-    const { DocumentoIcon } = Icons;
+    const { DocumentoIcon, Calendar, Doctor } = Icons;
 
     return (
         <View style={styles.formulasMedicasBoxContainer}>
             <View style={styles.leftLine}></View>
             <View style={styles.formulasMedicasBoxContent}>
                 <View style={styles.textContainer}>
+                    <Text style={styles.subtitle}>Fórmula médica</Text>
                     <Text style={styles.pdfTitle}>{pdfTitle}</Text>
                     <View style={styles.detailsSection}>
-                        <Text style={styles.consultationDate}>{consultationDate}</Text>
-                        <Text style={styles.issue}>{issue}</Text>
+                        <View style={{flexDirection: 'row', gap: 6,}}>
+                            <Calendar width={20} height={20} />
+                            <Text style={styles.consultationDate}>{consultationDate}</Text>
+                        </View>
+                        <View style={{flexDirection: 'row', gap: 6,}}>
+                            <Doctor width={20} height={20} />
+                            <Text style={styles.issue}>{issue}</Text>
+                        </View>
                     </View>
+                    <ButtonSmall text="Comprar" width={110} />
                 </View>
-                <TouchableOpacity style={styles.pdfContainer} onPress={() => { /* Lógica para abrir o descargar el PDF */ }}>
-                    <DocumentoIcon width={50} height={50} />
-                    <Text style={styles.pdfTextBtn}>PDF</Text>
-                </TouchableOpacity>
+                
+                <View>
+                    <TouchableOpacity style={styles.pdfContainer} onPress={() => { /* Lógica para abrir o descargar el PDF */ }}>
+                        <DocumentoIcon width={50} height={50} />
+                        <Text style={styles.pdfTextBtn}>PDF</Text>
+                    </TouchableOpacity>
+                    
+                </View>
             </View>
         </View>
     );
@@ -72,17 +85,24 @@ const styles = StyleSheet.create({
         color: MyColors.neutro[4],
         fontFamily: MyFont.Poppins[700],
     },
-    pdfTitle: {
+    subtitle: {
         fontSize: 16,
-        color: MyColors.neutroDark[4],
+        color: MyColors.neutroDark[3],
         fontFamily: MyFont.medium,
+        marginBottom: 5,
+    },
+    pdfTitle: {
+        fontSize: 18,
+        color: MyColors.neutro[2],
+        fontFamily: MyFont.bold,
+        marginBottom: 8,
     },
     detailsSection: {
         marginTop: 5,
     },
     consultationDate: {
-        fontSize: 14,
-        color: MyColors.neutroDark[3],
+        fontSize: 16,
+        color: MyColors.neutroDark[4],
         fontFamily: MyFont.regular,
         marginBottom: 5,
     },

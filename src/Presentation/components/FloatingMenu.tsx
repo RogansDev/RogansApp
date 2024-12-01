@@ -18,7 +18,7 @@ import { es } from 'date-fns/locale/es';
 import axios from 'axios';
 
 const FloatingMenu = ({ chatVisible, setChatVisible, triggerSuccessModal }: any) => {
-  const { InicioIcon, InicioGreen, ServiciosIcon, MiAgendaIcon, MiAgendaGreen, UserGreen, InicioBlack, ServiciosBlack, MiAgendaBlack, CloseIcon, CalendarVerde, CalendarAddVerde, AgendarIcon, PhoneApp, Audifonos, Referidos, AgendarBlackIcon, Main, Call } = Icons;
+  const { InicioIcon, InicioGreen, ServiciosIcon, MiAgendaIcon, MiAgendaGreen, UserGreen, InicioBlack, ServiciosBlack, MiAgendaBlack, CloseIcon, CalendarVerde, CalendarAddVerde, AgendarIcon, PhoneApp, Audifonos, Referidos, AgendarBlackIcon, Main, Call, DocumentoVerdeBold } = Icons;
 
   const currentRoute = useCurrentRoute();
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
@@ -202,6 +202,13 @@ const FloatingMenu = ({ chatVisible, setChatVisible, triggerSuccessModal }: any)
               <CircleButton pressAction={() => {handleMedicalLine('')}} text="Agendar cita" width="auto" icon={CalendarAddVerde} iconSize={{width: 22, height: 22}} />
               <CircleButton text="Ver Citas" width="auto" icon={CalendarVerde} iconSize={{width: 22, height: 22}} pressAction={() => {navigation.navigate("MisCitas"), setTelemedicinaVisible(!telemedicinaVisible)}} />
             </View>
+            <View style={{paddingHorizontal: 16, marginBottom: 40,}}>
+              <Text style={MyFontStyles.title_2}>Mi cuenta</Text>
+              <View style={{flexDirection: 'row'}}>
+                <CircleButton text="Mis documentos" width="auto" backgroundColor={MyColors.fondo[2]} icon={DocumentoVerdeBold} iconSize={{width: 22, height: 22}} pressAction={() => {navigation.navigate("MiHistorial"), setTelemedicinaVisible(!telemedicinaVisible)}} />
+                <CircleButton text="Mis datos" width="auto" backgroundColor={MyColors.fondo[2]} icon={UserGreen} iconSize={{width: 22, height: 22}} pressAction={() => {navigation.navigate("Perfil"), setTelemedicinaVisible(!telemedicinaVisible)}} />
+              </View>
+            </View>
             <View style={{paddingHorizontal: 16}}>
               <Text style={MyFontStyles.title_2}>Atención 24/7</Text>
               <View style={{flexDirection: 'row', marginBottom: 40}}>
@@ -217,18 +224,6 @@ const FloatingMenu = ({ chatVisible, setChatVisible, triggerSuccessModal }: any)
               </View>
             </View>
             */}
-            <View style={{paddingHorizontal: 16}}>
-              <Text style={MyFontStyles.title_2}>Mi historial</Text>
-              <View style={{flexDirection: 'row'}}>
-                <CircleButton text="Mi historial" width="auto" backgroundColor={MyColors.fondo[2]} icon={Referidos} iconSize={{width: 22, height: 22}} pressAction={() => {navigation.navigate("MiHistorial"), setTelemedicinaVisible(!telemedicinaVisible)}} />
-              </View>
-            </View>
-            <View style={{paddingHorizontal: 16}}>
-              <Text style={MyFontStyles.title_2}>Mi Cuenta</Text>
-              <View style={{flexDirection: 'row'}}>
-                <CircleButton text="Mis datos" width="auto" backgroundColor={MyColors.fondo[2]} icon={UserGreen} iconSize={{width: 22, height: 22}} pressAction={() => {navigation.navigate("Perfil"), setTelemedicinaVisible(!telemedicinaVisible)}} />
-              </View>
-            </View>
           </ScrollView>
         </View>
         <TouchableOpacity onPress={() => setTelemedicinaVisible(!telemedicinaVisible)} style={styles.uchatOverlay} />

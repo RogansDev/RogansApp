@@ -130,6 +130,10 @@ import AutodiagnosticoBlack from '../../../assets/icons/autodiagnostico-virtual.
 import CalendarioNumeroWhite from '../../../assets/icons/calendar-white-numero.svg';
 import CalendarioNumeroVerde from '../../../assets/icons/calendar-verde-numero.svg';
 import UserGreen from '../../../assets/icons/usuario-verde.svg';
+import DocumentoVerde from '../../../assets/icons/documento-verde.svg';
+import DineroVerde from '../../../assets/icons/dinero-verde.svg';
+import Doctor from '../../../assets/icons/doctor.svg';
+import DocumentoVerdeBold from '../../../assets/icons/documento-verde-bold.svg';
 
 const Icons = {
   LogoWhite,
@@ -264,6 +268,10 @@ const Icons = {
   CalendarioNumeroWhite,
   CalendarioNumeroVerde,
   UserGreen,
+  DocumentoVerde,
+  DineroVerde,
+  Doctor,
+  DocumentoVerdeBold,
 };
 
 export default Icons;

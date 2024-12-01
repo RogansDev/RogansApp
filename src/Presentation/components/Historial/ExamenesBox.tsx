@@ -4,17 +4,24 @@ import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../theme/Icons';
 
 const ExamenesBox = ({ pdfTitle, consultationDate, issue }: { pdfTitle: string, consultationDate: string, issue: string }) => {
-    const { DocumentoIcon } = Icons;
+    const { DocumentoIcon, Calendar, DocumentoVerde } = Icons;
 
     return (
-        <View style={styles.examenessBoxContainer}>
+        <View style={styles.examenesBoxContainer}>
             <View style={styles.leftLine}></View>
             <View style={styles.examenessBoxContent}>
                 <View style={styles.textContainer}>
+                    <Text style={styles.subtitle}>Orden de exámenes</Text>
                     <Text style={styles.pdfTitle}>{pdfTitle}</Text>
                     <View style={styles.detailsSection}>
-                        <Text style={styles.consultationDate}>{consultationDate}</Text>
-                        <Text style={styles.issue}>{issue}</Text>
+                        <View style={{flexDirection: 'row', gap: 6,}}>
+                            <Calendar width={20} height={20} />
+                            <Text style={styles.consultationDate}>{consultationDate}</Text>
+                        </View>
+                        <View style={{flexDirection: 'row', gap: 6,}}>
+                            <DocumentoVerde width={20} height={20} />
+                            <Text style={styles.issue}>{issue}</Text>
+                        </View>
                     </View>
                 </View>
                 <TouchableOpacity style={styles.pdfContainer} onPress={() => { }}>
@@ -27,7 +34,7 @@ const ExamenesBox = ({ pdfTitle, consultationDate, issue }: { pdfTitle: string, 
 };
 
 const styles = StyleSheet.create({
-    examenessBoxContainer: {
+    examenesBoxContainer: {
         flexDirection: 'column',
         padding: 15,
         borderRadius: 10,
@@ -72,17 +79,24 @@ const styles = StyleSheet.create({
         color: MyColors.neutro[4],
         fontFamily: MyFont.Poppins[700],
     },
-    pdfTitle: {
+    subtitle: {
         fontSize: 16,
-        color: MyColors.neutroDark[4],
+        color: MyColors.neutroDark[3],
         fontFamily: MyFont.medium,
+        marginBottom: 5,
+    },
+    pdfTitle: {
+        fontSize: 18,
+        color: MyColors.neutro[2],
+        fontFamily: MyFont.bold,
+        marginBottom: 8,
     },
     detailsSection: {
         marginTop: 5,
     },
     consultationDate: {
-        fontSize: 14,
-        color: MyColors.neutroDark[3],
+        fontSize: 16,
+        color: MyColors.neutroDark[4],
         fontFamily: MyFont.regular,
         marginBottom: 5,
     },

@@ -20,7 +20,7 @@ const HomeBanners = () => {
   const calendaryState = useSelector((state : any) => state.calendary);
   const viewportWidth = Dimensions.get('window').width;
   const IMAGE_WIDTH = viewportWidth * 0.8;
-  const IMAGE_HEIGHT = IMAGE_WIDTH * 0.6;
+  const IMAGE_HEIGHT = IMAGE_WIDTH * 0.55;
   const ITEM_MARGIN_RIGHT = 15;
 
   const MedicalLineState = useSelector((state : any) => state.medicalLine);
