@@ -315,6 +315,17 @@ export const MyStyles = StyleSheet.create({
     gap: 6,
     width: '100%',
   },
+  buttonOneSmall: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 3,
+    borderRadius: 50,
+    gap: 6,
+    width: '100%',
+  },
   buttonEnabledOne: {
     backgroundColor: MyColors.white,
   },
@@ -323,6 +334,11 @@ export const MyStyles = StyleSheet.create({
   },
   textButtonOne: {
     fontSize: MyFont.size[6],
+    fontFamily: MyFont.regular,
+    color: MyColors.verde[5],
+  },
+  textButtonOneSmall: {
+    fontSize: MyFont.size[7],
     fontFamily: MyFont.regular,
     color: MyColors.verde[5],
   },
@@ -345,6 +361,19 @@ export const MyStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: MyColors.verdeDark[5],
   },
+  buttonTwoSmall: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 6,
+    borderRadius: 50,
+    gap: 6,
+    borderWidth: 1,
+    borderColor: MyColors.verde[3],
+  },
   buttonEnabledTwo: {
   },
   buttonDisabledTwo: {
@@ -354,8 +383,16 @@ export const MyStyles = StyleSheet.create({
     fontFamily: MyFont.regular,
     color: MyColors.verdeDark[5],
   },
+  textButtonTwoSmall: {
+    fontSize: MyFont.size[7],
+    fontFamily: MyFont.regular,
+    color: MyColors.verde[3],
+  },
   textButtonEnabledTwo: {
     color: MyColors.verdeDark[5],
+  },
+  textButtonEnabledTwoSmall: {
+    color: MyColors.verde[3],
   },
   textButtonDisabledTwo: {
     color: MyColors.neutroDark[4],

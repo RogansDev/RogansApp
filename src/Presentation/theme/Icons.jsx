@@ -134,6 +134,8 @@ import DocumentoVerde from '../../../assets/icons/documento-verde.svg';
 import DineroVerde from '../../../assets/icons/dinero-verde.svg';
 import Doctor from '../../../assets/icons/doctor.svg';
 import DocumentoVerdeBold from '../../../assets/icons/documento-verde-bold.svg';
+import AutodiagnosticoVerde from '../../../assets/icons/autodiagnostico-verde.svg';
+import AutodiagnosticoBlanco from '../../../assets/icons/autodiagnostico-blanco.svg';
 
 const Icons = {
   LogoWhite,
@@ -272,6 +274,8 @@ const Icons = {
   DineroVerde,
   Doctor,
   DocumentoVerdeBold,
+  AutodiagnosticoVerde,
+  AutodiagnosticoBlanco
 };
 
 export default Icons;

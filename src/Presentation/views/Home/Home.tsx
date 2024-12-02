@@ -353,7 +353,7 @@ const Home = () => {
               paddingHorizontal: 16,
             }}
           >
-            Reliza un autodiagnóstico:
+            Tu salud, nuestra prioridad
           </Text>
         </View>
 
@@ -371,7 +371,10 @@ const Home = () => {
         {/* Sección de Diagnósticos que abren el WebView */}
         <View style={{ paddingHorizontal: 16, marginTop: 20 }}>
           <ServicioCard
-            pressAction={() => {
+            pressAgendar={() => {
+              handleMedicalLine('Capilar');
+            }}
+            pressAutodiagnostico={() => {
               handleDiagnostico("Capilar");
             }}
             title="Adiós calvicie"
@@ -379,7 +382,10 @@ const Home = () => {
             imageUrl="diagnosis-alopecia"
           />
           <ServicioCardTwo
-            pressAction={() => {
+            pressAgendar={() => {
+              handleMedicalLine('Facial');
+            }}
+            pressAutodiagnostico={() => {
               handleDiagnostico("Facial");
             }}
             title="Renueva tu"
@@ -387,9 +393,13 @@ const Home = () => {
             titleColor="#AD50E8"
             text="Tratamientos de rejuvenecimiento."
             imageUrl="diagnosis-facial"
+            autodiagnostico={true}
           />
           <ServicioCardTwo
-            pressAction={() => {
+            pressAgendar={() => {
+              handleMedicalLine('Sexual');
+            }}
+            pressAutodiagnostico={() => {
               handleDiagnostico("Sexual");
             }}
             title="Ten buen"
@@ -397,9 +407,13 @@ const Home = () => {
             titleColor="#FF8290"
             text="Mejora tu vida íntima."
             imageUrl="diagnosis-sexual"
+            autodiagnostico={true}
           />
           <ServicioCardTwo
-            pressAction={() => {
+            pressAgendar={() => {
+              handleMedicalLine('Psicologia');
+            }}
+            pressAutodiagnostico={() => {
               handleDiagnostico("Psicologia");
             }}
             title="Encuentra"
@@ -407,7 +421,10 @@ const Home = () => {
             titleColor="#518BFF"
             text="El bienestar comienza en tu mente."
             imageUrl="diagnosis-psicologia"
+            autodiagnostico={true}
           />
+          <ServicioCardTwo pressAgendar={() => { handleMedicalLine('Corporal') }} title='Cuida tu' titleColored='cuerpo' titleColor='#eda145' text='Bienestar de nutrición' imageUrl='diagnosis-nutricion' />
+          <ServicioCardTwo pressAgendar={() => { handleMedicalLine('Adn') }} title='Predice con' titleColored='ADN' titleColor='#5e5f61' text='Predicción avanzada y precisa.' imageUrl='diagnosis-adn' />
         </View>
 
         <View style={styles.agendamientoBox}>
@@ -427,11 +444,11 @@ const Home = () => {
               <Text
                 style={{
                   fontFamily: MyFont.medium,
-                  fontSize: 36,
+                  fontSize: 32,
                   color: MyColors.white,
                 }}
               >
-                Adiós calvicie
+                Rogans te cuida
               </Text>
               <Text
                 style={{
@@ -441,13 +458,13 @@ const Home = () => {
                   lineHeight: 19,
                 }}
               >
-                Agenda y autodiagnostícate
+                Agenda una cita con nosotros
               </Text>
             </View>
           </View>
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <ButtonOne
-              text="Agenda ahora"
+              text="Agendar ahora"
               icon={CalendarioNumeroVerde}
               pressAction={() => {
                 handleMedicalLine("");

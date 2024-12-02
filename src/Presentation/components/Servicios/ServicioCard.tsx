@@ -2,9 +2,10 @@ import React from 'react';
 import { Text, TouchableOpacity, StyleSheet, Image, View } from 'react-native';
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../theme/Icons';
+import ButtonOneSmall from '../buttons/ButtonOneSmall';
 
 const ServicioBox = ({title, text, imageUrl, pressAction = () => {}}:any) => {
-    const { Arrow, ArrowWhiteIcon } = Icons;
+    const { Arrow, ArrowWhiteIcon, Calendar, AutodiagnosticoVerde } = Icons;
 
     const getImageSource = (imageUrl: string) => {
         switch (imageUrl) {
@@ -27,17 +28,22 @@ const ServicioBox = ({title, text, imageUrl, pressAction = () => {}}:any) => {
 
     return (
         <TouchableOpacity style={styles.container} onPress={pressAction}>
-            <Image source={getImageSource(imageUrl)}  style={styles.profileImage} />
-            <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', alignItems: 'center'}}>
-                <View>
-                    <Text style={styles.title}>
-                        {title}
-                    </Text>
-                    <Text style={styles.text}>
-                        {text}
-                    </Text>
+            <View style={{flexDirection: 'row',}}>
+                <Image source={getImageSource(imageUrl)}  style={styles.profileImage} />
+                <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', alignItems: 'center'}}>
+                    <View>
+                        <Text style={styles.title}>
+                            {title}
+                        </Text>
+                        <Text style={styles.text}>
+                            {text}
+                        </Text>
+                    </View>
                 </View>
-                <ArrowWhiteIcon width={20} height={20} style={styles.icon} />
+            </View>
+            <View style={{flexDirection: 'row', gap: 12, marginBottom: 3, marginTop: 5,}}>
+                <ButtonOneSmall text='Agendar' width={120} icon={Calendar} />
+                <ButtonOneSmall text='Autodiagnóstico' width={190} icon={AutodiagnosticoVerde} />
             </View>
         </TouchableOpacity>
     );
@@ -45,13 +51,12 @@ const ServicioBox = ({title, text, imageUrl, pressAction = () => {}}:any) => {
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 8, 
+        paddingVertical: 15, 
         paddingHorizontal: 15, 
         borderRadius: 10, 
         marginBottom: 15,
         backgroundColor: MyColors.verde[3],
+        alignItems: 'center',
     },
     title: {
         fontSize: MyFont.size[4],

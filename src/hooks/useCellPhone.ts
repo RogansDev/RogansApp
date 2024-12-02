@@ -151,7 +151,7 @@ export const useCellPhone = () => {
     const code = obtenerCodigoLongitudSeisNumerico(); // Generar código de 6 dígitos
     const body = `Su código de ingreso a Rogans es ${code}`;
 
-    console.log("Enviando SMS y guardando el código");
+    console.log("Enviando SMS y guardando el código " + code);
     try {
       const response = await fetch("https://roganscare.com:5500/send-sms", {
         method: "POST",

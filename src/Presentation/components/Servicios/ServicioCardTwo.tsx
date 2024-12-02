@@ -2,9 +2,12 @@ import React from 'react';
 import { Text, TouchableOpacity, StyleSheet, Image, View } from 'react-native';
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../theme/Icons';
+import ButtonOneSmall from '../buttons/ButtonOneSmall';
+import ButtonTwo from '../buttons/ButtonTwo';
+import ButtonTwoSmall from '../buttons/ButtonTwoSmall';
 
-const ServicioBox = ({title, text, titleColored, titleColor, imageUrl, pressAction = () => {}}:any) => {
-    const { Arrow } = Icons;
+const ServicioBox = ({title, text, titleColored, titleColor, imageUrl, pressAgendar = () => {}, pressAutodiagnostico = () => {}, autodiagnostico = false}:any) => {
+    const { Arrow, Calendar, AutodiagnosticoVerde } = Icons;
 
     const getImageSource = (imageUrl: string) => {
         switch (imageUrl) {
@@ -26,28 +29,38 @@ const ServicioBox = ({title, text, titleColored, titleColor, imageUrl, pressActi
     };
 
     return (
-        <TouchableOpacity style={styles.container} onPress={pressAction}>
-            <Image source={getImageSource(imageUrl)}  style={styles.profileImage} />
-            <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', alignItems: 'center'}}>
-                <View>
-                    <Text style={styles.title}>
-                        {title} <Text style={{color: titleColor,}}>{titleColored}</Text>
-                    </Text>
-                    <Text style={styles.text}>
-                        {text}
-                    </Text>
+        <View style={styles.container}>
+            <View style={{flexDirection: 'row',}}>
+                <Image source={getImageSource(imageUrl)}  style={styles.profileImage} />
+                <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', alignItems: 'center'}}>
+                    <View>
+                        <Text style={styles.title}>
+                            {title} <Text style={{color: titleColor,}}>{titleColored}</Text>
+                        </Text>
+                        <Text style={styles.text}>
+                            {text}
+                        </Text>
+                    </View>
                 </View>
-                <Arrow width={20} height={20} style={styles.icon} />
             </View>
-        </TouchableOpacity>
+            <View style={{flexDirection: 'row', gap: 12, marginBottom: 3, marginTop: 5,}}>
+            {autodiagnostico ? (
+                <>
+                    <ButtonTwoSmall text='Agendar' width={120} icon={Calendar} pressAction={pressAgendar} />
+                    <ButtonTwoSmall text='Autodiagnóstico' width={190} icon={AutodiagnosticoVerde} pressAction={pressAutodiagnostico} />
+                </>
+            ) : (
+                <ButtonTwoSmall text='Agendar ahora' width={180} icon={Calendar} pressAction={pressAgendar} />
+            )}
+            </View>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 8, 
+        paddingVertical: 15, 
         paddingHorizontal: 15, 
         borderRadius: 10, 
         borderColor: '#E2E2E2', 

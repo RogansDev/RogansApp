@@ -1,9 +1,9 @@
 import React from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet} from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../theme/Icons';
 
-const CotizacionesBox = ({ pdfTitle, consultationDate, issue }: { pdfTitle: string, consultationDate: string, issue: string }) => {
+const CotizacionesBox = ({ pdfTitle, consultationDate, issue, pressAction = () => {}, }: { pdfTitle: string, consultationDate: string, issue: string, pressAction: any }) => {
     const { DocumentoIcon, Calendar, DineroVerde } = Icons;
 
     return (
@@ -23,7 +23,7 @@ const CotizacionesBox = ({ pdfTitle, consultationDate, issue }: { pdfTitle: stri
                         </View>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.pdfContainer} onPress={() => { }}>
+                <TouchableOpacity style={styles.pdfContainer} onPress={pressAction}>
                     <DocumentoIcon width={50} height={50} />
                     <Text style={styles.pdfTextBtn}>PDF</Text>
                 </TouchableOpacity>

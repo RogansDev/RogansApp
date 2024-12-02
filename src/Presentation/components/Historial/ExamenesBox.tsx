@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../theme/Icons';
 
-const ExamenesBox = ({ pdfTitle, consultationDate, issue }: { pdfTitle: string, consultationDate: string, issue: string }) => {
+const ExamenesBox = ({ pdfTitle, consultationDate, issue, pressAction = () => {}, }: { pdfTitle: string, consultationDate: string, issue: string, pressAction: any }) => {
     const { DocumentoIcon, Calendar, DocumentoVerde } = Icons;
 
     return (
@@ -24,7 +24,7 @@ const ExamenesBox = ({ pdfTitle, consultationDate, issue }: { pdfTitle: string, 
                         </View>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.pdfContainer} onPress={() => { }}>
+                <TouchableOpacity style={styles.pdfContainer} onPress={pressAction}>
                     <DocumentoIcon width={50} height={50} />
                     <Text style={styles.pdfTextBtn}>PDF</Text>
                 </TouchableOpacity>

@@ -4,8 +4,8 @@ import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../theme/Icons';
 import ButtonSmall from "../buttons/ButtonSmall";
 
-const FormulasMedicasBox = ({ pdfTitle, consultationDate, issue }: { pdfTitle: string, consultationDate: string, issue: string }) => {
-    const { DocumentoIcon, Calendar, Doctor } = Icons;
+const FormulasMedicasBox = ({ pdfTitle, consultationDate, issue, price, pressAction = () => {}, pressComprar = () => {}, pago = true}: { pdfTitle: string, consultationDate: string, issue: string, price: string, pressAction: any, pressComprar: any, pago: any }) => {
+    const { DocumentoIcon, Calendar, Doctor, DineroVerde, TickCircleIcon } = Icons;
 
     return (
         <View style={styles.formulasMedicasBoxContainer}>
@@ -23,12 +23,25 @@ const FormulasMedicasBox = ({ pdfTitle, consultationDate, issue }: { pdfTitle: s
                             <Doctor width={20} height={20} />
                             <Text style={styles.issue}>{issue}</Text>
                         </View>
+                        <View style={{flexDirection: 'row', gap: 6,}}>
+                            <DineroVerde width={20} height={20} />
+                            <Text style={styles.issue}>{price}</Text>
+                        </View>
                     </View>
-                    <ButtonSmall text="Comprar" width={110} />
+                    {pago ? (
+                        <View style={styles.pagadoBox}>
+                            <TickCircleIcon width={16} height={16} />
+                            <Text style={styles.pagado}>Pagado</Text>
+                        </View>
+                        
+                    ):(
+                        <ButtonSmall text="Comprar" width={110} pressAction={pressComprar} />
+                    )}
+                    
                 </View>
                 
                 <View>
-                    <TouchableOpacity style={styles.pdfContainer} onPress={() => { /* Lógica para abrir o descargar el PDF */ }}>
+                    <TouchableOpacity style={styles.pdfContainer} onPress={pressAction}>
                         <DocumentoIcon width={50} height={50} />
                         <Text style={styles.pdfTextBtn}>PDF</Text>
                     </TouchableOpacity>
@@ -110,7 +123,25 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: MyColors.neutroDark[4],
         fontFamily: MyFont.medium,
+        marginBottom: 5,
     },
+    pagadoBox: {
+        borderWidth: 1,
+        borderRadius: 20,
+        borderColor: MyColors.neutroDark[4],
+        width: 100,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 3,
+        gap: 5,
+        marginTop: 8,
+    },
+    pagado: {
+        fontSize: 16,
+        color: MyColors.neutroDark[4],
+        fontFamily: MyFont.medium,
+    }
 });
 
 export default FormulasMedicasBox;
