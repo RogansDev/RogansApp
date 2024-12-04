@@ -30,6 +30,7 @@ import Programas from "../Presentation/views/Programas/Programas";
 import Teleconsulta from "../Presentation/views/Telemedicina/Teleconsulta";
 import Agendamiento from "../Presentation/views/Telemedicina/Agendamiento";
 import Diagnostico from "../Presentation/views/Diganosticos/Diagnostico";
+import DiagnosticosList from "../Presentation/views/Diganosticos/DiagnosticosList";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 
@@ -451,6 +452,19 @@ function PrivateScreen() {
       <Stack.Screen
         name="Diagnostico"
         component={Diagnostico}
+        options={({ navigation, route }) => ({
+          headerShown: true,
+          headerTitle: '',
+          headerLeft: () => (<CustomHeader navigation={navigation} route={route} />),
+          headerTintColor: '#00D0B1',
+          headerTitleAlign: 'left',
+          headerShadowVisible: false,
+          headerTransparent: false,
+        })}
+      />
+      <Stack.Screen
+        name="ListaDiagnosticos"
+        component={DiagnosticosList}
         options={({ navigation, route }) => ({
           headerShown: true,
           headerTitle: '',

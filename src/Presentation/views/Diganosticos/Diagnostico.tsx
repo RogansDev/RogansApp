@@ -3,6 +3,10 @@ import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import WebView from 'react-native-webview';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { RootParamList } from '../../../utils/RootParamList'; // Ajusta la ruta según tu estructura
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useDispatch, useSelector } from "react-redux";
+import { setMedicalLineInfo } from "../../../state/MedicalLineSlice";
 
 type DiagnosticoScreenRouteProp = RouteProp<RootParamList, 'Diagnostico'>;
 
@@ -10,8 +14,43 @@ const Diagnostico = () => {
   const [loading, setLoading] = useState(true);
   const webviewRef = useRef<WebView>(null);
 
+  const dispatch = useDispatch();
+
+  const MedicalLineState = useSelector((state: any) => state.medicalLine);
+
+  const navigation = useNavigation<StackNavigationProp<RootParamList>>();
+
   const route = useRoute<DiagnosticoScreenRouteProp>();
   const { url } = route.params;
+
+  const handleMedicalLine = async (linea: string) => {
+    dispatch(
+      setMedicalLineInfo({
+        ...MedicalLineState,
+        lineaMedica: linea,
+      })
+    );
+    navigation.navigate("Agendamiento");
+  };
+
+  const handleMessage = (event: any) => {
+    const data = JSON.parse(event.nativeEvent.data);
+    if (data.type === 'INICIAR_AGEDAMIENTO') {
+      if (url.includes('alopecia')) {
+        handleMedicalLine('Capilar');
+      } else if (url.includes('rejuvenecimiento-facial')) {
+        handleMedicalLine('Facial');
+      } else if (url.includes('corporal')) {
+        handleMedicalLine('nutricion');
+      } else if (url.includes('rendimiento-sexual')) {
+        handleMedicalLine('Sexual');
+      } else if (url.includes('psicologia')) {
+        handleMedicalLine('Psicologia');
+      } else {
+
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -21,6 +60,7 @@ const Diagnostico = () => {
         style={styles.webview}
         allowsInlineMediaPlayback={true}
         javaScriptEnabled={true}
+        onMessage={handleMessage}
         onLoadEnd={() => setLoading(false)}
       />
       {loading && (

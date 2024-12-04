@@ -9,13 +9,13 @@ import { consultCards, procedureCards } from '../views/Servicios/ServicesData';
 import useServices from "../../hooks/useServices";
 import { setMedicalLineInfo } from '../../state/MedicalLineSlice';
 
-const HomeBanners = () => {  
+const HomeBanners = ({ setChatVisible }:any) => {  
   const navigation = useNavigation<StackNavigationProp<RootParamList>>();
   const { getServices, services } = useServices();
 
-  const [initialImages, setInitialImages] = useState([]);
+  const [initialImages, setInitialImages]:any = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const flatListRef = useRef();
+  const flatListRef:any = useRef();
   const dispatch = useDispatch();
   const calendaryState = useSelector((state : any) => state.calendary);
   const viewportWidth = Dimensions.get('window').width;
@@ -109,6 +109,11 @@ const HomeBanners = () => {
             } else if (linkParts[0] === 'consulta') {
               const ruta = linkParts[1];
               handleMedicalLine(ruta);
+            } else if (linkParts[0] === 'accion') {
+              const acc = linkParts[1];
+              if (acc === 'chat') {
+                setChatVisible(true);
+              }
             } else {
               console.error('Unrecognized link format');
             }

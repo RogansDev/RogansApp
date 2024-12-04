@@ -37,4 +37,5 @@ export type RootParamList = {
   Teleconsulta: undefined;
   Agendamiento: undefined;
   Diagnostico: { url: string };
+  ListaDiagnosticos: undefined;
 };

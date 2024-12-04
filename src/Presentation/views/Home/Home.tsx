@@ -319,7 +319,7 @@ const Home = () => {
           </TouchableOpacity>
         </View>
 
-        <HomeBannesrs />
+        <HomeBannesrs setChatVisible={setChatVisible} />
 
         {proximaCita !== null && (
           <View style={{ gap: 10, marginTop: 40 }}>
@@ -380,6 +380,7 @@ const Home = () => {
             title="Adiós calvicie"
             text="Recupera tu cabello"
             imageUrl="diagnosis-alopecia"
+            autodiagnostico={true}
           />
           <ServicioCardTwo
             pressAgendar={() => {
@@ -423,7 +424,7 @@ const Home = () => {
             imageUrl="diagnosis-psicologia"
             autodiagnostico={true}
           />
-          <ServicioCardTwo pressAgendar={() => { handleMedicalLine('Corporal') }} title='Cuida tu' titleColored='cuerpo' titleColor='#eda145' text='Bienestar de nutrición' imageUrl='diagnosis-nutricion' />
+          <ServicioCardTwo pressAgendar={() => { handleMedicalLine('Nutricion') }} title='Cuida tu' titleColored='cuerpo' titleColor='#eda145' text='Bienestar de nutrición' imageUrl='diagnosis-nutricion' />
           <ServicioCardTwo pressAgendar={() => { handleMedicalLine('Adn') }} title='Predice con' titleColored='ADN' titleColor='#5e5f61' text='Predicción avanzada y precisa.' imageUrl='diagnosis-adn' />
         </View>
 
@@ -444,7 +445,7 @@ const Home = () => {
               <Text
                 style={{
                   fontFamily: MyFont.medium,
-                  fontSize: 32,
+                  fontSize: 30,
                   color: MyColors.white,
                 }}
               >

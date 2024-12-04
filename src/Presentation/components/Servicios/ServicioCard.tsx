@@ -4,7 +4,7 @@ import { MyColors, MyFont } from "../../../Presentation/theme/AppTheme";
 import Icons from '../../theme/Icons';
 import ButtonOneSmall from '../buttons/ButtonOneSmall';
 
-const ServicioBox = ({title, text, imageUrl, pressAction = () => {}}:any) => {
+const ServicioBox = ({title, text, imageUrl, pressAgendar = () => {}, pressAutodiagnostico = () => {}, autodiagnostico = false}:any) => {
     const { Arrow, ArrowWhiteIcon, Calendar, AutodiagnosticoVerde } = Icons;
 
     const getImageSource = (imageUrl: string) => {
@@ -27,7 +27,7 @@ const ServicioBox = ({title, text, imageUrl, pressAction = () => {}}:any) => {
     };
 
     return (
-        <TouchableOpacity style={styles.container} onPress={pressAction}>
+        <View style={styles.container}>
             <View style={{flexDirection: 'row',}}>
                 <Image source={getImageSource(imageUrl)}  style={styles.profileImage} />
                 <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', alignItems: 'center'}}>
@@ -42,10 +42,17 @@ const ServicioBox = ({title, text, imageUrl, pressAction = () => {}}:any) => {
                 </View>
             </View>
             <View style={{flexDirection: 'row', gap: 12, marginBottom: 3, marginTop: 5,}}>
-                <ButtonOneSmall text='Agendar' width={120} icon={Calendar} />
-                <ButtonOneSmall text='Autodiagnóstico' width={190} icon={AutodiagnosticoVerde} />
+            {autodiagnostico ? (
+                <>
+                    <ButtonOneSmall text='Agendar' width={120} icon={Calendar} pressAction={pressAgendar} />
+                    <ButtonOneSmall text='Autodiagnóstico' width={190} icon={AutodiagnosticoVerde} pressAction={pressAutodiagnostico} />
+                </>
+            ) : (
+                <ButtonOneSmall text='Agendar' width={120} icon={Calendar} pressAction={pressAgendar} />
+            )}
+                
             </View>
-        </TouchableOpacity>
+        </View>
     );
 }
 
