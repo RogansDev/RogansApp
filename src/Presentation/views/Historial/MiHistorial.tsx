@@ -37,7 +37,7 @@ const MiHistorial = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `https://roganscare.com/documentos/get-documentos.php?phone=573123904069`
+                    `https://roganscare.com/documentos/get-documentos.php?phone=${removePlusSign(telUsuario)}`
                 );
                 if (Array.isArray(response.data)) {
                     setDocumentos(response.data);
@@ -73,6 +73,8 @@ const MiHistorial = () => {
     };
 
     const handleOpenPDF = async (phone: string, id: number, documentType: string) => {
+        console.log('Telefono de llegada: ' + phone);
+        
         try {
             setLoadingPDF(true);
             const url = `https://roganscare.com/documentos/public/index.php?phone=${phone}&id=${id}&document_type=${documentType}`;
@@ -248,7 +250,7 @@ const MiHistorial = () => {
     const fetchPaymentStatuses = async () => {
         const statuses: { [key: string]: boolean } = {};
         for (const doc of documentos.filter((doc) => doc.formula_nombre)) {
-            const isPaid = await verificarPago('573123904069', doc.id);
+            const isPaid = await verificarPago(removePlusSign(telUsuario), doc.id);
             statuses[doc.id] = isPaid;
         }
         setPaymentStatuses(statuses);
@@ -259,6 +261,10 @@ const MiHistorial = () => {
             fetchPaymentStatuses();
         }
     }, [documentos]);
+
+    function removePlusSign(phoneNumber: any) {
+        return phoneNumber.replace('+', '');
+    }
 
     const renderFormulasMedicas = () => {
         if (loadingFormulas) {
@@ -279,7 +285,7 @@ const MiHistorial = () => {
                     style: 'currency',
                     currency: 'COP',
                 }).format(doc.formula_valor_total)}`}
-                pressAction={() => handleOpenPDF(telUsuario, doc.id, 'medical_formula')}
+                pressAction={() => handleOpenPDF(removePlusSign(telUsuario), doc.id, 'medical_formula')}
                 pressComprar={() => iniciarProcesoDePago(doc)}
                 pago={paymentStatuses[doc.id] || false}
             />
@@ -301,7 +307,7 @@ const MiHistorial = () => {
                 pdfTitle={doc.examenes_razon}
                 consultationDate={formatearFecha(doc.examenes_fecha_creacion)}
                 issue={'Exámenes clínicos'}
-                pressAction={() => handleOpenPDF('573123904069', doc.id, 'exam_order')}
+                pressAction={() => handleOpenPDF(removePlusSign(telUsuario), doc.id, 'exam_order')}
             />
         ));
     };
@@ -324,7 +330,7 @@ const MiHistorial = () => {
                     style: 'currency',
                     currency: 'COP',
                 }).format(doc.cotizacion_valor_total)}`}
-                pressAction={() => handleOpenPDF(telUsuario, doc.id, 'quotation')}
+                pressAction={() => handleOpenPDF(removePlusSign(telUsuario), doc.id, 'quotation')}
             />
         ));
     };

@@ -16,21 +16,21 @@ const FormulasMedicasBox = ({ pdfTitle, consultationDate, issue, price, pressAct
                     <Text style={styles.pdfTitle}>{pdfTitle}</Text>
                     <View style={styles.detailsSection}>
                         <View style={{flexDirection: 'row', gap: 6,}}>
-                            <Calendar width={20} height={20} />
+                            <Calendar width={17} height={17} />
                             <Text style={styles.consultationDate}>{consultationDate}</Text>
                         </View>
                         <View style={{flexDirection: 'row', gap: 6,}}>
-                            <Doctor width={20} height={20} />
+                            <Doctor width={17} height={17} />
                             <Text style={styles.issue}>{issue}</Text>
                         </View>
                         <View style={{flexDirection: 'row', gap: 6,}}>
-                            <DineroVerde width={20} height={20} />
+                            <DineroVerde width={17} height={17} />
                             <Text style={styles.issue}>{price}</Text>
                         </View>
                     </View>
                     {pago ? (
                         <View style={styles.pagadoBox}>
-                            <TickCircleIcon width={16} height={16} />
+                            <TickCircleIcon width={15} height={15} />
                             <Text style={styles.pagado}>Pagado</Text>
                         </View>
                         
@@ -42,7 +42,7 @@ const FormulasMedicasBox = ({ pdfTitle, consultationDate, issue, price, pressAct
                 
                 <View>
                     <TouchableOpacity style={styles.pdfContainer} onPress={pressAction}>
-                        <DocumentoIcon width={50} height={50} />
+                        <DocumentoIcon width={45} height={45} />
                         <Text style={styles.pdfTextBtn}>PDF</Text>
                     </TouchableOpacity>
                     
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: 10,
-        marginLeft: 20,
+        marginLeft: 15,
         marginRight: 10,
         position: 'relative',
         zIndex: 10,
@@ -94,12 +94,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     pdfTextBtn: {
-        fontSize: 16,
+        fontSize: 14,
         color: MyColors.neutro[4],
         fontFamily: MyFont.Poppins[700],
     },
     subtitle: {
-        fontSize: 16,
+        fontSize: 14,
         color: MyColors.neutroDark[3],
         fontFamily: MyFont.medium,
         marginBottom: 5,
@@ -114,13 +114,13 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
     consultationDate: {
-        fontSize: 16,
+        fontSize: 14,
         color: MyColors.neutroDark[4],
         fontFamily: MyFont.regular,
         marginBottom: 5,
     },
     issue: {
-        fontSize: 16,
+        fontSize: 14,
         color: MyColors.neutroDark[4],
         fontFamily: MyFont.medium,
         marginBottom: 5,
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
         marginTop: 8,
     },
     pagado: {
-        fontSize: 16,
+        fontSize: 14,
         color: MyColors.neutroDark[4],
         fontFamily: MyFont.medium,
     }

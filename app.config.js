@@ -6,7 +6,7 @@ export default {
     "name": "RogansApp",
     "slug": "RogansApp",
     "scheme": "rogansapp",
-    "version": "2.1.5",
+    "version": "2.1.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -64,7 +64,7 @@ export default {
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
       ],
-      "versionCode": 35
+      "versionCode": 36
     },
     "web": {
       "favicon": "./assets/favicon.png"

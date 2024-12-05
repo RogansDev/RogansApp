@@ -130,6 +130,16 @@ const Agendamiento = () => {
     const handleCategorySelect = (linea: any) => {
         setLineaMedica(linea);
 
+        if (linea === 'Sexual') {
+            setMonto('20000');
+        } else if (linea === 'Facial') {
+            setMonto('20000');
+        } else if (linea === 'Psicologia') {
+            setMonto('79000');
+        } else if (linea === 'Nutricion') {
+            setMonto('79000');
+        }
+
         isGratis(linea);
 
         // Oculta los botones de categorías y muestra el calendario

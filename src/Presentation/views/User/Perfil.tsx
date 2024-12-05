@@ -470,7 +470,7 @@ const Perfil = () => {
             style={{
               justifyContent: "center",
               alignItems: "center",
-              marginBottom: 30,
+              marginBottom: 5,
             }}
           >
             <TouchableOpacity
@@ -555,7 +555,7 @@ const Perfil = () => {
               </View>
             </View>
 
-            <View style={{ gap: 15 }}>
+            <View style={{ gap: 15, marginTop: 10, }}>
               <View
                 style={{
                   justifyContent: "center",
@@ -691,12 +691,12 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   subtitleInfo: {
-    fontSize: 13,
+    fontSize: 12,
     fontFamily: MyFont.regular,
     color: "#909090",
   },
   titleInfo: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: MyFont.medium,
     color: "black",
   },

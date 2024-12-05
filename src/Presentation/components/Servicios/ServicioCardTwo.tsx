@@ -46,8 +46,8 @@ const ServicioBox = ({title, text, titleColored, titleColor, imageUrl, pressAgen
             <View style={{flexDirection: 'row', gap: 12, marginBottom: 3, marginTop: 5,}}>
             {autodiagnostico ? (
                 <>
-                    <ButtonTwoSmall text='Agendar' width={120} icon={Calendar} pressAction={pressAgendar} />
-                    <ButtonTwoSmall text='Autodiagnóstico' width={190} icon={AutodiagnosticoVerde} pressAction={pressAutodiagnostico} />
+                    <ButtonTwoSmall text='Agendar' width={105} icon={Calendar} pressAction={pressAgendar} />
+                    <ButtonTwoSmall text='Autodiagnóstico' width={160} icon={AutodiagnosticoVerde} pressAction={pressAutodiagnostico} />
                 </>
             ) : (
                 <ButtonTwoSmall text='Agendar ahora' width={180} icon={Calendar} pressAction={pressAgendar} />

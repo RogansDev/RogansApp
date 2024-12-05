@@ -438,14 +438,14 @@ const Home = () => {
             }}
           >
             <Image
-              source={require("../../../../assets/doctora.png")}
+              source={require("../../../../assets/doctora.jpg")}
               style={styles.agendamientoBoxImage}
             />
             <View>
               <Text
                 style={{
                   fontFamily: MyFont.medium,
-                  fontSize: 30,
+                  fontSize: 26,
                   color: MyColors.white,
                 }}
               >
@@ -454,7 +454,7 @@ const Home = () => {
               <Text
                 style={{
                   fontFamily: MyFont.regular,
-                  fontSize: 15,
+                  fontSize: 14,
                   color: MyColors.white,
                   lineHeight: 19,
                 }}
@@ -614,9 +614,10 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   agendamientoBoxImage: {
-    width: 70,
-    height: 70,
+    width: 63,
+    height: 63,
     marginTop: 10,
+    borderRadius: 10,
   },
 });
 
