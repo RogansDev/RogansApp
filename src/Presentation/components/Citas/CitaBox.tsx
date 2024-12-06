@@ -81,6 +81,8 @@ const CitaBox = ({ tituloCita, modalidad, fecha, estadoCita, lineaMedica, backgr
             return require('../../../../assets/citas/nutricion-cita.png');
         } else if (linea === 'Adn') {
             return require('../../../../assets/citas/adn-cita.png');
+        } else if (linea === 'Endocrinologia') {
+            return require('../../../../assets/rawdy.jpg');
         } else {
             return require('../../../../assets/citas/medicina-general-cita.png');
         }

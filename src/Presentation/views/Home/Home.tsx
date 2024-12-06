@@ -226,6 +226,11 @@ const Home = () => {
     }
   };
 
+  const agendarWA = () => {
+    const url = "https://wa.link/295lc3";
+    Linking.openURL(url);
+  };
+
   return (
     <View style={styles.container}>
       <FloatingMenu chatVisible={chatVisible} setChatVisible={setChatVisible} />
@@ -424,8 +429,9 @@ const Home = () => {
             imageUrl="diagnosis-psicologia"
             autodiagnostico={true}
           />
-          <ServicioCardTwo pressAgendar={() => { handleMedicalLine('Nutricion') }} title='Cuida tu' titleColored='cuerpo' titleColor='#eda145' text='Bienestar de nutrición' imageUrl='diagnosis-nutricion' />
-          <ServicioCardTwo pressAgendar={() => { handleMedicalLine('Adn') }} title='Predice con' titleColored='ADN' titleColor='#5e5f61' text='Predicción avanzada y precisa.' imageUrl='diagnosis-adn' />
+          <ServicioCardTwo pressAgendar={() => { handleMedicalLine('Nutricion') }} title='Medicina' titleColored='nutricional' titleColor='#eda145' text='Bienestar para tu cuerpo' imageUrl='diagnosis-nutricion' />
+          <ServicioCardTwo pressAgendar={() => { handleMedicalLine('Adn') }} title='Predice con' titleColored='ADN' titleColor='#5e5f61' text='Predicción avanzada y precisa' imageUrl='diagnosis-adn' />
+          <ServicioCardTwo pressAgendar={() => { agendarWA() }} title='Endocrinología' titleColored='' titleColor='#00B398' text='Equilibrio hormonal para tu bienestar' imageUrl='diagnosis-endocrinologia' />
         </View>
 
         <View style={styles.agendamientoBox}>
@@ -477,6 +483,7 @@ const Home = () => {
         <View
           style={{ marginTop: 40, marginBottom: 150, alignItems: "center" }}
         >
+          <Logo style={{ marginBottom: 10 }} width={120} height={40} />
           <TouchableOpacity
             onPress={() =>
               WebBrowser.openBrowserAsync(
@@ -485,12 +492,12 @@ const Home = () => {
             }
             style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
           >
-            <Text style={{ fontFamily: MyFont.medium, fontSize: 16 }}>
+            <Text style={{ fontFamily: MyFont.medium, fontSize: 16, color: MyColors.neutro[3] }}>
               Términos y condiciones
             </Text>
             <Arrow width={16} height={16} />
           </TouchableOpacity>
-          <Logo style={{ marginTop: 30 }} width={80} height={40} />
+          
         </View>
       </ScrollView>
     </View>

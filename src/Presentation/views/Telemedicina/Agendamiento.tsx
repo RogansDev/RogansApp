@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Animated, Alert, Platform, Modal } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet, Animated, Alert, Platform, Modal, Linking } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootParamList } from '../../../utils/RootParamList';
@@ -72,7 +72,7 @@ const Agendamiento = () => {
     );
 
     const isGratis = (linea: string) => {
-        if (linea === 'Sexual' || linea === 'Facial' || linea === 'Psicologia' ||  linea === 'Nutricion') {
+        if (linea === 'Sexual' || linea === 'Facial' || linea === 'Psicologia' ||  linea === 'Nutricion' ||  linea === 'Endocrinologia') {
             setGratis(false);
         } else {
             setGratis(true);
@@ -95,6 +95,8 @@ const Agendamiento = () => {
             } else if (MedicalLineState.lineaMedica === 'Psicologia') {
                 setMonto('79000');
             } else if (MedicalLineState.lineaMedica === 'Nutricion') {
+                setMonto('79000');
+            } else if (MedicalLineState.lineaMedica === 'Endocrinologia') {
                 setMonto('79000');
             }
 
@@ -137,6 +139,8 @@ const Agendamiento = () => {
         } else if (linea === 'Psicologia') {
             setMonto('79000');
         } else if (linea === 'Nutricion') {
+            setMonto('79000');
+        } else if (linea === 'Endocrinologia') {
             setMonto('79000');
         }
 
@@ -256,6 +260,7 @@ const Agendamiento = () => {
         if (linea === 'Nutricion') { return 'Nutrición'; }
         if (linea === 'Adn') { return 'Medicina predictiva | ADN'; }
         if (linea === 'Medicina-general') { return 'Consulta médica general'; }
+        if (linea === 'Endocrinologia') { return 'Endocrinología'; }
         else { return 'Cita médica' };
     };
 
@@ -356,6 +361,11 @@ const Agendamiento = () => {
             setPagoVisible(false);
             pagoRechazado();
         }
+    };
+
+    const agendarWA = () => {
+        const url = "https://wa.link/295lc3";
+        Linking.openURL(url);
     };
 
     return (
@@ -470,6 +480,9 @@ const Agendamiento = () => {
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {handleCategorySelect('Medicina-general')}}>
                                 <Text style={styles.buttonText}>Consulta médica general</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => {agendarWA()}}>
+                                <Text style={styles.buttonText}>Endocrinología</Text>
                             </TouchableOpacity>
                         </Animated.View>
                     )}

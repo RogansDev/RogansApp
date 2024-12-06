@@ -36,6 +36,9 @@ import { setClearCalendaryInfo } from "../../../state/CalendarySlice";
 import { setClearUserInfo, setUserInfo } from "../../../state/ProfileSlice";
 import { RootParamList } from "../../../utils/RootParamList";
 import PopUpCerrarSesion from "../../components/PopUpCerrarSesion";
+import useCurrentRoute from '../../../hooks/useCurrentRoute';
+import CircleButton from "../../components/buttons/CircleButton";
+import { setMedicalLineInfo } from '../../../state/MedicalLineSlice';
 
 const Perfil = () => {
   const dispatch = useDispatch();
@@ -48,6 +51,9 @@ const Perfil = () => {
     TrashIcon,
     TickCircleWhiteicon,
     Editar2Icon,
+    DocumentoVerdeBold,
+    CalendarVerde,
+    CalendarAddVerde
   } = Icons;
   const { name, lastname, document, email, phone, user_id, birthdate, role } =
     useSelector((state: any) => state.user);
@@ -70,6 +76,8 @@ const Perfil = () => {
   const [newLastname, setNewLastname] = useState(lastname);
   const [newDocument, setNewDocument] = useState(document);
   const [newEmail, setNewEmail] = useState(email);
+
+  const MedicalLineState = useSelector((state : any) => state.medicalLine);
 
   const handleSessionClose = async () => {
     try {
@@ -194,6 +202,14 @@ const Perfil = () => {
     } else {
       Alert.alert("Por favor, complete todos los campos.");
     }
+  };
+
+  const handleMedicalLine = async (linea: any) => {
+    dispatch(setMedicalLineInfo({
+      ...MedicalLineState,
+      lineaMedica: linea
+    }));
+    navigation.navigate('Agendamiento');
   };
 
   return (
@@ -464,163 +480,167 @@ const Perfil = () => {
       </Modal>
 
       <View style={styles.container}>
-        <ScrollView style={styles.scrollContainer}>
-          <Text style={styles.title}>Mis Datos</Text>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: 5,
-            }}
-          >
-            <TouchableOpacity
+            <View>
+            <View
               style={{
-                overflow: "hidden",
-                width: 150,
-                height: 150,
                 justifyContent: "center",
                 alignItems: "center",
+                marginBottom: 5,
+                paddingTop: 100,
               }}
-              onPress={() => setModalVisible(true)}
             >
-              {image ? (
-                <Image source={{ uri: image }} style={styles.userImage} />
-              ) : base64Image ? (
-                <Image source={{ uri: base64Image }} style={styles.userImage} />
-              ) : (
-                <UserIcon width={150} height={150} />
-              )}
-              <View style={styles.camaraIcon}>
-                <Camara width={24} height={24} />
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.textContainer}>
-            <View style={styles.info}>
-              <View
+              <Image
+                source={require('../../../../assets/fondo-perfil.jpg')}
+                style={{position: 'absolute', top: 0, width: '100%', height: 180,}}
+                blurRadius={5}
+                resizeMode="cover" 
+              />
+              <TouchableOpacity
                 style={{
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  gap: 3,
-                }}
-              >
-                <Text style={styles.subtitleInfo}>Nombre</Text>
-                <Text style={styles.titleInfo}>
-                  {name === "" ? "Sin especificar" : name + " " + lastname}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.info}>
-              <View
-                style={{
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  gap: 3,
-                }}
-              >
-                <Text style={styles.subtitleInfo}>Documento de identidad</Text>
-                <Text style={styles.titleInfo}>
-                  {document === "" ? "Sin espefificar" : document}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.info}>
-              <View
-                style={{
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  gap: 3,
-                }}
-              >
-                <Text style={styles.subtitleInfo}>Teléfono</Text>
-                <Text style={styles.titleInfo}>{phone}</Text>
-              </View>
-            </View>
-            <View style={styles.info}>
-              <View
-                style={{
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  gap: 3,
-                }}
-              >
-                <Text style={styles.subtitleInfo}>Correo</Text>
-                <Text style={styles.titleInfo}>
-                  {email === "" ? "Sin especificar" : email}
-                </Text>
-              </View>
-            </View>
-
-            <View style={{ gap: 15, marginTop: 10, }}>
-              <View
-                style={{
+                  overflow: "hidden",
+                  width: 150,
+                  height: 150,
                   justifyContent: "center",
                   alignItems: "center",
+                  borderTopLeftRadius: 75,
+                  borderTopRightRadius: 75,
                 }}
+                onPress={() => setModalVisible(true)}
               >
-                <TouchableOpacity
-                  style={{ flexDirection: "row", gap: 5 }}
-                  onPress={() => setEditModalVisible(true)}
-                >
-                  <Editar2Icon width={16} height={16} />
-                  <Text>Editar datos</Text>
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <TouchableOpacity
-                  style={{ flexDirection: "row", gap: 5 }}
-                  onPress={() => navigation.navigate("PassUpdatekeyDash")}
-                >
-                  <Forget width={16} height={16} />
-                  <Text>Cambiar mi contraseña</Text>
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    setModalCerrarSesion(true);
+                {image ? (
+                  <Image source={{ uri: image }} style={styles.userImage} />
+                ) : base64Image ? (
+                  <Image source={{ uri: base64Image }} style={styles.userImage} />
+                ) : (
+                  <UserIcon width={150} height={150} />
+                )}
+                <View style={styles.camaraIcon}>
+                  <Camara width={24} height={24} />
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <View style={styles.info}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 8,
                   }}
-                  style={{ flexDirection: "row", gap: 5 }}
                 >
-                  <CloseIcon width={16} height={16} />
-                  <Text>Cerrar sesión</Text>
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    setModalEliminarCuenta(true);
-                  }}
-                  style={{ flexDirection: "row", gap: 5 }}
-                >
-                  <TrashIcon width={16} height={16} />
-                  <Text>
-                    {firebaseLoading ? "Cargando...." : "Eliminar cuenta"}
+                  <Text style={styles.titleInfo}>
+                    {name === "" ? "Nombre" : name + " " + lastname}
                   </Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{ flexDirection: "row", gap: 5 }}
+                    onPress={() => setEditModalVisible(true)}
+                  >
+                    <Editar2Icon width={16} height={16} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.info}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <Text style={styles.titleInfo}>
+                    {document === "" ? "Documento" : document}
+                  </Text>
+                  <TouchableOpacity
+                    style={{ flexDirection: "row", gap: 5 }}
+                    onPress={() => setEditModalVisible(true)}
+                  >
+                    <Editar2Icon width={16} height={16} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={styles.info}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <Text style={styles.titleInfo}>
+                    {email === "" ? "Correo" : email}
+                  </Text>
+                  <TouchableOpacity
+                    style={{ flexDirection: "row", gap: 5 }}
+                    onPress={() => setEditModalVisible(true)}
+                  >
+                    <Editar2Icon width={16} height={16} />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
-        </ScrollView>
+            <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 25,}}>
+              <CircleButton text="Mis documentos" width="auto" backgroundColor={MyColors.fondo[2]} icon={DocumentoVerdeBold} iconSize={{width: 22, height: 22}} pressAction={() => {navigation.navigate("MiHistorial")}} />
+              <CircleButton text="Ver Citas" width="auto" icon={CalendarVerde} iconSize={{width: 22, height: 22}} pressAction={() => {navigation.navigate("MisCitas")}} />
+              <CircleButton pressAction={() => {handleMedicalLine('')}} text="Agendar cita" width="auto" icon={CalendarAddVerde} iconSize={{width: 22, height: 22}} />
+            </View>
+            </View>
+          
+            <View style={styles.textContainer}>
+              <View style={{flexDirection: 'row', gap: 12,}}>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <TouchableOpacity
+                    style={{ flexDirection: "row", gap: 5 }}
+                    onPress={() => navigation.navigate("PassUpdatekeyDash")}
+                  >
+                    <Forget width={16} height={16} />
+                    <Text>Cambiar mi contraseña</Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalCerrarSesion(true);
+                    }}
+                    style={{ flexDirection: "row", gap: 5 }}
+                  >
+                    <CloseIcon width={16} height={16} />
+                    <Text>Cerrar sesión</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalEliminarCuenta(true);
+                    }}
+                    style={{ flexDirection: "row", gap: 5 }}
+                  >
+                    <TrashIcon width={16} height={16} />
+                    <Text>
+                      {firebaseLoading ? "Cargando...." : "Eliminar cuenta"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+            </View>
       </View>
       <PopUpCerrarSesion ref={PopUpCerrarSesionRef} />
     </>
@@ -629,13 +649,12 @@ const Perfil = () => {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: Platform.OS === "android" ? 40 : 10,
     flex: 1,
     backgroundColor: "#FCFCFC",
     position: "relative",
-  },
-  scrollContainer: {
-    position: "relative",
-    top: Platform.OS === "android" ? 40 : 10,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 24,
@@ -673,19 +692,22 @@ const styles = StyleSheet.create({
     color: "#404040",
   },
   textContainer: {
-    position: "relative",
     marginTop: 0,
-    marginBottom: 40,
-    width: "100%",
-    height: "auto",
+    marginBottom: 60,
+    flexDirection: 'column',
     paddingHorizontal: 16,
     zIndex: 5,
+    gap: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
   },
   info: {
-    paddingVertical: 10,
+    paddingVertical: 5,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
+    textAlign: 'center',
   },
   iconInfo: {
     marginRight: 8,
@@ -698,7 +720,8 @@ const styles = StyleSheet.create({
   titleInfo: {
     fontSize: 16,
     fontFamily: MyFont.medium,
-    color: "black",
+    color: MyColors.neutro[2],
+    textAlign: 'center',
   },
   textInfo: {
     fontSize: 12,
@@ -854,6 +877,63 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     color: MyColors.neutro[1],
     fontFamily: MyFont.regular,
+  },
+  mainMenuItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 90,
+    height: 58,
+    borderRadius: 10,
+    backgroundColor: MyColors.verde[4],
+    top: -10,
+    marginHorizontal: 20,
+    paddingTop: 5,
+  },
+  menuItem: {
+    alignItems: 'center',
+    width: 100,
+  },
+  menuIcon: {
+    marginBottom: 4,
+  },
+  activeMenuText: {
+    fontSize: 11,
+    fontFamily: MyFont.regular,
+    textAlign: 'center',
+    paddingBottom: 4,
+    color: MyColors.verde[2],
+  },
+  mainMenuText: {
+    fontSize: 11,
+    fontFamily: MyFont.regular,
+    textAlign: 'center',
+    paddingBottom: 4,
+    color: MyColors.white,
+  },
+  activeMainMenuText: {
+    fontSize: 11,
+    fontFamily: MyFont.regular,
+    textAlign: 'center',
+    paddingBottom: 4,
+    color: MyColors.black,
+  },
+  activeMenuItem: {
+    alignItems: 'center',
+    width: 100,
+  },
+  menuText: {
+    fontSize: 11,
+    fontFamily: MyFont.regular,
+    textAlign: 'center',
+    paddingBottom: 4,
+    color: 'black',
+  },
+  activeTextBorder: {
+    
+  },
+  textBorder: {
+    borderBottomWidth: 0,
+    borderBottomColor: '#00D0B1',
   },
 });
 

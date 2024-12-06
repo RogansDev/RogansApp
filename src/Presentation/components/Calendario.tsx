@@ -212,10 +212,10 @@ const Calendario = ({ onDateSelected, onModalitySelected }: any) => {
           <Text>Modalidad</Text>
           <RNPickerSelect
             onValueChange={(value) => {
-              setModalidad(value);
-            }}
-            onClose={ () => {
-              onModalitySelected(modalidad);
+              if (value) {
+                setModalidad(value);
+                onModalitySelected(value); // Notificar al componente padre inmediatamente
+              }
             }}
             value={modalidad}
             items={[

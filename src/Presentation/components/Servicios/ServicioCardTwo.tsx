@@ -23,6 +23,8 @@ const ServicioBox = ({title, text, titleColored, titleColor, imageUrl, pressAgen
                 return require('../../../../assets/diagnosis-adn.webp');
             case 'diagnosis-psicologia':
                 return require('../../../../assets/diagnosis-psicologia.webp');
+            case 'diagnosis-endocrinologia':
+                return require('../../../../assets/rawdy.jpg');
             default:
                 return require('../../../../assets/diagnosis-alopecia.png'); // Imagen por defecto si no coincide
         }
@@ -35,7 +37,13 @@ const ServicioBox = ({title, text, titleColored, titleColor, imageUrl, pressAgen
                 <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between', alignItems: 'center'}}>
                     <View>
                         <Text style={styles.title}>
-                            {title} <Text style={{color: titleColor,}}>{titleColored}</Text>
+                            {title === 'Endocrinología' ? (
+                                <Text style={{color: titleColor,}}>{title}</Text>
+                            ):(
+                                <>
+                                    {title} <Text style={{color: titleColor,}}>{titleColored}</Text>
+                                </>
+                            )}
                         </Text>
                         <Text style={styles.text}>
                             {text}
