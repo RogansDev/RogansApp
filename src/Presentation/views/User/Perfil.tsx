@@ -492,7 +492,7 @@ const Perfil = () => {
               <Image
                 source={require('../../../../assets/fondo-perfil.jpg')}
                 style={{position: 'absolute', top: 0, width: '100%', height: 180,}}
-                blurRadius={5}
+                blurRadius={6}
                 resizeMode="cover" 
               />
               <TouchableOpacity

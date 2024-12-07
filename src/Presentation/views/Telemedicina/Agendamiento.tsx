@@ -33,6 +33,7 @@ const Agendamiento = () => {
     const [monto, setMonto] = useState('');
     const [urlFinal, setUrlFinal] = useState('');
     const [paymentStatuses, setPaymentStatuses] = useState<{ [key: string]: boolean }>({});
+    const [warningVisible, setWarningVisible] = useState(false);
 
     const navigation = useNavigation<StackNavigationProp<RootParamList>>();
 
@@ -72,7 +73,7 @@ const Agendamiento = () => {
     );
 
     const isGratis = (linea: string) => {
-        if (linea === 'Sexual' || linea === 'Facial' || linea === 'Psicologia' ||  linea === 'Nutricion' ||  linea === 'Endocrinologia') {
+        if (linea === 'Sexual' || linea === 'Facial' || linea === 'Psicologia' ||  linea === 'Nutricion' ||  linea === 'Endocrinologia' ||  linea === 'Medicina-general') {
             setGratis(false);
         } else {
             setGratis(true);
@@ -89,7 +90,7 @@ const Agendamiento = () => {
             isGratis(MedicalLineState.lineaMedica);
 
             if (MedicalLineState.lineaMedica === 'Sexual') {
-                setMonto('20000');
+                setMonto('50000');
             } else if (MedicalLineState.lineaMedica === 'Facial') {
                 setMonto('20000');
             } else if (MedicalLineState.lineaMedica === 'Psicologia') {
@@ -98,6 +99,8 @@ const Agendamiento = () => {
                 setMonto('79000');
             } else if (MedicalLineState.lineaMedica === 'Endocrinologia') {
                 setMonto('79000');
+            } else if (MedicalLineState.lineaMedica === 'Medicina-general') {
+                setMonto('40000');
             }
 
             // Iniciar las animaciones del calendario
@@ -133,7 +136,7 @@ const Agendamiento = () => {
         setLineaMedica(linea);
 
         if (linea === 'Sexual') {
-            setMonto('20000');
+            setMonto('50000');
         } else if (linea === 'Facial') {
             setMonto('20000');
         } else if (linea === 'Psicologia') {
@@ -142,6 +145,8 @@ const Agendamiento = () => {
             setMonto('79000');
         } else if (linea === 'Endocrinologia') {
             setMonto('79000');
+        } else if (linea === 'Medicina-general') {
+            setMonto('40000');
         }
 
         isGratis(linea);
@@ -211,6 +216,11 @@ const Agendamiento = () => {
     };
 
     const handleAgendar = () => {
+        if (!selectedDate || !selectedModality) {
+            setWarningVisible(true); // Mostrar el modal si falta alguna selección
+            return;
+        }
+
         console.log(selectedModality);
 
         let esGratis;
@@ -229,7 +239,10 @@ const Agendamiento = () => {
             modalidad: selectedModality,
             fecha_cita: selectedDate,
             gratis: esGratis
-        };    
+        };
+
+        console.log(agendamientoData);
+        
         // Emitir el evento al servidor
         socket.emit('crearCita', agendamientoData, (response: any) => {
             // Manejar la respuesta del servidor
@@ -265,6 +278,11 @@ const Agendamiento = () => {
     };
 
     const iniciarProcesoDePago = (datosPago: any) => {
+        if (!selectedDate || !selectedModality) {
+            setWarningVisible(true); // Mostrar el modal si falta alguna selección
+            return;
+        }
+        
         const generarReferenceCode = () => {
             const ahora = new Date();
             // Generar un número aleatorio y convertirlo a string en base 36
@@ -363,13 +381,44 @@ const Agendamiento = () => {
         }
     };
 
-    const agendarWA = () => {
-        const url = "https://wa.link/295lc3";
-        Linking.openURL(url);
+    const agendarWA = (linea: any) => {
+        if (linea === 'Endocrinologia') {
+          const url = "https://wa.link/295lc3";
+          Linking.openURL(url);// abre el link en el navegador
+        } else if (linea === 'Nutricion') {
+          const url = "https://wa.link/yp7wh8";
+          Linking.openURL(url);// abre el link en el navegador
+        }
     };
 
     return (
         <View style={styles.container}>
+            {warningVisible && (
+            <Modal
+                transparent={true}
+                animationType="fade"
+                visible={warningVisible}
+                onRequestClose={() => setWarningVisible(false)}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <CloseIcon width={60} height={60} />
+                        <Text style={styles.modalText3}>Datos incompletos</Text>
+                        <Text style={styles.modalText}>
+                            Por favor, selecciona una fecha y una modalidad para continuar.
+                        </Text>
+                        <TouchableOpacity
+                            style={{ marginTop: 20 }}
+                            onPress={() => setWarningVisible(false)}
+                        >
+                            <Text style={{ color: MyColors.verde[2], fontFamily: MyFont.bold }}>
+                                Cerrar
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+        )}
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -428,7 +477,7 @@ const Agendamiento = () => {
                 modalTriggerRef.current = trigger;
                 }}
             />
-            <ScrollView style={styles.scrollContainer}>
+            <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
                 <View style={styles.content}>
                     {showCalendar ? (
                         <Animated.View style={{
@@ -442,7 +491,39 @@ const Agendamiento = () => {
                             </TouchableOpacity>
                             <Text style={{fontFamily: MyFont.regular, fontSize: MyFont.size[4], color: MyColors.verde[3], marginTop: 18, paddingHorizontal: 22, textAlign: 'center',}}>{nombreCita(lineaMedica)}</Text>
                             <Calendario onDateSelected={setSelectedDate} onModalitySelected={setSelectedModality} />
-                            {!gratis && <Text style={{fontFamily: MyFont.regular, fontSize: MyFont.size[5], color: MyColors.neutro[3], marginBottom: 18, paddingHorizontal: 22, textAlign: 'center',}}>Esta consulta tiene un{'\n'} costo de:{` ${new Intl.NumberFormat('es-CO', {style: 'currency',currency: 'COP',}).format(parseFloat(monto))}`}</Text>}
+                            {!gratis ? (
+                                <Text
+                                    style={{
+                                        fontFamily: MyFont.regular,
+                                        fontSize: MyFont.size[5],
+                                        color: MyColors.neutro[3],
+                                        marginBottom: 18,
+                                        paddingHorizontal: 22,
+                                        textAlign: 'center',
+                                    }}
+                                >
+                                    Esta consulta tiene un{'\n'}
+                                    costo de: 
+                                    {lineaMedica === 'Medicina-general' ? (
+                                        <>
+                                            {' '}<Text style={{ textDecorationLine: 'line-through', color: MyColors.neutroDark[3], }}>
+                                                $ 79.000,00
+                                            </Text>{' '}
+                                            <Text style={{ color: MyColors.verde[2], }}>
+                                                {new Intl.NumberFormat('es-CO', {
+                                                    style: 'currency',
+                                                    currency: 'COP',
+                                                }).format(parseFloat(monto))}
+                                            </Text>
+                                        </>
+                                    ) : (
+                                        ` ${new Intl.NumberFormat('es-CO', {
+                                            style: 'currency',
+                                            currency: 'COP',
+                                        }).format(parseFloat(monto))}`
+                                    )}
+                                </Text>
+                            ) : null}
                             {gratis ? (
                                 <ButtonIcon text="Agendar" icon={CalendarWhiteIcon} pressAction={handleAgendar} />
                             ):(
@@ -472,17 +553,17 @@ const Agendamiento = () => {
                             <TouchableOpacity onPress={() => {handleCategorySelect('Psicologia')}}>
                                 <Text style={styles.buttonText}>Psicología</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {handleCategorySelect('Nutricion')}}>
-                                <Text style={styles.buttonText}>Nutrición</Text>
+                            <TouchableOpacity onPress={() => {agendarWA('Endocrinologia')}}>
+                                <Text style={styles.buttonText}>Endocrinología</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {handleCategorySelect('Adn')}}>
-                                <Text style={styles.buttonText}>Medicina predictiva | ADN</Text>
+                            <TouchableOpacity onPress={() => {agendarWA('Nutricion')}}>
+                                <Text style={styles.buttonText}>Nutrición</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {handleCategorySelect('Medicina-general')}}>
                                 <Text style={styles.buttonText}>Consulta médica general</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {agendarWA()}}>
-                                <Text style={styles.buttonText}>Endocrinología</Text>
+                            <TouchableOpacity onPress={() => {handleCategorySelect('Adn')}}>
+                                <Text style={styles.buttonText}>Medicina predictiva | ADN</Text>
                             </TouchableOpacity>
                         </Animated.View>
                     )}

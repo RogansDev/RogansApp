@@ -25,6 +25,8 @@ const ServicioBox = ({title, text, titleColored, titleColor, imageUrl, pressAgen
                 return require('../../../../assets/diagnosis-psicologia.webp');
             case 'diagnosis-endocrinologia':
                 return require('../../../../assets/rawdy.jpg');
+            case 'diagnosis-general':
+                return require('../../../../assets/medicina-general.png');
             default:
                 return require('../../../../assets/diagnosis-alopecia.png'); // Imagen por defecto si no coincide
         }

@@ -226,9 +226,14 @@ const Home = () => {
     }
   };
 
-  const agendarWA = () => {
-    const url = "https://wa.link/295lc3";
-    Linking.openURL(url);
+  const agendarWA = (linea: any) => {
+    if (linea === 'Endocrinologia') {
+      const url = "https://wa.link/295lc3";
+      Linking.openURL(url);// abre el link en el navegador
+    } else if (linea === 'Nutricion') {
+      const url = "https://wa.link/yp7wh8";
+      Linking.openURL(url);// abre el link en el navegador
+    }
   };
 
   return (
@@ -397,7 +402,7 @@ const Home = () => {
             title="Renueva tu"
             titleColored="rostro"
             titleColor="#AD50E8"
-            text="Tratamientos de rejuvenecimiento."
+            text="Tratamientos de rejuvenecimiento"
             imageUrl="diagnosis-facial"
             autodiagnostico={true}
           />
@@ -411,7 +416,7 @@ const Home = () => {
             title="Ten buen"
             titleColored="sexo"
             titleColor="#FF8290"
-            text="Mejora tu vida íntima."
+            text="Mejora tu vida íntima"
             imageUrl="diagnosis-sexual"
             autodiagnostico={true}
           />
@@ -425,13 +430,14 @@ const Home = () => {
             title="Encuentra"
             titleColored="calma"
             titleColor="#518BFF"
-            text="El bienestar comienza en tu mente."
+            text="El bienestar comienza en tu mente"
             imageUrl="diagnosis-psicologia"
             autodiagnostico={true}
           />
-          <ServicioCardTwo pressAgendar={() => { handleMedicalLine('Nutricion') }} title='Medicina' titleColored='nutricional' titleColor='#eda145' text='Bienestar para tu cuerpo' imageUrl='diagnosis-nutricion' />
+          <ServicioCardTwo pressAgendar={() => { agendarWA('Endocrinologia') }} title='Endocrinología' titleColored='' titleColor='#00B398' text='Equilibrio hormonal para tu bienestar' imageUrl='diagnosis-endocrinologia' />
+          <ServicioCardTwo pressAgendar={() => { agendarWA('Nutricion') }} title='Medicina' titleColored='nutricional' titleColor='#eda145' text='Bienestar para tu cuerpo' imageUrl='diagnosis-nutricion' />
+          <ServicioCardTwo pressAgendar={() => { handleMedicalLine('Medicina-general') }} title='Medicina' titleColored='general' titleColor='#20C6E0' text='Atención médica integral para ti' imageUrl='diagnosis-general' />
           <ServicioCardTwo pressAgendar={() => { handleMedicalLine('Adn') }} title='Predice con' titleColored='ADN' titleColor='#5e5f61' text='Predicción avanzada y precisa' imageUrl='diagnosis-adn' />
-          <ServicioCardTwo pressAgendar={() => { agendarWA() }} title='Endocrinología' titleColored='' titleColor='#00B398' text='Equilibrio hormonal para tu bienestar' imageUrl='diagnosis-endocrinologia' />
         </View>
 
         <View style={styles.agendamientoBox}>
