@@ -29,8 +29,8 @@ import MiHistorial from "../Presentation/views/Historial/MiHistorial";
 import Programas from "../Presentation/views/Programas/Programas";
 import Teleconsulta from "../Presentation/views/Telemedicina/Teleconsulta";
 import Agendamiento from "../Presentation/views/Telemedicina/Agendamiento";
-import Diagnostico from "../Presentation/views/Diganosticos/Diagnostico";
-import DiagnosticosList from "../Presentation/views/Diganosticos/DiagnosticosList";
+import Diagnostico from "../Presentation/views/Diagnosticos/Diagnostico";
+import DiagnosticosList from "../Presentation/views/Diagnosticos/DiagnosticosList";
 
 const Stack = createNativeStackNavigator<RootParamList>();
 
